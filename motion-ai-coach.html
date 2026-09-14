@@ -166,6 +166,13 @@
   .bubble{ padding:15px 20px; border-radius:4px; font-size:0.95rem; max-width:68%; line-height:1.55; }
   .bubble-row.user .bubble{ background:linear-gradient(155deg, var(--gold-soft), var(--gold)); color:#181410; font-weight:500; border-bottom-right-radius:2px; }
   .bubble-row.ai .bubble{ background:var(--glass-strong); border:1px solid var(--line); border-bottom-left-radius:2px; }
+  .chat-h{ font-family:'Fraunces',serif; font-weight:600; font-size:1.05rem; color:var(--gold-soft); margin:14px 0 6px; }
+  .chat-h:first-child{ margin-top:0; }
+  .chat-p{ margin:0 0 10px; }
+  .chat-p:last-child{ margin-bottom:0; }
+  .chat-ul, .chat-ol{ margin:0 0 10px; padding-left:1.25em; }
+  .chat-ul li, .chat-ol li{ margin-bottom:4px; }
+  .bubble strong{ color:var(--gold-soft); }
   .dl-btn{ display:block; margin-top:12px; padding:8px 14px; border-radius:2px; border:1px solid var(--gold-dim); background:transparent; color:var(--gold-soft); font-size:0.78rem; font-weight:600; cursor:pointer; }
   .dl-btn:hover{ background:rgba(184,147,90,0.1); }
   .offline-tag{ display:block; margin-top:10px; font-family:'JetBrains Mono',monospace; font-size:0.66rem; letter-spacing:0.04em; color:var(--chalk-faint); text-transform:uppercase; }
@@ -1179,6 +1186,54 @@ function downloadTextFile(filename, content){
   URL.revokeObjectURL(url);
 }
 
+// Exports an AI chat reply as a standalone, nicely branded HTML document
+// (used for meal plans / training programs the AI writes out in chat).
+function downloadHtmlProgram(markdownText){
+  const p = profile || {};
+  const titleMatch = markdownText.match(/^#{1,2}\s+(.*)/m);
+  const title = titleMatch ? titleMatch[1].replace(/\*\*/g,'') : 'Ditt program från Motion UF';
+  const bodyHtml = renderMarkdown(markdownText);
+  const doc = `<!DOCTYPE html>
+<html lang="sv"><head><meta charset="UTF-8">
+<title>${title} — Motion UF</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --gold:#b8935a; --gold-soft:#8a6a3e; --charcoal:#181410; --beige:#f4f1ec; }
+  body{ margin:0; padding:0; background:var(--beige); color:var(--charcoal); font-family:'Inter',sans-serif; line-height:1.6; }
+  .wrap{ max-width:680px; margin:0 auto; padding:56px 24px 80px; }
+  header{ text-align:center; margin-bottom:40px; }
+  header .brand{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-soft); margin-bottom:10px; }
+  header h1{ font-family:'Fraunces',serif; font-weight:600; font-size:1.9rem; margin:0; }
+  header .meta{ font-size:0.85rem; color:#6b6b6b; margin-top:10px; }
+  .card{ background:#fff; border:1px solid rgba(0,0,0,0.08); border-radius:8px; padding:32px 36px; }
+  .chat-h{ font-family:'Fraunces',serif; font-weight:600; font-size:1.2rem; color:var(--gold-soft); margin:26px 0 10px; }
+  .chat-h:first-child{ margin-top:0; }
+  .chat-p{ margin:0 0 12px; }
+  .chat-ul, .chat-ol{ margin:0 0 14px; padding-left:1.3em; }
+  .chat-ul li, .chat-ol li{ margin-bottom:6px; }
+  strong{ color:var(--gold-soft); }
+  footer{ text-align:center; margin-top:36px; font-size:0.78rem; color:#9a9a9a; }
+</style></head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">Motion UF · AI-Coach</div>
+      <h1>${title}</h1>
+      <div class="meta">${p.name ? 'Skapat för ' + p.name + ' · ' : ''}${new Date().toLocaleDateString('sv-SE')}</div>
+    </header>
+    <div class="card">${bodyHtml}</div>
+    <footer>Genererat av Motion UF:s AI-coach. Inte medicinsk rådgivning — kontakta vårdpersonal vid skador eller hälsofrågor.</footer>
+  </div>
+</body></html>`;
+  const blob = new Blob([doc], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'motion-uf-program.html';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 function generateTrainingProgramFile(){
   const p = profile;
   const lines = [];
@@ -1294,6 +1349,43 @@ function escapeHtml(s){
 function formatChatText(s){
   return escapeHtml(s).replace(/\n/g, '<br>');
 }
+// Lightweight Markdown -> HTML renderer for AI chat replies (headings, bold, lists, paragraphs)
+function renderMarkdown(src){
+  const esc = escapeHtml(src);
+  const lines = esc.split('\n');
+  let html = '';
+  let inUl = false, inOl = false;
+  const closeLists = () => {
+    if (inUl){ html += '</ul>'; inUl = false; }
+    if (inOl){ html += '</ol>'; inOl = false; }
+  };
+  const inline = (t) => t
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(?<!\*)\*(?!\*)(.+?)\*(?!\*)/g, '<em>$1</em>');
+  for (let raw of lines){
+    const line = raw.trim();
+    if (line === ''){ closeLists(); continue; }
+    let m;
+    if ((m = line.match(/^##\s+(.*)/))){
+      closeLists(); html += `<h3 class="chat-h">${inline(m[1])}</h3>`; continue;
+    }
+    if ((m = line.match(/^#\s+(.*)/))){
+      closeLists(); html += `<h3 class="chat-h">${inline(m[1])}</h3>`; continue;
+    }
+    if ((m = line.match(/^[-*]\s+(.*)/))){
+      if (!inUl){ closeLists(); html += '<ul class="chat-ul">'; inUl = true; }
+      html += `<li>${inline(m[1])}</li>`; continue;
+    }
+    if ((m = line.match(/^\d+\.\s+(.*)/))){
+      if (!inOl){ closeLists(); html += '<ol class="chat-ol">'; inOl = true; }
+      html += `<li>${inline(m[1])}</li>`; continue;
+    }
+    closeLists();
+    html += `<p class="chat-p">${inline(line)}</p>`;
+  }
+  closeLists();
+  return html || formatChatText(src);
+}
 function renderChatLog(){
   const log = document.getElementById('chatLog');
   if (chatLog.length === 0){
@@ -1304,8 +1396,8 @@ function renderChatLog(){
       return `<div class="bubble-row user"><div class="bubble">${formatChatText(m.text)}</div></div>`;
     }
     const offlineTag = m.source === 'offline' ? '<span class="offline-tag">Offline-läge — koppla in backend för full AI</span>' : '';
-    const dl = m.text.length > 120 ? `<button class="dl-btn" onclick="downloadTextFile('motion-uf-program.txt', chatLog[${i}].text)">Ladda ner som fil</button>` : '';
-    return `<div class="bubble-row ai"><div class="chat-avatar-chip"></div><div class="bubble">${formatChatText(m.text)}${dl}${offlineTag}</div></div>`;
+    const dl = m.text.length > 120 ? `<button class="dl-btn" onclick="downloadHtmlProgram(chatLog[${i}].text)">Ladda ner som snygg fil</button>` : '';
+    return `<div class="bubble-row ai"><div class="chat-avatar-chip"></div><div class="bubble">${renderMarkdown(m.text)}${dl}${offlineTag}</div></div>`;
   }).join('');
   scrollChatBottom();
 }
@@ -1315,21 +1407,27 @@ function buildSystemPrompt(){
   const p = profile || {};
   return `Du är Motion UF:s AI-coach — en varm, kunnig personlig tränare, kostrådgivare och rörlighetsexpert som pratar svenska.
 
-Du hjälper användaren med träningsplanering, kostråd, stretching/rörlighet, sömn, återhämtning och motivation. Du kan också föreslå roliga träningslekar och utmaningar.
+Du hjälper användaren med träningsplanering, kostråd, stretching/rörlighet, sömn, återhämtning och motivation.
 
-VIKTIGT — svara alltid utförligt: minst 4-8 meningar, gärna med tydliga steg, punktlistor eller ett litet program när det passar frågan (t.ex. ett komplett stretchprogram med flera övningar, en hel måltidsidé, eller ett träningsupplägg för veckan). Var konkret och specifik — inga vaga floskler.
+VIKTIGT — svara alltid utförligt och välstrukturerat. Korta svar på en rad är INTE okej om frågan rör träning, kost, eller ett program — bygg då ut svaret till ett komplett, konkret upplägg. Använd enkel Markdown-formatering så svaret kan renderas snyggt:
+- Använd "## Rubrik" för sektionsrubriker (t.ex. varje måltid, varje träningsdag, varje muskelgrupp)
+- Använd "**text**" för att fetmarkera viktiga ord eller siffror (t.ex. **3 set x 12 reps**)
+- Använd "- " för punktlistor och "1. " för numrerade steg
+- Dela alltid upp längre svar i flera rubriker/sektioner istället för en enda text-vägg
+
+Exempel: om användaren ber om ett kostförslag, svara med en komplett dagsplan strukturerad som "## Frukost", "## Lunch", "## Middag", "## Mellanmål" — varje sektion med konkreta livsmedel, ungefärliga mängder och en kort motivering. Om användaren ber om ett träningsprogram, strukturera med "## Dag 1", "## Dag 2" osv, varje dag med konkreta övningar, set och reps.
 
 Ton: varm, peppande och stöttande, aldrig burdus eller dömande. Använd användarens namn naturligt. Du är inte läkare eller dietist och ger inte medicinska råd — hänvisa till vårdpersonal vid skador eller hälsoproblem.
 
 Användarens profil: Namn: ${p.name || 'okänt'}. Mål: ${p.goal || 'okänt'}. Nivå: ${p.level || 'okänt'}. Ålder: ${p.age || 'okänd'}. Intressen: ${p.interests || 'inga angivna'}.
 
-Svara på svenska, i löpande text eller med punktlistor där det gör svaret tydligare.`;
+Svara alltid på svenska.`;
 }
 
 async function askCoachAI(userMessage){
   const history = chatLog.slice(-10).map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text }));
   history.push({ role:'user', content:userMessage });
-  const payload = { model:'claude-sonnet-4-6', max_tokens:1200, system:buildSystemPrompt(), messages:history };
+  const payload = { model:'claude-sonnet-4-6', max_tokens:2200, system:buildSystemPrompt(), messages:history };
 
   // Production path: your own backend (see api/chat.js) — same pattern as DiaStyle's Vercel + Claude setup.
   try{
