@@ -26,7 +26,7 @@
     font-family:'Inter', sans-serif; font-weight:300; font-size:16px; line-height:1.65;
     overflow-x:hidden;
   }
-  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:400; letter-spacing:-0.01em; color:var(--charcoal); }
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:400; font-variation-settings:'opsz' 18; letter-spacing:-0.01em; color:var(--charcoal); }
   a{ color:inherit; text-decoration:none; }
   img{ display:block; max-width:100%; }
   .wrap{ max-width:1240px; margin:0 auto; padding:0 48px; }
@@ -78,18 +78,20 @@
   }
   @keyframes notifIn{ to{ opacity:1; transform:translateY(0); } }
   .notif .mono{ color:var(--brass-soft); margin-bottom:8px; }
+  .notif .notif-name{ color:var(--white); font-size:1.05rem; font-family:'Fraunces', serif; font-weight:500; margin-bottom:4px; }
   .notif .msg{ color:var(--white); font-size:0.95rem; font-family:'Fraunces', serif; }
+  .notif .notif-quote{ color:rgba(250,249,247,0.65); font-size:0.78rem; font-style:italic; margin-top:8px; line-height:1.4; max-width:22em; }
   .notif .sub{ color:rgba(250,249,247,0.6); font-size:0.78rem; margin-top:6px; }
 
   /* SECTION SHARED */
-  section{ position:relative; padding:160px 0; }
-  .section-head{ max-width:680px; margin-bottom:80px; }
-  .section-head.center{ margin:0 auto 80px; text-align:center; }
+  section{ position:relative; padding:100px 0; }
+  .section-head{ max-width:680px; margin-bottom:52px; }
+  .section-head.center{ margin:0 auto 52px; text-align:center; }
   .section-head h2{ font-size:clamp(2rem, 3.6vw, 2.9rem); line-height:1.2; font-weight:400; }
   .section-head p{ color:var(--ink-soft); font-size:1.03rem; margin-top:20px; }
 
   /* STATS STRIP */
-  .stats-strip{ background:var(--beige); padding:76px 0; border-bottom:1px solid var(--line); }
+  .stats-strip{ background:var(--beige); padding:56px 0; border-bottom:1px solid var(--line); }
   .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:30px; text-align:center; }
   .stat-block .num{ font-family:'Fraunces', serif; font-size:2.3rem; color:var(--olive); line-height:1; }
   .stat-block .lbl{ font-size:0.95rem; font-weight:500; margin-top:10px; }
@@ -99,7 +101,7 @@
   .problem{ background:var(--beige); text-align:center; }
   .problem-head{ max-width:700px; margin:0 auto 80px; }
   .problem-head h2{ font-size:clamp(2rem,3.6vw,2.8rem); }
-  .qcards{ display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-bottom:70px; }
+  .qcards{ display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-bottom:50px; }
   .qcard{
     background:var(--white); border:1px solid var(--line); border-radius:24px; padding:40px 32px; width:280px;
     transition:transform .5s cubic-bezier(.2,.8,.2,1), opacity .5s ease;
@@ -124,7 +126,7 @@
   /* DECK SECTION */
   .deck{ background:var(--charcoal); color:var(--white); overflow:hidden; }
   .deck h2{ color:var(--white); }
-  .deck-grid{ display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:center; }
+  .deck-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
   .deck-photo{ border-radius:26px; overflow:hidden; box-shadow:0 34px 60px -28px rgba(0,0,0,0.4); }
   .deck-photo img{ width:100%; }
   .deck-cards{ display:flex; gap:26px; justify-content:center; }
@@ -169,7 +171,7 @@
   .surprise p{ color:var(--ink-soft); margin:20px auto 0; max-width:30em; }
 
   /* TRAIN ANYWHERE */
-  .anywhere{ background:var(--beige); padding:130px 0; }
+  .anywhere{ background:var(--beige); padding:90px 0; }
   .anywhere-stage{ position:relative; border-radius:24px; overflow:hidden; }
   .anywhere-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0; height:680px; }
   .aw-item{ position:relative; overflow:hidden; }
@@ -178,18 +180,18 @@
   .anywhere-stage::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(250,249,247,0.85) 0%, rgba(250,249,247,0.35) 34%, rgba(250,249,247,0.55) 70%, rgba(250,249,247,0.85) 100%); z-index:1; }
   .aw-overlay{ position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:60px; }
   .aw-overlay h2{ color:var(--charcoal); font-weight:300; font-size:clamp(1.9rem,3.4vw,2.7rem); max-width:16em; }
-  .aw-overlay .aw-sub{ color:var(--brass); margin-top:18px; }
-  .aw-overlay .aw-float{ color:rgba(17,17,17,0.7); max-width:46em; margin:30px auto 0; font-size:1.2rem; line-height:1.8; font-weight:300; }
+  .aw-overlay .aw-sub{ color:var(--brass); margin-top:30px; }
+  .aw-overlay .aw-float{ color:rgba(17,17,17,0.7); max-width:46em; margin:44px auto 0; font-size:1.2rem; line-height:1.8; font-weight:300; }
   .aw-cap-line{ font-family:'Inter', sans-serif; font-style:normal; font-weight:400; font-size:1.15rem; color:var(--charcoal); max-width:34em; margin:0 auto; line-height:1.65; }
   .aw-cap-line + .aw-cap-line{ margin-top:16px; }
-  .aw-cap-line .mono{ display:block; font-family:'JetBrains Mono', monospace; font-style:normal; color:var(--brass); font-size:0.68rem; margin-bottom:6px; }
-  .aw-cap-line:first-of-type{ margin-top:34px; }
+  .aw-cap-line .mono{ display:block; font-family:'JetBrains Mono', monospace; font-style:normal; color:var(--brass); font-size:0.68rem; margin-bottom:12px; }
+  .aw-cap-line:first-of-type{ margin-top:56px; }
 
   /* SCIENCE */
-  .science{ background:var(--olive); color:var(--white); text-align:center; padding:90px 0; }
+  .science{ background:var(--olive); color:var(--white); text-align:center; padding:70px 0; }
   .science .section-head h2{ color:var(--white); }
   .science .section-head p{ color:rgba(250,249,247,0.7); }
-  .science .section-head{ margin-bottom:50px; }
+  .science .section-head{ margin-bottom:36px; }
   .science-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:30px; max-width:900px; margin:0 auto; }
   .sci-card{ padding:10px; }
   .sci-card .icowrap{ width:56px; height:56px; border-radius:50%; background:rgba(250,249,247,0.12); display:flex; align-items:center; justify-content:center; margin:0 auto 22px; }
@@ -217,7 +219,7 @@
   .ai-card p{ font-size:0.9rem; color:var(--ink-soft); }
 
   /* EDITORIAL + FINAL CTA — merged into one flowing section */
-  .editorial-final{ position:relative; overflow:hidden; text-align:center; padding:150px 0 170px; }
+  .editorial-final{ position:relative; overflow:hidden; text-align:center; padding:100px 0 120px; }
   .editorial-final img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.12); filter:blur(7px) saturate(0.7) brightness(1.1) contrast(0.88); }
   .ef-scrim{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(250,249,247,0.6) 0%, rgba(17,17,17,0.55) 42%, rgba(17,17,17,0.9) 100%); }
   .ef-content{ position:relative; z-index:2; padding:0 40px; }
@@ -229,7 +231,7 @@
   .ef-content .btn{ margin-top:36px; }
 
   /* FOOTER */
-  footer{ background:var(--white); padding:60px 0 30px; border-top:1px solid var(--line); }
+  footer{ background:var(--white); padding:44px 0 26px; border-top:1px solid var(--line); }
   .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px; padding-bottom:30px; border-bottom:1px solid var(--line); }
   .foot-links{ display:flex; gap:30px; }
   .foot-links a{ font-size:0.86rem; color:var(--ink-soft); }
@@ -276,8 +278,10 @@
   <div class="hero-scrim"></div>
   <div id="particles"></div>
   <div class="notif glass">
-    <span class="mono">Idag · 15:00</span>
-    <div class="msg">Dra 4 kort</div>
+    <span class="mono" id="notifDay">Idag · 15:00</span>
+    <div class="notif-name" id="notifName">Hej, Estelle!</div>
+    <div class="msg" id="notifMsg">Dra 4 kort</div>
+    <div class="notif-quote" id="notifQuote">&ldquo;Små steg idag. Stora förändringar över tid.&rdquo;</div>
     <div class="sub">Ditt pass är schemalagt.</div>
   </div>
   <div class="wrap">
@@ -546,6 +550,26 @@
     const y = (e.clientY / window.innerHeight - 0.5) * 10;
     heroContent.style.transform = `translate(${x}px, ${y}px)`;
   });
+
+  // personalize hero notification: real weekday + rotating quote + card count
+  const days = ['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'];
+  const today = days[new Date().getDay()];
+  const notifDay = document.getElementById('notifDay');
+  if (notifDay) notifDay.textContent = `${today} · 15:00`;
+
+  const quotes = [
+    'Små steg idag. Stora förändringar över tid.',
+    'Du behöver inte känna dig peppad för att börja.',
+    'Bäst är fienden till bra — dra ett kort och kör.',
+    'Konsekvens slår perfektion, varje gång.',
+    'Framsteg, inte perfektion.'
+  ];
+  const notifQuote = document.getElementById('notifQuote');
+  if (notifQuote) notifQuote.textContent = `\u201C${quotes[Math.floor(Math.random()*quotes.length)]}\u201D`;
+
+  const cardCounts = [3,4,4,5];
+  const notifMsg = document.getElementById('notifMsg');
+  if (notifMsg) notifMsg.textContent = `Dra ${cardCounts[Math.floor(Math.random()*cardCounts.length)]} kort`;
 
   // deck hero card: auto-flip every few seconds to reveal the quote + QR
   const heroCardInner = document.getElementById('heroCardInner');
