@@ -252,7 +252,7 @@
   .wl-close{ position:absolute; top:16px; right:18px; background:none; border:none; font-size:1.6rem; line-height:1; color:var(--ink-soft); cursor:pointer; padding:4px 8px; }
   .wl-close:hover{ color:var(--charcoal); }
   .wl-eyebrow{ font-family:'JetBrains Mono', monospace; font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--brass); margin-bottom:16px; }
-  .wl-modal h3{ font-size:1.9rem; line-height:1.15; margin-bottom:16px; }
+  .wl-modal h3{ font-size:1.9rem; line-height:1.15; margin-bottom:28px; }
   .wl-body{ color:var(--ink-soft); font-size:0.95rem; line-height:1.6; margin-bottom:28px; }
   #wlForm{ display:flex; flex-direction:column; gap:12px; }
   #wlForm input{ padding:14px 16px; border:1.5px solid var(--line); border-radius:4px; font-family:'Inter',sans-serif; font-size:0.95rem; background:var(--beige); color:var(--charcoal); }
@@ -586,7 +586,6 @@
     <button class="wl-close" onclick="closeWaitlist()" aria-label="Stäng">&times;</button>
     <div class="wl-eyebrow">Kommer snart</div>
     <h3>Vanan börjar<br>med ett kort.</h3>
-    <p class="wl-body">Kortleken trycks just nu — vi vill ha den perfekt innan den hamnar i dina händer. Lämna din mejl så är du först i kön när den går att beställa, plus 15% rabatt på lanseringsdagen.</p>
     <form id="wlForm" onsubmit="return submitWaitlist(event)">
       <input type="email" id="wlEmail" placeholder="din@mejl.se" required>
       <button type="submit" class="btn btn-dark">Gå med i väntelistan</button>
