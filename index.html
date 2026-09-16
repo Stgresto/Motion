@@ -619,8 +619,25 @@
   });
   function submitWaitlist(e){
     e.preventDefault();
-    document.getElementById('wlForm').style.display = 'none';
-    document.getElementById('wlSuccess').classList.add('show');
+    const email = document.getElementById('wlEmail').value;
+    const submitBtn = document.querySelector('#wlForm button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Skickar...';
+
+    fetch('https://formspree.io/f/mjykbdey', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, källa: 'Motion UF väntelista' })
+    })
+    .then(res => {
+      document.getElementById('wlForm').style.display = 'none';
+      document.getElementById('wlSuccess').classList.add('show');
+    })
+    .catch(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Gå med i väntelistan';
+      alert('Något gick fel — testa igen om en liten stund.');
+    });
     return false;
   }
 </script>
@@ -631,7 +648,7 @@
     <div class="wl-eyebrow">Kommer snart</div>
     <h3>Vanan börjar<br>med ett kort.</h3>
     <form id="wlForm" onsubmit="return submitWaitlist(event)">
-      <input type="email" id="wlEmail" placeholder="din@mejl.se" required>
+      <input type="email" id="wlEmail" name="email" placeholder="din@mejl.se" required>
       <button type="submit" class="btn btn-dark">Gå med i väntelistan</button>
     </form>
     <div class="wl-success" id="wlSuccess">
