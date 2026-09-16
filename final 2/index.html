@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOTION UF — Rör dig mer. Tänk mindre.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#faf9f7;
+    --beige:#f4f1ec;
+    --charcoal:#111111;
+    --charcoal-soft:#1c1c1a;
+    --olive:#4f5d4b;
+    --olive-deep:#394437;
+    --brass:#b8935a;
+    --brass-soft:#d0b48a;
+    --line:#e6e1d6;
+    --ink-soft:#6b6a63;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--white); color:var(--charcoal);
+    font-family:'Inter', sans-serif; font-weight:300; font-size:16px; line-height:1.65;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:400; font-variation-settings:'opsz' 18; letter-spacing:-0.01em; color:var(--charcoal); }
+  a{ color:inherit; text-decoration:none; }
+  img{ display:block; max-width:100%; }
+  .wrap{ max-width:1240px; margin:0 auto; padding:0 48px; }
+  .mono{ font-family:'JetBrains Mono', monospace; font-size:0.7rem; letter-spacing:0.09em; text-transform:uppercase; }
+  .glass{ background:rgba(250,249,247,0.6); border:1px solid rgba(17,17,17,0.08); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); }
+
+  .reveal{ opacity:0; transform:translateY(26px); transition:opacity .9s ease, transform .9s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  .btn{ display:inline-flex; align-items:center; gap:9px; padding:17px 32px; border-radius:100px; font-size:0.9rem; font-weight:500; transition:all .35s ease; }
+  .btn-dark{ background:var(--charcoal); color:var(--white); }
+  .btn-dark:hover{ background:var(--olive); transform:translateY(-2px); }
+  .btn-outline{ border:1.5px solid rgba(17,17,17,0.22); color:var(--charcoal); }
+  .btn-outline:hover{ border-color:var(--charcoal); background:rgba(17,17,17,0.04); }
+  .btn-light{ background:var(--white); color:var(--charcoal); }
+  .btn-light:hover{ transform:translateY(-2px); }
+
+  /* NAV */
+  nav{ position:fixed; top:0; left:0; right:0; z-index:150; padding:24px 0; transition:all .4s ease; }
+  nav.scrolled{ background:rgba(250,249,247,0.85); backdrop-filter:blur(14px); border-bottom:1px solid var(--line); padding:16px 0; }
+  nav .wrap{ display:flex; justify-content:space-between; align-items:center; }
+  .logo{ font-family:'Fraunces', serif; font-size:1.2rem; letter-spacing:0.02em; color:var(--white); transition:color .4s ease; display:flex; align-items:center; gap:10px; }
+  nav.scrolled .logo{ color:var(--charcoal); }
+  .logo-mark{ height:28px; width:auto; display:block; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15)); }
+  .navlinks{ display:flex; gap:36px; }
+  .navlinks a{ font-size:0.86rem; color:rgba(250,249,247,0.75); transition:color .3s ease; }
+  nav.scrolled .navlinks a{ color:var(--ink-soft); }
+  .navlinks a:hover{ color:var(--white); }
+  nav.scrolled .navlinks a:hover{ color:var(--charcoal); }
+  .nav .btn{ padding:11px 22px; font-size:0.82rem; }
+
+  /* HERO */
+  .hero{ position:relative; min-height:100vh; display:flex; align-items:flex-end; overflow:hidden; padding-top:120px; box-sizing:border-box; }
+  .hero-media{ position:absolute; inset:0; overflow:hidden; }
+  .hero-media img{ width:100%; height:100%; object-fit:cover; animation:kenburns 24s ease-in-out infinite alternate; filter:saturate(0.92) brightness(0.96); }
+  @keyframes kenburns{ from{ transform:scale(1.0); } to{ transform:scale(1.09); } }
+  .hero-scrim{ position:absolute; inset:0; background:linear-gradient(0deg, rgba(17,17,17,0.62) 0%, rgba(17,17,17,0.28) 40%, rgba(17,17,17,0.08) 65%, rgba(17,17,17,0.18) 100%); }
+  .particle{ position:absolute; width:4px; height:4px; border-radius:50%; background:rgba(250,249,247,0.55); animation:drift linear infinite; }
+  @keyframes drift{ from{ transform:translateY(0); opacity:0; } 10%{ opacity:0.8; } 90%{ opacity:0.4; } to{ transform:translateY(-90vh); opacity:0; } }
+  .hero-content{ position:relative; z-index:3; padding:0 0 90px; max-width:720px; }
+  .hero .wrap{ display:flex; flex-direction:column; }
+  .hero h1{ color:var(--white); font-size:clamp(3rem, 7vw, 5.6rem); line-height:0.98; font-weight:300; }
+  .hero p.lead{ color:rgba(250,249,247,0.82); font-size:1.1rem; margin-top:24px; max-width:30em; }
+  .hero .cta-row{ margin-top:38px; display:flex; gap:16px; flex-wrap:wrap; }
+
+  .notif{
+    position:absolute; top:16%; right:8%; z-index:3; padding:18px 22px; border-radius:20px; width:230px;
+    opacity:0; transform:translateY(14px); animation:notifIn 1s ease forwards; animation-delay:1.4s;
+  }
+  @keyframes notifIn{ to{ opacity:1; transform:translateY(0); } }
+  .notif .mono{ color:var(--brass-soft); margin-bottom:8px; }
+  .notif .notif-name{ color:var(--white); font-size:1.05rem; font-family:'Fraunces', serif; font-weight:500; margin-bottom:4px; }
+  .notif .msg{ color:var(--white); font-size:0.95rem; font-family:'Fraunces', serif; }
+  .notif .notif-quote{ color:rgba(250,249,247,0.65); font-size:0.78rem; font-style:italic; margin-top:8px; line-height:1.4; max-width:22em; }
+  .notif .sub{ color:rgba(250,249,247,0.6); font-size:0.78rem; margin-top:6px; }
+
+  /* SECTION SHARED */
+  section{ position:relative; padding:100px 0; }
+  .section-head{ max-width:680px; margin-bottom:52px; }
+  .section-head.center{ margin:0 auto 52px; text-align:center; }
+  .section-head h2{ font-size:clamp(2rem, 3.6vw, 2.9rem); line-height:1.2; font-weight:400; }
+  .section-head p{ color:var(--ink-soft); font-size:1.03rem; margin-top:20px; }
+
+  /* STATS STRIP */
+  .stats-strip{ background:var(--beige); padding:56px 0; border-bottom:1px solid var(--line); }
+  .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:30px; text-align:center; }
+  .stat-block .num{ font-family:'Fraunces', serif; font-size:2.3rem; color:var(--olive); line-height:1; }
+  .stat-block .lbl{ font-size:0.95rem; font-weight:500; margin-top:10px; }
+  .stat-block .sub{ font-size:0.8rem; color:var(--ink-soft); margin-top:6px; }
+
+  /* PROBLEM */
+  .problem{ background:var(--beige); text-align:center; }
+  .problem-head{ max-width:700px; margin:0 auto 80px; }
+  .problem-head h2{ font-size:clamp(2rem,3.6vw,2.8rem); }
+  .qcards{ display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-bottom:50px; }
+  .qcard{
+    background:var(--white); border:1px solid var(--line); border-radius:24px; padding:40px 32px; width:280px;
+    transition:transform .5s cubic-bezier(.2,.8,.2,1), opacity .5s ease;
+  }
+  .qcard .mono{ color:var(--brass); margin-bottom:18px; display:block; }
+  .qcard h3{ font-size:1.25rem; font-weight:400; }
+  .solves{ font-size:clamp(1.4rem,2.6vw,1.9rem); font-family:'Fraunces', serif; font-style:italic; color:var(--olive); }
+
+  /* HOW IT WORKS */
+  .how{ position:relative; overflow:hidden; }
+  .how-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.12); filter:blur(7px) saturate(0.7) brightness(1.15) contrast(0.88); }
+  .how-whitewash{ position:absolute; inset:0; background:rgba(250,249,247,0.72); }
+  .how .wrap{ position:relative; z-index:2; }
+  .steps5{ display:grid; grid-template-columns:repeat(5,1fr); gap:0; position:relative; }
+  .steps5::before{ content:''; position:absolute; top:26px; left:0; right:0; height:1px; background:repeating-linear-gradient(to right, var(--line) 0, var(--line) 6px, transparent 6px, transparent 12px); }
+  .step5{ text-align:center; padding:0 14px; }
+  .step5 .icowrap{ width:52px; height:52px; border-radius:50%; background:var(--beige); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; position:relative; z-index:2; }
+  .step5 .mono{ color:var(--brass); display:block; margin-bottom:10px; }
+  .step5 h3{ font-size:1.05rem; font-weight:500; font-family:'Inter',sans-serif; margin-bottom:8px; }
+  .step5 p{ font-size:0.85rem; color:var(--ink-soft); }
+
+  /* DECK SECTION */
+  .deck{ background:var(--charcoal); color:var(--white); overflow:hidden; }
+  .deck h2{ color:var(--white); }
+  .deck-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+  .deck-photo{ border-radius:26px; overflow:hidden; box-shadow:0 34px 60px -28px rgba(0,0,0,0.4); }
+  .deck-photo img{ width:100%; }
+  .deck-cards{ display:flex; gap:26px; justify-content:center; }
+  .flipcard3d{ width:150px; height:210px; perspective:1000px; }
+  .flipcard3d .inner{ position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.2,.8,.2,1); }
+  .flipcard3d:hover .inner{ transform:rotateY(180deg); }
+  .flipface{ position:absolute; inset:0; border-radius:16px; backface-visibility:hidden; border:1px solid rgba(250,249,247,0.16); }
+  .flipface.back{ transform:rotateY(180deg); }
+  .flipface.clean{ background:var(--white); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px; text-align:center; box-shadow:inset 0 0 0 1px rgba(184,147,90,0.35); }
+  .flipface.clean::before{ content:''; position:absolute; inset:8px; border:1px solid rgba(184,147,90,0.45); border-radius:10px; pointer-events:none; }
+  .clean-logo{ width:44px; height:44px; object-fit:contain; margin-bottom:10px; }
+  .clean-word{ font-family:'Fraunces', serif; font-size:0.98rem; letter-spacing:0.02em; color:var(--charcoal); font-weight:500; }
+  .clean-word span{ color:var(--brass); font-weight:400; }
+  .clean-quote{ font-family:'Fraunces', serif; font-style:italic; font-size:0.92rem; color:var(--charcoal); line-height:1.3; }
+  .clean-author{ font-family:'JetBrains Mono', monospace; font-size:0.6rem; letter-spacing:0.06em; color:var(--ink-soft); text-transform:uppercase; margin-top:6px; }
+  .clean-qr{ width:38px; height:38px; margin:14px 0 8px; background-image:linear-gradient(90deg, var(--charcoal) 2px, transparent 2px), linear-gradient(0deg, var(--charcoal) 2px, transparent 2px); background-size:7px 7px; opacity:0.85; border:1px solid var(--line); padding:4px; }
+  .clean-scan{ font-family:'JetBrains Mono', monospace; font-size:0.56rem; letter-spacing:0.05em; color:var(--brass); text-transform:uppercase; line-height:1.4; }
+  .deck-caps{ display:flex; justify-content:space-around; margin-top:20px; }
+  .deck-caps span{ font-size:0.82rem; color:rgba(250,249,247,0.5); }
+  .deck-variants{ display:flex; flex-direction:column; gap:14px; }
+  .dv-item{ padding:14px 18px; border-radius:12px; background:rgba(250,249,247,0.06); border-left:2px solid var(--brass); }
+  .dv-item strong{ display:block; font-family:'Fraunces', serif; font-size:1rem; color:var(--white); margin-bottom:4px; }
+  .dv-item span{ font-size:0.85rem; color:rgba(250,249,247,0.6); }
+
+  /* SURPRISE */
+  .surprise{ background:var(--beige); text-align:center; }
+  .shuffle-stage{ position:relative; width:140px; height:190px; margin:0 auto 60px; }
+  .shuffle-card{ position:absolute; inset:0; border-radius:14px; background:var(--white); box-shadow:0 20px 40px -16px rgba(17,17,17,0.3); animation:shuffle 3.6s ease-in-out infinite; border:1px solid rgba(184,147,90,0.4); display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .shuffle-card::before{ content:''; position:absolute; inset:7px; border:1px solid rgba(184,147,90,0.35); border-radius:9px; pointer-events:none; }
+  .shuffle-card .clean-logo{ width:34px; height:34px; margin-bottom:8px; }
+  .shuffle-card .clean-word{ font-size:0.72rem; }
+  .shuffle-card:nth-child(1){ animation-delay:0s; z-index:3; }
+  .shuffle-card:nth-child(2){ animation-delay:0.15s; z-index:2; }
+  .shuffle-card:nth-child(3){ animation-delay:0.3s; z-index:1; }
+  @keyframes shuffle{
+    0%,100%{ transform:translate(0,0) rotate(0deg); z-index:1; }
+    25%{ transform:translate(-26px,-10px) rotate(-8deg); z-index:2; }
+    50%{ transform:translate(0,-16px) rotate(0deg); z-index:3; }
+    75%{ transform:translate(26px,-10px) rotate(8deg); z-index:2; }
+  }
+  .surprise h2{ font-size:clamp(2rem,4vw,2.9rem); max-width:14em; margin:0 auto; }
+  .surprise p{ color:var(--ink-soft); margin:20px auto 0; max-width:30em; }
+
+  /* TRAIN ANYWHERE */
+  .anywhere{ background:var(--beige); padding:90px 0; }
+  .anywhere-stage{ position:relative; border-radius:24px; overflow:hidden; }
+  .anywhere-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0; height:680px; }
+  .aw-item{ position:relative; overflow:hidden; }
+  .aw-item img{ width:100%; height:100%; object-fit:cover; filter:blur(5px) contrast(0.92) saturate(0.85) brightness(1.08); transform:scale(1.08); }
+  .anywhere-stage::before{ content:''; position:absolute; inset:0; background:rgba(250,249,247,0.5); z-index:1; }
+  .anywhere-stage::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(250,249,247,0.85) 0%, rgba(250,249,247,0.35) 34%, rgba(250,249,247,0.55) 70%, rgba(250,249,247,0.85) 100%); z-index:1; }
+  .aw-overlay{ position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:60px; }
+  .aw-overlay h2{ color:var(--charcoal); font-weight:300; font-size:clamp(1.9rem,3.4vw,2.7rem); max-width:16em; }
+  .aw-overlay .aw-sub{ color:var(--brass); margin-top:30px; }
+  .aw-overlay .aw-float{ color:rgba(17,17,17,0.7); max-width:46em; margin:44px auto 0; font-size:1.2rem; line-height:1.8; font-weight:300; }
+  .aw-cap-line{ font-family:'Inter', sans-serif; font-style:normal; font-weight:400; font-size:1.15rem; color:var(--charcoal); max-width:34em; margin:0 auto; line-height:1.65; }
+  .aw-cap-line + .aw-cap-line{ margin-top:16px; }
+  .aw-cap-line .mono{ display:block; font-family:'JetBrains Mono', monospace; font-style:normal; color:var(--brass); font-size:0.68rem; margin-bottom:12px; }
+  .aw-cap-line:first-of-type{ margin-top:56px; }
+
+  /* SCIENCE */
+  .science{ background:var(--olive); color:var(--white); text-align:center; padding:70px 0; }
+  .science .section-head h2{ color:var(--white); }
+  .science .section-head p{ color:rgba(250,249,247,0.7); }
+  .science .section-head{ margin-bottom:36px; }
+  .science-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:30px; max-width:900px; margin:0 auto; }
+  .sci-card{ padding:10px; }
+  .sci-card .icowrap{ width:56px; height:56px; border-radius:50%; background:rgba(250,249,247,0.12); display:flex; align-items:center; justify-content:center; margin:0 auto 22px; }
+  .sci-card h3{ color:var(--white); font-size:1.15rem; font-weight:400; }
+  .sci-card p{ color:rgba(250,249,247,0.65); font-size:0.9rem; margin-top:10px; }
+
+  /* MOBILE */
+  .mobile{ background:var(--beige); }
+  .mobile-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+  .phones{ display:flex; justify-content:center; }
+  .phones img{ border-radius:26px; box-shadow:0 26px 50px -26px rgba(17,17,17,0.22); width:220px; }
+  .mobile-features{ display:flex; flex-direction:column; gap:22px; margin-top:30px; }
+  .mobile-features .mf{ display:flex; gap:14px; align-items:flex-start; }
+  .mobile-features .dot{ width:6px; height:6px; border-radius:50%; background:var(--brass); margin-top:9px; flex-shrink:0; }
+  .mobile-features p{ font-size:0.95rem; color:var(--ink-soft); }
+  .mobile-features strong{ color:var(--charcoal); font-weight:500; }
+
+  /* AI PLANNER */
+  .ai-planner{ background:var(--white); }
+  .ai-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:34px; max-width:960px; margin:0 auto; }
+  .ai-grid-4{ grid-template-columns:repeat(4,1fr); max-width:1140px; }
+  .ai-card{ text-align:center; padding:36px 24px; border-radius:20px; background:var(--beige); }
+  .ai-card .icowrap{ width:52px; height:52px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; box-shadow:0 8px 20px -10px rgba(17,17,17,0.15); }
+  .ai-card h3{ font-size:1.1rem; font-weight:500; font-family:'Inter',sans-serif; margin-bottom:10px; }
+  .ai-card p{ font-size:0.9rem; color:var(--ink-soft); }
+
+  /* EDITORIAL + FINAL CTA — merged into one flowing section */
+  .editorial-final{ position:relative; overflow:hidden; text-align:center; padding:100px 0 120px; }
+  .editorial-final img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.12); filter:blur(7px) saturate(0.7) brightness(1.1) contrast(0.88); }
+  .ef-scrim{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(250,249,247,0.6) 0%, rgba(17,17,17,0.55) 42%, rgba(17,17,17,0.9) 100%); }
+  .ef-content{ position:relative; z-index:2; padding:0 40px; }
+  .ef-content blockquote{ font-family:'Fraunces', serif; font-style:italic; font-size:clamp(1.8rem,3.6vw,2.6rem); font-weight:300; max-width:14em; margin:0 auto; color:var(--charcoal); }
+  .ef-content .mono{ color:var(--brass); margin-top:20px; display:block; }
+  .ef-content .ef-body{ color:rgba(17,17,17,0.7); max-width:32em; margin:20px auto 0; font-size:0.95rem; }
+  .ef-content h2{ color:var(--white); font-size:clamp(2rem,4.2vw,3.4rem); font-weight:300; max-width:15em; margin:0 auto; line-height:1.15; }
+  .ef-content p{ color:rgba(250,249,247,0.68); margin:20px auto 0; max-width:26em; }
+  .ef-content .btn{ margin-top:36px; }
+
+  /* FOOTER */
+  footer{ background:var(--white); padding:44px 0 26px; border-top:1px solid var(--line); }
+  .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px; padding-bottom:30px; border-bottom:1px solid var(--line); }
+  .foot-links{ display:flex; gap:30px; }
+  .foot-links a{ font-size:0.86rem; color:var(--ink-soft); }
+  .foot-links a:hover{ color:var(--charcoal); }
+  .foot-bottom{ display:flex; justify-content:space-between; padding-top:22px; font-size:0.78rem; color:var(--ink-soft); flex-wrap:wrap; gap:10px; }
+
+  @media (max-width:960px){
+    .wrap{ padding:0 24px; }
+    .navlinks{ display:none; }
+    .steps5{ grid-template-columns:1fr 1fr; row-gap:36px; }
+    .steps5::before{ display:none; }
+    .deck-grid, .mobile-grid{ grid-template-columns:1fr; gap:44px; }
+    .deck-cards{ flex-wrap:wrap; }
+    .anywhere-grid{ grid-template-columns:1fr 1fr; height:840px; }
+    .aw-overlay{ padding:30px 24px; }
+    .aw-overlay .aw-float{ font-size:1.02rem; }
+    .aw-cap-line{ font-size:1.05rem; }
+    .science-grid{ grid-template-columns:1fr; }
+    .ai-grid{ grid-template-columns:1fr; }
+    .ai-grid-4{ grid-template-columns:1fr 1fr; }
+    .stats-grid{ grid-template-columns:1fr 1fr; row-gap:36px; }
+    .notif{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap">
+    <div class="logo"><img class="logo-mark" src="images/logo_mark_v2.png" alt="MOTION UF">MOTION UF</div>
+    <div class="navlinks">
+      <a href="#how">Så funkar det</a>
+      <a href="#deck">Kortleken</a>
+      <a href="#anywhere">Träna var som helst</a>
+      <a href="#science">Vetenskapen</a>
+      <a href="motion-ai-coach.html">Planerare</a>
+    </div>
+    <a href="#get" class="btn btn-dark">Skaffa din kortlek</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-media"><img src="images/hero.jpg" alt="MOTION UF — Bättre vanor. Större drömmar."></div>
+  <div class="hero-scrim"></div>
+  <div id="particles"></div>
+  <div class="notif glass">
+    <span class="mono" id="notifDay">Idag · 15:00</span>
+    <div class="notif-name" id="notifName">Hej, Estelle!</div>
+    <div class="msg" id="notifMsg">Dra 4 kort</div>
+    <div class="notif-quote" id="notifQuote">&ldquo;Små steg idag. Stora förändringar över tid.&rdquo;</div>
+    <div class="sub">Ditt pass är schemalagt.</div>
+  </div>
+  <div class="wrap">
+    <div class="hero-content">
+      <h1>Motion UF —<br>Gör det enkelt<br>att börja.</h1>
+      <p class="lead">En fysisk träningskortlek kombinerad med en AI-driven planerare som tar bort det svåraste steget i träning: att veta vad du ska göra.</p>
+      <div class="cta-row">
+        <a href="motion-ai-coach.html" class="btn btn-light">Möt din AI-coach</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-strip">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat-block reveal">
+        <div class="num">104</div>
+        <div class="lbl">Övningar totalt</div>
+        <div class="sub">52 individuella + 52 familj &amp; vänner</div>
+      </div>
+      <div class="stat-block reveal">
+        <div class="num">5–20</div>
+        <div class="lbl">Minuter</div>
+        <div class="sub">Pass som anpassas efter ditt schema</div>
+      </div>
+      <div class="stat-block reveal">
+        <div class="num">✓</div>
+        <div class="lbl">Expertdesignat</div>
+        <div class="sub">Utvecklat med professionella tränare</div>
+      </div>
+      <div class="stat-block reveal">
+        <div class="num">0</div>
+        <div class="lbl">Appar krävs</div>
+        <div class="sub">Fungerar direkt i din mobila webbläsare</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how" style="background:var(--beige);">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="mono" style="color:var(--brass); justify-content:center; display:flex; margin-bottom:18px;">Så funkar det</div>
+      <h2>Från notis till rörelse på under en minut.</h2>
+    </div>
+    <div class="steps5">
+      <div class="step5 reveal">
+        <div class="icowrap"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="15" rx="2" stroke="#111" stroke-width="1.3"/><path d="M3 8h16M7 2v4M15 2v4" stroke="#111" stroke-width="1.3"/></svg></div>
+        <span class="mono">1. Planera</span>
+        <h3>Planeraren hittar en tid som passar din dag.</h3>
+      </div>
+      <div class="step5 reveal">
+        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a5 5 0 00-5 5v3l-2 4h14l-2-4V7a5 5 0 00-5-5z" stroke="#111" stroke-width="1.3"/><path d="M8 17a2 2 0 004 0" stroke="#111" stroke-width="1.3"/></svg></div>
+        <span class="mono">2. Påminn</span>
+        <h3>Du får en notis: "Pass schemalagt."</h3>
+      </div>
+      <div class="step5 reveal">
+        <div class="icowrap"><svg width="22" height="18" viewBox="0 0 22 18" fill="none"><rect x="1" y="2" width="12" height="16" rx="2" transform="rotate(-8 1 2)" stroke="#111" stroke-width="1.2"/><rect x="9" y="1" width="12" height="16" rx="2" transform="rotate(8 9 1)" stroke="#111" stroke-width="1.2"/></svg></div>
+        <span class="mono">3. Dra</span>
+        <h3>Dra dina kort. Leken viks ut naturligt.</h3>
+      </div>
+      <div class="step5 reveal">
+        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="3" stroke="#111" stroke-width="1.3"/><path d="M8 7l5 3-5 3V7z" fill="#111"/></svg></div>
+        <span class="mono">4. Skanna</span>
+        <h3>Skanna QR-koden. Videon visas.</h3>
+      </div>
+      <div class="step5 reveal">
+        <div class="icowrap"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><circle cx="9" cy="3" r="2.4" fill="#111"/><path d="M9 6v6M9 8l-5 3M9 8l5 3M9 12l-4 7M9 12l4 7" stroke="#111" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+        <span class="mono">5. Rör dig</span>
+        <h3>Inget tänkande krävs.</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="deck" id="deck">
+  <div class="wrap">
+    <div class="deck-grid">
+      <div class="deck-photo reveal"><img src="images/card_context.jpg" alt="MOTION UF träningskort"></div>
+      <div>
+        <div class="mono" style="color:var(--brass-soft);">Kortleken</div>
+        <h2 style="margin:16px 0 18px; font-size:clamp(1.9rem,3.2vw,2.6rem);">Två lekar. Alla nivåer.</h2>
+        <p style="color:rgba(250,249,247,0.6); max-width:26em; margin-bottom:20px;">Korta pass som ger dig allt — byggda runt din dag, och det enda passet du inte kan hoppa över.</p>
+        <div class="deck-variants">
+          <div class="dv-item reveal"><strong>Individuell lek</strong><span>Solopass för personlig utveckling och snabba pass hemma.</span></div>
+          <div class="dv-item reveal"><strong>Familj &amp; vänner-lek</strong><span>Övningar byggda för flera personer att träna tillsammans.</span></div>
+        </div>
+        <p style="color:rgba(250,249,247,0.6); max-width:26em; margin:22px 0 30px;">Varje kort har en unik QR-kod — skanna den med kameran för att direkt få tydliga instruktioner, teknikguider och videotips. Ingen app krävs.</p>
+        <div class="deck-cards reveal">
+          <div class="flipcard3d">
+            <div class="inner">
+              <div class="flipface front clean">
+                <img class="clean-logo" src="images/logo_mark_v2.png" alt="">
+                <div class="clean-word">MOTION <span>UF</span></div>
+              </div>
+              <div class="flipface back clean">
+                <div class="clean-quote">&ldquo;Disciplin bygger frihet.&rdquo;</div>
+                <div class="clean-author">— Rafael Nadal</div>
+                <div class="clean-qr"></div>
+                <div class="clean-scan">Skanna för ditt<br>nästa pass</div>
+              </div>
+            </div>
+          </div>
+          <div class="flipcard3d">
+            <div class="inner">
+              <div class="flipface front clean">
+                <img class="clean-logo" src="images/logo_mark_v2.png" alt="">
+                <div class="clean-word">MOTION <span>UF</span></div>
+              </div>
+              <div class="flipface back clean">
+                <div class="clean-quote">&ldquo;Disciplin bygger frihet.&rdquo;</div>
+                <div class="clean-author">— Rafael Nadal</div>
+                <div class="clean-qr"></div>
+                <div class="clean-scan">Skanna för ditt<br>nästa pass</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="deck-caps"><span>104 övningar totalt</span><span>5–20 min pass</span><span>Byggt med tränare</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="surprise">
+  <div class="wrap">
+    <div class="shuffle-stage reveal">
+      <div class="shuffle-card"><img class="clean-logo" src="images/logo_mark_v2.png" alt=""><div class="clean-word">MOTION <span>UF</span></div></div>
+      <div class="shuffle-card"><img class="clean-logo" src="images/logo_mark_v2.png" alt=""><div class="clean-word">MOTION <span>UF</span></div></div>
+      <div class="shuffle-card"><img class="clean-logo" src="images/logo_mark_v2.png" alt=""><div class="clean-word">MOTION <span>UF</span></div></div>
+    </div>
+    <h2 class="reveal">Du vet aldrig vad som väntar.</h2>
+    <p class="reveal">Överraskningsmomentet håller träningen fräsch och tar bort beslutströtthet.</p>
+  </div>
+</section>
+
+<section class="anywhere" id="anywhere">
+  <div class="wrap">
+    <div class="anywhere-stage">
+      <div class="anywhere-grid">
+        <div class="aw-item aw1 reveal"><img src="images/family_living.jpg" alt="Familj tränar tillsammans i ett ljust vardagsrum"></div>
+        <div class="aw-item aw2 reveal"><img src="images/family_pushups.jpg" alt="Familj tränar tillsammans med MOTION UF-kort" style="object-position:70% 30%;"></div>
+      </div>
+      <div class="aw-overlay">
+        <h2>En lek. Alla generationer. Alla med.</h2>
+        <div class="mono aw-sub">Gjord för gemenskap</div>
+        <p class="aw-float">MOTION UF är inte bara ett träningspass — det är en ursäkt att vara i samma rum, i rörelse samtidigt. Morföräldrar, föräldrar, barn, vem som än är hemma: alla drar ett kort, alla är med. Här finns inget "för gammal" eller "för ung" — bara delade skratt, lite vänskaplig tävling, och den sortens gemenskap som uppstår när en hel familj gör något fånigt och svettigt samtidigt.</p>
+        <p class="aw-cap-line"><span class="mono">Vilket utrymme som helst</span>Kort utspridda på mattan, alla kapplöper om att bli klara först — så här ser familjens spelkväll ut nu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="science" id="science">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="mono" style="color:var(--brass-soft); justify-content:center; display:flex; margin-bottom:18px;">Vetenskapen</div>
+      <h2>Byggt med tränare.</h2>
+      <p>Dra ett kort så tar appen över — instruktioner, tidtagning och peppning, hela vägen.</p>
+    </div>
+    <div class="science-grid">
+      <div class="sci-card reveal">
+        <div class="icowrap"><svg width="20" height="22" viewBox="0 0 20 22" fill="none"><path d="M2 4h16M2 11h16M2 18h10" stroke="#faf9f7" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+        <h3>Direkta instruktioner</h3><p>Dra ett kort och få tydlig, steg-för-steg-vägledning direkt.</p>
+      </div>
+      <div class="sci-card reveal">
+        <div class="icowrap"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="12" r="8" stroke="#faf9f7" stroke-width="1.3"/><path d="M11 7v5l4 2" stroke="#faf9f7" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+        <h3>Inbyggd timer</h3><p>Appen sköter klockan och säger till när det är dags att byta.</p>
+      </div>
+      <div class="sci-card reveal">
+        <div class="icowrap"><svg width="20" height="22" viewBox="0 0 20 22" fill="none"><path d="M10 2l8 3.5V11c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V5.5L10 2z" stroke="#faf9f7" stroke-width="1.3"/></svg></div>
+        <h3>Coachning i realtid</h3><p>Peppiga, motiverande signaler håller dig i rörelse från första till sista repetitionen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ai-planner" id="planner">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="mono" style="color:var(--brass); justify-content:center; display:flex; margin-bottom:18px;">Drivs av AI</div>
+      <h2>Din coach, byggd runt dig.</h2>
+      <p>Planeraren lär sig ditt schema, dina mål och hur varje pass faktiskt kändes — och justerar sedan tyst morgondagens kort.</p>
+    </div>
+    <div class="ai-grid ai-grid-4">
+      <div class="ai-card reveal">
+        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="14" rx="2" stroke="#111" stroke-width="1.3"/><path d="M2 8h16M6 3v14" stroke="#111" stroke-width="1.2"/></svg></div>
+        <h3>Bygger din vecka</h3><p>Skapar ett personligt veckoschema utifrån dina mål, din nivå och tillgänglig tid.</p>
+      </div>
+      <div class="ai-card reveal">
+        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 15l5-5 4 4 7-8" stroke="#111" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Anpassar sig kontinuerligt</h3><p>Betygsätt hur ett pass kändes så justeras svårighetsgraden automatiskt till nästa gång.</p>
+      </div>
+      <div class="ai-card reveal">
+        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 4h16v9H8l-4 4v-4H2V4z" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+        <h3>Svarar på allt</h3><p>En AI-chattcoach dygnet runt för kost, stretching, återhämtning och motivation.</p>
+      </div>
+      <div class="ai-card reveal">
+        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.4 5.8L18 10l-5.6 2.2L10 18l-2.4-5.8L2 10l5.6-2.2z" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
+        <h3>Överraskningsmoment</h3><p>Skanna ditt kort för att avslöja dagens övningar — fräscht och engagerande, varje gång.</p>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:56px;">
+      <a href="motion-ai-coach.html" class="btn btn-dark">Möt din AI-coach</a>
+    </div>
+  </div>
+</section>
+
+<section class="editorial-final" id="get">
+  <img src="images/family_living.jpg" alt="Familj efter ett gemensamt träningspass">
+  <div class="ef-scrim"></div>
+  <div class="wrap ef-content">
+    <h2>En bättre rutin börjar med ett kort.</h2>
+    <p>Skaffa din kortlek. Låt planeraren sköta resten.</p>
+    <a href="motion-ai-coach.html" class="btn btn-light">Börja röra dig</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <div class="logo" style="color:var(--charcoal);"><img class="logo-mark" src="images/logo_mark_v2.png" alt="MOTION UF" style="height:22px;">MOTION UF</div>
+      <div class="foot-links">
+        <a href="#">Om oss</a>
+        <a href="#">Kontakt</a>
+        <a href="#">Integritet</a>
+        <a href="#">Villkor</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 MOTION UF</span>
+      <span>Mer rörelse. Mindre tänk.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 30));
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if(en.isIntersecting) en.target.classList.add('in'); });
+  }, { threshold:0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // floating particles in hero
+  const pWrap = document.getElementById('particles');
+  for(let i=0;i<16;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random()*100 + '%';
+    p.style.bottom = (Math.random()*30) + '%';
+    p.style.animationDuration = (8 + Math.random()*10) + 's';
+    p.style.animationDelay = (Math.random()*10) + 's';
+    pWrap.appendChild(p);
+  }
+  pWrap.style.position='absolute'; pWrap.style.inset='0'; pWrap.style.zIndex='2'; pWrap.style.pointerEvents='none';
+
+  // subtle mouse-follow parallax on hero content
+  const heroContent = document.querySelector('.hero-content');
+  document.querySelector('.hero').addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 14;
+    const y = (e.clientY / window.innerHeight - 0.5) * 10;
+    heroContent.style.transform = `translate(${x}px, ${y}px)`;
+  });
+
+  // personalize hero notification: real weekday + rotating quote + card count
+  const days = ['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'];
+  const today = days[new Date().getDay()];
+  const notifDay = document.getElementById('notifDay');
+  if (notifDay) notifDay.textContent = `${today} · 15:00`;
+
+  const quotes = [
+    'Små steg idag. Stora förändringar över tid.',
+    'Du behöver inte känna dig peppad för att börja.',
+    'Bäst är fienden till bra — dra ett kort och kör.',
+    'Konsekvens slår perfektion, varje gång.',
+    'Framsteg, inte perfektion.'
+  ];
+  const notifQuote = document.getElementById('notifQuote');
+  if (notifQuote) notifQuote.textContent = `\u201C${quotes[Math.floor(Math.random()*quotes.length)]}\u201D`;
+
+  const cardCounts = [3,4,4,5];
+  const notifMsg = document.getElementById('notifMsg');
+  if (notifMsg) notifMsg.textContent = `Dra ${cardCounts[Math.floor(Math.random()*cardCounts.length)]} kort`;
+
+  // deck hero card: auto-flip every few seconds to reveal the quote + QR
+  const heroCardInner = document.getElementById('heroCardInner');
+  if (heroCardInner){
+    setInterval(() => heroCardInner.classList.toggle('flipped'), 3200);
+  }
+</script>
+
+</body>
+</html>
