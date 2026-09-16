@@ -244,6 +244,12 @@
   #phase-rpe{ min-height:100vh; align-items:center; }
   #phase-rpe.active{ display:flex; }
   .rpe-options{ display:flex; gap:12px; justify-content:center; margin:36px 0; flex-wrap:wrap; }
+  .pref-block{ margin-bottom:28px; text-align:left; max-width:420px; margin-left:auto; margin-right:auto; }
+  .pref-q{ font-family:'Cormorant Garamond', serif; font-size:1.15rem; color:var(--chalk); margin-bottom:12px; }
+  .pref-opts{ display:flex; gap:10px; }
+  .pref-opt{ flex:1; padding:14px 12px; border-radius:4px; border:1.5px solid var(--line-strong); background:var(--glass); text-align:center; cursor:pointer; transition:all .25s ease; font-size:0.9rem; color:var(--chalk-dim); }
+  .pref-opt:hover{ border-color:var(--gold-soft); }
+  .pref-opt.selected{ border-color:var(--gold); background:rgba(212,175,55,0.12); color:var(--chalk); }
   .rpe-opt{ padding:20px 26px; border-radius:4px; border:1.5px solid var(--line-strong); background:var(--glass); text-align:center; transition:all .25s ease; min-width:100px; }
   .rpe-opt:hover{ border-color:var(--gold-dim); }
   .rpe-opt.selected{ border-color:var(--gold); background:rgba(212,175,55,0.12); }
@@ -635,6 +641,33 @@
   </div>
 </section>
 
+<!-- QUICK PREFERENCES (shown once, after first completed session) -->
+<section class="phase phase-center" id="phase-prefs">
+  <div class="wrap phase-narrow">
+    <span class="mono">Innan vi kör vidare</span>
+    <h2 style="margin-top:14px;">Två snabba frågor.</h2>
+    <p style="color:var(--chalk-dim); margin-bottom:32px;">Svaren justerar dina kommande pass direkt — inget rätt eller fel.</p>
+
+    <div class="pref-block">
+      <div class="pref-q">Vill du ha längre övningar?</div>
+      <div class="pref-opts" data-group="longer">
+        <div class="pref-opt" data-value="no">Nej, som nu</div>
+        <div class="pref-opt" data-value="yes">Ja, gärna längre</div>
+      </div>
+    </div>
+
+    <div class="pref-block">
+      <div class="pref-q">Vill du ha högre intensitet?</div>
+      <div class="pref-opts" data-group="intensity">
+        <div class="pref-opt" data-value="no">Nej, som nu</div>
+        <div class="pref-opt" data-value="yes">Ja, pusha mig mer</div>
+      </div>
+    </div>
+
+    <button class="btn btn-gold" id="btnPrefsContinue">Spara och fortsätt</button>
+  </div>
+</section>
+
 <!-- COMPLETE -->
 <section class="phase phase-center" id="phase-complete">
   <div class="wrap phase-narrow">
@@ -783,6 +816,7 @@ let plan = store.get('muf_plan');
 let progress = store.get('muf_progress') || { streak:0, lastCompletedDate:null, totalSessions:0, totalCards:0, history:[] };
 let todayOverride = store.get('muf_today_override');
 if (todayOverride && todayOverride.date !== todayStr()) todayOverride = null;
+let prefs = store.get('muf_prefs') || { wantsLonger:null, wantsHigherIntensity:null, asked:false, durationMultiplier:1 };
 
 let obAnswers = { level:null, goal:null, days:null, minutes:null, busy:[], interests:'' };
 let currentStep = 1;
@@ -843,6 +877,7 @@ const MASCOT_PHASE_LINES = {
   'phase-avatar': 'Välj den som känns som dig. Du kan alltid byta senare.',
   'phase-workout': 'Nu kör vi. Full fokus tills sista kortet.',
   'phase-rpe': 'Var ärlig — det är så jag kan göra nästa pass rätt för dig.',
+  'phase-prefs': 'Två snabba val, sen är du klar för idag.',
   'phase-complete': 'Bra jobbat. Det här är hur vanor byggs.'
 };
 function mascotSpeakForPhase(id){
@@ -914,6 +949,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initChat();
   initWorkout();
   initRpe();
+  initPrefs();
 
   document.getElementById('btnStartWorkout').addEventListener('click', startWorkoutSession);
   document.getElementById('btnExportProgram').addEventListener('click', generateTrainingProgramFile);
@@ -1678,12 +1714,13 @@ function pickSessionCards(focus, cardCount, levelBias){
   if (pool.length < cardCount) pool = pool.concat(EXERCISES.filter(e => !pool.includes(e)));
   pool = pool.slice().sort(() => Math.random() - 0.5);
   const cards = [];
+  const mult = (prefs && prefs.durationMultiplier) || 1;
   for (let i = 0; i < cardCount; i++){
     const wantHard = Math.random() > levelBias;
     let candidate = pool.find(e => (wantHard ? e.level === 'Hard' : e.level === 'Simple') && !cards.includes(e));
     if (!candidate) candidate = pool.find(e => !cards.includes(e));
     if (!candidate) candidate = pool[i % pool.length];
-    cards.push(candidate);
+    cards.push(mult !== 1 ? { ...candidate, seconds: Math.round(candidate.seconds * mult / 5) * 5 } : candidate);
   }
   return cards;
 }
@@ -1886,6 +1923,45 @@ function commitSessionWithRpe(){
   document.getElementById('cCards').textContent = cardsPlayed;
   document.getElementById('cMinutes').textContent = minutesPlayed;
   document.getElementById('cStreak').textContent = progress.streak;
+
+  // after the very first completed session, ask two quick preference questions
+  if (progress.totalSessions === 1 && !prefs.asked){
+    showPhase('phase-prefs');
+  } else {
+    showPhase('phase-complete');
+  }
+}
+
+function initPrefs(){
+  document.querySelectorAll('.pref-opts').forEach(group => {
+    group.querySelectorAll('.pref-opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        group.querySelectorAll('.pref-opt').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+      });
+    });
+  });
+  document.getElementById('btnPrefsContinue').addEventListener('click', commitPrefs);
+}
+
+function commitPrefs(){
+  const longerSel = document.querySelector('.pref-opts[data-group="longer"] .pref-opt.selected');
+  const intensitySel = document.querySelector('.pref-opts[data-group="intensity"] .pref-opt.selected');
+
+  prefs.wantsLonger = longerSel ? longerSel.dataset.value === 'yes' : false;
+  prefs.wantsHigherIntensity = intensitySel ? intensitySel.dataset.value === 'yes' : false;
+  prefs.durationMultiplier = prefs.wantsLonger ? 1.4 : 1;
+  prefs.asked = true;
+  store.set('muf_prefs', prefs);
+
+  // bump intensity by nudging every active day's levelBias down (more Hard cards, less easy bias)
+  if (prefs.wantsHigherIntensity && plan && plan.week){
+    plan.week.forEach(day => {
+      if (day.active) day.levelBias = Math.max(0.1, day.levelBias - 0.2);
+    });
+    store.set('muf_plan', plan);
+  }
+
   showPhase('phase-complete');
 }
 
