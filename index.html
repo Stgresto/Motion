@@ -169,12 +169,12 @@
   .anywhere-stage::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(250,249,247,0.85) 0%, rgba(250,249,247,0.35) 34%, rgba(250,249,247,0.55) 70%, rgba(250,249,247,0.85) 100%); z-index:1; }
   .aw-overlay{ position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:60px; }
   .aw-overlay h2{ color:var(--charcoal); font-weight:300; font-size:clamp(1.9rem,3.4vw,2.7rem); max-width:16em; }
-  .aw-overlay .aw-sub{ color:var(--brass); margin-top:30px; }
-  .aw-overlay .aw-float{ color:rgba(17,17,17,0.7); max-width:46em; margin:44px auto 0; font-size:1.2rem; line-height:1.8; font-weight:300; }
+  .aw-overlay .aw-sub{ color:var(--brass); margin-top:40px; }
+  .aw-overlay .aw-float{ color:rgba(17,17,17,0.7); max-width:46em; margin:20px auto 0; font-size:1.2rem; line-height:1.8; font-weight:300; }
   .aw-cap-line{ font-family:'Inter', sans-serif; font-style:normal; font-weight:400; font-size:1.15rem; color:var(--charcoal); max-width:34em; margin:0 auto; line-height:1.65; }
   .aw-cap-line + .aw-cap-line{ margin-top:16px; }
-  .aw-cap-line .mono{ display:block; font-family:'JetBrains Mono', monospace; font-style:normal; color:var(--brass); font-size:0.68rem; margin-bottom:12px; }
-  .aw-cap-line:first-of-type{ margin-top:56px; }
+  .aw-cap-line .mono{ display:block; font-family:'JetBrains Mono', monospace; font-style:normal; color:var(--brass); font-size:0.68rem; margin-bottom:20px; }
+  .aw-cap-line:first-of-type{ margin-top:40px; }
 
   /* SCIENCE */
   .science{ background:var(--olive); color:var(--white); text-align:center; padding:70px 0; }
@@ -243,6 +243,25 @@
     .ai-grid-4{ grid-template-columns:1fr 1fr; }
     .stats-grid{ grid-template-columns:1fr 1fr; row-gap:36px; }
   }
+  /* WAITLIST MODAL */
+  .wl-overlay{ position:fixed; inset:0; z-index:900; background:rgba(17,17,17,0.55); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; padding:24px; opacity:0; transition:opacity .3s ease; }
+  .wl-overlay.show{ display:flex; }
+  .wl-overlay.in{ opacity:1; }
+  .wl-modal{ background:var(--white); border-radius:6px; max-width:440px; width:100%; padding:44px 40px; position:relative; text-align:center; transform:translateY(14px); transition:transform .35s cubic-bezier(.2,.8,.2,1); }
+  .wl-overlay.in .wl-modal{ transform:translateY(0); }
+  .wl-close{ position:absolute; top:16px; right:18px; background:none; border:none; font-size:1.6rem; line-height:1; color:var(--ink-soft); cursor:pointer; padding:4px 8px; }
+  .wl-close:hover{ color:var(--charcoal); }
+  .wl-eyebrow{ font-family:'JetBrains Mono', monospace; font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--brass); margin-bottom:16px; }
+  .wl-modal h3{ font-size:1.9rem; line-height:1.15; margin-bottom:16px; }
+  .wl-body{ color:var(--ink-soft); font-size:0.95rem; line-height:1.6; margin-bottom:28px; }
+  #wlForm{ display:flex; flex-direction:column; gap:12px; }
+  #wlForm input{ padding:14px 16px; border:1.5px solid var(--line); border-radius:4px; font-family:'Inter',sans-serif; font-size:0.95rem; background:var(--beige); color:var(--charcoal); }
+  #wlForm input:focus{ outline:none; border-color:var(--brass); }
+  #wlForm button{ border:none; cursor:pointer; padding:14px; border-radius:4px; font-family:'Inter',sans-serif; font-size:0.95rem; }
+  .wl-success{ display:none; padding:10px 0 0; }
+  .wl-success.show{ display:block; }
+  .wl-success-icon{ width:44px; height:44px; border-radius:50%; background:var(--olive); color:var(--white); display:flex; align-items:center; justify-content:center; font-size:1.3rem; margin:0 auto 16px; }
+  .wl-success p{ color:var(--ink-soft); font-size:0.95rem; line-height:1.6; }
 </style>
 </head>
 <body>
@@ -257,7 +276,7 @@
       <a href="#science">Vetenskapen</a>
       <a href="motion-ai-coach.html">Planerare</a>
     </div>
-    <a href="#get" class="btn btn-dark">Skaffa din kortlek</a>
+    <button onclick="openWaitlist()" class="btn btn-dark">Skaffa din kortlek</button>
   </div>
 </nav>
 
@@ -537,7 +556,47 @@
   if (heroCardInner){
     setInterval(() => heroCardInner.classList.toggle('flipped'), 3200);
   }
+
+  // waitlist modal
+  function openWaitlist(){
+    const ov = document.getElementById('wlOverlay');
+    ov.classList.add('show');
+    requestAnimationFrame(() => ov.classList.add('in'));
+    document.body.style.overflow = 'hidden';
+  }
+  function closeWaitlist(){
+    const ov = document.getElementById('wlOverlay');
+    ov.classList.remove('in');
+    document.body.style.overflow = '';
+    setTimeout(() => ov.classList.remove('show'), 300);
+  }
+  document.getElementById('wlOverlay').addEventListener('click', (e) => {
+    if (e.target.id === 'wlOverlay') closeWaitlist();
+  });
+  function submitWaitlist(e){
+    e.preventDefault();
+    document.getElementById('wlForm').style.display = 'none';
+    document.getElementById('wlSuccess').classList.add('show');
+    return false;
+  }
 </script>
+
+<div class="wl-overlay" id="wlOverlay">
+  <div class="wl-modal">
+    <button class="wl-close" onclick="closeWaitlist()" aria-label="Stäng">&times;</button>
+    <div class="wl-eyebrow">Kommer snart</div>
+    <h3>Vanan börjar<br>med ett kort.</h3>
+    <p class="wl-body">Kortleken trycks just nu — vi vill ha den perfekt innan den hamnar i dina händer. Lämna din mejl så är du först i kön när den går att beställa, plus 15% rabatt på lanseringsdagen.</p>
+    <form id="wlForm" onsubmit="return submitWaitlist(event)">
+      <input type="email" id="wlEmail" placeholder="din@mejl.se" required>
+      <button type="submit" class="btn btn-dark">Gå med i väntelistan</button>
+    </form>
+    <div class="wl-success" id="wlSuccess">
+      <div class="wl-success-icon">✓</div>
+      <p>Tack! Du är på listan — vi hör av oss så fort kortleken finns att beställa.</p>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
