@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MOTION UF — Din AI-Coach</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --obsidian:#faf9f7; --obsidian-2:#f4f1ec; --obsidian-3:#ece5d8; --steel:#e2d9c4;
@@ -19,7 +19,7 @@
   *{ box-sizing:border-box; margin:0; padding:0; }
   html{ scroll-behavior:smooth; }
   body{ background:var(--obsidian); color:var(--chalk); font-family:'Plus Jakarta Sans',sans-serif; font-weight:300; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
-  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:300; letter-spacing:-0.01em; color:var(--chalk); }
+  h1,h2,h3{ font-family:'Cormorant Garamond', serif; font-weight:300; letter-spacing:-0.01em; color:var(--chalk); }
   a{ text-decoration:none; color:inherit; }
   img{ display:block; max-width:100%; }
   button{ font-family:inherit; cursor:pointer; border:none; background:none; }
@@ -48,7 +48,7 @@
   #topbar .wrap{ display:flex; align-items:center; justify-content:space-between; max-width:1040px; }
   .brand{ display:flex; align-items:center; gap:10px; }
   .brand img{ height:24px; width:auto; filter:drop-shadow(0 0 10px rgba(212,175,55,0.35)); }
-  .brand span{ font-family:'Fraunces',serif; font-size:1.02rem; letter-spacing:0.01em; }
+  .brand span{ font-family:'Cormorant Garamond',serif; font-size:1.02rem; letter-spacing:0.01em; }
   .navtabs{ display:flex; gap:4px; background:var(--glass); border:1px solid var(--line); padding:5px; border-radius:4px; }
   .navtab{ padding:9px 20px; border-radius:2px; font-size:0.83rem; font-weight:500; color:var(--chalk-dim); transition:all .3s ease; }
   .navtab.active{ background:var(--gold); color:#181410; font-weight:700; }
@@ -113,7 +113,7 @@
   .today-card h2{ font-size:2rem; margin:14px 0 8px; }
   .today-card p{ color:var(--chalk-dim); font-size:0.96rem; }
   .today-meta{ display:flex; gap:30px; margin:24px 0 30px; flex-wrap:wrap; }
-  .today-meta .num{ font-family:'Fraunces',serif; font-size:1.6rem; color:var(--gold-soft); }
+  .today-meta .num{ font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--gold-soft); }
   .today-meta .lbl{ font-size:0.7rem; color:var(--chalk-faint); text-transform:uppercase; letter-spacing:0.07em; margin-top:2px; }
   .today-card.rest .today-meta .num{ color:var(--sage-soft); }
 
@@ -132,15 +132,15 @@
 
   .stats-panel{ display:flex; flex-direction:column; gap:14px; }
   .stat-box{ border-radius:6px; padding:22px 24px; }
-  .stat-box .num{ font-family:'Fraunces',serif; font-size:1.9rem; color:var(--sage-soft); }
+  .stat-box .num{ font-family:'Cormorant Garamond',serif; font-size:1.9rem; color:var(--sage-soft); }
   .stat-box .lbl{ font-size:0.78rem; color:var(--chalk-dim); margin-top:2px; }
   .stat-box.streak .num{ color:var(--gold-soft); }
   .stat-box.streak{ background:linear-gradient(155deg, rgba(212,175,55,0.1), var(--glass)); }
 
   .insight-box{ display:flex; gap:18px; align-items:flex-start; border-radius:6px; padding:26px 30px; margin-bottom:10px;
     background:linear-gradient(155deg, rgba(212,175,55,0.07), var(--glass)); border:1px solid var(--gold-dim); }
-  .insight-box .icn{ width:36px; height:36px; border-radius:50%; background:var(--gold); color:#181410; display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-style:italic; flex-shrink:0; font-size:0.9rem; font-weight:700; }
-  .insight-box p{ font-family:'Fraunces',serif; font-style:italic; font-size:1.02rem; color:var(--chalk); }
+  .insight-box .icn{ width:36px; height:36px; border-radius:50%; background:var(--gold); color:#181410; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-style:italic; flex-shrink:0; font-size:0.9rem; font-weight:700; }
+  .insight-box p{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.02rem; color:var(--chalk); }
   .progress-chart-panel{ border-radius:24px; padding:28px 30px; margin-bottom:20px; }
   .chart-head-row{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:16px; }
   .chart-head-row h3{ font-size:1.05rem; font-weight:400; }
@@ -149,7 +149,7 @@
   .export-row{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
   .quote-of-day{ text-align:center; padding:34px 20px 10px; }
   .quote-of-day .mono{ display:block; margin-bottom:12px; }
-  .quote-of-day p{ font-family:'Fraunces',serif; font-style:italic; font-weight:300; font-size:1.35rem; color:var(--gold-soft); max-width:32em; margin:0 auto; }
+  .quote-of-day p{ font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; font-size:1.35rem; color:var(--gold-soft); max-width:32em; margin:0 auto; }
 
   /* ---------- CHAT (bigger, better) ---------- */
   #phase-chat{ padding-top:96px; padding-bottom:0; }
@@ -166,7 +166,7 @@
   .bubble{ padding:15px 20px; border-radius:4px; font-size:0.95rem; max-width:68%; line-height:1.55; }
   .bubble-row.user .bubble{ background:linear-gradient(155deg, var(--gold-soft), var(--gold)); color:#181410; font-weight:500; border-bottom-right-radius:2px; }
   .bubble-row.ai .bubble{ background:var(--glass-strong); border:1px solid var(--line); border-bottom-left-radius:2px; }
-  .chat-h{ font-family:'Fraunces',serif; font-weight:600; font-size:1.05rem; color:var(--gold-soft); margin:14px 0 6px; }
+  .chat-h{ font-family:'Cormorant Garamond',serif; font-weight:600; font-size:1.05rem; color:var(--gold-soft); margin:14px 0 6px; }
   .chat-h:first-child{ margin-top:0; }
   .chat-p{ margin:0 0 10px; }
   .chat-p:last-child{ margin-bottom:0; }
@@ -234,11 +234,11 @@
   .timer-ring-wrap{ position:relative; width:210px; height:210px; margin:0 auto 28px; }
   .timer-ring{ width:210px; height:210px; border-radius:50%; background:conic-gradient(var(--gold) var(--pct,0%), var(--obsidian-3) 0); transition:background .3s linear; }
   .timer-ring::before{ content:''; position:absolute; inset:10px; background:var(--obsidian); border-radius:50%; }
-  .timer-num{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:3.6rem; color:var(--chalk); }
-  .pep-text{ font-family:'Fraunces',serif; font-style:italic; font-size:1.18rem; color:var(--gold-soft); min-height:1.6em; margin-bottom:30px; transition:opacity .3s ease; }
+  .timer-num{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-size:3.6rem; color:var(--chalk); }
+  .pep-text{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.18rem; color:var(--gold-soft); min-height:1.6em; margin-bottom:30px; transition:opacity .3s ease; }
 
   .wk-controls{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
-  .rest-icon{ width:60px; height:60px; border-radius:50%; border:2px solid var(--gold-dim); display:flex; align-items:center; justify-content:center; margin:0 auto 24px; font-family:'Fraunces',serif; font-style:italic; color:var(--gold-soft); font-size:1.5rem; }
+  .rest-icon{ width:60px; height:60px; border-radius:50%; border:2px solid var(--gold-dim); display:flex; align-items:center; justify-content:center; margin:0 auto 24px; font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--gold-soft); font-size:1.5rem; }
 
   /* ---------- RPE RATING ---------- */
   #phase-rpe{ min-height:100vh; align-items:center; }
@@ -262,7 +262,7 @@
   .complete-check{ width:88px; height:88px; border-radius:50%; background:linear-gradient(155deg, var(--gold-soft), var(--gold)); color:#181410; display:flex; align-items:center; justify-content:center; font-size:2.2rem; margin:0 auto 30px; }
   #phase-complete p.lead{ color:var(--chalk-dim); margin-bottom:40px; }
   .complete-stats{ display:flex; gap:44px; justify-content:center; margin-bottom:48px; flex-wrap:wrap; }
-  .complete-stats .num{ font-family:'Fraunces',serif; font-size:2.3rem; color:var(--gold-soft); }
+  .complete-stats .num{ font-family:'Cormorant Garamond',serif; font-size:2.3rem; color:var(--gold-soft); }
   .complete-stats .lbl{ font-size:0.76rem; color:var(--chalk-faint); text-transform:uppercase; letter-spacing:0.06em; margin-top:4px; }
 
   @media(max-width:760px){
@@ -279,7 +279,7 @@
   .avatar-pick-card.selected .pick-circle{ border-color:var(--gold); box-shadow:0 0 0 3px rgba(184,147,90,0.25); }
   .pick-check{ position:absolute; top:6px; right:calc(50% - 70px); width:26px; height:26px; border-radius:50%; background:var(--gold); color:#181410; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; opacity:0; transition:opacity .2s ease; }
   .avatar-pick-card.selected .pick-check{ opacity:1; }
-  .pick-name{ display:block; margin-top:12px; font-family:'Fraunces',serif; font-size:0.95rem; color:var(--chalk); }
+  .pick-name{ display:block; margin-top:12px; font-family:'Cormorant Garamond',serif; font-size:0.95rem; color:var(--chalk); }
   @media(max-width:760px){ .avatar-picker-grid{ grid-template-columns:1fr 1fr; } .pick-circle{ width:110px; height:110px; } .pick-check{ right:calc(50% - 55px); } }
 
   /* ---------- 3D MINI COACH MASCOT ---------- */
@@ -1205,17 +1205,17 @@ function downloadHtmlProgram(markdownText){
 <html lang="sv"><head><meta charset="UTF-8">
 <title>${title} — Motion UF</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{ --gold:#b8935a; --gold-soft:#8a6a3e; --charcoal:#181410; --beige:#f4f1ec; }
   body{ margin:0; padding:0; background:var(--beige); color:var(--charcoal); font-family:'Inter',sans-serif; line-height:1.6; }
   .wrap{ max-width:680px; margin:0 auto; padding:56px 24px 80px; }
   header{ text-align:center; margin-bottom:40px; }
   header .brand{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-soft); margin-bottom:10px; }
-  header h1{ font-family:'Fraunces',serif; font-weight:600; font-size:1.9rem; margin:0; }
+  header h1{ font-family:'Cormorant Garamond',serif; font-weight:600; font-size:1.9rem; margin:0; }
   header .meta{ font-size:0.85rem; color:#6b6b6b; margin-top:10px; }
   .card{ background:#fff; border:1px solid rgba(0,0,0,0.08); border-radius:8px; padding:32px 36px; }
-  .chat-h{ font-family:'Fraunces',serif; font-weight:600; font-size:1.2rem; color:var(--gold-soft); margin:26px 0 10px; }
+  .chat-h{ font-family:'Cormorant Garamond',serif; font-weight:600; font-size:1.2rem; color:var(--gold-soft); margin:26px 0 10px; }
   .chat-h:first-child{ margin-top:0; }
   .chat-p{ margin:0 0 12px; }
   .chat-ul, .chat-ol{ margin:0 0 14px; padding-left:1.3em; }

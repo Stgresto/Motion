@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MOTION UF — Rör dig mer. Tänk mindre.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --white:#faf9f7;
@@ -26,7 +26,7 @@
     font-family:'Inter', sans-serif; font-weight:300; font-size:16px; line-height:1.65;
     overflow-x:hidden;
   }
-  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:300; font-variation-settings:'opsz' 18; letter-spacing:0.005em; color:var(--charcoal); }
+  h1,h2,h3{ font-family:'Cormorant Garamond', serif; font-weight:300; letter-spacing:0.005em; color:var(--charcoal); }
   a{ color:inherit; text-decoration:none; }
   img{ display:block; max-width:100%; }
   .wrap{ max-width:1240px; margin:0 auto; padding:0 48px; }
@@ -48,7 +48,7 @@
   nav{ position:fixed; top:0; left:0; right:0; z-index:150; padding:24px 0; transition:all .4s ease; }
   nav.scrolled{ background:rgba(250,249,247,0.85); backdrop-filter:blur(14px); border-bottom:1px solid var(--line); padding:16px 0; }
   nav .wrap{ display:flex; justify-content:space-between; align-items:center; }
-  .logo{ font-family:'Fraunces', serif; font-size:1.2rem; letter-spacing:0.02em; color:var(--white); transition:color .4s ease; display:flex; align-items:center; gap:10px; }
+  .logo{ font-family:'Cormorant Garamond', serif; font-size:1.2rem; letter-spacing:0.02em; color:var(--white); transition:color .4s ease; display:flex; align-items:center; gap:10px; }
   nav.scrolled .logo{ color:var(--charcoal); }
   .logo-mark{ height:28px; width:auto; display:block; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15)); }
   .navlinks{ display:flex; gap:36px; }
@@ -82,7 +82,7 @@
   /* STATS STRIP */
   .stats-strip{ background:var(--beige); padding:56px 0; border-bottom:1px solid var(--line); }
   .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:30px; text-align:center; }
-  .stat-block .num{ font-family:'Fraunces', serif; font-size:2.3rem; color:var(--olive); line-height:1; }
+  .stat-block .num{ font-family:'Cormorant Garamond', serif; font-size:2.3rem; color:var(--olive); line-height:1; }
   .stat-block .lbl{ font-size:0.95rem; font-weight:500; margin-top:10px; }
   .stat-block .sub{ font-size:0.8rem; color:var(--ink-soft); margin-top:6px; }
 
@@ -97,7 +97,7 @@
   }
   .qcard .mono{ color:var(--brass); margin-bottom:18px; display:block; }
   .qcard h3{ font-size:1.25rem; font-weight:300; }
-  .solves{ font-size:clamp(1.4rem,2.6vw,1.9rem); font-family:'Fraunces', serif; font-style:italic; color:var(--olive); }
+  .solves{ font-size:clamp(1.4rem,2.6vw,1.9rem); font-family:'Cormorant Garamond', serif; font-style:italic; color:var(--olive); }
 
   /* HOW IT WORKS */
   .how{ position:relative; overflow:hidden; }
@@ -127,9 +127,9 @@
   .flipface.clean{ background:var(--white); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px; text-align:center; box-shadow:inset 0 0 0 1px rgba(184,147,90,0.35); }
   .flipface.clean::before{ content:''; position:absolute; inset:8px; border:1px solid rgba(184,147,90,0.45); border-radius:10px; pointer-events:none; }
   .clean-logo{ width:44px; height:44px; object-fit:contain; margin-bottom:10px; }
-  .clean-word{ font-family:'Fraunces', serif; font-size:0.98rem; letter-spacing:0.02em; color:var(--charcoal); font-weight:500; }
+  .clean-word{ font-family:'Cormorant Garamond', serif; font-size:0.98rem; letter-spacing:0.02em; color:var(--charcoal); font-weight:500; }
   .clean-word span{ color:var(--brass); font-weight:400; }
-  .clean-quote{ font-family:'Fraunces', serif; font-style:italic; font-size:0.92rem; color:var(--charcoal); line-height:1.3; }
+  .clean-quote{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:0.92rem; color:var(--charcoal); line-height:1.3; }
   .clean-author{ font-family:'JetBrains Mono', monospace; font-size:0.6rem; letter-spacing:0.06em; color:var(--ink-soft); text-transform:uppercase; margin-top:6px; }
   .clean-qr{ width:38px; height:38px; margin:14px 0 8px; background-image:linear-gradient(90deg, var(--charcoal) 2px, transparent 2px), linear-gradient(0deg, var(--charcoal) 2px, transparent 2px); background-size:7px 7px; opacity:0.85; border:1px solid var(--line); padding:4px; }
   .clean-scan{ font-family:'JetBrains Mono', monospace; font-size:0.56rem; letter-spacing:0.05em; color:var(--brass); text-transform:uppercase; line-height:1.4; }
@@ -137,7 +137,7 @@
   .deck-caps span{ font-size:0.82rem; color:rgba(250,249,247,0.5); }
   .deck-variants{ display:flex; flex-direction:column; gap:14px; }
   .dv-item{ padding:14px 18px; border-radius:12px; background:rgba(250,249,247,0.06); border-left:2px solid var(--brass); }
-  .dv-item strong{ display:block; font-family:'Fraunces', serif; font-size:1rem; color:var(--white); margin-bottom:4px; }
+  .dv-item strong{ display:block; font-family:'Cormorant Garamond', serif; font-size:1rem; color:var(--white); margin-bottom:4px; }
   .dv-item span{ font-size:0.85rem; color:rgba(250,249,247,0.6); }
 
   /* SURPRISE */
@@ -212,7 +212,7 @@
   .editorial-final img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.12); filter:blur(7px) saturate(0.7) brightness(1.1) contrast(0.88); }
   .ef-scrim{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(250,249,247,0.6) 0%, rgba(17,17,17,0.55) 42%, rgba(17,17,17,0.9) 100%); }
   .ef-content{ position:relative; z-index:2; padding:0 40px; }
-  .ef-content blockquote{ font-family:'Fraunces', serif; font-style:italic; font-size:clamp(1.8rem,3.6vw,2.6rem); font-weight:300; max-width:14em; margin:0 auto; color:var(--charcoal); }
+  .ef-content blockquote{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:clamp(1.8rem,3.6vw,2.6rem); font-weight:300; max-width:14em; margin:0 auto; color:var(--charcoal); }
   .ef-content .mono{ color:var(--brass); margin-top:20px; display:block; }
   .ef-content .ef-body{ color:rgba(17,17,17,0.7); max-width:32em; margin:20px auto 0; font-size:0.95rem; }
   .ef-content h2{ color:var(--white); font-size:clamp(2rem,4.2vw,3.4rem); font-weight:300; max-width:15em; margin:0 auto; line-height:1.15; }
