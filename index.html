@@ -120,8 +120,8 @@
     color:var(--charcoal); overflow:hidden; position:relative; }
   .deck h2{ color:var(--charcoal); }
   .deck-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
-  .deck-photo{ position:relative; overflow:visible; }
-  .deck-photo img{ width:100%; display:block; filter:blur(7px) saturate(0.92) brightness(1.04); -webkit-mask-image:radial-gradient(ellipse 68% 68% at 50% 50%, black 50%, transparent 96%); mask-image:radial-gradient(ellipse 68% 68% at 50% 50%, black 50%, transparent 96%); }
+  .deck-photo{ position:relative; overflow:visible; aspect-ratio:3/4; }
+  .deck-photo img{ width:100%; height:100%; object-fit:cover; display:block; filter:blur(7px) saturate(0.92) brightness(1.04); -webkit-mask-image:radial-gradient(ellipse 85% 88% at 50% 50%, black 55%, transparent 98%); mask-image:radial-gradient(ellipse 85% 88% at 50% 50%, black 55%, transparent 98%); }
   .deck-cards{ display:flex; gap:26px; justify-content:center; padding:14px 0 6px; }
   .flipcard3d{ width:150px; height:210px; perspective:1000px; }
   .flipcard3d .inner{ position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.2,.8,.2,1); }
