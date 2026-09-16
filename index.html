@@ -114,22 +114,19 @@
 
   /* DECK SECTION */
   .deck{ background:
-      radial-gradient(ellipse 900px 500px at 85% 8%, rgba(184,147,90,0.16), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 8% 95%, rgba(184,147,90,0.10), transparent 55%),
-      var(--charcoal);
-    color:var(--white); overflow:hidden; position:relative; }
-  .deck h2{ color:var(--white); }
+      radial-gradient(ellipse 900px 500px at 85% 8%, rgba(184,147,90,0.07), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 8% 95%, rgba(184,147,90,0.05), transparent 55%),
+      var(--white);
+    color:var(--charcoal); overflow:hidden; position:relative; }
+  .deck h2{ color:var(--charcoal); }
   .deck-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
-  .deck-photo{ border-radius:26px; overflow:hidden; box-shadow:0 34px 60px -28px rgba(0,0,0,0.4); }
-  .deck-photo img{ width:100%; }
-  .deck-cards{ display:flex; gap:34px; justify-content:center; padding:14px 0 6px; }
-  .flipcard3d{ width:150px; height:210px; perspective:1200px; transition:transform .45s cubic-bezier(.2,.8,.2,1); border-radius:16px; }
-  .flipcard3d:nth-child(1){ transform:rotate(-5deg); }
-  .flipcard3d:nth-child(2){ transform:rotate(5deg); }
-  .flipcard3d:hover{ transform:rotate(0deg) translateY(-10px) scale(1.06); z-index:5; }
-  .flipcard3d .inner{ position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.2,.8,.2,1); filter:drop-shadow(0 18px 30px rgba(0,0,0,0.55)); }
+  .deck-photo{ position:relative; overflow:visible; }
+  .deck-photo img{ width:100%; display:block; filter:blur(7px) saturate(0.92) brightness(1.04); -webkit-mask-image:radial-gradient(ellipse 68% 68% at 50% 50%, black 50%, transparent 96%); mask-image:radial-gradient(ellipse 68% 68% at 50% 50%, black 50%, transparent 96%); }
+  .deck-cards{ display:flex; gap:26px; justify-content:center; padding:14px 0 6px; }
+  .flipcard3d{ width:150px; height:210px; perspective:1000px; }
+  .flipcard3d .inner{ position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.2,.8,.2,1); }
   .flipcard3d:hover .inner{ transform:rotateY(180deg); }
-  .flipface{ position:absolute; inset:0; border-radius:16px; backface-visibility:hidden; border:1px solid rgba(250,249,247,0.16); }
+  .flipface{ position:absolute; inset:0; border-radius:16px; backface-visibility:hidden; border:1px solid rgba(17,17,17,0.12); box-shadow:0 14px 30px -16px rgba(17,17,17,0.25); }
   .flipface.back{ transform:rotateY(180deg); }
   .flipface.clean{ background:var(--white); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px; text-align:center; box-shadow:inset 0 0 0 1px rgba(184,147,90,0.35); }
   .flipface.clean::before{ content:''; position:absolute; inset:8px; border:1px solid rgba(184,147,90,0.45); border-radius:10px; pointer-events:none; }
@@ -141,21 +138,21 @@
   .clean-qr{ width:38px; height:38px; margin:14px 0 8px; background-image:linear-gradient(90deg, var(--charcoal) 2px, transparent 2px), linear-gradient(0deg, var(--charcoal) 2px, transparent 2px); background-size:7px 7px; opacity:0.85; border:1px solid var(--line); padding:4px; }
   .clean-scan{ font-family:'JetBrains Mono', monospace; font-size:0.56rem; letter-spacing:0.05em; color:var(--brass); text-transform:uppercase; line-height:1.4; }
   .deck-caps{ display:flex; justify-content:space-around; margin-top:26px; }
-  .deck-caps span{ font-size:0.82rem; color:rgba(250,249,247,0.5); }
+  .deck-caps span{ font-size:0.82rem; color:rgba(17,17,17,0.5); }
   .deck-caps strong.accent{ color:var(--brass); font-weight:600; font-style:normal; }
   .deck-variants{ display:flex; flex-direction:column; gap:12px; }
-  .dv-item{ display:flex; align-items:center; gap:14px; padding:14px 18px; border-radius:12px; background:rgba(250,249,247,0.04); border:1px solid rgba(250,249,247,0.1); cursor:pointer; transition:border-color .25s ease, background .25s ease, box-shadow .25s ease, transform .25s ease; }
+  .dv-item{ display:flex; align-items:center; gap:14px; padding:14px 18px; border-radius:12px; background:rgba(17,17,17,0.03); border:1px solid rgba(17,17,17,0.1); cursor:pointer; transition:border-color .25s ease, background .25s ease, box-shadow .25s ease, transform .25s ease; }
   .dv-item:hover{ transform:translateX(3px); border-color:rgba(184,147,90,0.55); background:rgba(184,147,90,0.07); }
   .dv-item.active{ border-color:var(--brass); background:rgba(184,147,90,0.1); box-shadow:0 0 0 1px rgba(184,147,90,0.25), 0 10px 26px -14px rgba(184,147,90,0.55); }
-  .dv-icon{ flex-shrink:0; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:rgba(250,249,247,0.55); background:rgba(250,249,247,0.06); transition:color .25s ease, background .25s ease; }
+  .dv-icon{ flex-shrink:0; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:rgba(17,17,17,0.45); background:rgba(17,17,17,0.05); transition:color .25s ease, background .25s ease; }
   .dv-icon svg{ width:19px; height:19px; }
   .dv-item.active .dv-icon, .dv-item:hover .dv-icon{ color:var(--brass); background:rgba(184,147,90,0.15); }
   .dv-text{ display:flex; flex-direction:column; }
-  .dv-item strong{ display:block; font-family:'Cormorant Garamond', serif; font-size:1rem; color:var(--white); margin-bottom:2px; transition:color .25s ease; }
+  .dv-item strong{ display:block; font-family:'Cormorant Garamond', serif; font-size:1rem; color:var(--charcoal); margin-bottom:2px; transition:color .25s ease; }
   .dv-item.active strong{ color:var(--brass-soft); }
-  .dv-item span:not(.dv-icon){ font-size:0.85rem; color:rgba(250,249,247,0.55); }
+  .dv-item span:not(.dv-icon){ font-size:0.85rem; color:rgba(17,17,17,0.55); }
   .qr-callout{ display:flex; align-items:flex-start; gap:16px; background:rgba(184,147,90,0.07); border:1px solid rgba(184,147,90,0.28); border-radius:12px; padding:18px 20px; margin:22px 0 28px; }
-  .qr-callout p{ color:rgba(250,249,247,0.65); font-size:0.92rem; line-height:1.6; max-width:26em; margin:0; }
+  .qr-callout p{ color:rgba(17,17,17,0.65); font-size:0.92rem; line-height:1.6; max-width:26em; margin:0; }
   .qr-callout-icon{ position:relative; flex-shrink:0; width:36px; height:36px; display:flex; align-items:center; justify-content:center; color:var(--brass); margin-top:2px; }
   .qr-callout-icon svg{ width:22px; height:22px; position:relative; z-index:2; }
   .pulse-ring{ position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--brass); animation:pulseRing 2.2s ease-out infinite; }
@@ -388,7 +385,7 @@
       <div>
         <div class="mono" style="color:var(--brass-soft);">Kortleken</div>
         <h2 style="margin:16px 0 18px; font-size:clamp(1.9rem,3.2vw,2.6rem);">Två lekar. Alla nivåer.</h2>
-        <p style="color:rgba(250,249,247,0.6); max-width:26em; margin-bottom:24px;">Korta pass som ger dig allt — byggda runt din dag, och det enda passet du inte kan hoppa över.</p>
+        <p style="color:rgba(17,17,17,0.6); max-width:26em; margin-bottom:24px;">Korta pass som ger dig allt — byggda runt din dag, och det enda passet du inte kan hoppa över.</p>
         <div class="deck-variants">
           <div class="dv-item active reveal" onclick="selectDeckVariant(this)">
             <span class="dv-icon">
