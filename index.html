@@ -113,14 +113,21 @@
   .step5 p{ font-size:0.85rem; color:var(--ink-soft); }
 
   /* DECK SECTION */
-  .deck{ background:var(--charcoal); color:var(--white); overflow:hidden; }
+  .deck{ background:
+      radial-gradient(ellipse 900px 500px at 85% 8%, rgba(184,147,90,0.16), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 8% 95%, rgba(184,147,90,0.10), transparent 55%),
+      var(--charcoal);
+    color:var(--white); overflow:hidden; position:relative; }
   .deck h2{ color:var(--white); }
   .deck-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
   .deck-photo{ border-radius:26px; overflow:hidden; box-shadow:0 34px 60px -28px rgba(0,0,0,0.4); }
   .deck-photo img{ width:100%; }
-  .deck-cards{ display:flex; gap:26px; justify-content:center; }
-  .flipcard3d{ width:150px; height:210px; perspective:1000px; }
-  .flipcard3d .inner{ position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.2,.8,.2,1); }
+  .deck-cards{ display:flex; gap:34px; justify-content:center; padding:14px 0 6px; }
+  .flipcard3d{ width:150px; height:210px; perspective:1200px; transition:transform .45s cubic-bezier(.2,.8,.2,1); border-radius:16px; }
+  .flipcard3d:nth-child(1){ transform:rotate(-5deg); }
+  .flipcard3d:nth-child(2){ transform:rotate(5deg); }
+  .flipcard3d:hover{ transform:rotate(0deg) translateY(-10px) scale(1.06); z-index:5; }
+  .flipcard3d .inner{ position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.2,.8,.2,1); filter:drop-shadow(0 18px 30px rgba(0,0,0,0.55)); }
   .flipcard3d:hover .inner{ transform:rotateY(180deg); }
   .flipface{ position:absolute; inset:0; border-radius:16px; backface-visibility:hidden; border:1px solid rgba(250,249,247,0.16); }
   .flipface.back{ transform:rotateY(180deg); }
@@ -133,12 +140,28 @@
   .clean-author{ font-family:'JetBrains Mono', monospace; font-size:0.6rem; letter-spacing:0.06em; color:var(--ink-soft); text-transform:uppercase; margin-top:6px; }
   .clean-qr{ width:38px; height:38px; margin:14px 0 8px; background-image:linear-gradient(90deg, var(--charcoal) 2px, transparent 2px), linear-gradient(0deg, var(--charcoal) 2px, transparent 2px); background-size:7px 7px; opacity:0.85; border:1px solid var(--line); padding:4px; }
   .clean-scan{ font-family:'JetBrains Mono', monospace; font-size:0.56rem; letter-spacing:0.05em; color:var(--brass); text-transform:uppercase; line-height:1.4; }
-  .deck-caps{ display:flex; justify-content:space-around; margin-top:20px; }
+  .deck-caps{ display:flex; justify-content:space-around; margin-top:26px; }
   .deck-caps span{ font-size:0.82rem; color:rgba(250,249,247,0.5); }
-  .deck-variants{ display:flex; flex-direction:column; gap:14px; }
-  .dv-item{ padding:14px 18px; border-radius:12px; background:rgba(250,249,247,0.06); border-left:2px solid var(--brass); }
-  .dv-item strong{ display:block; font-family:'Cormorant Garamond', serif; font-size:1rem; color:var(--white); margin-bottom:4px; }
-  .dv-item span{ font-size:0.85rem; color:rgba(250,249,247,0.6); }
+  .deck-caps strong.accent{ color:var(--brass); font-weight:600; font-style:normal; }
+  .deck-variants{ display:flex; flex-direction:column; gap:12px; }
+  .dv-item{ display:flex; align-items:center; gap:14px; padding:14px 18px; border-radius:12px; background:rgba(250,249,247,0.04); border:1px solid rgba(250,249,247,0.1); cursor:pointer; transition:border-color .25s ease, background .25s ease, box-shadow .25s ease, transform .25s ease; }
+  .dv-item:hover{ transform:translateX(3px); border-color:rgba(184,147,90,0.55); background:rgba(184,147,90,0.07); }
+  .dv-item.active{ border-color:var(--brass); background:rgba(184,147,90,0.1); box-shadow:0 0 0 1px rgba(184,147,90,0.25), 0 10px 26px -14px rgba(184,147,90,0.55); }
+  .dv-icon{ flex-shrink:0; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:rgba(250,249,247,0.55); background:rgba(250,249,247,0.06); transition:color .25s ease, background .25s ease; }
+  .dv-icon svg{ width:19px; height:19px; }
+  .dv-item.active .dv-icon, .dv-item:hover .dv-icon{ color:var(--brass); background:rgba(184,147,90,0.15); }
+  .dv-text{ display:flex; flex-direction:column; }
+  .dv-item strong{ display:block; font-family:'Cormorant Garamond', serif; font-size:1rem; color:var(--white); margin-bottom:2px; transition:color .25s ease; }
+  .dv-item.active strong{ color:var(--brass-soft); }
+  .dv-item span:not(.dv-icon){ font-size:0.85rem; color:rgba(250,249,247,0.55); }
+  .qr-callout{ display:flex; align-items:flex-start; gap:16px; background:rgba(184,147,90,0.07); border:1px solid rgba(184,147,90,0.28); border-radius:12px; padding:18px 20px; margin:22px 0 28px; }
+  .qr-callout p{ color:rgba(250,249,247,0.65); font-size:0.92rem; line-height:1.6; max-width:26em; margin:0; }
+  .qr-callout-icon{ position:relative; flex-shrink:0; width:36px; height:36px; display:flex; align-items:center; justify-content:center; color:var(--brass); margin-top:2px; }
+  .qr-callout-icon svg{ width:22px; height:22px; position:relative; z-index:2; }
+  .pulse-ring{ position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--brass); animation:pulseRing 2.2s ease-out infinite; }
+  @keyframes pulseRing{ 0%{ transform:scale(0.55); opacity:0.9; } 100%{ transform:scale(1.7); opacity:0; } }
+  .accent-text{ color:var(--brass-soft); font-weight:500; }
+  .badge-pill{ display:inline-block; background:rgba(184,147,90,0.18); color:var(--brass-soft); padding:2px 12px; border-radius:20px; font-weight:500; font-size:0.85em; border:1px solid rgba(184,147,90,0.4); white-space:nowrap; }
 
   /* SURPRISE */
   .surprise{ background:var(--beige); text-align:center; }
@@ -365,12 +388,28 @@
       <div>
         <div class="mono" style="color:var(--brass-soft);">Kortleken</div>
         <h2 style="margin:16px 0 18px; font-size:clamp(1.9rem,3.2vw,2.6rem);">Två lekar. Alla nivåer.</h2>
-        <p style="color:rgba(250,249,247,0.6); max-width:26em; margin-bottom:20px;">Korta pass som ger dig allt — byggda runt din dag, och det enda passet du inte kan hoppa över.</p>
+        <p style="color:rgba(250,249,247,0.6); max-width:26em; margin-bottom:24px;">Korta pass som ger dig allt — byggda runt din dag, och det enda passet du inte kan hoppa över.</p>
         <div class="deck-variants">
-          <div class="dv-item reveal"><strong>Individuell lek</strong><span>Solopass för personlig utveckling och snabba pass hemma.</span></div>
-          <div class="dv-item reveal"><strong>Familj &amp; vänner-lek</strong><span>Övningar byggda för flera personer att träna tillsammans.</span></div>
+          <div class="dv-item active reveal" onclick="selectDeckVariant(this)">
+            <span class="dv-icon">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7.5" r="3.4" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 20c0-4.1 3.36-6.5 7.5-6.5s7.5 2.4 7.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+            <span class="dv-text"><strong>Individuell lek</strong><span>Solopass för personlig utveckling och snabba pass hemma.</span></span>
+          </div>
+          <div class="dv-item reveal" onclick="selectDeckVariant(this)">
+            <span class="dv-icon">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="8" cy="8" r="2.7" stroke="currentColor" stroke-width="1.6"/><circle cx="16.5" cy="8" r="2.7" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 19.5c0-3.3 2.6-5.3 5.5-5.3s5.5 2 5.5 5.3M12.5 19.5c0-2.9 2.2-4.8 4.5-4.8s4.5 1.9 4.5 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+            <span class="dv-text"><strong>Familj &amp; vänner-lek</strong><span>Övningar byggda för flera personer att träna tillsammans.</span></span>
+          </div>
         </div>
-        <p style="color:rgba(250,249,247,0.6); max-width:26em; margin:22px 0 30px;">Varje kort har en unik QR-kod — skanna den med kameran för att direkt få tydliga instruktioner, teknikguider och videotips. Ingen app krävs.</p>
+        <div class="qr-callout reveal">
+          <div class="qr-callout-icon">
+            <span class="pulse-ring"></span>
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.6"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <p>Varje kort har en unik <span class="accent-text">QR-kod</span> — skanna den med kameran för att direkt få tydliga instruktioner, teknikguider och videotips. <span class="badge-pill">Ingen app krävs</span></p>
+        </div>
         <div class="deck-cards reveal">
           <div class="flipcard3d">
             <div class="inner">
@@ -401,7 +440,7 @@
             </div>
           </div>
         </div>
-        <div class="deck-caps"><span>104 övningar totalt</span><span>5–20 min pass</span><span>Byggt med tränare</span></div>
+        <div class="deck-caps"><span><strong class="accent">104</strong> övningar totalt</span><span><strong class="accent">5–20</strong> min pass</span><span>Byggt med tränare</span></div>
       </div>
     </div>
   </div>
@@ -555,6 +594,11 @@
   const heroCardInner = document.getElementById('heroCardInner');
   if (heroCardInner){
     setInterval(() => heroCardInner.classList.toggle('flipped'), 3200);
+  }
+
+  function selectDeckVariant(el){
+    document.querySelectorAll('.dv-item').forEach(item => item.classList.remove('active'));
+    el.classList.add('active');
   }
 
   // waitlist modal
