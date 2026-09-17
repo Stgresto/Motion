@@ -115,7 +115,8 @@
   .today-meta{ display:flex; gap:30px; margin:24px 0 30px; flex-wrap:wrap; }
 
   .schedule-card{ border-radius:6px; padding:32px 36px; margin-bottom:28px; }
-  .schedule-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
+  .schedule-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; flex-wrap:wrap; gap:12px; }
+  .schedule-head-actions{ display:flex; gap:10px; flex-wrap:wrap; }
   .schedule-head h3{ font-size:1.1rem; }
   .schedule-edit-btn{ background:none; border:1px solid var(--line-strong); color:var(--chalk-dim); font-size:0.78rem; padding:7px 14px; border-radius:20px; cursor:pointer; font-family:'JetBrains Mono',monospace; letter-spacing:0.04em; transition:all .2s ease; }
   .schedule-edit-btn:hover{ border-color:var(--gold); color:var(--gold); }
@@ -200,6 +201,7 @@
   .chat-avatar-chip{ width:30px; height:30px; border-radius:50%; background-image:var(--avatar-head-url); background-size:cover; background-position:center 12%; border:1px solid var(--gold-dim); flex-shrink:0; }
   .bubble{ padding:15px 20px; border-radius:4px; font-size:0.95rem; max-width:68%; line-height:1.55; }
   .bubble-row.user .bubble{ background:linear-gradient(155deg, var(--gold-soft), var(--gold)); color:#181410; font-weight:500; border-bottom-right-radius:2px; }
+  .chat-img-thumb{ display:block; max-width:220px; width:100%; border-radius:8px; margin-bottom:10px; border:1px solid rgba(24,20,16,0.15); }
   .bubble-row.ai .bubble{ background:var(--glass-strong); border:1px solid var(--line); border-bottom-left-radius:2px; }
   .chat-h{ font-family:'Cormorant Garamond',serif; font-weight:600; font-size:1.05rem; color:var(--gold-soft); margin:14px 0 6px; }
   .chat-h:first-child{ margin-top:0; }
@@ -501,8 +503,12 @@
     <div class="schedule-card glass" id="scheduleCard">
       <div class="schedule-head">
         <h3>Veckoschema</h3>
-        <button class="schedule-edit-btn" id="btnEditSchedule">Ändra vaken-tid</button>
+        <div class="schedule-head-actions">
+          <button class="schedule-edit-btn" id="btnUploadSchedule">📸 Ladda upp skärmdump</button>
+          <button class="schedule-edit-btn" id="btnEditSchedule">Ändra vaken-tid</button>
+        </div>
       </div>
+      <input type="file" id="scheduleFileInput" accept="image/*" style="display:none">
       <div id="weekScheduleAccordion"></div>
       <form id="scheduleForm" class="schedule-form">
         <label>Vaken kl (alla dagar)<input type="time" id="inpWakeTime"></label>
@@ -999,6 +1005,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initRpe();
   initPrefs();
   initScheduleForm();
+  initScheduleUpload();
 
   document.getElementById('btnStartWorkout').addEventListener('click', startWorkoutSession);
   document.getElementById('btnExportProgram').addEventListener('click', generateTrainingProgramFile);
@@ -1630,7 +1637,8 @@ function renderChatLog(){
   }
   log.innerHTML = chatLog.map((m, i) => {
     if (m.role === 'user'){
-      return `<div class="bubble-row user"><div class="bubble">${formatChatText(m.text)}</div></div>`;
+      const img = m.image ? `<img src="${m.image}" class="chat-img-thumb" alt="Uppladdad skärmdump">` : '';
+      return `<div class="bubble-row user"><div class="bubble">${img}${formatChatText(m.text)}</div></div>`;
     }
     const offlineTag = m.source === 'offline' ? '<span class="offline-tag">Offline-läge — koppla in backend för full AI</span>' : '';
     const dl = m.text.length > 120 ? `<button class="dl-btn" onclick="downloadHtmlProgram(chatLog[${i}].text)">Ladda ner som snygg fil</button>` : '';
@@ -1661,9 +1669,20 @@ Användarens profil: Namn: ${p.name || 'okänt'}. Mål: ${p.goal || 'okänt'}. N
 Svara alltid på svenska.`;
 }
 
-async function askCoachAI(userMessage){
+function dataUrlToBlock(dataUrl){
+  const match = dataUrl.match(/^data:(.+?);base64,(.*)$/);
+  if (!match) return null;
+  return { type:'image', source:{ type:'base64', media_type: match[1], data: match[2] } };
+}
+
+async function askCoachAI(userMessage, imageDataUrl){
   const history = chatLog.slice(-10).map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text }));
-  history.push({ role:'user', content:userMessage });
+  let newContent = userMessage;
+  if (imageDataUrl){
+    const imgBlock = dataUrlToBlock(imageDataUrl);
+    if (imgBlock) newContent = [imgBlock, { type:'text', text:userMessage }];
+  }
+  history.push({ role:'user', content:newContent });
   const payload = { model:'claude-sonnet-4-6', max_tokens:2200, system:buildSystemPrompt(), messages:history };
 
   // Production path: your own backend (see api/chat.js) — same pattern as DiaStyle's Vercel + Claude setup.
@@ -1688,6 +1707,42 @@ async function askCoachAI(userMessage){
 
   // Offline fallback: scripted logic, so the coach still responds even without a backend deployed yet.
   return { text: generateAIResponse(userMessage, profile), source:'offline' };
+}
+
+function sendScheduleScreenshot(dataUrl){
+  const promptText = 'Här är en skärmdump av mitt schema/kalender. Titta på den och föreslå en bra tid för dagens träningspass, och notera kort om något ser upptaget ut.';
+  setActiveTab('chat'); showPhase('phase-chat');
+  chatLog.push({ role:'user', text: promptText, image: dataUrl });
+  renderChatLog();
+
+  const log = document.getElementById('chatLog');
+  const typingRow = document.createElement('div');
+  typingRow.className = 'bubble-row ai';
+  typingRow.innerHTML = '<div class="chat-avatar-chip"></div><div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>';
+  log.appendChild(typingRow);
+  scrollChatBottom();
+
+  askCoachAI(promptText, dataUrl).then(({ text: reply, source }) => {
+    typingRow.remove();
+    chatLog.push({ role:'ai', text: reply, source });
+    store.set(CHAT_LOG_KEY, chatLog);
+    renderChatLog();
+  });
+}
+
+function initScheduleUpload(){
+  document.getElementById('btnUploadSchedule').addEventListener('click', () => {
+    document.getElementById('scheduleFileInput').click();
+  });
+  document.getElementById('scheduleFileInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')){ alert('Välj en bildfil (screenshot).'); return; }
+    const reader = new FileReader();
+    reader.onload = () => sendScheduleScreenshot(reader.result);
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  });
 }
 
 function sendChat(){
