@@ -113,6 +113,25 @@
   .today-card h2{ font-size:2rem; margin:14px 0 8px; }
   .today-card p{ color:var(--chalk-dim); font-size:0.96rem; }
   .today-meta{ display:flex; gap:30px; margin:24px 0 30px; flex-wrap:wrap; }
+
+  .schedule-card{ border-radius:6px; padding:32px 36px; margin-bottom:28px; }
+  .schedule-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
+  .schedule-head h3{ font-size:1.1rem; }
+  .schedule-edit-btn{ background:none; border:1px solid var(--line-strong); color:var(--chalk-dim); font-size:0.78rem; padding:7px 14px; border-radius:20px; cursor:pointer; font-family:'JetBrains Mono',monospace; letter-spacing:0.04em; transition:all .2s ease; }
+  .schedule-edit-btn:hover{ border-color:var(--gold); color:var(--gold); }
+  .sched-row{ display:flex; gap:18px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--line); }
+  .sched-row:last-child{ border-bottom:none; }
+  .sched-time{ font-family:'JetBrains Mono',monospace; font-size:0.82rem; color:var(--gold-soft); min-width:52px; flex-shrink:0; padding-top:2px; }
+  .sched-content{ flex:1; }
+  .sched-title{ font-family:'Cormorant Garamond',serif; font-size:1.08rem; color:var(--chalk); margin-bottom:2px; }
+  .sched-row.workout .sched-title{ color:var(--gold); font-weight:500; }
+  .sched-row.workout{ background:rgba(212,175,55,0.06); margin:4px -16px; padding:14px 16px; border-radius:6px; border-bottom:none; }
+  .sched-tip{ font-size:0.85rem; color:var(--chalk-dim); }
+  .sched-tip .icn{ margin-right:5px; }
+  .schedule-form{ display:none; gap:14px; align-items:flex-end; margin-top:22px; padding-top:22px; border-top:1px solid var(--line); flex-wrap:wrap; }
+  .schedule-form.show{ display:flex; }
+  .schedule-form label{ display:flex; flex-direction:column; gap:6px; font-size:0.78rem; color:var(--chalk-dim); font-family:'JetBrains Mono',monospace; letter-spacing:0.04em; }
+  .schedule-form input[type="time"]{ background:var(--glass); border:1px solid var(--line-strong); border-radius:4px; padding:9px 12px; color:var(--chalk); font-family:'Inter',sans-serif; font-size:0.95rem; }
   .today-meta .num{ font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--gold-soft); }
   .today-meta .lbl{ font-size:0.7rem; color:var(--chalk-faint); text-transform:uppercase; letter-spacing:0.07em; margin-top:2px; }
   .today-card.rest .today-meta .num{ color:var(--sage-soft); }
@@ -461,6 +480,19 @@
       <p id="todayDesc"></p>
       <div class="today-meta" id="todayMeta"></div>
       <button class="btn btn-gold" id="btnStartWorkout">Starta dagens pass</button>
+    </div>
+
+    <div class="schedule-card glass" id="scheduleCard">
+      <div class="schedule-head">
+        <h3>Dagens schema</h3>
+        <button class="schedule-edit-btn" id="btnEditSchedule">Ändra tider</button>
+      </div>
+      <div id="scheduleTimeline"></div>
+      <form id="scheduleForm" class="schedule-form">
+        <label>Vaken kl<input type="time" id="inpWakeTime"></label>
+        <label>Träningspass kl<input type="time" id="inpTrainTime"></label>
+        <button type="submit" class="btn btn-gold">Spara schema</button>
+      </form>
     </div>
 
     <div class="dash-grid">
@@ -950,6 +982,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initWorkout();
   initRpe();
   initPrefs();
+  initScheduleForm();
 
   document.getElementById('btnStartWorkout').addEventListener('click', startWorkoutSession);
   document.getElementById('btnExportProgram').addEventListener('click', generateTrainingProgramFile);
@@ -1138,9 +1171,84 @@ function renderDashboard(){
   }).join('');
 
   renderInsight();
+  renderSchedule();
   drawProgressChart();
   document.getElementById('quoteOfDayText').textContent = `"${quoteOfDay()}"`;
 }
+
+/* ============ DAILY SCHEDULE ============ */
+function timeToMin(t){ const [h,m] = t.split(':').map(Number); return h*60+m; }
+function minToTime(mins){
+  mins = ((mins % 1440) + 1440) % 1440;
+  const h = Math.floor(mins/60), m = mins%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+}
+function defaultTrainTime(){
+  const map = { 'Morgon':'07:00', 'Eftermiddag':'13:00', 'Kväll':'18:00' };
+  return map[plan && plan.suggestedTime] || '17:30';
+}
+function loadSchedule(){
+  let s = store.get('muf_schedule');
+  if (!s) s = { wake:'07:00', train: defaultTrainTime() };
+  return s;
+}
+let schedule = loadSchedule();
+
+function renderSchedule(){
+  const timeline = document.getElementById('scheduleTimeline');
+  const today = getTodayPlanDay();
+  const wakeM = timeToMin(schedule.wake);
+  const trainM = timeToMin(schedule.train);
+  const duration = (today && today.active) ? (profile.minutes || 20) : 15;
+
+  const rows = [];
+  rows.push({ m: wakeM, title: 'Vaken', tip: null });
+  rows.push({ m: wakeM + 30, title: 'Frukost', tip: 'Bra grund — protein + långsamma kolhydrater håller energin jämn.' });
+
+  if (today && today.active){
+    const snackM = Math.max(trainM - 45, wakeM + 10);
+    rows.push({ m: snackM, title: 'Litet mellanmål', tip: '🍌 En banan eller en handfull nötter — lätt energi utan att kännas full.' });
+    rows.push({ m: trainM, title: `Träningspass · ${today.cardCount} kort`, tip: `~${duration} min. Du vet inte vad du får förrän du skannar första kortet.`, workout:true });
+    rows.push({ m: trainM + duration + 5, title: 'Efter passet', tip: '🥤 Protein inom 30–60 min — t.ex. skyr, ett glas mjölk eller en proteinboll.' });
+    rows.push({ m: Math.max(trainM + duration + 90, wakeM + 660), title: 'Middag', tip: 'Fyll på med grönsaker och protein inför morgondagen.' });
+  } else {
+    rows.push({ m: wakeM + 660, title: 'Middag', tip: 'Fyll på med grönsaker och protein inför morgondagen.' });
+    rows.push({ m: trainM, title: 'Vilodag', tip: stretchTipOfDay() });
+  }
+
+  rows.sort((a,b) => a.m - b.m);
+
+  timeline.innerHTML = rows.map(r => `
+    <div class="sched-row ${r.workout ? 'workout' : ''}">
+      <span class="sched-time">${minToTime(r.m)}</span>
+      <div class="sched-content">
+        <div class="sched-title">${r.title}</div>
+        ${r.tip ? `<div class="sched-tip">${r.tip}</div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function initScheduleForm(){
+  document.getElementById('btnEditSchedule').addEventListener('click', () => {
+    const form = document.getElementById('scheduleForm');
+    const opening = !form.classList.contains('show');
+    form.classList.toggle('show');
+    if (opening){
+      document.getElementById('inpWakeTime').value = schedule.wake;
+      document.getElementById('inpTrainTime').value = schedule.train;
+    }
+  });
+  document.getElementById('scheduleForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const wake = document.getElementById('inpWakeTime').value || schedule.wake;
+    const train = document.getElementById('inpTrainTime').value || schedule.train;
+    schedule = { wake, train };
+    store.set('muf_schedule', schedule);
+    document.getElementById('scheduleForm').classList.remove('show');
+    renderSchedule();
+  });
+}
+
 
 function renderInsight(){
   const el = document.getElementById('insightText');
