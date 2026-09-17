@@ -47,6 +47,9 @@
   #topbar.show{ display:block; }
   #topbar .wrap{ display:flex; align-items:center; justify-content:space-between; max-width:1040px; }
   .brand{ display:flex; align-items:center; gap:10px; }
+  .brand-back-link{ display:flex; align-items:center; gap:9px; text-decoration:none; color:inherit; padding:6px 10px 6px 6px; margin-left:-6px; border-radius:20px; transition:background .2s ease; }
+  .brand-back-link:hover{ background:rgba(212,175,55,0.1); }
+  .brand-back-link svg{ color:var(--gold-soft); }
   .brand img{ height:24px; width:auto; filter:drop-shadow(0 0 10px rgba(212,175,55,0.35)); }
   .brand span{ font-family:'Cormorant Garamond',serif; font-size:1.02rem; letter-spacing:0.01em; }
   .navtabs{ display:flex; gap:4px; background:var(--glass); border:1px solid var(--line); padding:5px; border-radius:4px; }
@@ -339,13 +342,13 @@
 <!-- MINI COACH MASCOT -->
 <div id="mascot-widget">
   <div class="mascot-bubble" id="mascotBubble">Hej! Jag finns här genom hela passet.</div>
-  <div class="mascot-orb" id="mascotOrb"><img id="mascotOrbImg" src="images/coach-img-1-2f362348a9.jpg" alt="Din coach"></div>
+  <div class="mascot-orb" id="mascotOrb"><img id="mascotOrbImg" src="images/avatar-malik.jpg" alt="Din coach"></div>
 </div>
 
 <!-- TOP BAR -->
 <div id="topbar">
   <div class="wrap">
-    <div class="brand"><a href="index.html" style="display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit;"><img src="images/coach-img-2-6f42546f50.png" alt="MOTION UF"><span>MOTION UF</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-back-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><img src="images/coach-img-2-6f42546f50.png" alt="MOTION UF"><span>MOTION UF</span></a></div>
     <div class="navtabs">
       <button class="navtab" data-nav="dashboard">Dashboard</button>
       <button class="navtab" data-nav="chat">Chatt</button>
@@ -551,7 +554,7 @@
 <section class="phase" id="phase-chat">
   <div class="chat-shell glass">
     <div class="chat-head">
-      <img src="images/coach-img-1-2f362348a9.jpg" id="chatHeadAvatar" alt="" style="border-radius:50%; object-fit:cover; object-position:center 22%;">
+      <img src="images/avatar-malik.jpg" id="chatHeadAvatar" alt="" style="border-radius:50%; object-fit:cover; object-position:center 22%;">
       <div><h3>Din AI-coach</h3><p>Fråga om passet, kost, sömn eller vanor — och säg hur du mår.</p></div>
     </div>
     <div class="chat-log" id="chatLog"></div>
@@ -579,24 +582,49 @@
     </div>
 
     <div class="avatar-picker-grid" id="avatarPickerGrid">
-      <div class="avatar-pick-card" data-avatar="zara">
-        <div class="pick-circle"><img src="images/coach-img-3-0dfcc0b7f9.jpg" alt="Zara"></div>
-        <span class="pick-name">Zara</span>
+      <div class="avatar-pick-card" data-avatar="malik">
+        <div class="pick-circle"><img src="images/avatar-malik.jpg" alt="Malik"></div>
+        <span class="pick-name">Malik</span>
         <span class="pick-check">✓</span>
       </div>
-      <div class="avatar-pick-card" data-avatar="theo">
-        <div class="pick-circle"><img src="images/coach-img-1-2f362348a9.jpg" alt="Theo"></div>
-        <span class="pick-name">Theo</span>
+      <div class="avatar-pick-card" data-avatar="elin">
+        <div class="pick-circle"><img src="images/avatar-elin.jpg" alt="Elin"></div>
+        <span class="pick-name">Elin</span>
         <span class="pick-check">✓</span>
       </div>
-      <div class="avatar-pick-card" data-avatar="felix">
-        <div class="pick-circle"><img src="images/coach-img-4-6ff3e86cff.jpg" alt="Felix"></div>
-        <span class="pick-name">Felix</span>
+      <div class="avatar-pick-card" data-avatar="oskar">
+        <div class="pick-circle"><img src="images/avatar-oskar.jpg" alt="Oskar"></div>
+        <span class="pick-name">Oskar</span>
         <span class="pick-check">✓</span>
       </div>
-      <div class="avatar-pick-card" data-avatar="nova">
-        <div class="pick-circle"><img src="images/coach-img-5-c88d41a62b.jpg" alt="Nova"></div>
-        <span class="pick-name">Nova</span>
+      <div class="avatar-pick-card" data-avatar="mei">
+        <div class="pick-circle"><img src="images/avatar-mei.jpg" alt="Mei"></div>
+        <span class="pick-name">Mei</span>
+        <span class="pick-check">✓</span>
+      </div>
+      <div class="avatar-pick-card" data-avatar="jonas">
+        <div class="pick-circle"><img src="images/avatar-jonas.jpg" alt="Jonas"></div>
+        <span class="pick-name">Jonas</span>
+        <span class="pick-check">✓</span>
+      </div>
+      <div class="avatar-pick-card" data-avatar="wilma">
+        <div class="pick-circle"><img src="images/avatar-wilma.jpg" alt="Wilma"></div>
+        <span class="pick-name">Wilma</span>
+        <span class="pick-check">✓</span>
+      </div>
+      <div class="avatar-pick-card" data-avatar="amir">
+        <div class="pick-circle"><img src="images/avatar-amir.jpg" alt="Amir"></div>
+        <span class="pick-name">Amir</span>
+        <span class="pick-check">✓</span>
+      </div>
+      <div class="avatar-pick-card" data-avatar="leila">
+        <div class="pick-circle"><img src="images/avatar-leila.jpg" alt="Leila"></div>
+        <span class="pick-name">Leila</span>
+        <span class="pick-check">✓</span>
+      </div>
+      <div class="avatar-pick-card" data-avatar="aaliyah">
+        <div class="pick-circle"><img src="images/avatar-aaliyah.jpg" alt="Aaliyah"></div>
+        <span class="pick-name">Aaliyah</span>
         <span class="pick-check">✓</span>
       </div>
     </div>
@@ -900,12 +928,17 @@ function setActiveTab(name){ document.querySelectorAll('.navtab').forEach(t => t
 
 /* ============ 3D MINI COACH MASCOT ============ */
 const AVATARS = {
-  zara: { head:'images/coach-img-3-0dfcc0b7f9.jpg', full:'images/coach-img-6-77972e18a2.png' },
-  theo: { head:'images/coach-img-1-2f362348a9.jpg', full:'images/coach-img-7-a61f437e4a.png' },
-  felix: { head:'images/coach-img-4-6ff3e86cff.jpg', full:'images/coach-img-8-fc507d43ce.png' },
-  nova: { head:'images/coach-img-5-c88d41a62b.jpg', full:'images/coach-img-9-7330a640c2.png' },
+  malik: { head:'images/avatar-malik.jpg' },
+  elin: { head:'images/avatar-elin.jpg' },
+  oskar: { head:'images/avatar-oskar.jpg' },
+  mei: { head:'images/avatar-mei.jpg' },
+  jonas: { head:'images/avatar-jonas.jpg' },
+  wilma: { head:'images/avatar-wilma.jpg' },
+  amir: { head:'images/avatar-amir.jpg' },
+  leila: { head:'images/avatar-leila.jpg' },
+  aaliyah: { head:'images/avatar-aaliyah.jpg' },
 };
-let avatarParams = store.get('muf_avatar') || { id:'theo' };
+let avatarParams = store.get('muf_avatar') || { id:'malik' };
 
 const MASCOT_PHASE_LINES = {
   'phase-dashboard': 'Här är din vecka. Inga ursäkter — bara ett kort i taget.',
@@ -930,12 +963,12 @@ function mascotSpeak(text, voice){
   if (voice) speak(text);
 }
 function currentAvatarHeadSrc(){
-  const a = AVATARS[avatarParams.id] || AVATARS.theo;
+  const a = AVATARS[avatarParams.id] || AVATARS.malik;
   return a.head;
 }
 function currentAvatarFullSrc(){
-  const a = AVATARS[avatarParams.id] || AVATARS.theo;
-  return a.full;
+  const a = AVATARS[avatarParams.id] || AVATARS.malik;
+  return a.head;
 }
 function applyAvatarEverywhere(){
   const headSrc = currentAvatarHeadSrc();
@@ -1403,11 +1436,12 @@ function downloadTextFile(filename, content){
 
 // Exports an AI chat reply as a standalone, nicely branded HTML document
 // (used for meal plans / training programs the AI writes out in chat).
-function downloadHtmlProgram(markdownText){
+function downloadHtmlProgram(markdownText, filename){
   const p = profile || {};
   const titleMatch = markdownText.match(/^#{1,2}\s+(.*)/m);
   const title = titleMatch ? titleMatch[1].replace(/\*\*/g,'') : 'Ditt program från Motion UF';
-  const bodyHtml = renderMarkdown(markdownText);
+  const bodySource = titleMatch ? markdownText.replace(titleMatch[0], '').replace(/^\n+/, '') : markdownText;
+  const bodyHtml = renderMarkdown(bodySource);
   const doc = `<!DOCTYPE html>
 <html lang="sv"><head><meta charset="UTF-8">
 <title>${title} — Motion UF</title>
@@ -1444,105 +1478,83 @@ function downloadHtmlProgram(markdownText){
   const blob = new Blob([doc], { type: 'text/html;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = 'motion-uf-program.html';
+  a.href = url; a.download = filename || 'motion-uf-program.html';
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
 
+function safeFileSlug(name){
+  return (name || 'dig').toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9åäö-]/g,'');
+}
+
 function generateTrainingProgramFile(){
   const p = profile;
-  const lines = [];
-  lines.push('MOTION UF — PERSONLIGT TRÄNINGSPROGRAM');
-  lines.push('='.repeat(44));
-  lines.push(`Skapat för: ${p.name}`);
-  lines.push(`Nivå: ${p.level}   Mål: ${p.goal}`);
-  lines.push(`Träningsdagar/vecka: ${p.days}   Tid/pass: ~${p.minutes} min`);
-  lines.push('');
-  lines.push('VECKOÖVERSIKT');
-  lines.push('-'.repeat(44));
+  const md = [];
+  md.push('## Personligt träningsprogram');
+  md.push(`Skapat för **${p.name}**. Nivå: **${p.level}**. Mål: **${p.goal}**. Träningsdagar/vecka: **${p.days}**. Tid/pass: **~${p.minutes} min**.`);
+  md.push('');
+  md.push('## Veckoöversikt');
   plan.week.forEach((d, i) => {
     const day = DAY_SHORT[i];
-    if (d.active){
-      lines.push(`${day}: ${d.cardCount} kort (${d.focus}-inriktning, nivå anpassad efter ${p.level.toLowerCase()})`);
-    } else {
-      lines.push(`${day}: Vila / rörlighet`);
-    }
+    if (d.active) md.push(`- **${day}:** ${d.cardCount} kort (${d.focus}-inriktning, nivå anpassad efter ${p.level.toLowerCase()})`);
+    else md.push(`- **${day}:** Vila / rörlighet`);
   });
-  lines.push('');
-  lines.push('ÖVNINGSBANK (Simple)');
-  lines.push('-'.repeat(44));
-  EXERCISES.filter(e => e.level === 'Simple').forEach(e => {
-    lines.push(`${e.code}  ${e.name} — ${e.seconds}s. ${e.cue}`);
-  });
-  lines.push('');
-  lines.push('ÖVNINGSBANK (Hard)');
-  lines.push('-'.repeat(44));
-  EXERCISES.filter(e => e.level === 'Hard').forEach(e => {
-    lines.push(`${e.code}  ${e.name} — ${e.seconds}s. ${e.cue}`);
-  });
-  lines.push('');
-  lines.push('PRINCIPER');
-  lines.push('-'.repeat(44));
-  lines.push('• Skanna alltid dina kort i din egen takt — kvalitet före hastighet.');
-  lines.push('• Öka svårighetsgrad gradvis. Om ett pass känns för lätt tre gånger i rad, be din AI-coach om tyngre kort.');
-  lines.push('• Vila minst en dag mellan tunga pass för samma muskelgrupp.');
-  lines.push('• Din plan justeras automatiskt utifrån hur du skattar varje pass (RPE).');
-  lines.push('');
-  lines.push(`Genererat av din AI-coach ${new Date().toLocaleDateString('sv-SE')}.`);
-  downloadTextFile(`traningsprogram-${p.name.toLowerCase()}.txt`, lines.join('\n'));
+  md.push('');
+  md.push('## Övningsbank — Simple');
+  EXERCISES.filter(e => e.level === 'Simple').forEach(e => md.push(`- **${e.code}** ${e.name} — ${e.seconds}s. ${e.cue}`));
+  md.push('');
+  md.push('## Övningsbank — Hard');
+  EXERCISES.filter(e => e.level === 'Hard').forEach(e => md.push(`- **${e.code}** ${e.name} — ${e.seconds}s. ${e.cue}`));
+  md.push('');
+  md.push('## Principer');
+  md.push('- Skanna alltid dina kort i din egen takt — kvalitet före hastighet.');
+  md.push('- Öka svårighetsgrad gradvis. Om ett pass känns för lätt tre gånger i rad, be din AI-coach om tyngre kort.');
+  md.push('- Vila minst en dag mellan tunga pass för samma muskelgrupp.');
+  md.push('- Din plan justeras automatiskt utifrån hur du skattar varje pass (RPE).');
+  downloadHtmlProgram(md.join('\n'), `traningsprogram-${safeFileSlug(p.name)}.html`);
 }
 
 function generateMealPlanFile(){
   const p = profile;
-  const lines = [];
-  lines.push('MOTION UF — ENKEL KOSTGUIDE');
-  lines.push('='.repeat(44));
-  lines.push(`Skapad för: ${p.name}   Mål: ${p.goal}`);
-  lines.push('');
-  lines.push('GRUNDPRINCIPER');
-  lines.push('-'.repeat(44));
-  lines.push('• Ät protein till varje huvudmål — det bygger och lagar muskler efter träning.');
-  lines.push('• Drick vatten regelbundet under dagen, extra kring träningspass.');
-  lines.push('• Ät grönsaker/frukt till minst två mål per dag.');
-  lines.push('• Undvik att hoppa över måltider — det gör det svårare att orka passen.');
-  lines.push('');
-  lines.push('EXEMPEL PÅ EN TRÄNINGSDAG');
-  lines.push('-'.repeat(44));
-  lines.push('Frukost:   Havregrynsgröt med bär, nötter och kvarg/skyr.');
-  lines.push('Lunch:     Protein (kyckling/bönor/fisk) + fullkorn + grönsaker.');
-  lines.push('Mellanmål: Banan + en näve nötter, eller yoghurt.');
-  lines.push('Efter pass: Något med protein inom en timme — ex. skyr eller en smoothie.');
-  lines.push('Middag:    Protein + grönsaker + en stärkelsekälla (potatis/ris/pasta).');
-  lines.push('Kväll:     Vid behov — lätt mellanmål, undvik mycket socker sent.');
-  lines.push('');
-  lines.push('VILODAGAR');
-  lines.push('-'.repeat(44));
-  lines.push('Ät ungefär som vanligt — kroppen återhämtar och bygger sig starkare även utan pass.');
-  lines.push('');
-  lines.push(`Genererat av din AI-coach ${new Date().toLocaleDateString('sv-SE')}. Detta är allmänna råd, inte medicinsk rådgivning.`);
-  downloadTextFile(`kostplan-${p.name.toLowerCase()}.txt`, lines.join('\n'));
+  const md = [];
+  md.push('## Enkel kostguide');
+  md.push(`Skapad för **${p.name}**. Mål: **${p.goal}**.`);
+  md.push('');
+  md.push('## Grundprinciper');
+  md.push('- Ät protein till varje huvudmål — det bygger och lagar muskler efter träning.');
+  md.push('- Drick vatten regelbundet under dagen, extra kring träningspass.');
+  md.push('- Ät grönsaker/frukt till minst två mål per dag.');
+  md.push('- Undvik att hoppa över måltider — det gör det svårare att orka passen.');
+  md.push('');
+  md.push('## Exempel på en träningsdag');
+  md.push('- **Frukost:** Havregrynsgröt med bär, nötter och kvarg/skyr.');
+  md.push('- **Lunch:** Protein (kyckling/bönor/fisk) + fullkorn + grönsaker.');
+  md.push('- **Mellanmål:** Banan + en näve nötter, eller yoghurt.');
+  md.push('- **Efter pass:** Något med protein inom en timme — ex. skyr eller en smoothie.');
+  md.push('- **Middag:** Protein + grönsaker + en stärkelsekälla (potatis/ris/pasta).');
+  md.push('- **Kväll:** Vid behov — lätt mellanmål, undvik mycket socker sent.');
+  md.push('');
+  md.push('## Vilodagar');
+  md.push('Ät ungefär som vanligt — kroppen återhämtar och bygger sig starkare även utan pass.');
+  md.push('');
+  md.push('*Detta är allmänna råd, inte medicinsk rådgivning.*');
+  downloadHtmlProgram(md.join('\n'), `kostplan-${safeFileSlug(p.name)}.html`);
 }
 
 function generateStretchRoutineFile(){
   const p = profile;
-  const lines = [];
-  lines.push('MOTION UF — STRETCHRUTIN EFTER TRÄNING');
-  lines.push('='.repeat(44));
-  lines.push(`Skapad för: ${p.name}`);
-  lines.push('Gör rutinen direkt efter passet medan musklerna är varma. Håll varje stretch lugnt, rusa aldrig.');
-  lines.push('');
-  STRETCH_TIPS.forEach((tip, i) => {
-    lines.push(`${i+1}. ${tip}`);
-  });
-  lines.push('');
-  lines.push('TIPS');
-  lines.push('-'.repeat(44));
-  lines.push('• Andas djupt och jämnt genom varje stretch — håll aldrig andan.');
-  lines.push('• Ryck inte i rörelsen. Ett lätt drag räcker, det ska aldrig göra ont.');
-  lines.push('• 6-8 minuter räcker för en fullständig rutin.');
-  lines.push('');
-  lines.push(`Genererat av din AI-coach ${new Date().toLocaleDateString('sv-SE')}.`);
-  downloadTextFile(`stretchrutin-${p.name.toLowerCase()}.txt`, lines.join('\n'));
+  const md = [];
+  md.push('## Stretchrutin efter träning');
+  md.push(`Skapad för **${p.name}**. Gör rutinen direkt efter passet medan musklerna är varma — håll varje stretch lugnt, rusa aldrig.`);
+  md.push('');
+  md.push('## Rutinen');
+  STRETCH_TIPS.forEach((tip, i) => md.push(`${i+1}. ${tip}`));
+  md.push('');
+  md.push('## Tips');
+  md.push('- Andas djupt och jämnt genom varje stretch — håll aldrig andan.');
+  md.push('- Ryck inte i rörelsen. Ett lätt drag räcker, det ska aldrig göra ont.');
+  md.push('- 6–8 minuter räcker för en fullständig rutin.');
+  downloadHtmlProgram(md.join('\n'), `stretchrutin-${safeFileSlug(p.name)}.html`);
 }
 
 /* ============ CHAT ============ */
