@@ -153,20 +153,8 @@
   .today-meta .lbl{ font-size:0.7rem; color:var(--chalk-faint); text-transform:uppercase; letter-spacing:0.07em; margin-top:2px; }
   .today-card.rest .today-meta .num{ color:var(--sage-soft); }
 
-  .dash-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:24px; margin-bottom:28px; }
-  .week-panel{ border-radius:6px; padding:32px; }
-  .week-panel h3{ font-size:1.05rem; margin-bottom:22px; font-weight:400; }
-  .week-row{ display:flex; justify-content:space-between; align-items:center; padding:14px 4px; border-top:1px solid var(--line-strong); font-size:0.88rem; transition:background .2s ease; }
-  .week-row:first-of-type{ border-top:none; }
-  .week-row:hover{ background:var(--glass-strong); }
-  .week-row .day{ font-weight:400; width:90px; color:var(--chalk-dim); position:relative; padding-left:14px; }
-  .week-row .day::before{ content:''; position:absolute; left:0; top:50%; transform:translateY(-50%); width:5px; height:5px; border-radius:50%; background:var(--line-strong); }
-  .week-row .day.today{ color:var(--chalk); font-weight:600; }
-  .week-row .day.today::before{ background:var(--gold); width:7px; height:7px; }
-  .week-row .plan{ color:var(--chalk-faint); font-family:'JetBrains Mono',monospace; font-size:0.74rem; flex:1; text-align:right; letter-spacing:0.02em; }
-  .week-row .plan.done{ color:var(--sage); font-weight:500; }
+  .stats-panel{ display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-bottom:28px; }
 
-  .stats-panel{ display:flex; flex-direction:column; gap:14px; }
   .stat-box{ border-radius:6px; padding:22px 24px; }
   .stat-box .num{ font-family:'Cormorant Garamond',serif; font-size:1.9rem; color:var(--sage-soft); }
   .stat-box .lbl{ font-size:0.78rem; color:var(--chalk-dim); margin-top:2px; }
@@ -309,7 +297,7 @@
   .complete-stats .lbl{ font-size:0.76rem; color:var(--chalk-faint); text-transform:uppercase; letter-spacing:0.06em; margin-top:4px; }
 
   @media(max-width:760px){
-    .dash-grid{ grid-template-columns:1fr; }
+    .stats-panel{ grid-template-columns:1fr; }
     .chat-shell{ height:calc(100vh - 130px); border-radius:0; }
   }
 
@@ -517,24 +505,18 @@
       </form>
     </div>
 
-    <div class="dash-grid">
-      <div class="week-panel glass">
-        <h3>Veckoplan</h3>
-        <div id="weekList"></div>
+    <div class="stats-panel">
+      <div class="stat-box glass streak">
+        <div class="num" id="statStreak">0</div>
+        <div class="lbl">Dagars streak</div>
       </div>
-      <div class="stats-panel">
-        <div class="stat-box glass streak">
-          <div class="num" id="statStreak">0</div>
-          <div class="lbl">Dagars streak</div>
-        </div>
-        <div class="stat-box glass">
-          <div class="num" id="statSessions">0</div>
-          <div class="lbl">Genomförda pass</div>
-        </div>
-        <div class="stat-box glass">
-          <div class="num" id="statCards">0</div>
-          <div class="lbl">Skannade kort</div>
-        </div>
+      <div class="stat-box glass">
+        <div class="num" id="statSessions">0</div>
+        <div class="lbl">Genomförda pass</div>
+      </div>
+      <div class="stat-box glass">
+        <div class="num" id="statCards">0</div>
+        <div class="lbl">Skannade kort</div>
       </div>
     </div>
 
@@ -1181,17 +1163,6 @@ function renderDashboard(){
       <div><div class="num">?</div><div class="lbl">Innehåll</div></div>`;
     document.getElementById('btnStartWorkout').textContent = 'Dra dina kort';
   }
-
-  const weekList = document.getElementById('weekList');
-  weekList.innerHTML = plan.week.map((d, i) => {
-    const isToday = i === todayIdx();
-    const dayDone = progress.history.some(h => h.dayIdx === i && h.date === todayStr());
-    const planText = d.active ? `${d.cardCount} kort` : 'Vila';
-    return `<div class="week-row">
-      <span class="day ${isToday ? 'today' : ''}">${DAY_SHORT[i]}</span>
-      <span class="plan ${dayDone ? 'done' : ''}">${planText}${dayDone ? ' ✓' : ''}</span>
-    </div>`;
-  }).join('');
 
   renderInsight();
   renderSchedule();
