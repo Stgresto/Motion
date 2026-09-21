@@ -342,7 +342,7 @@
 <!-- MINI COACH MASCOT -->
 <div id="mascot-widget">
   <div class="mascot-bubble" id="mascotBubble">Hej! Jag finns här genom hela passet.</div>
-  <div class="mascot-orb" id="mascotOrb"><img id="mascotOrbImg" src="images/avatar-malik.jpg" alt="Din coach"></div>
+  <div class="mascot-orb" id="mascotOrb"><img id="mascotOrbImg" src="images/coach-img-1-2f362348a9.jpg" alt="Din coach"></div>
 </div>
 
 <!-- TOP BAR -->
@@ -554,7 +554,7 @@
 <section class="phase" id="phase-chat">
   <div class="chat-shell glass">
     <div class="chat-head">
-      <img src="images/avatar-malik.jpg" id="chatHeadAvatar" alt="" style="border-radius:50%; object-fit:cover; object-position:center 22%;">
+      <img src="images/coach-img-1-2f362348a9.jpg" id="chatHeadAvatar" alt="" style="border-radius:50%; object-fit:cover; object-position:center 22%;">
       <div><h3>Din AI-coach</h3><p>Fråga om passet, kost, sömn eller vanor — och säg hur du mår.</p></div>
     </div>
     <div class="chat-log" id="chatLog"></div>
@@ -582,49 +582,24 @@
     </div>
 
     <div class="avatar-picker-grid" id="avatarPickerGrid">
-      <div class="avatar-pick-card" data-avatar="malik">
-        <div class="pick-circle"><img src="images/avatar-malik.jpg" alt="Malik"></div>
-        <span class="pick-name">Malik</span>
+      <div class="avatar-pick-card" data-avatar="zara">
+        <div class="pick-circle"><img src="images/coach-img-3-0dfcc0b7f9.jpg" alt="Zara"></div>
+        <span class="pick-name">Zara</span>
         <span class="pick-check">✓</span>
       </div>
-      <div class="avatar-pick-card" data-avatar="elin">
-        <div class="pick-circle"><img src="images/avatar-elin.jpg" alt="Elin"></div>
-        <span class="pick-name">Elin</span>
+      <div class="avatar-pick-card" data-avatar="theo">
+        <div class="pick-circle"><img src="images/coach-img-1-2f362348a9.jpg" alt="Theo"></div>
+        <span class="pick-name">Theo</span>
         <span class="pick-check">✓</span>
       </div>
-      <div class="avatar-pick-card" data-avatar="oskar">
-        <div class="pick-circle"><img src="images/avatar-oskar.jpg" alt="Oskar"></div>
-        <span class="pick-name">Oskar</span>
+      <div class="avatar-pick-card" data-avatar="felix">
+        <div class="pick-circle"><img src="images/coach-img-4-6ff3e86cff.jpg" alt="Felix"></div>
+        <span class="pick-name">Felix</span>
         <span class="pick-check">✓</span>
       </div>
-      <div class="avatar-pick-card" data-avatar="mei">
-        <div class="pick-circle"><img src="images/avatar-mei.jpg" alt="Mei"></div>
-        <span class="pick-name">Mei</span>
-        <span class="pick-check">✓</span>
-      </div>
-      <div class="avatar-pick-card" data-avatar="jonas">
-        <div class="pick-circle"><img src="images/avatar-jonas.jpg" alt="Jonas"></div>
-        <span class="pick-name">Jonas</span>
-        <span class="pick-check">✓</span>
-      </div>
-      <div class="avatar-pick-card" data-avatar="wilma">
-        <div class="pick-circle"><img src="images/avatar-wilma.jpg" alt="Wilma"></div>
-        <span class="pick-name">Wilma</span>
-        <span class="pick-check">✓</span>
-      </div>
-      <div class="avatar-pick-card" data-avatar="amir">
-        <div class="pick-circle"><img src="images/avatar-amir.jpg" alt="Amir"></div>
-        <span class="pick-name">Amir</span>
-        <span class="pick-check">✓</span>
-      </div>
-      <div class="avatar-pick-card" data-avatar="leila">
-        <div class="pick-circle"><img src="images/avatar-leila.jpg" alt="Leila"></div>
-        <span class="pick-name">Leila</span>
-        <span class="pick-check">✓</span>
-      </div>
-      <div class="avatar-pick-card" data-avatar="aaliyah">
-        <div class="pick-circle"><img src="images/avatar-aaliyah.jpg" alt="Aaliyah"></div>
-        <span class="pick-name">Aaliyah</span>
+      <div class="avatar-pick-card" data-avatar="nova">
+        <div class="pick-circle"><img src="images/coach-img-5-c88d41a62b.jpg" alt="Nova"></div>
+        <span class="pick-name">Nova</span>
         <span class="pick-check">✓</span>
       </div>
     </div>
@@ -928,17 +903,12 @@ function setActiveTab(name){ document.querySelectorAll('.navtab').forEach(t => t
 
 /* ============ 3D MINI COACH MASCOT ============ */
 const AVATARS = {
-  malik: { head:'images/avatar-malik.jpg' },
-  elin: { head:'images/avatar-elin.jpg' },
-  oskar: { head:'images/avatar-oskar.jpg' },
-  mei: { head:'images/avatar-mei.jpg' },
-  jonas: { head:'images/avatar-jonas.jpg' },
-  wilma: { head:'images/avatar-wilma.jpg' },
-  amir: { head:'images/avatar-amir.jpg' },
-  leila: { head:'images/avatar-leila.jpg' },
-  aaliyah: { head:'images/avatar-aaliyah.jpg' },
+  zara: { head:'images/coach-img-3-0dfcc0b7f9.jpg', full:'images/coach-img-6-77972e18a2.png' },
+  theo: { head:'images/coach-img-1-2f362348a9.jpg', full:'images/coach-img-7-a61f437e4a.png' },
+  felix: { head:'images/coach-img-4-6ff3e86cff.jpg', full:'images/coach-img-8-fc507d43ce.png' },
+  nova: { head:'images/coach-img-5-c88d41a62b.jpg', full:'images/coach-img-9-7330a640c2.png' },
 };
-let avatarParams = store.get('muf_avatar') || { id:'malik' };
+let avatarParams = store.get('muf_avatar') || { id:'theo' };
 
 const MASCOT_PHASE_LINES = {
   'phase-dashboard': 'Här är din vecka. Inga ursäkter — bara ett kort i taget.',
@@ -963,12 +933,12 @@ function mascotSpeak(text, voice){
   if (voice) speak(text);
 }
 function currentAvatarHeadSrc(){
-  const a = AVATARS[avatarParams.id] || AVATARS.malik;
+  const a = AVATARS[avatarParams.id] || AVATARS.theo;
   return a.head;
 }
 function currentAvatarFullSrc(){
-  const a = AVATARS[avatarParams.id] || AVATARS.malik;
-  return a.head;
+  const a = AVATARS[avatarParams.id] || AVATARS.theo;
+  return a.full;
 }
 function applyAvatarEverywhere(){
   const headSrc = currentAvatarHeadSrc();
