@@ -47,6 +47,7 @@
   #topbar.show{ display:block; }
   #topbar .wrap{ display:flex; align-items:center; justify-content:space-between; max-width:1040px; }
   .brand{ display:flex; align-items:center; gap:10px; }
+  .top-row{ display:contents; }
   .brand-back-link{ display:flex; align-items:center; gap:9px; text-decoration:none; color:inherit; padding:6px 10px 6px 6px; margin-left:-6px; border-radius:20px; transition:background .2s ease; }
   .brand-back-link:hover{ background:rgba(212,175,55,0.1); }
   .brand-back-link svg{ color:var(--gold-soft); }
@@ -302,14 +303,15 @@
   @media(max-width:760px){
     .stats-panel{ grid-template-columns:1fr; }
     .chat-shell{ height:calc(100vh - 130px); border-radius:0; }
-    #topbar{ padding:12px 0; }
-    #topbar .wrap{ flex-wrap:wrap; justify-content:center; gap:10px 16px; padding:0 16px; }
+    #topbar{ padding:0; background:var(--white); }
+    #topbar .wrap{ flex-direction:column; align-items:stretch; padding:0; max-width:none; gap:0; }
+    #topbar .top-row{ display:flex; align-items:center; justify-content:space-between; padding:14px 18px; }
     #topbar .brand span{ display:none; }
     #topbar .brand img{ height:24px; }
-    .navtabs{ order:3; width:100%; justify-content:center; }
-    .navtab{ padding:8px 14px; font-size:0.78rem; }
-    .streak-pill{ font-size:0.7rem; }
-    #phase-dashboard, #phase-chat, #phase-avatar{ padding-top:104px; }
+    .streak-pill{ font-size:0.68rem; }
+    .navtabs{ width:100%; background:none; border:none; border-top:1px solid var(--line-strong); padding:8px; gap:6px; border-radius:0; }
+    .navtab{ flex:1; text-align:center; padding:10px 6px; font-size:0.8rem; }
+    #phase-dashboard, #phase-chat, #phase-avatar{ padding-top:136px; }
   }
 
   /* ---------- AVATAR STUDIO ---------- */
@@ -356,13 +358,15 @@
 <!-- TOP BAR -->
 <div id="topbar">
   <div class="wrap">
-    <div class="brand"><a href="index.html" class="brand-back-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><img src="images/coach-img-2-6f42546f50.png" alt="MOTION UF"><span>MOTION UF</span></a></div>
+    <div class="top-row">
+      <div class="brand"><a href="index.html" class="brand-back-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><img src="images/coach-img-2-6f42546f50.png" alt="MOTION UF"><span>MOTION UF</span></a></div>
+      <div class="streak-pill"><span class="mono" style="color:var(--gold-soft);">STREAK</span> <span id="topStreak">0</span> DAGAR</div>
+    </div>
     <div class="navtabs">
       <button class="navtab" data-nav="dashboard">Dashboard</button>
       <button class="navtab" data-nav="chat">Chatt</button>
       <button class="navtab" data-nav="avatar">Avatar</button>
     </div>
-    <div class="streak-pill"><span class="mono" style="color:var(--gold-soft);">STREAK</span> <span id="topStreak">0</span> DAGAR</div>
   </div>
 </div>
 
