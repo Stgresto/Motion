@@ -350,7 +350,7 @@
 <!-- MINI COACH MASCOT -->
 <div id="mascot-widget">
   <div class="mascot-bubble" id="mascotBubble">Hej! Jag finns här genom hela passet.</div>
-  <div class="mascot-orb" id="mascotOrb"><img id="mascotOrbImg" src="images/coach-img-1-2f362348a9.jpg" alt="Din coach"></div>
+  <div class="mascot-orb" id="mascotOrb"><img id="mascotOrbImg" src="images/avatar-runner.jpg" alt="Din coach"></div>
 </div>
 
 <!-- TOP BAR -->
@@ -562,7 +562,7 @@
 <section class="phase" id="phase-chat">
   <div class="chat-shell glass">
     <div class="chat-head">
-      <img src="images/coach-img-1-2f362348a9.jpg" id="chatHeadAvatar" alt="" style="border-radius:50%; object-fit:cover; object-position:center 22%;">
+      <img src="images/avatar-runner.jpg" id="chatHeadAvatar" alt="" style="border-radius:50%; object-fit:cover; object-position:center 22%;">
       <div><h3>Din AI-coach</h3><p>Fråga om passet, kost, sömn eller vanor — och säg hur du mår.</p></div>
     </div>
     <div class="chat-log" id="chatLog"></div>
@@ -590,24 +590,44 @@
     </div>
 
     <div class="avatar-picker-grid" id="avatarPickerGrid">
-      <div class="avatar-pick-card" data-avatar="zara">
-        <div class="pick-circle"><img src="images/coach-img-3-0dfcc0b7f9.jpg" alt="Zara"></div>
-        <span class="pick-name">Zara</span>
+      <div class="avatar-pick-card" data-avatar="runner">
+        <div class="pick-circle"><img src="images/avatar-runner.jpg" alt="Löparen"></div>
         <span class="pick-check">✓</span>
       </div>
-      <div class="avatar-pick-card" data-avatar="theo">
-        <div class="pick-circle"><img src="images/coach-img-1-2f362348a9.jpg" alt="Theo"></div>
-        <span class="pick-name">Theo</span>
+      <div class="avatar-pick-card" data-avatar="gymnast">
+        <div class="pick-circle"><img src="images/avatar-gymnast.jpg" alt="Gymnasten"></div>
         <span class="pick-check">✓</span>
       </div>
-      <div class="avatar-pick-card" data-avatar="felix">
-        <div class="pick-circle"><img src="images/coach-img-4-6ff3e86cff.jpg" alt="Felix"></div>
-        <span class="pick-name">Felix</span>
+      <div class="avatar-pick-card" data-avatar="basketball">
+        <div class="pick-circle"><img src="images/avatar-basketball.jpg" alt="Basketspelaren"></div>
         <span class="pick-check">✓</span>
       </div>
-      <div class="avatar-pick-card" data-avatar="nova">
-        <div class="pick-circle"><img src="images/coach-img-5-c88d41a62b.jpg" alt="Nova"></div>
-        <span class="pick-name">Nova</span>
+      <div class="avatar-pick-card" data-avatar="swimmer">
+        <div class="pick-circle"><img src="images/avatar-swimmer.jpg" alt="Simmaren"></div>
+        <span class="pick-check">✓</span>
+      </div>
+      <div class="avatar-pick-card" data-avatar="cyclist">
+        <div class="pick-circle"><img src="images/avatar-cyclist.jpg" alt="Cyklisten"></div>
+        <span class="pick-check">✓</span>
+      </div>
+      <div class="avatar-pick-card" data-avatar="footballer">
+        <div class="pick-circle"><img src="images/avatar-footballer.jpg" alt="Fotbollsspelaren"></div>
+        <span class="pick-check">✓</span>
+      </div>
+      <div class="avatar-pick-card" data-avatar="tennis">
+        <div class="pick-circle"><img src="images/avatar-tennis.jpg" alt="Tennisspelaren"></div>
+        <span class="pick-check">✓</span>
+      </div>
+      <div class="avatar-pick-card" data-avatar="volleyball">
+        <div class="pick-circle"><img src="images/avatar-volleyball.jpg" alt="Volleybollspelaren"></div>
+        <span class="pick-check">✓</span>
+      </div>
+      <div class="avatar-pick-card" data-avatar="rugby">
+        <div class="pick-circle"><img src="images/avatar-rugby.jpg" alt="Rugbyspelaren"></div>
+        <span class="pick-check">✓</span>
+      </div>
+      <div class="avatar-pick-card" data-avatar="hockey">
+        <div class="pick-circle"><img src="images/avatar-hockey.jpg" alt="Hockeyspelaren"></div>
         <span class="pick-check">✓</span>
       </div>
     </div>
@@ -911,12 +931,18 @@ function setActiveTab(name){ document.querySelectorAll('.navtab').forEach(t => t
 
 /* ============ 3D MINI COACH MASCOT ============ */
 const AVATARS = {
-  zara: { head:'images/coach-img-3-0dfcc0b7f9.jpg', full:'images/coach-img-6-77972e18a2.png' },
-  theo: { head:'images/coach-img-1-2f362348a9.jpg', full:'images/coach-img-7-a61f437e4a.png' },
-  felix: { head:'images/coach-img-4-6ff3e86cff.jpg', full:'images/coach-img-8-fc507d43ce.png' },
-  nova: { head:'images/coach-img-5-c88d41a62b.jpg', full:'images/coach-img-9-7330a640c2.png' },
+  runner: { head:'images/avatar-runner.jpg' },
+  gymnast: { head:'images/avatar-gymnast.jpg' },
+  basketball: { head:'images/avatar-basketball.jpg' },
+  swimmer: { head:'images/avatar-swimmer.jpg' },
+  cyclist: { head:'images/avatar-cyclist.jpg' },
+  footballer: { head:'images/avatar-footballer.jpg' },
+  tennis: { head:'images/avatar-tennis.jpg' },
+  volleyball: { head:'images/avatar-volleyball.jpg' },
+  rugby: { head:'images/avatar-rugby.jpg' },
+  hockey: { head:'images/avatar-hockey.jpg' },
 };
-let avatarParams = store.get('muf_avatar') || { id:'theo' };
+let avatarParams = store.get('muf_avatar') || { id:'runner' };
 
 const MASCOT_PHASE_LINES = {
   'phase-dashboard': 'Här är din vecka. Inga ursäkter — bara ett kort i taget.',
@@ -941,12 +967,12 @@ function mascotSpeak(text, voice){
   if (voice) speak(text);
 }
 function currentAvatarHeadSrc(){
-  const a = AVATARS[avatarParams.id] || AVATARS.theo;
+  const a = AVATARS[avatarParams.id] || AVATARS.runner;
   return a.head;
 }
 function currentAvatarFullSrc(){
-  const a = AVATARS[avatarParams.id] || AVATARS.theo;
-  return a.full;
+  const a = AVATARS[avatarParams.id] || AVATARS.runner;
+  return a.head;
 }
 function applyAvatarEverywhere(){
   const headSrc = currentAvatarHeadSrc();
