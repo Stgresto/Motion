@@ -285,6 +285,43 @@
   .wl-success.show{ display:block; }
   .wl-success-icon{ width:44px; height:44px; border-radius:50%; background:var(--olive); color:var(--white); display:flex; align-items:center; justify-content:center; font-size:1.3rem; margin:0 auto 16px; }
   .wl-success p{ color:var(--ink-soft); font-size:0.95rem; line-height:1.6; }
+
+  /* MOBILE NAV (hamburger) */
+  .nav-burger{ display:none; flex-direction:column; justify-content:center; gap:5px; width:36px; height:36px; background:none; border:none; cursor:pointer; padding:0; }
+  .nav-burger span{ display:block; width:22px; height:1.5px; background:var(--white); transition:all .25s ease; }
+  nav.scrolled .nav-burger span{ background:var(--charcoal); }
+  .nav-burger.open span:nth-child(1){ transform:translateY(6.5px) rotate(45deg); }
+  .nav-burger.open span:nth-child(2){ opacity:0; }
+  .nav-burger.open span:nth-child(3){ transform:translateY(-6.5px) rotate(-45deg); }
+  .mobile-menu{ display:none; flex-direction:column; gap:2px; background:var(--white); border-top:1px solid var(--line); overflow:hidden; max-height:0; transition:max-height .35s ease; }
+  .mobile-menu.open{ max-height:500px; }
+  .mobile-menu a{ padding:16px 24px; color:var(--charcoal); text-decoration:none; border-bottom:1px solid var(--line); font-size:0.95rem; }
+  .mobile-menu .btn{ margin:16px 24px; text-align:center; }
+
+  /* MOBILE LAYOUT TIGHTENING */
+  @media (max-width:640px){
+    .nav-cta-desktop{ display:none; }
+    .nav-burger{ display:flex; }
+    .mobile-menu{ display:flex; }
+
+    .hero{ min-height:88vh; padding-top:96px; align-items:flex-end; }
+    .hero h1{ font-size:clamp(2.4rem, 9vw, 3rem); }
+    .hero .lead{ font-size:0.95rem; }
+    .hero-content{ padding-bottom:28px; }
+
+    section{ padding:56px 0; }
+    .section-head{ margin-bottom:32px; }
+    .stats-strip{ padding:36px 0; }
+    .anywhere{ padding:56px 0; }
+    .science{ padding:48px 0; }
+    .science .section-head{ margin-bottom:24px; }
+    .editorial-final{ padding:64px 0 72px; }
+    .surprise{ padding:44px 0; }
+
+    h2{ font-size:clamp(1.6rem, 7vw, 2rem) !important; }
+    .qcards{ margin-bottom:32px; }
+    .deck-grid{ gap:32px; }
+  }
 </style>
 </head>
 <body>
@@ -299,6 +336,17 @@
       <a href="#science">Vetenskapen</a>
       <a href="motion-ai-coach.html">Planerare</a>
     </div>
+    <button onclick="openWaitlist()" class="btn btn-dark nav-cta-desktop">Skaffa din kortlek</button>
+    <button class="nav-burger" id="navBurger" aria-label="Meny" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#how">Så funkar det</a>
+    <a href="#deck">Kortleken</a>
+    <a href="#anywhere">Träna var som helst</a>
+    <a href="#science">Vetenskapen</a>
+    <a href="motion-ai-coach.html">Planerare</a>
     <button onclick="openWaitlist()" class="btn btn-dark">Skaffa din kortlek</button>
   </div>
 </nav>
@@ -562,6 +610,21 @@
 <script>
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 30));
+
+  // mobile hamburger menu
+  const navBurger = document.getElementById('navBurger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  navBurger.addEventListener('click', () => {
+    const open = navBurger.classList.toggle('open');
+    mobileMenu.classList.toggle('open', open);
+    navBurger.setAttribute('aria-expanded', open);
+  });
+  mobileMenu.querySelectorAll('a, button').forEach(el => el.addEventListener('click', () => {
+    navBurger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    navBurger.setAttribute('aria-expanded', false);
+  }));
+
 
   // scroll reveal
   const io = new IntersectionObserver((entries) => {
