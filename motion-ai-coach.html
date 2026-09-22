@@ -160,6 +160,39 @@
   .schedule-form.show{ display:flex; }
   .schedule-form label{ display:flex; flex-direction:column; gap:6px; font-size:0.78rem; color:var(--chalk-dim); font-family:'JetBrains Mono',monospace; letter-spacing:0.04em; }
   .schedule-form input[type="time"]{ background:var(--glass); border:1px solid var(--line-strong); border-radius:4px; padding:9px 12px; color:var(--chalk); font-family:'Inter',sans-serif; font-size:0.95rem; }
+
+  /* ---------- WEEKLY TIMETABLE GRID (Skola24-style) ---------- */
+  .week-grid{ border:1px solid var(--line); border-radius:4px; overflow:hidden; margin-bottom:4px; }
+  .wg-header{ display:flex; border-bottom:1.5px solid var(--line-strong); background:var(--beige); }
+  .wg-time-label{ width:38px; flex-shrink:0; }
+  .wg-daycols{ flex:1; display:flex; }
+  .wg-daycol-header{ flex:1; text-align:center; padding:9px 2px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.78rem; color:var(--chalk-dim); border-left:1px solid var(--line); }
+  .wg-daycol-header:first-child{ border-left:none; }
+  .wg-daycol-header.is-today{ color:#8c6f37; background:rgba(184,147,90,0.1); }
+  .wg-body{ position:relative; display:flex; }
+  .wg-hourlines{ position:absolute; left:38px; right:0; top:0; bottom:0; }
+  .wg-gridline{ position:absolute; left:0; right:0; border-top:1px solid var(--line); }
+  .wg-time-axis{ position:relative; width:38px; flex-shrink:0; }
+  .wg-hour-label{ position:absolute; right:6px; font-family:'JetBrains Mono',monospace; font-size:0.6rem; color:var(--chalk-faint); transform:translateY(-50%); }
+  .wg-columns{ flex:1; display:flex; position:relative; }
+  .wg-col{ flex:1; position:relative; border-left:1px solid var(--line); cursor:pointer; transition:background .15s ease; }
+  .wg-col:first-child{ border-left:none; }
+  .wg-col:hover{ background:rgba(184,147,90,0.04); }
+  .wg-col.is-today{ background:rgba(184,147,90,0.05); }
+  .wg-col.selected{ background:rgba(184,147,90,0.1); }
+  .wg-block{ position:absolute; left:2px; right:2px; border-radius:2px; padding:3px 4px; overflow:hidden; font-family:'Plus Jakarta Sans',sans-serif; font-weight:600; font-size:0.62rem; line-height:1.2; color:#4a4238; background:#f0ece2; border:1px solid rgba(140,111,55,0.15); pointer-events:none; }
+  .wg-block.workout{ background:var(--gold); color:#181410; border-color:var(--gold); font-weight:700; z-index:2; }
+  .wg-block.meal{ background:#f4ede0; color:#6b5a3a; }
+  .wg-block.rest, .wg-block.wake{ background:#f2f1ee; color:#8a8a86; }
+  .wg-detail-head{ display:flex; align-items:center; justify-content:space-between; padding:16px 4px 8px; }
+  .wg-detail-day{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.95rem; color:var(--chalk); }
+  @media(max-width:760px){
+    .wg-daycol-header{ font-size:0.68rem; padding:7px 1px; }
+    .wg-block{ font-size:0.56rem; padding:2px 3px; }
+    .wg-time-label, .wg-time-axis{ width:28px; }
+    .wg-hourlines{ left:28px; }
+    .wg-hour-label{ font-size:0.54rem; right:4px; }
+  }
   .today-meta .num{ font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--gold-soft); }
   .today-meta .lbl{ font-size:0.7rem; color:var(--chalk-faint); text-transform:uppercase; letter-spacing:0.07em; margin-top:2px; }
   .today-card.rest .today-meta .num{ color:var(--sage-soft); }
@@ -312,19 +345,19 @@
     .wrap{ padding:0 16px; }
     .phase{ padding:80px 0 40px; }
     .stats-panel{ grid-template-columns:1fr; }
-    .chat-shell{ height:calc(100vh - 100px); border-radius:0; }
+    .chat-shell{ height:calc(100vh - 80px); border-radius:0; }
     #topbar{ padding:0; background:var(--white); }
     #topbar .wrap{ flex-direction:column; align-items:stretch; padding:0; max-width:none; gap:0; }
-    #topbar .top-row{ display:flex; align-items:center; justify-content:space-between; padding:9px 16px; }
+    #topbar .top-row{ display:flex; align-items:center; justify-content:space-between; padding:6px 14px; }
     #topbar .brand span{ display:none; }
     #topbar .brand img{ height:20px; }
     .streak-pill{ font-size:0.64rem; }
-    .navtabs{ width:100%; background:none; border:none; border-top:1px solid var(--line-strong); padding:5px; gap:4px; border-radius:0; }
-    .navtab{ flex:1; text-align:center; padding:8px 6px; font-size:0.78rem; }
-    #phase-dashboard{ padding-top:96px; }
-    #phase-chat{ padding-top:96px; }
-    #phase-avatar{ padding-top:96px; }
-    #phase-chat .wrap{ height:calc(100vh - 96px); }
+    .navtabs{ width:100%; background:none; border:none; border-top:1px solid var(--line-strong); padding:4px; gap:3px; border-radius:0; }
+    .navtab{ flex:1; text-align:center; padding:6px 6px; font-size:0.74rem; }
+    #phase-dashboard{ padding-top:80px; }
+    #phase-chat{ padding-top:80px; }
+    #phase-avatar{ padding-top:80px; }
+    #phase-chat .wrap{ height:calc(100vh - 80px); }
 
     .today-card, .schedule-card{ padding:20px 16px; margin-bottom:16px; }
     .schedule-head{ margin-bottom:16px; gap:10px; }
@@ -386,7 +419,7 @@
 <div id="topbar">
   <div class="wrap">
     <div class="top-row">
-      <div class="brand"><a href="index.html" class="brand-back-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><img src="images/coach-img-2-6f42546f50.png" alt="MOTION UF"><span>MOTION UF</span></a></div>
+      <div class="brand"><a href="index.html" class="brand-back-link" id="topbarBackLink"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><img src="images/coach-img-2-6f42546f50.png" alt="MOTION UF"><span>MOTION UF</span></a></div>
       <div class="streak-pill"><span class="mono" style="color:var(--gold-soft);">STREAK</span> <span id="topStreak">0</span> DAGAR</div>
     </div>
     <div class="navtabs">
@@ -548,7 +581,18 @@
         </div>
       </div>
       <input type="file" id="scheduleFileInput" accept="image/*" style="display:none">
-      <div id="weekScheduleAccordion"></div>
+      <div class="week-grid" id="weekGrid">
+        <div class="wg-header">
+          <div class="wg-time-label"></div>
+          <div class="wg-daycols" id="wgHeader"></div>
+        </div>
+        <div class="wg-body" id="wgBody">
+          <div class="wg-hourlines" id="wgHourlines"></div>
+          <div class="wg-time-axis" id="wgTimeAxis"></div>
+          <div class="wg-columns" id="wgColumns"></div>
+        </div>
+      </div>
+      <div id="weekGridDetail"></div>
       <form id="scheduleForm" class="schedule-form">
         <label>Vaken kl (alla dagar)<input type="time" id="inpWakeTime"></label>
         <label>Träningstid för <span id="scheduleFormDayLabel">idag</span><input type="time" id="inpTrainTime"></label>
@@ -966,6 +1010,21 @@ function showPhase(id){
   const widget = document.getElementById('mascot-widget');
   if (widget) widget.style.display = (id === 'phase-chat' || id === 'phase-avatar') ? 'none' : 'flex';
 }
+function initTopbarBack(){
+  const link = document.getElementById('topbarBackLink');
+  if (!link) return;
+  link.addEventListener('click', (e) => {
+    const active = document.querySelector('.navtab.active');
+    const tab = active ? active.dataset.nav : null;
+    if (tab === 'chat' || tab === 'avatar'){
+      e.preventDefault();
+      setActiveTab('dashboard');
+      renderDashboard();
+      showPhase('phase-dashboard');
+    }
+  });
+}
+
 function showTopbar(show){ document.getElementById('topbar').classList.toggle('show', show); const b = document.getElementById('backToSite'); if (b) b.style.display = show ? 'none' : 'flex'; }
 function setActiveTab(name){ document.querySelectorAll('.navtab').forEach(t => t.classList.toggle('active', t.dataset.nav === name)); }
 
@@ -1065,6 +1124,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initPrefs();
   initScheduleForm();
   initScheduleUpload();
+  initTopbarBack();
 
   document.getElementById('btnStartWorkout').addEventListener('click', startWorkoutSession);
   document.getElementById('btnExportProgram').addEventListener('click', generateTrainingProgramFile);
@@ -1336,48 +1396,76 @@ function renderWeekProgress(){
 
 function renderSchedule(){
   renderWeekProgress();
-  const acc = document.getElementById('weekScheduleAccordion');
-  acc.innerHTML = plan.week.map((d, i) => {
-    const isToday = i === todayIdx();
-    const isOpen = openScheduleDays.has(i);
-    const tag = d.active ? `${schedule.trainTimes[i]} · ${d.cardCount} kort` : 'Vila';
-    const rows = renderDayRowsHtml(buildDayRows(i));
-    return `
-      <div class="week-day-card ${isToday ? 'is-today' : ''} ${isOpen ? 'open' : ''}" data-day="${i}">
-        <div class="week-day-head" data-toggle="${i}">
-          <div class="week-day-left">
-            <span class="week-day-name">${DAY_SHORT[i]}${isToday ? ' · idag' : ''}</span>
-            <span class="week-day-tag ${d.active ? 'active' : ''}">${tag}</span>
-          </div>
-          <span class="week-day-chevron">▸</span>
-        </div>
-        <div class="week-day-body">
-          ${rows}
-          <button type="button" class="week-day-edit" data-editday="${i}">Ändra tid för ${DAY_SHORT[i]}</button>
-        </div>
-      </div>`;
+  renderWeekGrid();
+}
+
+const WG_START = 6*60, WG_END = 22*60, WG_RANGE = WG_END - WG_START, WG_PXPERMIN = 0.6;
+
+function renderWeekGrid(){
+  const header = document.getElementById('wgHeader');
+  const cols = document.getElementById('wgColumns');
+  const hourlines = document.getElementById('wgHourlines');
+  const timeaxis = document.getElementById('wgTimeAxis');
+  const bodyEl = document.getElementById('wgBody');
+  if (!cols) return;
+
+  const bodyHeight = WG_RANGE * WG_PXPERMIN;
+  bodyEl.style.height = bodyHeight + 'px';
+
+  header.innerHTML = plan.week.map((d,i) => `<div class="wg-daycol-header ${i===todayIdx()?'is-today':''}">${DAY_SHORT[i]}</div>`).join('');
+
+  let linesHtml = '', labelsHtml = '';
+  for (let t = WG_START; t <= WG_END; t += 60){
+    const y = (t - WG_START) * WG_PXPERMIN;
+    linesHtml += `<div class="wg-gridline" style="top:${y}px;"></div>`;
+    if ((t/60) % 2 === 0) labelsHtml += `<div class="wg-hour-label" style="top:${y}px;">${String(Math.floor(t/60)).padStart(2,'0')}</div>`;
+  }
+  hourlines.innerHTML = linesHtml;
+  timeaxis.innerHTML = labelsHtml;
+
+  cols.innerHTML = plan.week.map((d, i) => {
+    const rows = buildDayRows(i).filter(r => r.title !== 'Vaken');
+    const blocksHtml = rows.map(r => {
+      const dur = r.workout ? ((d.active) ? (profile.minutes || 20) : 15) : 30;
+      const top = Math.max(0, (r.m - WG_START) * WG_PXPERMIN);
+      const height = Math.max(15, dur * WG_PXPERMIN);
+      const cls = r.workout ? 'workout' : (r.type || '');
+      const label = r.workout ? `Träning · ${d.cardCount||0} kort` : r.title;
+      return `<div class="wg-block ${cls}" style="top:${top}px; height:${height}px;">${escapeHtml(label)}</div>`;
+    }).join('');
+    return `<div class="wg-col ${i===todayIdx()?'is-today':''}" data-day="${i}">${blocksHtml}</div>`;
   }).join('');
 
-  acc.querySelectorAll('[data-toggle]').forEach(head => {
-    head.addEventListener('click', () => {
-      const i = +head.dataset.toggle;
-      if (openScheduleDays.has(i)) openScheduleDays.delete(i); else openScheduleDays.add(i);
-      renderSchedule();
-    });
+  cols.querySelectorAll('.wg-col').forEach(col => {
+    col.addEventListener('click', () => showWeekGridDetail(+col.dataset.day));
   });
-  acc.querySelectorAll('[data-editday]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      scheduleSelectedDay = +btn.dataset.editday;
-      document.getElementById('scheduleForm').classList.add('show');
-      openScheduleForm();
-      btn.closest('.schedule-form') || document.getElementById('scheduleForm').scrollIntoView({ behavior:'smooth', block:'center' });
-    });
+
+  showWeekGridDetail(scheduleSelectedDay != null && scheduleSelectedDay >= 0 ? scheduleSelectedDay : todayIdx());
+}
+
+function showWeekGridDetail(dayIdx){
+  scheduleSelectedDay = dayIdx;
+  document.querySelectorAll('.wg-col').forEach(c => c.classList.toggle('selected', +c.dataset.day === dayIdx));
+
+  const detail = document.getElementById('weekGridDetail');
+  const rows = buildDayRows(dayIdx);
+  const isToday = dayIdx === todayIdx();
+  detail.innerHTML = `
+    <div class="wg-detail-head">
+      <span class="wg-detail-day">${DAY_SHORT[dayIdx]}${isToday ? ' · idag' : ''}</span>
+      <button type="button" class="week-day-edit" id="btnEditThisDay">Ändra tid</button>
+    </div>
+    ${renderDayRowsHtml(rows)}
+  `;
+  document.getElementById('btnEditThisDay').addEventListener('click', () => {
+    document.getElementById('scheduleForm').classList.add('show');
+    openScheduleForm();
   });
-  acc.querySelectorAll('[data-ask]').forEach(el => {
-    el.addEventListener('click', (e) => { e.stopPropagation(); askCoachAbout(el.dataset.ask); });
+  detail.querySelectorAll('[data-ask]').forEach(el => {
+    el.addEventListener('click', () => askCoachAbout(el.dataset.ask));
   });
 }
+
 
 function askCoachAbout(message){
   setActiveTab('chat');
