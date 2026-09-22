@@ -118,18 +118,23 @@
   .today-card p{ color:var(--chalk-dim); font-size:0.96rem; }
   .today-meta{ display:flex; gap:30px; margin:24px 0 30px; flex-wrap:wrap; }
 
-  .schedule-card{ border-radius:6px; padding:32px 36px; margin-bottom:28px; }
+  .schedule-card{ border-radius:4px; padding:32px 36px; margin-bottom:28px; border:1px solid var(--line); }
   .schedule-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; flex-wrap:wrap; gap:12px; }
+  .schedule-head-title{ display:flex; align-items:center; gap:16px; }
+  .week-progress{ display:flex; align-items:center; gap:9px; }
+  .week-progress svg{ flex-shrink:0; }
+  .week-progress span{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; letter-spacing:0.03em; color:var(--chalk-dim); text-transform:uppercase; }
   .schedule-head-actions{ display:flex; gap:10px; flex-wrap:wrap; }
   .schedule-head h3{ font-size:1.1rem; }
-  .schedule-edit-btn{ background:none; border:1px solid var(--line-strong); color:var(--chalk-dim); font-size:0.78rem; padding:7px 14px; border-radius:20px; cursor:pointer; font-family:'JetBrains Mono',monospace; letter-spacing:0.04em; transition:all .2s ease; }
+  .schedule-edit-btn{ background:none; border:1px solid var(--line-strong); color:var(--chalk-dim); font-size:0.76rem; padding:8px 15px; border-radius:2px; cursor:pointer; font-family:'JetBrains Mono',monospace; letter-spacing:0.05em; text-transform:uppercase; transition:all .2s ease; }
   .schedule-edit-btn:hover{ border-color:var(--gold); color:var(--gold); }
-  .week-day-card{ border:1px solid var(--line); border-radius:10px; margin-bottom:10px; overflow:hidden; transition:all .2s ease; box-shadow:0 2px 10px rgba(160,130,80,0.04); }
+  .week-day-card{ border:1px solid var(--line); border-radius:0; margin-bottom:0; overflow:hidden; transition:all .2s ease; border-top:none; }
+  .week-day-card:first-child{ border-top:1px solid var(--line); }
   .week-day-card.is-today{ border-color:var(--gold-dim); }
   .week-day-head{ display:flex; align-items:center; justify-content:space-between; padding:16px 18px; cursor:pointer; user-select:none; }
   .week-day-head:hover{ background:rgba(184,147,90,0.05); }
   .week-day-left{ display:flex; align-items:center; gap:14px; }
-  .week-day-name{ font-family:'Cormorant Garamond',serif; font-size:1.15rem; color:var(--chalk); min-width:56px; }
+  .week-day-name{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:1rem; color:var(--chalk); min-width:56px; }
   .week-day-card.is-today .week-day-name{ color:var(--gold); }
   .week-day-tag{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; letter-spacing:0.04em; color:var(--chalk-dim); background:var(--glass-strong); border:1px solid var(--line); padding:4px 10px; border-radius:20px; }
   .week-day-tag.active{ color:#8c6f37; background:rgba(184,147,90,0.14); border-color:rgba(184,147,90,0.3); }
@@ -137,19 +142,19 @@
   .week-day-card.open .week-day-chevron{ transform:rotate(90deg); }
   .week-day-body{ display:none; padding:4px 18px 18px; }
   .week-day-card.open .week-day-body{ display:block; }
-  .sched-row{ display:flex; gap:14px; align-items:flex-start; padding:14px 16px; margin-bottom:8px; background:#fff; border:1px solid rgba(190,160,110,0.22); border-radius:12px; box-shadow:0 2px 10px rgba(160,130,80,0.05); transition:all .2s ease; }
+  .sched-row{ display:flex; gap:14px; align-items:flex-start; padding:16px 4px; border-bottom:1px solid var(--line); transition:all .2s ease; }
   .sched-row:hover{ border-color:var(--gold); box-shadow:0 4px 15px rgba(184,151,89,0.12); }
   .sched-row:last-child{ margin-bottom:0; }
   .sched-time{ font-family:'JetBrains Mono',monospace; font-size:0.76rem; font-weight:600; color:var(--gold-soft); background:rgba(184,147,90,0.12); border-radius:8px; padding:5px 9px; flex-shrink:0; white-space:nowrap; }
   .sched-content{ flex:1; }
-  .sched-title{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:600; font-size:0.98rem; color:var(--chalk); margin-bottom:3px; }
+  .sched-title{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:600; font-size:0.98rem; color:var(--chalk); margin-bottom:3px; display:flex; align-items:center; gap:7px; }
+  .sched-icn{ font-size:0.95em; }
   .sched-row.workout .sched-title{ color:#8c6f37; font-weight:700; }
   .sched-row.workout{ background:rgba(184,147,90,0.08); border-color:rgba(184,147,90,0.35); border-left:3px solid var(--gold); }
   .sched-tip{ font-size:0.87rem; color:#3a3530; line-height:1.5; }
-  .sched-ask{ display:inline-flex; align-items:center; gap:5px; margin-top:9px; font-size:0.78rem; font-weight:600; color:#8c6f37; cursor:pointer; background:rgba(184,147,90,0.1); border:1px solid rgba(184,147,90,0.3); padding:6px 13px; border-radius:20px; transition:background .2s ease; }
-  .sched-ask::before{ content:'✦'; font-size:0.8em; }
-  .sched-ask:hover{ background:rgba(184,147,90,0.2); }
-  .week-day-edit{ background:var(--glass); border:1px solid var(--line-strong); color:var(--chalk-dim); font-size:0.72rem; padding:7px 14px; border-radius:20px; cursor:pointer; font-family:'JetBrains Mono',monospace; margin-top:14px; transition:all .2s ease; }
+  .sched-ask{ display:inline-flex; align-items:center; gap:5px; margin-top:9px; font-size:0.76rem; font-weight:600; letter-spacing:0.02em; color:#8c6f37; cursor:pointer; background:none; border:none; border-bottom:1px solid rgba(184,147,90,0.4); padding:0; transition:border-color .2s ease; }
+  .sched-ask:hover{ color:var(--gold); border-color:var(--gold); }
+  .week-day-edit{ background:none; border:1px solid var(--line-strong); color:var(--chalk-dim); font-size:0.7rem; padding:8px 14px; border-radius:2px; cursor:pointer; font-family:'JetBrains Mono',monospace; letter-spacing:0.04em; text-transform:uppercase; margin-top:16px; transition:all .2s ease; }
   .week-day-edit:hover{ border-color:var(--gold-soft); color:var(--gold-soft); background:rgba(184,147,90,0.06); }
   .schedule-form{ display:none; gap:14px; align-items:flex-end; margin-top:22px; padding-top:22px; border-top:1px solid var(--line); flex-wrap:wrap; }
   .schedule-form.show{ display:flex; }
@@ -184,34 +189,35 @@
   /* ---------- CHAT (bigger, better) ---------- */
   #phase-chat{ padding-top:96px; padding-bottom:0; }
   #phase-chat .wrap{ max-width:100%; padding:0; height:calc(100vh - 96px); }
-  .chat-shell{ max-width:100%; margin:0; border-radius:0; overflow:hidden; height:calc(100vh - 96px); display:flex; flex-direction:column; border-left:none; border-right:none; border-bottom:none; }
-  .chat-head{ padding:26px 32px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:14px; }
+  .chat-shell{ max-width:100%; margin:0; border-radius:0; overflow:hidden; height:calc(100vh - 96px); display:flex; flex-direction:column; border-left:none; border-right:none; border-bottom:none; background:var(--white); }
+  .chat-head{ padding:22px 28px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:14px; }
+  .chat-head h3{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:1.05rem; color:var(--chalk); margin:0 0 2px; }
+  .chat-head p{ font-size:0.85rem; color:var(--chalk-dim); margin:0; }
   .chat-head img{ width:36px; height:36px; filter:drop-shadow(0 0 10px rgba(212,175,55,0.4)); }
   .chat-head div h3{ font-size:1.1rem; }
-  .chat-head div p{ font-size:0.8rem; color:var(--chalk-dim); }
-  .chat-log{ flex:1; overflow-y:auto; padding:32px; display:flex; flex-direction:column; gap:16px; }
+  .chat-log{ flex:1; overflow-y:auto; padding:28px 32px; display:flex; flex-direction:column; gap:16px; }
   .bubble-row{ display:flex; align-items:flex-end; gap:10px; }
   .bubble-row.user{ justify-content:flex-end; }
-  .chat-avatar-chip{ width:30px; height:30px; border-radius:50%; background-image:var(--avatar-head-url); background-size:cover; background-position:center 12%; border:1px solid var(--gold-dim); flex-shrink:0; }
-  .bubble{ padding:15px 20px; border-radius:4px; font-size:0.95rem; max-width:68%; line-height:1.55; }
-  .bubble-row.user .bubble{ background:linear-gradient(155deg, var(--gold-soft), var(--gold)); color:#181410; font-weight:500; border-bottom-right-radius:2px; }
-  .chat-img-thumb{ display:block; max-width:220px; width:100%; border-radius:8px; margin-bottom:10px; border:1px solid rgba(24,20,16,0.15); }
-  .bubble-row.ai .bubble{ background:var(--glass-strong); border:1px solid var(--line); border-bottom-left-radius:2px; }
-  .chat-h{ font-family:'Cormorant Garamond',serif; font-weight:600; font-size:1.05rem; color:var(--gold-soft); margin:14px 0 6px; }
+  .chat-avatar-chip{ width:32px; height:32px; border-radius:50%; background-image:var(--avatar-head-url); background-size:cover; background-position:center 12%; border:1.5px solid var(--gold-dim); flex-shrink:0; }
+  .bubble{ padding:14px 18px; border-radius:6px; font-size:0.95rem; max-width:70%; line-height:1.55; font-family:'Plus Jakarta Sans',sans-serif; }
+  .bubble-row.user .bubble{ background:var(--gold); color:#181410; font-weight:500; border-bottom-right-radius:6px; }
+  .chat-img-thumb{ display:block; max-width:220px; width:100%; border-radius:4px; margin-bottom:10px; border:1px solid rgba(24,20,16,0.15); }
+  .bubble-row.ai .bubble{ background:var(--white); border:1px solid var(--line); border-bottom-left-radius:6px; box-shadow:0 2px 10px rgba(160,130,80,0.05); }
+  .chat-h{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.98rem; color:var(--gold-soft); margin:14px 0 6px; }
   .chat-h:first-child{ margin-top:0; }
   .chat-p{ margin:0 0 10px; }
   .chat-p:last-child{ margin-bottom:0; }
   .chat-ul, .chat-ol{ margin:0 0 10px; padding-left:1.25em; }
   .chat-ul li, .chat-ol li{ margin-bottom:4px; }
   .bubble strong{ color:var(--gold-soft); }
-  .dl-btn{ display:block; margin-top:12px; padding:8px 14px; border-radius:2px; border:1px solid var(--gold-dim); background:transparent; color:var(--gold-soft); font-size:0.78rem; font-weight:600; cursor:pointer; }
-  .dl-btn:hover{ background:rgba(184,147,90,0.1); }
+  .dl-btn{ display:inline-flex; align-items:center; gap:6px; margin-top:12px; padding:8px 15px; border-radius:2px; border:1px solid rgba(184,147,90,0.3); background:rgba(184,147,90,0.08); color:#8c6f37; font-size:0.76rem; font-weight:600; letter-spacing:0.02em; cursor:pointer; transition:background .2s ease; }
+  .dl-btn:hover{ background:rgba(184,147,90,0.18); }
   .offline-tag{ display:block; margin-top:10px; font-family:'JetBrains Mono',monospace; font-size:0.66rem; letter-spacing:0.04em; color:var(--chalk-faint); text-transform:uppercase; }
-  .chat-suggestions{ padding:0 32px 16px; display:flex; gap:9px; flex-wrap:wrap; }
-  .sugg-chip{ padding:9px 16px; border-radius:2px; border:1px solid var(--line-strong); background:var(--glass); font-size:0.82rem; color:var(--chalk-dim); transition:all .2s ease; }
-  .sugg-chip:hover{ border-color:var(--gold-dim); color:var(--chalk); }
-  .chat-input-row{ padding:20px 24px; border-top:1px solid var(--line); display:flex; gap:12px; }
-  .chat-input-row input{ flex:1; border:1.5px solid var(--line-strong); border-radius:4px; padding:14px 22px; background:var(--glass); color:var(--chalk); }
+  .chat-suggestions{ padding:0 28px 16px; display:flex; gap:8px; flex-wrap:wrap; }
+  .sugg-chip{ display:inline-flex; align-items:center; gap:6px; padding:9px 16px; border-radius:2px; border:1px solid var(--line-strong); background:var(--white); font-size:0.8rem; font-weight:500; color:var(--chalk-dim); transition:all .2s ease; cursor:pointer; }
+  .sugg-chip:hover{ border-color:var(--gold); color:#8c6f37; background:rgba(184,147,90,0.06); }
+  .chat-input-row{ padding:16px 24px; border-top:1px solid var(--line); display:flex; gap:10px; background:var(--white); }
+  .chat-input-row input{ flex:1; border:1.5px solid var(--line-strong); border-radius:2px; padding:13px 20px; background:var(--beige); color:var(--chalk); font-family:'Plus Jakarta Sans',sans-serif; }
   .chat-input-row input::placeholder{ color:var(--chalk-faint); }
   .chat-input-row input:focus{ outline:none; border-color:var(--gold-dim); }
   .chat-send{ width:48px; height:48px; border-radius:50%; background:var(--gold); color:#181410; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .25s ease; }
@@ -303,17 +309,36 @@
   .complete-stats .lbl{ font-size:0.76rem; color:var(--chalk-faint); text-transform:uppercase; letter-spacing:0.06em; margin-top:4px; }
 
   @media(max-width:760px){
+    .wrap{ padding:0 16px; }
+    .phase{ padding:80px 0 40px; }
     .stats-panel{ grid-template-columns:1fr; }
-    .chat-shell{ height:calc(100vh - 130px); border-radius:0; }
+    .chat-shell{ height:calc(100vh - 100px); border-radius:0; }
     #topbar{ padding:0; background:var(--white); }
     #topbar .wrap{ flex-direction:column; align-items:stretch; padding:0; max-width:none; gap:0; }
-    #topbar .top-row{ display:flex; align-items:center; justify-content:space-between; padding:14px 18px; }
+    #topbar .top-row{ display:flex; align-items:center; justify-content:space-between; padding:9px 16px; }
     #topbar .brand span{ display:none; }
-    #topbar .brand img{ height:24px; }
-    .streak-pill{ font-size:0.68rem; }
-    .navtabs{ width:100%; background:none; border:none; border-top:1px solid var(--line-strong); padding:8px; gap:6px; border-radius:0; }
-    .navtab{ flex:1; text-align:center; padding:10px 6px; font-size:0.8rem; }
-    #phase-dashboard, #phase-chat, #phase-avatar{ padding-top:136px; }
+    #topbar .brand img{ height:20px; }
+    .streak-pill{ font-size:0.64rem; }
+    .navtabs{ width:100%; background:none; border:none; border-top:1px solid var(--line-strong); padding:5px; gap:4px; border-radius:0; }
+    .navtab{ flex:1; text-align:center; padding:8px 6px; font-size:0.78rem; }
+    #phase-dashboard{ padding-top:96px; }
+    #phase-chat{ padding-top:96px; }
+    #phase-avatar{ padding-top:96px; }
+    #phase-chat .wrap{ height:calc(100vh - 96px); }
+
+    .today-card, .schedule-card{ padding:20px 16px; margin-bottom:16px; }
+    .schedule-head{ margin-bottom:16px; gap:10px; }
+    .schedule-head-actions{ gap:8px; }
+    .schedule-edit-btn{ padding:7px 11px; font-size:0.7rem; }
+    .stat-box{ padding:16px 18px; }
+    .stats-panel{ gap:10px; margin-bottom:16px; }
+
+    .chat-head{ padding:14px 16px; gap:10px; }
+    .chat-log{ padding:16px; gap:12px; }
+    .chat-suggestions{ padding:0 16px 12px; gap:6px; }
+    .sugg-chip{ padding:7px 12px; font-size:0.76rem; }
+    .chat-input-row{ padding:10px 14px; }
+    .bubble{ max-width:82%; padding:11px 14px; }
   }
 
   /* ---------- AVATAR STUDIO ---------- */
@@ -507,9 +532,18 @@
 
     <div class="schedule-card glass" id="scheduleCard">
       <div class="schedule-head">
-        <h3>Veckoschema</h3>
+        <div class="schedule-head-title">
+          <h3>Veckoschema</h3>
+          <div class="week-progress" id="weekProgress">
+            <svg width="34" height="34" viewBox="0 0 34 34">
+              <circle cx="17" cy="17" r="14" fill="none" stroke="var(--line-strong)" stroke-width="2.5"/>
+              <circle id="weekProgressRing" cx="17" cy="17" r="14" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90 17 17)"/>
+            </svg>
+            <span id="weekProgressLabel">0/0 pass denna vecka</span>
+          </div>
+        </div>
         <div class="schedule-head-actions">
-          <button class="schedule-edit-btn" id="btnUploadSchedule">📸 Ladda upp skärmdump</button>
+          <button class="schedule-edit-btn" id="btnUploadSchedule">Ladda upp skärmdump</button>
           <button class="schedule-edit-btn" id="btnEditSchedule">Ändra vaken-tid</button>
         </div>
       </div>
@@ -573,7 +607,7 @@
     </div>
     <div class="chat-log" id="chatLog"></div>
     <div class="chat-suggestions" id="chatSuggestions">
-      <div class="sugg-chip" data-msg="Jag är trött idag">Jag är trött idag</div>
+      <div class="sugg-chip" data-msg="Jag är trött idag">Trött idag</div>
       <div class="sugg-chip" data-msg="Skapa ett träningsprogram åt mig">Träningsprogram</div>
       <div class="sugg-chip" data-msg="Gör en kostplan åt mig">Kostplan</div>
       <div class="sugg-chip" data-msg="Exportera en stretchrutin">Stretchrutin</div>
@@ -1246,17 +1280,17 @@ function buildDayRows(dayIdx){
   const duration = (dayPlan && dayPlan.active) ? (profile.minutes || 20) : 15;
 
   const rows = [];
-  rows.push({ m: wakeM, title: 'Vaken', tip: null, type:'rest' });
+  rows.push({ m: wakeM, title: 'Vaken', tip: null, type:'wake' });
   rows.push({ m: wakeM + 30, title: 'Frukost', tip: 'Bra grund — protein + långsamma kolhydrater håller energin jämn.', ask: 'Ge mig ett bra frukostförslag', type:'meal' });
 
   if (dayPlan && dayPlan.active){
     const snackM = Math.max(trainM - 45, wakeM + 10);
     const doneAlready = isToday && isDoneToday();
     if (snackM < trainM){
-      rows.push({ m: snackM, title: 'Litet mellanmål', tip: '🍌 En banan eller en handfull nötter — lätt energi utan att kännas full.', ask: 'Vad ska jag äta innan dagens pass?', type:'meal' });
+      rows.push({ m: snackM, title: 'Litet mellanmål', tip: 'En banan eller en handfull nötter — lätt energi utan att kännas full.', ask: 'Vad ska jag äta innan dagens pass?', type:'meal' });
     }
     rows.push({ m: trainM, title: `Träningspass · ${dayPlan.cardCount} kort`, tip: doneAlready ? '✓ Redan avklarat idag.' : `~${duration} min. Du vet inte vad du får förrän du skannar första kortet.`, workout:true });
-    rows.push({ m: trainM + duration + 5, title: 'Efter passet', tip: '🥤 Protein inom 30–60 min — t.ex. skyr, ett glas mjölk eller en proteinboll.', ask: 'Vad ska jag äta efter träningen idag?', type:'meal' });
+    rows.push({ m: trainM + duration + 5, title: 'Efter passet', tip: 'Protein inom 30–60 min — t.ex. skyr, ett glas mjölk eller en proteinboll.', ask: 'Vad ska jag äta efter träningen idag?', type:'meal' });
     rows.push({ m: Math.max(trainM + duration + 90, wakeM + 660), title: 'Middag', tip: 'Fyll på med grönsaker och protein inför morgondagen.', ask: 'Ge mig ett bra middagsförslag för ikväll', type:'meal' });
   } else {
     rows.push({ m: wakeM + 660, title: 'Middag', tip: 'Fyll på med grönsaker och protein inför morgondagen.', ask: 'Ge mig ett bra middagsförslag för ikväll', type:'meal' });
@@ -1279,7 +1313,29 @@ function renderDayRowsHtml(rows){
     </div>`).join('');
 }
 
+function renderWeekProgress(){
+  const totalActive = plan.week.filter(d => d.active).length;
+  const now = new Date();
+  const completed = progress.history.filter(h => {
+    const d = new Date(h.date);
+    const diffDays = Math.floor((now - d) / (1000*60*60*24));
+    return diffDays >= 0 && diffDays < 7;
+  }).length;
+  const pct = totalActive ? Math.min(1, completed / totalActive) : 0;
+
+  const circumference = 2 * Math.PI * 14;
+  const ring = document.getElementById('weekProgressRing');
+  if (ring){
+    ring.style.strokeDasharray = `${circumference}`;
+    ring.style.strokeDashoffset = `${circumference * (1 - pct)}`;
+    ring.style.transition = 'stroke-dashoffset .6s ease';
+  }
+  const label = document.getElementById('weekProgressLabel');
+  if (label) label.textContent = `${Math.min(completed,totalActive)}/${totalActive} pass denna vecka`;
+}
+
 function renderSchedule(){
+  renderWeekProgress();
   const acc = document.getElementById('weekScheduleAccordion');
   acc.innerHTML = plan.week.map((d, i) => {
     const isToday = i === todayIdx();
