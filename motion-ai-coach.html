@@ -43,6 +43,37 @@
   .btn-text:hover{ color:var(--chalk); }
 
   /* ---------- TOP BAR ---------- */
+  /* ---------- DESKTOP SIDEBAR ---------- */
+  #sidebar{ position:fixed; top:0; left:0; bottom:0; width:220px; background:var(--white); border-right:1px solid var(--line); display:none; flex-direction:column; z-index:210; }
+  @media(min-width:961px){
+    body.app-shell #sidebar{ display:flex; }
+    body.app-shell #topbar{ display:none; }
+    body.app-shell #phase-dashboard, body.app-shell #phase-chat, body.app-shell #phase-avatar{ margin-left:220px; padding-top:40px; }
+    body.app-shell #phase-chat .wrap{ height:100vh; }
+    body.app-shell .chat-shell{ height:100vh; }
+  }
+  .sb-top{ padding:28px 24px 22px; border-bottom:1px solid var(--line); }
+  .sb-logo{ display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit; }
+  .sb-logo img{ width:26px; height:26px; }
+  .sb-logo span{ font-family:'Cormorant Garamond',serif; font-size:1.05rem; letter-spacing:0.04em; color:var(--chalk); }
+  .sb-nav{ flex:1; padding:18px 14px; display:flex; flex-direction:column; gap:3px; }
+  .sb-navitem{ display:flex; align-items:center; gap:12px; padding:11px 14px; border-radius:4px; color:var(--chalk-dim); font-family:'Plus Jakarta Sans',sans-serif; font-weight:500; font-size:0.88rem; text-align:left; transition:all .15s ease; }
+  .sb-navitem svg{ flex-shrink:0; opacity:0.75; }
+  .sb-navitem:hover{ background:var(--beige); color:var(--chalk); }
+  .sb-navitem.active{ background:rgba(184,147,90,0.12); color:#8c6f37; font-weight:700; }
+  .sb-navitem.active svg{ opacity:1; }
+  .sb-bottom{ padding:18px 24px 24px; border-top:1px solid var(--line); }
+  .sb-streak{ display:flex; align-items:baseline; gap:7px; }
+  .sb-streak .num{ font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:var(--gold-soft); }
+  .sb-streak .lbl{ font-family:'JetBrains Mono',monospace; font-size:0.68rem; letter-spacing:0.03em; color:var(--chalk-faint); text-transform:uppercase; }
+  @media(min-width:961px){
+    #sidebar{ display:flex; }
+    #topbar{ display:none !important; }
+    #phase-dashboard, #phase-chat, #phase-avatar{ margin-left:220px; padding-top:48px !important; }
+    #phase-chat .wrap{ height:100vh; }
+    .chat-shell{ height:100vh; }
+  }
+
   #topbar{ position:fixed; top:0; left:0; right:0; z-index:200; padding:18px 0; background:rgba(250,249,247,0.94); border-bottom:1.5px solid var(--line-strong); display:none; }
   #topbar.show{ display:block; }
   #topbar .wrap{ display:flex; align-items:center; justify-content:space-between; max-width:1040px; }
@@ -111,7 +142,11 @@
   .dash-greet{ margin-bottom:44px; }
   .dash-greet h1{ font-size:clamp(1.9rem,3.8vw,2.5rem); }
   .dash-greet p{ color:var(--chalk-dim); margin-top:8px; }
-  .today-card{ border-radius:6px; padding:42px; margin-bottom:28px; position:relative; overflow:hidden; }
+  .today-card{ border-radius:6px; padding:0; margin-bottom:28px; position:relative; overflow:hidden; display:flex; align-items:stretch; min-height:260px; }
+  .today-content{ padding:42px; flex:1; display:flex; flex-direction:column; justify-content:center; }
+  .today-photo{ width:38%; flex-shrink:0; position:relative; }
+  .today-photo img{ width:100%; height:100%; object-fit:cover; position:absolute; inset:0; }
+  @media(max-width:760px){ .today-card{ flex-direction:column; min-height:0; } .today-photo{ width:100%; height:160px; } .today-content{ padding:28px 22px; } }
   .today-card::before{ content:''; position:absolute; inset:0; background:linear-gradient(155deg, rgba(212,175,55,0.1), transparent 55%); pointer-events:none; }
   .today-card .mono{ color:var(--gold-soft); }
   .today-card h2{ font-size:2rem; margin:14px 0 8px; }
@@ -160,6 +195,32 @@
   .schedule-form.show{ display:flex; }
   .schedule-form label{ display:flex; flex-direction:column; gap:6px; font-size:0.78rem; color:var(--chalk-dim); font-family:'JetBrains Mono',monospace; letter-spacing:0.04em; }
   .schedule-form input[type="time"]{ background:var(--glass); border:1px solid var(--line-strong); border-radius:4px; padding:9px 12px; color:var(--chalk); font-family:'Inter',sans-serif; font-size:0.95rem; }
+
+  /* ---------- DAY STRIP + WEEK LIST (dense, no dead space) ---------- */
+  .day-strip{ display:flex; justify-content:space-between; gap:6px; padding:4px 4px 20px; }
+  .ds-day{ flex:1; display:flex; flex-direction:column; align-items:center; gap:7px; cursor:pointer; padding:4px 0; border-radius:6px; transition:background .15s ease; }
+  .ds-day:hover{ background:var(--beige); }
+  .ds-dow{ font-family:'JetBrains Mono',monospace; font-size:0.66rem; letter-spacing:0.03em; color:var(--chalk-faint); text-transform:uppercase; }
+  .ds-circle{ width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.88rem; color:var(--chalk); border:1.5px solid var(--line-strong); }
+  .ds-day.is-today .ds-circle{ background:var(--gold); border-color:var(--gold); color:#181410; }
+  .ds-day.is-done .ds-circle{ background:rgba(140,111,55,0.1); border-color:#8c6f37; color:#8c6f37; }
+  .ds-day.selected .ds-circle{ box-shadow:0 0 0 2px var(--gold-dim); }
+  .ds-dot{ width:5px; height:5px; border-radius:50%; background:var(--line-strong); }
+  .ds-day.is-active-day .ds-dot{ background:var(--gold); }
+
+  .week-list{ border-top:1px solid var(--line); }
+  .wl-row{ display:flex; align-items:center; gap:14px; padding:13px 6px; border-bottom:1px solid var(--line); cursor:pointer; transition:background .15s ease; }
+  .wl-row:hover{ background:var(--beige); }
+  .wl-row.selected{ background:rgba(184,147,90,0.06); }
+  .wl-date{ width:96px; flex-shrink:0; }
+  .wl-dayname{ font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.85rem; color:var(--chalk); }
+  .wl-datenum{ font-size:0.74rem; color:var(--chalk-faint); }
+  .wl-meta{ flex:1; font-size:0.8rem; color:var(--chalk-dim); }
+  .wl-status{ font-family:'JetBrains Mono',monospace; font-size:0.66rem; letter-spacing:0.03em; text-transform:uppercase; padding:5px 11px; border-radius:20px; flex-shrink:0; }
+  .wl-status.done{ background:rgba(122,142,110,0.15); color:#5c7350; }
+  .wl-status.today{ background:rgba(184,147,90,0.16); color:#8c6f37; }
+  .wl-status.upcoming{ background:var(--glass-strong); color:var(--chalk-faint); }
+  .wl-chevron{ color:var(--chalk-faint); font-size:0.8rem; flex-shrink:0; }
 
   /* ---------- WEEKLY TIMETABLE GRID (Skola24-style) ---------- */
   .week-grid{ border:1px solid var(--line); border-radius:4px; overflow:hidden; margin-bottom:4px; }
@@ -359,7 +420,8 @@
     #phase-avatar{ padding-top:80px; }
     #phase-chat .wrap{ height:calc(100vh - 80px); }
 
-    .today-card, .schedule-card{ padding:20px 16px; margin-bottom:16px; }
+    .schedule-card{ padding:20px 16px; margin-bottom:16px; }
+    .today-card{ margin-bottom:16px; }
     .schedule-head{ margin-bottom:16px; gap:10px; }
     .schedule-head-actions{ gap:8px; }
     .schedule-edit-btn{ padding:7px 11px; font-size:0.7rem; }
@@ -416,6 +478,29 @@
 </div>
 
 <!-- TOP BAR -->
+<div id="sidebar">
+  <div class="sb-top">
+    <a href="index.html" class="sb-logo"><img src="images/coach-img-2-6f42546f50.png" alt="MOTION UF"><span>MOTION UF</span></a>
+  </div>
+  <nav class="sb-nav">
+    <button class="sb-navitem" data-nav="dashboard">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 7l7-5 7 5v8a1 1 0 01-1 1h-3v-5H6v5H3a1 1 0 01-1-1V7z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+      <span>Dashboard</span>
+    </button>
+    <button class="sb-navitem" data-nav="chat">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 3h14v9H6l-4 4V3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+      <span>AI Coach</span>
+    </button>
+    <button class="sb-navitem" data-nav="avatar">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3.2" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 16c0-3 2.9-5.5 6.5-5.5S15.5 13 15.5 16" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <span>Avatar</span>
+    </button>
+  </nav>
+  <div class="sb-bottom">
+    <div class="sb-streak"><span class="num" id="sbStreak">0</span><span class="lbl">dagars streak</span></div>
+  </div>
+</div>
+
 <div id="topbar">
   <div class="wrap">
     <div class="top-row">
@@ -556,11 +641,14 @@
     </div>
 
     <div class="today-card glass" id="todayCard">
-      <span class="mono" id="todayLabel">IDAG</span>
-      <h2 id="todayTitle">Laddar…</h2>
-      <p id="todayDesc"></p>
-      <div class="today-meta" id="todayMeta"></div>
-      <button class="btn btn-gold" id="btnStartWorkout">Starta dagens pass</button>
+      <div class="today-content">
+        <span class="mono" id="todayLabel">IDAG</span>
+        <h2 id="todayTitle">Laddar…</h2>
+        <p id="todayDesc"></p>
+        <div class="today-meta" id="todayMeta"></div>
+        <button class="btn btn-gold" id="btnStartWorkout">Starta dagens pass</button>
+      </div>
+      <div class="today-photo"><img src="images/hero.jpg" alt=""></div>
     </div>
 
     <div class="schedule-card glass" id="scheduleCard">
@@ -581,17 +669,8 @@
         </div>
       </div>
       <input type="file" id="scheduleFileInput" accept="image/*" style="display:none">
-      <div class="week-grid" id="weekGrid">
-        <div class="wg-header">
-          <div class="wg-time-label"></div>
-          <div class="wg-daycols" id="wgHeader"></div>
-        </div>
-        <div class="wg-body" id="wgBody">
-          <div class="wg-hourlines" id="wgHourlines"></div>
-          <div class="wg-time-axis" id="wgTimeAxis"></div>
-          <div class="wg-columns" id="wgColumns"></div>
-        </div>
-      </div>
+      <div class="day-strip" id="dayStrip"></div>
+      <div class="week-list" id="weekList"></div>
       <div id="weekGridDetail"></div>
       <form id="scheduleForm" class="schedule-form">
         <label>Vaken kl (alla dagar)<input type="time" id="inpWakeTime"></label>
@@ -1025,8 +1104,8 @@ function initTopbarBack(){
   });
 }
 
-function showTopbar(show){ document.getElementById('topbar').classList.toggle('show', show); const b = document.getElementById('backToSite'); if (b) b.style.display = show ? 'none' : 'flex'; }
-function setActiveTab(name){ document.querySelectorAll('.navtab').forEach(t => t.classList.toggle('active', t.dataset.nav === name)); }
+function showTopbar(show){ document.getElementById('topbar').classList.toggle('show', show); document.body.classList.toggle('app-shell', show); const b = document.getElementById('backToSite'); if (b) b.style.display = show ? 'none' : 'flex'; }
+function setActiveTab(name){ document.querySelectorAll('.navtab, .sb-navitem').forEach(t => t.classList.toggle('active', t.dataset.nav === name)); }
 
 /* ============ 3D MINI COACH MASCOT ============ */
 const AVATARS = {
@@ -1110,7 +1189,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btnStartOnboarding').addEventListener('click', startOnboarding);
   document.getElementById('btnContinue').addEventListener('click', () => { showTopbar(true); setActiveTab('dashboard'); renderDashboard(); showPhase('phase-dashboard'); });
 
-  document.querySelectorAll('.navtab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.navtab, .sb-navitem').forEach(t => t.addEventListener('click', () => {
     setActiveTab(t.dataset.nav);
     if (t.dataset.nav === 'dashboard'){ renderDashboard(); showPhase('phase-dashboard'); }
     else if (t.dataset.nav === 'avatar'){ showPhase('phase-avatar'); }
@@ -1268,6 +1347,7 @@ function renderDashboard(){
   document.getElementById('dashGreeting').textContent = `Hej, ${profile.name}!`;
   document.getElementById('dashSub').textContent = `Din vecka är byggd kring ${profile.goal.toLowerCase()}.`;
   document.getElementById('topStreak').textContent = progress.streak;
+  const sbStreak = document.getElementById('sbStreak'); if (sbStreak) sbStreak.textContent = progress.streak;
   document.getElementById('statStreak').textContent = progress.streak;
   document.getElementById('statSessions').textContent = progress.totalSessions;
   document.getElementById('statCards').textContent = progress.totalCards;
@@ -1396,48 +1476,67 @@ function renderWeekProgress(){
 
 function renderSchedule(){
   renderWeekProgress();
-  renderWeekGrid();
+  renderWeekList();
 }
 
-const WG_START = 6*60, WG_END = 22*60, WG_RANGE = WG_END - WG_START, WG_PXPERMIN = 0.6;
+const SV_MONTHS = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
 
-function renderWeekGrid(){
-  const header = document.getElementById('wgHeader');
-  const cols = document.getElementById('wgColumns');
-  const hourlines = document.getElementById('wgHourlines');
-  const timeaxis = document.getElementById('wgTimeAxis');
-  const bodyEl = document.getElementById('wgBody');
-  if (!cols) return;
+function getWeekDates(){
+  const today = new Date();
+  const ti = todayIdx();
+  return plan.week.map((d,i) => {
+    const dt = new Date(today);
+    dt.setDate(today.getDate() + (i - ti));
+    return dt;
+  });
+}
 
-  const bodyHeight = WG_RANGE * WG_PXPERMIN;
-  bodyEl.style.height = bodyHeight + 'px';
+function dayStatus(i, dt, dayPlan){
+  const dateStr = dt.toISOString().slice(0,10);
+  const isToday = i === todayIdx();
+  const isPast = dt < new Date(new Date().toDateString());
+  const done = progress.history.some(h => h.date === dateStr);
+  if (done) return 'done';
+  if (isToday) return 'today';
+  if (!dayPlan.active) return 'rest';
+  if (isPast) return 'missed';
+  return 'upcoming';
+}
 
-  header.innerHTML = plan.week.map((d,i) => `<div class="wg-daycol-header ${i===todayIdx()?'is-today':''}">${DAY_SHORT[i]}</div>`).join('');
+function renderWeekList(){
+  const dates = getWeekDates();
+  const strip = document.getElementById('dayStrip');
+  const list = document.getElementById('weekList');
 
-  let linesHtml = '', labelsHtml = '';
-  for (let t = WG_START; t <= WG_END; t += 60){
-    const y = (t - WG_START) * WG_PXPERMIN;
-    linesHtml += `<div class="wg-gridline" style="top:${y}px;"></div>`;
-    if ((t/60) % 2 === 0) labelsHtml += `<div class="wg-hour-label" style="top:${y}px;">${String(Math.floor(t/60)).padStart(2,'0')}</div>`;
-  }
-  hourlines.innerHTML = linesHtml;
-  timeaxis.innerHTML = labelsHtml;
-
-  cols.innerHTML = plan.week.map((d, i) => {
-    const rows = buildDayRows(i).filter(r => r.title !== 'Vaken');
-    const blocksHtml = rows.map(r => {
-      const dur = r.workout ? ((d.active) ? (profile.minutes || 20) : 15) : 30;
-      const top = Math.max(0, (r.m - WG_START) * WG_PXPERMIN);
-      const height = Math.max(15, dur * WG_PXPERMIN);
-      const cls = r.workout ? 'workout' : (r.type || '');
-      const label = r.workout ? `Träning · ${d.cardCount||0} kort` : r.title;
-      return `<div class="wg-block ${cls}" style="top:${top}px; height:${height}px;">${escapeHtml(label)}</div>`;
-    }).join('');
-    return `<div class="wg-col ${i===todayIdx()?'is-today':''}" data-day="${i}">${blocksHtml}</div>`;
+  strip.innerHTML = plan.week.map((d,i) => {
+    const dt = dates[i];
+    const st = dayStatus(i, dt, d);
+    return `<div class="ds-day ${i===todayIdx()?'is-today':''} ${st==='done'?'is-done':''} ${d.active?'is-active-day':''} ${scheduleSelectedDay===i?'selected':''}" data-day="${i}">
+      <span class="ds-dow">${DAY_SHORT[i]}</span>
+      <span class="ds-circle">${dt.getDate()}</span>
+      <span class="ds-dot"></span>
+    </div>`;
   }).join('');
 
-  cols.querySelectorAll('.wg-col').forEach(col => {
-    col.addEventListener('click', () => showWeekGridDetail(+col.dataset.day));
+  list.innerHTML = plan.week.map((d,i) => {
+    const dt = dates[i];
+    const st = dayStatus(i, dt, d);
+    const statusLabel = { done:'Klar', today:'Idag', missed:'Missat', rest:'Vila', upcoming:'Kommande' }[st];
+    const statusClass = { done:'done', today:'today', missed:'upcoming', rest:'upcoming', upcoming:'upcoming' }[st];
+    const meta = d.active ? `${d.cardCount} kort · ${schedule.trainTimes[i]}` : 'Vilodag';
+    return `<div class="wl-row ${scheduleSelectedDay===i?'selected':''}" data-day="${i}">
+      <div class="wl-date">
+        <div class="wl-dayname">${DAY_SHORT[i]}</div>
+        <div class="wl-datenum">${dt.getDate()} ${SV_MONTHS[dt.getMonth()]}</div>
+      </div>
+      <div class="wl-meta">${meta}</div>
+      <span class="wl-status ${statusClass}">${statusLabel}</span>
+      <span class="wl-chevron">›</span>
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('.ds-day, .wl-row').forEach(el => {
+    el.addEventListener('click', () => showWeekGridDetail(+el.dataset.day));
   });
 
   showWeekGridDetail(scheduleSelectedDay != null && scheduleSelectedDay >= 0 ? scheduleSelectedDay : todayIdx());
@@ -1445,7 +1544,7 @@ function renderWeekGrid(){
 
 function showWeekGridDetail(dayIdx){
   scheduleSelectedDay = dayIdx;
-  document.querySelectorAll('.wg-col').forEach(c => c.classList.toggle('selected', +c.dataset.day === dayIdx));
+  document.querySelectorAll('.ds-day, .wl-row').forEach(el => el.classList.toggle('selected', +el.dataset.day === dayIdx));
 
   const detail = document.getElementById('weekGridDetail');
   const rows = buildDayRows(dayIdx);
