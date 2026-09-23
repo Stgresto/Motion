@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
+<script>
+  // Skicka besökare till motionplanner.se om de hamnar på en annan adress
+  // (t.ex. en vercel.app-länk). Undantag: lokal utveckling/förhandsvisning.
+  (function(){
+    var host = window.location.hostname;
+    var allowed = ['motionplanner.se', 'www.motionplanner.se', 'localhost', '127.0.0.1'];
+    var isPreview = host.endsWith('.vercel.app') && window.self !== window.top; // tillåt inbäddade förhandsvisningar
+    if (allowed.indexOf(host) === -1 && !isPreview && host !== ''){
+      window.location.replace('https://motionplanner.se' + window.location.pathname + window.location.search);
+    }
+  })();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MOTION UF — Rör dig mer. Tänk mindre.</title>

@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
+<script>
+  // Skicka besökare till motionplanner.se om de hamnar på en annan adress
+  // (t.ex. en vercel.app-länk). Undantag: lokal utveckling/förhandsvisning.
+  (function(){
+    var host = window.location.hostname;
+    var allowed = ['motionplanner.se', 'www.motionplanner.se', 'localhost', '127.0.0.1'];
+    var isPreview = host.endsWith('.vercel.app') && window.self !== window.top;
+    if (allowed.indexOf(host) === -1 && !isPreview && host !== ''){
+      window.location.replace('https://motionplanner.se' + window.location.pathname + window.location.search);
+    }
+  })();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MOTION UF — Din AI-Coach</title>
@@ -1468,7 +1480,7 @@ function buildDayRows(dayIdx){
   }
 
   (schedule.customEvents[dayIdx] || []).forEach(ev => {
-    rows.push({ m: timeToMin(ev.time), title: ev.title, tip: null, type:'custom', customId: ev.id });
+    rows.push({ m: timeToMin(ev.time), title: ev.title, tip: null, type:'custom', customId: ev.id, endTime: ev.endTime });
   });
 
   rows.sort((a,b) => a.m - b.m);
@@ -1478,7 +1490,7 @@ function buildDayRows(dayIdx){
 function renderDayRowsHtml(rows){
   return rows.map(r => `
     <div class="sched-row ${r.workout ? 'workout' : (r.type || '')}">
-      <span class="sched-time">${minToTime(r.m)}</span>
+      <span class="sched-time">${minToTime(r.m)}${r.endTime ? `–${r.endTime}` : ''}</span>
       <div class="sched-content">
         <div class="sched-title">${r.title}${r.type==='custom' ? ' <span class="sched-tag-custom">Importerat</span>' : ''}</div>
         ${r.tip ? `<div class="sched-tip">${r.tip}</div>` : ''}
@@ -1955,13 +1967,13 @@ VIKTIGT om trainTimes: varje veckodag har oftast en EGEN, unik tid i schemat —
 Leta specifikt efter:
 - En vaken-/morgontid om den syns (t.ex. "väcker klockan 06:30" eller första aktiviteten på dagen)
 - Återkommande träningstider (gym, träning, idrott) — läs av varje dags egen tid separat, se stycket ovan
-- Alla övriga tidsbundna aktiviteter (lektioner, möten, tandläkare, jobb, osv.)
+- Alla övriga tidsbundna aktiviteter (lektioner, möten, tandläkare, jobb, osv.) — de flesta scheman (t.ex. Skola24) visar BÅDE start- och sluttid för varje aktivitet (t.ex. "08:30 - 09:30"). Läs av båda och ange dem separat som "time" (starttid) och "endTime" (sluttid). Om bara en tid syns, utelämna "endTime" för den händelsen.
 
 Svara först med en kort vänlig sammanfattning på svenska (1–2 meningar) om vad du hittat. Avsluta ditt svar med EXAKT ett kodblock i detta format, inget annat efter det:
 \`\`\`json
-{"wake":"06:30","trainTimes":{"tis":"16:00","tors":"17:30"},"events":[{"day":"mån","time":"08:00","title":"Matematik"},{"day":"ons","time":"15:00","title":"Tandläkare"}]}
+{"wake":"06:30","trainTimes":{"tis":"16:00","tors":"17:30"},"events":[{"day":"mån","time":"08:30","endTime":"09:30","title":"Matematik"},{"day":"ons","time":"15:00","title":"Tandläkare"}]}
 \`\`\`
-Dag-värden ska vara en av: mån, tis, ons, tors, fre, lör, sön (gemener, tre bokstäver). Tid i format HH:MM (24h). "wake" och "trainTimes" är valfria — inkludera dem bara om du faktiskt ser en tydlig vaken-tid respektive träningstid i bilden. Om bilden inte innehåller ett schema alls, hoppa över kodblocket helt.
+Dag-värden ska vara en av: mån, tis, ons, tors, fre, lör, sön (gemener, tre bokstäver). Tid i format HH:MM (24h). "endTime" är valfri per händelse — inkludera den varje gång en sluttid faktiskt syns i bilden. "wake" och "trainTimes" är valfria — inkludera dem bara om du faktiskt ser en tydlig vaken-tid respektive träningstid i bilden. Om bilden inte innehåller ett schema alls, hoppa över kodblocket helt.
 
 Svara alltid på svenska.`;
 }
@@ -2097,7 +2109,8 @@ function applyExtractedEvents(data){
     if (!/^\d{1,2}:\d{2}$/.test(ev.time || '')) return;
     if (!ev.title) return;
     if (!schedule.customEvents[dayIdx]) schedule.customEvents[dayIdx] = [];
-    schedule.customEvents[dayIdx].push({ id: Date.now() + '-' + added, time: ev.time, title: String(ev.title).slice(0,60) });
+    const endTime = /^\d{1,2}:\d{2}$/.test(ev.endTime || '') ? ev.endTime : null;
+    schedule.customEvents[dayIdx].push({ id: Date.now() + '-' + added, time: ev.time, endTime, title: String(ev.title).slice(0,60) });
     added++;
   });
 
