@@ -1950,14 +1950,16 @@ Användarens profil: Namn: ${p.name || 'okänt'}. Mål: ${p.goal || 'okänt'}. N
 
 Om användaren skickar en bild av ett schema, en kalender eller ett tidschema och ber dig lägga in det i appens schema: detta är en av dina VIKTIGASTE uppgifter och du måste vara extremt noggrann. Titta på bilden flera gånger om det behövs. Läs varje rad, siffra och klockslag exakt som det står — gissa aldrig, avrunda aldrig, och hitta aldrig på tider som inte syns tydligt. Om en tid är svår att läsa, hoppa hellre över den raden än att gissa fel.
 
+VIKTIGT om trainTimes: varje veckodag har oftast en EGEN, unik tid i schemat — anta ALDRIG att alla dagar har samma tid. Läs varje dags kolumn/rad för sig, separat från de andra. Om du är osäker på om en specifik dags tid verkligen skiljer sig från en annan, titta igen på just den dagen i bilden innan du svarar. Skriv bara in en tid i "trainTimes" för en dag om du faktiskt kan se den exakta tiden för just den dagen i bilden — hoppa hellre över en dag helt än att återanvända en annan dags tid som gissning. Att sätta samma tid på flera dagar är bara korrekt om bilden verkligen visar identiska tider för de dagarna.
+
 Leta specifikt efter:
 - En vaken-/morgontid om den syns (t.ex. "väcker klockan 06:30" eller första aktiviteten på dagen)
-- Återkommande träningstider (gym, träning, idrott) — om samma aktivitet upprepas på flera dagar med samma tid, notera det per dag
+- Återkommande träningstider (gym, träning, idrott) — läs av varje dags egen tid separat, se stycket ovan
 - Alla övriga tidsbundna aktiviteter (lektioner, möten, tandläkare, jobb, osv.)
 
 Svara först med en kort vänlig sammanfattning på svenska (1–2 meningar) om vad du hittat. Avsluta ditt svar med EXAKT ett kodblock i detta format, inget annat efter det:
 \`\`\`json
-{"wake":"06:30","trainTimes":{"tis":"16:00","tors":"16:00"},"events":[{"day":"mån","time":"08:00","title":"Matematik"},{"day":"ons","time":"15:00","title":"Tandläkare"}]}
+{"wake":"06:30","trainTimes":{"tis":"16:00","tors":"17:30"},"events":[{"day":"mån","time":"08:00","title":"Matematik"},{"day":"ons","time":"15:00","title":"Tandläkare"}]}
 \`\`\`
 Dag-värden ska vara en av: mån, tis, ons, tors, fre, lör, sön (gemener, tre bokstäver). Tid i format HH:MM (24h). "wake" och "trainTimes" är valfria — inkludera dem bara om du faktiskt ser en tydlig vaken-tid respektive träningstid i bilden. Om bilden inte innehåller ett schema alls, hoppa över kodblocket helt.
 
@@ -1971,14 +1973,14 @@ function dataUrlToBlock(dataUrl){
 }
 
 async function askCoachAI(userMessage, imageDataUrl){
-  const history = chatLog.slice(-10).map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text }));
+  const history = chatLog.slice(-11, -1).map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text }));
   let newContent = userMessage;
   if (imageDataUrl){
     const imgBlock = dataUrlToBlock(imageDataUrl);
     if (imgBlock) newContent = [imgBlock, { type:'text', text:userMessage }];
   }
   history.push({ role:'user', content:newContent });
-  const payload = { model:'claude-sonnet-4-6', max_tokens:2200, system:buildSystemPrompt(), messages:history };
+  const payload = { model:'claude-sonnet-4-6', max_tokens:3000, system:buildSystemPrompt(), messages:history };
 
   // Production path: your own backend (see api/chat.js) — same pattern as DiaStyle's Vercel + Claude setup.
   try{
@@ -2019,13 +2021,45 @@ function dayKeyToIndex(str){
 }
 
 function extractScheduleJson(text){
-  const match = text.match(/```json\s*([\s\S]*?)```/i);
-  if (!match) return null;
-  try{
-    const data = JSON.parse(match[1]);
-    if (!data || typeof data !== 'object') return null;
-    return data;
-  } catch(e){ return null; }
+  let match = text.match(/```json\s*([\s\S]*?)```/i);
+  let raw = match ? match[1] : null;
+  if (!raw){
+    const start = text.search(/\{\s*"(wake|trainTimes|events)"/);
+    if (start !== -1) raw = text.slice(start);
+  }
+  if (!raw) return null;
+  raw = raw.trim();
+  try{ return JSON.parse(raw); } catch(e){ /* try recovery below */ }
+
+  // recovery: response got cut off mid-JSON — trim to the last complete item, then
+  // auto-close any still-open brackets/braces/quotes.
+  let s = raw;
+  let lastGoodComma = -1;
+  for (let i = 0; i < s.length; i++){
+    if (s[i] === ',' ) lastGoodComma = i;
+  }
+  const attempts = [s];
+  if (lastGoodComma > -1) attempts.push(s.slice(0, lastGoodComma));
+
+  for (let candidate of attempts){
+    let stack = [], inStr = false, esc = false;
+    for (const ch of candidate){
+      if (esc){ esc = false; continue; }
+      if (ch === '\\'){ esc = true; continue; }
+      if (ch === '"'){ inStr = !inStr; continue; }
+      if (inStr) continue;
+      if (ch === '{' || ch === '[') stack.push(ch);
+      else if (ch === '}' || ch === ']') stack.pop();
+    }
+    let fixed = candidate;
+    if (inStr) fixed += '"';
+    while (stack.length){
+      const open = stack.pop();
+      fixed += (open === '{') ? '}' : ']';
+    }
+    try{ return JSON.parse(fixed); } catch(e){ /* try next */ }
+  }
+  return null;
 }
 
 function applyExtractedEvents(data){
@@ -2049,6 +2083,12 @@ function applyExtractedEvents(data){
         changed.push(`träning ${DAY_SHORT[dayIdx]} → ${time}`);
       }
     });
+  }
+
+  let sameTimeWarning = false;
+  if (data.trainTimes){
+    const vals = Object.values(data.trainTimes);
+    if (vals.length >= 4 && new Set(vals).size === 1) sameTimeWarning = true;
   }
 
   (data.events || []).forEach(ev => {
@@ -2086,7 +2126,7 @@ function sendScheduleScreenshot(dataUrl){
     let displayText = reply;
     if (source === 'api'){
       const data = extractScheduleJson(reply);
-      displayText = reply.replace(/```json\s*[\s\S]*?```/i, '').trim();
+      displayText = reply.replace(/```json\s*[\s\S]*?```/i, '').replace(/```json[\s\S]*$/i, '').trim();
       if (data){
         const { added, changed } = applyExtractedEvents(data);
         const parts = [];
