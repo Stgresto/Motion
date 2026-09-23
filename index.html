@@ -204,7 +204,7 @@
   .science .section-head h2{ color:var(--white); }
   .science .section-head p{ color:rgba(250,249,247,0.7); }
   .science .section-head{ margin-bottom:36px; }
-  .science-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:30px; max-width:900px; margin:0 auto; }
+  .science-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:26px; max-width:1100px; margin:0 auto; }
   .sci-card{ padding:10px; }
   .sci-card .icowrap{ width:56px; height:56px; border-radius:50%; background:rgba(250,249,247,0.12); display:flex; align-items:center; justify-content:center; margin:0 auto 22px; }
   .sci-card h3{ color:var(--white); font-size:1.15rem; font-weight:300; }
@@ -251,6 +251,7 @@
   .foot-bottom{ display:flex; justify-content:space-between; padding-top:22px; font-size:0.78rem; color:var(--ink-soft); flex-wrap:wrap; gap:10px; }
 
   @media (max-width:960px){
+    .science-grid{ grid-template-columns:1fr 1fr; }
     .wrap{ padding:0 24px; }
     .navlinks{ display:none; }
     .steps5{ grid-template-columns:1fr 1fr; row-gap:36px; }
@@ -530,21 +531,25 @@
   <div class="wrap">
     <div class="section-head center reveal">
       <div class="mono" style="color:var(--brass-soft); justify-content:center; display:flex; margin-bottom:18px;">Vetenskapen</div>
-      <h2>Byggt med tränare.</h2>
-      <p>Dra ett kort så tar appen över — instruktioner, tidtagning och peppning, hela vägen.</p>
+      <h2>Varför du måste röra på dig.</h2>
+      <p>Inte åsikter — bara vad forskningen faktiskt visar om rörelse och hälsa.</p>
     </div>
     <div class="science-grid">
       <div class="sci-card reveal">
-        <div class="icowrap"><svg width="20" height="22" viewBox="0 0 20 22" fill="none"><path d="M2 4h16M2 11h16M2 18h10" stroke="#faf9f7" stroke-width="1.4" stroke-linecap="round"/></svg></div>
-        <h3>Direkta instruktioner</h3><p>Dra ett kort och få tydlig, steg-för-steg-vägledning direkt.</p>
+        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 17s-7-4.35-7-9.5C3 4.5 5.5 2 8.3 2c1.5 0 2.9.8 3.7 2 .8-1.2 2.2-2 3.7-2C18.5 2 17 4.5 17 7.5 17 12.65 10 17 10 17z" stroke="#faf9f7" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+        <h3>150 minuter räcker</h3><p>Enligt WHO minskar redan 150 minuters måttlig rörelse i veckan risken att dö av hjärt-kärlsjukdom med 22–31 %.</p>
       </div>
       <div class="sci-card reveal">
         <div class="icowrap"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="12" r="8" stroke="#faf9f7" stroke-width="1.3"/><path d="M11 7v5l4 2" stroke="#faf9f7" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-        <h3>Inbyggd timer</h3><p>Appen sköter klockan och säger till när det är dags att byta.</p>
+        <h3>Allt räknas</h3><p>WHO är tydliga: rörelse behöver inte ske i ett långt pass. Uppdelat i korta stunder ger det samma effekt.</p>
       </div>
       <div class="sci-card reveal">
-        <div class="icowrap"><svg width="20" height="22" viewBox="0 0 20 22" fill="none"><path d="M10 2l8 3.5V11c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V5.5L10 2z" stroke="#faf9f7" stroke-width="1.3"/></svg></div>
-        <h3>Coachning i realtid</h3><p>Peppiga, motiverande signaler håller dig i rörelse från första till sista repetitionen.</p>
+        <div class="icowrap"><svg width="20" height="22" viewBox="0 0 20 22" fill="none"><path d="M4 20V10M10 20V4M16 20v-7" stroke="#faf9f7" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+        <h3>Stillasittande är en riskfaktor</h3><p>Att sitta still över 7 timmar om dagen är kopplat till en dödsrisk i klass med rökning eller fetma (Harvard Health).</p>
+      </div>
+      <div class="sci-card reveal">
+        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2v4M10 14v4M2 10h4M14 10h4M4.9 4.9l2.8 2.8M12.3 12.3l2.8 2.8M4.9 15.1l2.8-2.8M12.3 7.7l2.8-2.8" stroke="#faf9f7" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+        <h3>Global skala</h3><p>WHO uppskattar att upp till 5 miljoner dödsfall per år skulle kunna undvikas om fler människor rörde på sig mer.</p>
       </div>
     </div>
   </div>
