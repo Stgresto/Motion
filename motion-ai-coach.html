@@ -1948,11 +1948,18 @@ Ton: varm, peppande och stöttande, aldrig burdus eller dömande. Använd använ
 
 Användarens profil: Namn: ${p.name || 'okänt'}. Mål: ${p.goal || 'okänt'}. Nivå: ${p.level || 'okänt'}. Ålder: ${p.age || 'okänd'}. Intressen: ${p.interests || 'inga angivna'}.
 
-Om användaren skickar en bild av ett schema, en kalender eller ett tidschema och ber dig lägga in det i appens schema: titta noga på bilden och identifiera varje tydlig aktivitet med veckodag och klockslag. Svara först med en kort vänlig sammanfattning på svenska (1–2 meningar). Avsluta ditt svar med EXAKT ett kodblock i detta format, inget annat efter det:
+Om användaren skickar en bild av ett schema, en kalender eller ett tidschema och ber dig lägga in det i appens schema: detta är en av dina VIKTIGASTE uppgifter och du måste vara extremt noggrann. Titta på bilden flera gånger om det behövs. Läs varje rad, siffra och klockslag exakt som det står — gissa aldrig, avrunda aldrig, och hitta aldrig på tider som inte syns tydligt. Om en tid är svår att läsa, hoppa hellre över den raden än att gissa fel.
+
+Leta specifikt efter:
+- En vaken-/morgontid om den syns (t.ex. "väcker klockan 06:30" eller första aktiviteten på dagen)
+- Återkommande träningstider (gym, träning, idrott) — om samma aktivitet upprepas på flera dagar med samma tid, notera det per dag
+- Alla övriga tidsbundna aktiviteter (lektioner, möten, tandläkare, jobb, osv.)
+
+Svara först med en kort vänlig sammanfattning på svenska (1–2 meningar) om vad du hittat. Avsluta ditt svar med EXAKT ett kodblock i detta format, inget annat efter det:
 \`\`\`json
-{"events":[{"day":"mån","time":"08:00","title":"Matematik"},{"day":"ons","time":"15:00","title":"Tandläkare"}]}
+{"wake":"06:30","trainTimes":{"tis":"16:00","tors":"16:00"},"events":[{"day":"mån","time":"08:00","title":"Matematik"},{"day":"ons","time":"15:00","title":"Tandläkare"}]}
 \`\`\`
-Dag-värdet ska vara en av: mån, tis, ons, tors, fre, lör, sön (gemener, tre bokstäver). Tid i format HH:MM (24h). Hoppa över otydliga/oläsliga rader hellre än att gissa. Om bilden inte innehåller ett schema alls, hoppa över kodblocket helt.
+Dag-värden ska vara en av: mån, tis, ons, tors, fre, lör, sön (gemener, tre bokstäver). Tid i format HH:MM (24h). "wake" och "trainTimes" är valfria — inkludera dem bara om du faktiskt ser en tydlig vaken-tid respektive träningstid i bilden. Om bilden inte innehåller ett schema alls, hoppa över kodblocket helt.
 
 Svara alltid på svenska.`;
 }
@@ -1999,21 +2006,53 @@ async function askCoachAI(userMessage, imageDataUrl){
 
 const SV_DAY_MAP = { 'mån':0,'tis':1,'ons':2,'tors':3,'fre':4,'lör':5,'sön':6 };
 
+function dayKeyToIndex(str){
+  const s = (str || '').toLowerCase().trim();
+  if (s.startsWith('mån')) return 0;
+  if (s.startsWith('tis')) return 1;
+  if (s.startsWith('ons')) return 2;
+  if (s.startsWith('tor')) return 3;
+  if (s.startsWith('fre')) return 4;
+  if (s.startsWith('lör')) return 5;
+  if (s.startsWith('sön')) return 6;
+  return undefined;
+}
+
 function extractScheduleJson(text){
   const match = text.match(/```json\s*([\s\S]*?)```/i);
   if (!match) return null;
   try{
     const data = JSON.parse(match[1]);
-    if (!data || !Array.isArray(data.events)) return null;
-    return data.events;
+    if (!data || typeof data !== 'object') return null;
+    return data;
   } catch(e){ return null; }
 }
 
-function applyExtractedEvents(events){
+function applyExtractedEvents(data){
   let added = 0;
-  events.forEach(ev => {
-    const dayKey = (ev.day || '').toLowerCase().slice(0,3);
-    const dayIdx = SV_DAY_MAP[dayKey];
+  let changed = [];
+
+  if (data.wake && /^\d{1,2}:\d{2}$/.test(data.wake)){
+    if (schedule.wake !== data.wake){
+      schedule.wake = data.wake;
+      changed.push(`vaken-tid → ${data.wake}`);
+    }
+  }
+
+  if (data.trainTimes && typeof data.trainTimes === 'object'){
+    Object.keys(data.trainTimes).forEach(dayKey => {
+      const dayIdx = dayKeyToIndex(dayKey);
+      const time = data.trainTimes[dayKey];
+      if (dayIdx === undefined || !/^\d{1,2}:\d{2}$/.test(time || '')) return;
+      if (schedule.trainTimes[dayIdx] !== time){
+        schedule.trainTimes[dayIdx] = time;
+        changed.push(`träning ${DAY_SHORT[dayIdx]} → ${time}`);
+      }
+    });
+  }
+
+  (data.events || []).forEach(ev => {
+    const dayIdx = dayKeyToIndex(ev.day);
     if (dayIdx === undefined) return;
     if (!/^\d{1,2}:\d{2}$/.test(ev.time || '')) return;
     if (!ev.title) return;
@@ -2021,11 +2060,12 @@ function applyExtractedEvents(events){
     schedule.customEvents[dayIdx].push({ id: Date.now() + '-' + added, time: ev.time, title: String(ev.title).slice(0,60) });
     added++;
   });
-  if (added > 0){
+
+  if (added > 0 || changed.length > 0){
     store.set('muf_schedule', schedule);
     if (document.getElementById('weekList')) renderWeekList();
   }
-  return added;
+  return { added, changed };
 }
 
 function sendScheduleScreenshot(dataUrl){
@@ -2045,11 +2085,14 @@ function sendScheduleScreenshot(dataUrl){
     typingRow.remove();
     let displayText = reply;
     if (source === 'api'){
-      const events = extractScheduleJson(reply);
+      const data = extractScheduleJson(reply);
       displayText = reply.replace(/```json\s*[\s\S]*?```/i, '').trim();
-      if (events && events.length){
-        const added = applyExtractedEvents(events);
-        if (added > 0) displayText += `\n\n**${added} händelse${added===1?'':'r'} tillagda i ditt veckoschema.**`;
+      if (data){
+        const { added, changed } = applyExtractedEvents(data);
+        const parts = [];
+        if (added > 0) parts.push(`${added} ny${added===1?'':'a'} händelse${added===1?'':'r'}`);
+        if (changed.length) parts.push(changed.join(', '));
+        if (parts.length) displayText += `\n\n**Uppdaterat i ditt schema:** ${parts.join(' · ')}.`;
       }
     } else {
       displayText = 'Jag kan tyvärr inte läsa av bilder i offline-läge just nu — det kräver att API-nyckeln är kopplad på servern. När den är det läser jag automatiskt av schemat i bilden och lägger in rätt aktiviteter på rätt dagar i ditt veckoschema här i appen.';
