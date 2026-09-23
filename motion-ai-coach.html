@@ -2078,6 +2078,14 @@ function applyExtractedEvents(data){
   let added = 0;
   let changed = [];
 
+  // A new upload replaces the previously imported schedule entirely —
+  // otherwise re-uploading the same schedule (or uploading an updated one)
+  // just piles duplicates on top of the old ones forever.
+  if (data.events && data.events.length){
+    for (let i = 0; i < 7; i++) schedule.customEvents[i] = [];
+  }
+  const seen = new Set();
+
   if (data.wake && /^\d{1,2}:\d{2}$/.test(data.wake)){
     if (schedule.wake !== data.wake){
       schedule.wake = data.wake;
@@ -2108,6 +2116,9 @@ function applyExtractedEvents(data){
     if (dayIdx === undefined) return;
     if (!/^\d{1,2}:\d{2}$/.test(ev.time || '')) return;
     if (!ev.title) return;
+    const key = dayIdx + '|' + ev.time + '|' + String(ev.title).trim().toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
     if (!schedule.customEvents[dayIdx]) schedule.customEvents[dayIdx] = [];
     const endTime = /^\d{1,2}:\d{2}$/.test(ev.endTime || '') ? ev.endTime : null;
     schedule.customEvents[dayIdx].push({ id: Date.now() + '-' + added, time: ev.time, endTime, title: String(ev.title).slice(0,60) });
