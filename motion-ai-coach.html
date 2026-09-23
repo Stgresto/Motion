@@ -680,7 +680,7 @@
           </div>
         </div>
         <div class="schedule-head-actions">
-          <button class="schedule-edit-btn" id="btnUploadSchedule">Ladda upp schema</button>
+          <button class="schedule-edit-btn" id="btnUploadSchedule" title="Klicka för att välja fil, eller klistra in en skärmdump med Ctrl+V / Cmd+V">Ladda upp schema</button>
           <button class="schedule-edit-btn" id="btnEditSchedule">Ändra vaken-tid</button>
         </div>
       </div>
@@ -2072,6 +2072,25 @@ function initScheduleUpload(){
     reader.onload = () => sendScheduleScreenshot(reader.result);
     reader.readAsDataURL(file);
     e.target.value = '';
+  });
+
+  // Paste a screenshot directly (Ctrl+V / Cmd+V) while on the dashboard
+  document.addEventListener('paste', (e) => {
+    const activeTab = document.querySelector('.navtab.active, .sb-navitem.active');
+    if (!activeTab || activeTab.dataset.nav !== 'dashboard') return;
+    const items = (e.clipboardData || window.clipboardData)?.items;
+    if (!items) return;
+    for (const item of items){
+      if (item.type && item.type.startsWith('image/')){
+        const file = item.getAsFile();
+        if (!file) continue;
+        const reader = new FileReader();
+        reader.onload = () => sendScheduleScreenshot(reader.result);
+        reader.readAsDataURL(file);
+        e.preventDefault();
+        break;
+      }
+    }
   });
 }
 
