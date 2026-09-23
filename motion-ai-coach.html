@@ -44,11 +44,13 @@
 
   /* ---------- TOP BAR ---------- */
   /* ---------- DESKTOP SIDEBAR ---------- */
-  #sidebar{ position:fixed; top:0; left:0; bottom:0; width:220px; background:var(--white); border-right:1px solid var(--line); display:none; flex-direction:column; z-index:210; }
+  #sidebar{ position:fixed; top:0; left:0; bottom:0; width:var(--sb-w, 220px); background:var(--white); border-right:1px solid var(--line); display:none; flex-direction:column; z-index:210; transition:width .2s ease; overflow:hidden; }
   @media(min-width:961px){
+    body.app-shell{ --sb-w:220px; }
+    body.app-shell.sb-collapsed{ --sb-w:68px; }
     body.app-shell #sidebar{ display:flex; }
     body.app-shell #topbar{ display:none; }
-    body.app-shell #phase-dashboard, body.app-shell #phase-chat, body.app-shell #phase-avatar{ margin-left:220px; padding-top:40px; }
+    body.app-shell #phase-dashboard, body.app-shell #phase-chat, body.app-shell #phase-avatar{ margin-left:var(--sb-w, 220px); padding-top:40px; transition:margin-left .2s ease; }
     body.app-shell #phase-chat .wrap{ height:100vh; }
     body.app-shell .chat-shell{ height:100vh; }
   }
@@ -66,14 +68,19 @@
   .sb-streak{ display:flex; align-items:baseline; gap:7px; }
   .sb-streak .num{ font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:var(--gold-soft); }
   .sb-streak .lbl{ font-family:'JetBrains Mono',monospace; font-size:0.68rem; letter-spacing:0.03em; color:var(--chalk-faint); text-transform:uppercase; }
-  @media(min-width:961px){
-    #sidebar{ display:flex; }
-    #topbar{ display:none !important; }
-    #phase-dashboard, #phase-chat, #phase-avatar{ margin-left:220px; padding-top:48px !important; }
-    #phase-chat .wrap{ height:100vh; }
-    .chat-shell{ height:100vh; }
-  }
-
+  .sb-toggle{ position:absolute; top:26px; right:-12px; width:24px; height:24px; border-radius:50%; background:var(--white); border:1px solid var(--line-strong); display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:2; transition:transform .2s ease; }
+  .sb-toggle:hover{ border-color:var(--gold-dim); }
+  .sb-toggle svg{ transition:transform .2s ease; }
+  body.sb-collapsed .sb-toggle svg{ transform:rotate(180deg); }
+  body.sb-collapsed .sb-logo span,
+  body.sb-collapsed .sb-navitem span,
+  body.sb-collapsed .sb-streak .lbl{ display:none; }
+  body.sb-collapsed .sb-top{ padding:28px 0 22px; display:flex; justify-content:center; }
+  body.sb-collapsed .sb-logo{ justify-content:center; }
+  body.sb-collapsed .sb-navitem{ justify-content:center; padding:11px 0; }
+  body.sb-collapsed .sb-nav{ padding:18px 10px; }
+  body.sb-collapsed .sb-bottom{ padding:18px 0 24px; display:flex; justify-content:center; }
+  body.sb-collapsed .sb-streak{ flex-direction:column; align-items:center; gap:2px; }
   #topbar{ position:fixed; top:0; left:0; right:0; z-index:200; padding:18px 0; background:rgba(250,249,247,0.94); border-bottom:1.5px solid var(--line-strong); display:none; }
   #topbar.show{ display:block; }
   #topbar .wrap{ display:flex; align-items:center; justify-content:space-between; max-width:1040px; }
@@ -479,6 +486,9 @@
 
 <!-- TOP BAR -->
 <div id="sidebar">
+  <button class="sb-toggle" id="sbToggle" aria-label="Fäll in/ut menyn">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
   <div class="sb-top">
     <a href="index.html" class="sb-logo"><img src="images/coach-img-2-6f42546f50.png" alt="MOTION UF"><span>MOTION UF</span></a>
   </div>
@@ -1089,6 +1099,18 @@ function showPhase(id){
   const widget = document.getElementById('mascot-widget');
   if (widget) widget.style.display = (id === 'phase-chat' || id === 'phase-avatar') ? 'none' : 'flex';
 }
+function initSidebarToggle(){
+  const btn = document.getElementById('sbToggle');
+  if (!btn) return;
+  if (localStorage.getItem('muf_sb_collapsed') === '1'){
+    document.body.classList.add('sb-collapsed');
+  }
+  btn.addEventListener('click', () => {
+    const collapsed = document.body.classList.toggle('sb-collapsed');
+    localStorage.setItem('muf_sb_collapsed', collapsed ? '1' : '0');
+  });
+}
+
 function initTopbarBack(){
   const link = document.getElementById('topbarBackLink');
   if (!link) return;
@@ -1204,6 +1226,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initScheduleForm();
   initScheduleUpload();
   initTopbarBack();
+  initSidebarToggle();
 
   document.getElementById('btnStartWorkout').addEventListener('click', startWorkoutSession);
   document.getElementById('btnExportProgram').addEventListener('click', generateTrainingProgramFile);
