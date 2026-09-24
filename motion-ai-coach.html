@@ -225,6 +225,7 @@
   .schedule-form input[type="text"], .schedule-form select{ background:var(--glass); border:1px solid var(--line-strong); border-radius:4px; padding:9px 12px; color:var(--chalk); font-family:'Inter',sans-serif; font-size:0.95rem; }
   #addEventForm{ align-items:flex-end; }
   #addEventForm input[type="text"]{ min-width:180px; }
+  #addEventForm input[type="text"]:disabled{ background:var(--beige); color:var(--chalk-dim); opacity:0.85; }
 
   /* ---------- DAY STRIP + WEEK LIST (dense, no dead space) ---------- */
   .day-strip{ display:flex; justify-content:space-between; gap:6px; padding:4px 4px 20px; }
@@ -708,13 +709,13 @@
       <div class="week-list" id="weekList"></div>
       <div id="weekGridDetail"></div>
       <form id="addEventForm" class="schedule-form">
-        <label>Dag<select id="addEvDay">
+        <label id="addEvDayWrap">Dag<select id="addEvDay">
           <option value="0">Mån</option><option value="1">Tis</option><option value="2">Ons</option>
           <option value="3">Tors</option><option value="4">Fre</option><option value="5">Lör</option><option value="6">Sön</option>
         </select></label>
-        <label>Titel<input type="text" id="addEvTitle" placeholder="T.ex. Tandläkare" maxlength="60"></label>
+        <label id="addEvTitleWrap">Titel<input type="text" id="addEvTitle" placeholder="T.ex. Tandläkare" maxlength="60"></label>
         <label>Start<input type="time" id="addEvStart"></label>
-        <label>Slut (valfritt)<input type="time" id="addEvEnd"></label>
+        <label id="addEvEndWrap">Slut (valfritt)<input type="time" id="addEvEnd"></label>
         <button type="submit" class="btn btn-gold">Lägg till</button>
       </form>
       <form id="scheduleForm" class="schedule-form">
@@ -1438,7 +1439,8 @@ function loadSchedule(){
   if (!s) s = { wake:'07:00', trainTimes:{} };
   if (!s.trainTimes) s.trainTimes = {};
   if (!s.customEvents) s.customEvents = {};
-  for (let i=0;i<7;i++){ if (!s.trainTimes[i]) s.trainTimes[i] = fallback; if (!s.customEvents[i]) s.customEvents[i] = []; }
+  if (!s.mealOverrides) s.mealOverrides = {};
+  for (let i=0;i<7;i++){ if (!s.trainTimes[i]) s.trainTimes[i] = fallback; if (!s.customEvents[i]) s.customEvents[i] = []; if (!s.mealOverrides[i]) s.mealOverrides[i] = {}; }
   return s;
 }
 let schedule = loadSchedule();
@@ -1453,23 +1455,25 @@ function buildDayRows(dayIdx){
   const trainTime = schedule.trainTimes[dayIdx];
   const trainM = timeToMin(trainTime);
   const duration = (dayPlan && dayPlan.active) ? (profile.minutes || 20) : 15;
+  const ov = schedule.mealOverrides[dayIdx] || {};
+  const at = (key, fallbackM) => ov[key] ? timeToMin(ov[key]) : fallbackM;
 
   const rows = [];
-  rows.push({ m: wakeM, title: 'Vaken', tip: null, type:'wake' });
-  rows.push({ m: wakeM + 30, title: 'Frukost', tip: 'Bra grund — protein + långsamma kolhydrater håller energin jämn.', ask: 'Ge mig ett bra frukostförslag', type:'meal' });
+  rows.push({ m: wakeM, title: 'Vaken', tip: null, type:'wake', key:'wake' });
+  rows.push({ m: at('frukost', wakeM + 30), title: 'Frukost', tip: 'Bra grund — protein + långsamma kolhydrater håller energin jämn.', ask: 'Ge mig ett bra frukostförslag', type:'meal', key:'frukost' });
 
   if (dayPlan && dayPlan.active){
-    const snackM = Math.max(trainM - 45, wakeM + 10);
+    const snackM = at('mellanmal', Math.max(trainM - 45, wakeM + 10));
     const doneAlready = isToday && isDoneToday();
-    if (snackM < trainM){
-      rows.push({ m: snackM, title: 'Litet mellanmål', tip: 'En banan eller en handfull nötter — lätt energi utan att kännas full.', ask: 'Vad ska jag äta innan dagens pass?', type:'meal' });
+    if (snackM < trainM || ov.mellanmal){
+      rows.push({ m: snackM, title: 'Litet mellanmål', tip: 'En banan eller en handfull nötter — lätt energi utan att kännas full.', ask: 'Vad ska jag äta innan dagens pass?', type:'meal', key:'mellanmal' });
     }
-    rows.push({ m: trainM, title: `Träningspass · ${dayPlan.cardCount} kort`, tip: doneAlready ? '✓ Redan avklarat idag.' : `~${duration} min. Du vet inte vad du får förrän du skannar första kortet.`, workout:true });
-    rows.push({ m: trainM + duration + 5, title: 'Efter passet', tip: 'Protein inom 30–60 min — t.ex. skyr, ett glas mjölk eller en proteinboll.', ask: 'Vad ska jag äta efter träningen idag?', type:'meal' });
-    rows.push({ m: Math.max(trainM + duration + 90, wakeM + 660), title: 'Middag', tip: 'Fyll på med grönsaker och protein inför morgondagen.', ask: 'Ge mig ett bra middagsförslag för ikväll', type:'meal' });
+    rows.push({ m: trainM, title: `Träningspass · ${dayPlan.cardCount} kort`, tip: doneAlready ? '✓ Redan avklarat idag.' : `~${duration} min. Du vet inte vad du får förrän du skannar första kortet.`, workout:true, key:'workout' });
+    rows.push({ m: at('efterpasset', trainM + duration + 5), title: 'Efter passet', tip: 'Protein inom 30–60 min — t.ex. skyr, ett glas mjölk eller en proteinboll.', ask: 'Vad ska jag äta efter träningen idag?', type:'meal', key:'efterpasset' });
+    rows.push({ m: at('middag', Math.max(trainM + duration + 90, wakeM + 660)), title: 'Middag', tip: 'Fyll på med grönsaker och protein inför morgondagen.', ask: 'Ge mig ett bra middagsförslag för ikväll', type:'meal', key:'middag' });
   } else {
-    rows.push({ m: wakeM + 660, title: 'Middag', tip: 'Fyll på med grönsaker och protein inför morgondagen.', ask: 'Ge mig ett bra middagsförslag för ikväll', type:'meal' });
-    rows.push({ m: trainM, title: 'Vilodag', tip: stretchTipOfDay(), ask: 'Exportera en stretchrutin för min vilodag', type:'rest' });
+    rows.push({ m: at('middag', wakeM + 660), title: 'Middag', tip: 'Fyll på med grönsaker och protein inför morgondagen.', ask: 'Ge mig ett bra middagsförslag för ikväll', type:'meal', key:'middag' });
+    rows.push({ m: trainM, title: 'Vilodag', tip: stretchTipOfDay(), ask: 'Exportera en stretchrutin för min vilodag', type:'rest', key:'workout' });
   }
 
   (schedule.customEvents[dayIdx] || []).forEach(ev => {
@@ -1481,8 +1485,12 @@ function buildDayRows(dayIdx){
 }
 
 function renderDayRowsHtml(rows){
-  return rows.map(r => `
-    <div class="sched-row ${r.workout ? 'workout' : (r.type || '')} ${r.customId ? 'editable' : ''}" ${r.customId ? `data-editid="${r.customId}" data-edittime="${minToTime(r.m)}" data-editendtime="${r.endTime||''}" data-edittitle="${escapeHtml(r.title)}"` : ''}>
+  return rows.map(r => {
+    const editAttrs = r.customId
+      ? `data-editid="${r.customId}" data-edittime="${minToTime(r.m)}" data-editendtime="${r.endTime||''}" data-edittitle="${escapeHtml(r.title)}"`
+      : (r.key !== 'wake' ? `data-editkey="${r.key}" data-edittime="${minToTime(r.m)}" data-edittitle="${escapeHtml(r.title)}"` : '');
+    return `
+    <div class="sched-row ${r.workout ? 'workout' : (r.type || '')} ${editAttrs ? 'editable' : ''}" ${editAttrs}>
       <span class="sched-time">${minToTime(r.m)}${r.endTime ? `–${r.endTime}` : ''}</span>
       <div class="sched-content">
         <div class="sched-title">${r.title}${r.type==='custom' ? ' <span class="sched-tag-custom">Importerat</span>' : ''}</div>
@@ -1490,7 +1498,8 @@ function renderDayRowsHtml(rows){
         ${r.ask ? `<span class="sched-ask" data-ask="${escapeHtml(r.ask)}">Fråga AI-coachen</span>` : ''}
       </div>
       ${r.customId ? `<button type="button" class="sched-del" data-delid="${r.customId}" data-delday="${scheduleSelectedDay}" aria-label="Ta bort">×</button>` : ''}
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function renderWeekProgress(){
@@ -1620,6 +1629,11 @@ function showWeekGridDetail(dayIdx){
       openAddEventForm(dayIdx, { id: el.dataset.editid, time: el.dataset.edittime, endTime: el.dataset.editendtime, title: el.dataset.edittitle });
     });
   });
+  detail.querySelectorAll('[data-editkey]').forEach(el => {
+    el.addEventListener('click', () => {
+      openEditBuiltinSlot(dayIdx, el.dataset.editkey, el.dataset.edittitle, el.dataset.edittime);
+    });
+  });
 }
 
 
@@ -1639,10 +1653,16 @@ function openScheduleForm(){
 }
 
 let editingEventId = null;
+let editingSlot = null;
 
 function openAddEventForm(dayIdx, prefill){
   const form = document.getElementById('addEventForm');
   document.getElementById('scheduleForm').classList.remove('show');
+  editingSlot = null;
+  document.getElementById('addEvDayWrap').style.display = '';
+  document.getElementById('addEvTitleWrap').style.display = '';
+  document.getElementById('addEvEndWrap').style.display = '';
+  document.getElementById('addEvTitle').disabled = false;
   document.getElementById('addEvDay').value = dayIdx;
   document.getElementById('addEvTitle').value = prefill ? prefill.title : '';
   document.getElementById('addEvStart').value = prefill ? prefill.time : '';
@@ -1653,10 +1673,26 @@ function openAddEventForm(dayIdx, prefill){
   document.getElementById('addEvTitle').focus();
 }
 
+function openEditBuiltinSlot(dayIdx, key, label, currentTime){
+  const form = document.getElementById('addEventForm');
+  document.getElementById('scheduleForm').classList.remove('show');
+  editingEventId = null;
+  editingSlot = { dayIdx, key };
+  document.getElementById('addEvDayWrap').style.display = 'none';
+  document.getElementById('addEvEndWrap').style.display = 'none';
+  document.getElementById('addEvTitleWrap').style.display = '';
+  document.getElementById('addEvTitle').value = label;
+  document.getElementById('addEvTitle').disabled = true;
+  document.getElementById('addEvStart').value = currentTime;
+  form.querySelector('button[type="submit"]').textContent = 'Spara tid';
+  form.classList.add('show');
+  document.getElementById('addEvStart').focus();
+}
+
 function initAddEventForm(){
   document.getElementById('btnAddEvent').addEventListener('click', () => {
     const form = document.getElementById('addEventForm');
-    if (form.classList.contains('show') && !editingEventId){
+    if (form.classList.contains('show') && !editingEventId && !editingSlot){
       form.classList.remove('show');
       return;
     }
@@ -1665,11 +1701,29 @@ function initAddEventForm(){
 
   document.getElementById('addEventForm').addEventListener('submit', (e) => {
     e.preventDefault();
+    const start = document.getElementById('addEvStart').value;
+    if (!start) return;
+
+    if (editingSlot){
+      const { dayIdx, key } = editingSlot;
+      if (key === 'workout'){
+        schedule.trainTimes[dayIdx] = start;
+      } else {
+        if (!schedule.mealOverrides[dayIdx]) schedule.mealOverrides[dayIdx] = {};
+        schedule.mealOverrides[dayIdx][key] = start;
+      }
+      store.set('muf_schedule', schedule);
+      editingSlot = null;
+      document.getElementById('addEventForm').classList.remove('show');
+      scheduleSelectedDay = dayIdx;
+      renderWeekList();
+      return;
+    }
+
     const dayIdx = +document.getElementById('addEvDay').value;
     const title = document.getElementById('addEvTitle').value.trim();
-    const start = document.getElementById('addEvStart').value;
     const end = document.getElementById('addEvEnd').value;
-    if (!title || !start) return;
+    if (!title) return;
     if (!schedule.customEvents[dayIdx]) schedule.customEvents[dayIdx] = [];
 
     if (editingEventId){
