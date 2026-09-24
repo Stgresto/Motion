@@ -37,6 +37,7 @@
   button{ font-family:inherit; cursor:pointer; border:none; background:none; }
   input, textarea{ font-family:inherit; font-size:1rem; }
   .wrap{ max-width:960px; margin:0 auto; padding:0 28px; }
+  #phase-dashboard .wrap{ max-width:1320px; }
   .mono{ font-family:'JetBrains Mono', monospace; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); }
 
   /* glass panel base */
@@ -209,6 +210,8 @@
   .sched-tip{ font-size:0.87rem; color:#3a3530; line-height:1.5; }
   .sched-ask{ display:inline-flex; align-items:center; gap:5px; margin-top:9px; font-size:0.76rem; font-weight:600; letter-spacing:0.02em; color:#8c6f37; cursor:pointer; background:none; border:none; border-bottom:1px solid rgba(184,147,90,0.4); padding:0; transition:border-color .2s ease; }
   .sched-row.custom{ background:rgba(122,142,178,0.06); border-color:rgba(122,142,178,0.25); }
+  .sched-row.editable{ cursor:pointer; }
+  .sched-row.editable:hover{ background:rgba(184,147,90,0.07); border-color:var(--gold-dim); }
   .sched-tag-custom{ font-family:'JetBrains Mono',monospace; font-size:0.6rem; letter-spacing:0.03em; text-transform:uppercase; color:#5c6f8c; background:rgba(122,142,178,0.14); padding:2px 7px; border-radius:10px; margin-left:6px; font-weight:600; vertical-align:middle; }
   .sched-del{ background:none; border:none; color:var(--chalk-faint); font-size:1.1rem; line-height:1; cursor:pointer; padding:2px 6px; flex-shrink:0; align-self:flex-start; }
   .sched-del:hover{ color:#b0473f; }
@@ -219,6 +222,9 @@
   .schedule-form.show{ display:flex; }
   .schedule-form label{ display:flex; flex-direction:column; gap:6px; font-size:0.78rem; color:var(--chalk-dim); font-family:'JetBrains Mono',monospace; letter-spacing:0.04em; }
   .schedule-form input[type="time"]{ background:var(--glass); border:1px solid var(--line-strong); border-radius:4px; padding:9px 12px; color:var(--chalk); font-family:'Inter',sans-serif; font-size:0.95rem; }
+  .schedule-form input[type="text"], .schedule-form select{ background:var(--glass); border:1px solid var(--line-strong); border-radius:4px; padding:9px 12px; color:var(--chalk); font-family:'Inter',sans-serif; font-size:0.95rem; }
+  #addEventForm{ align-items:flex-end; }
+  #addEventForm input[type="text"]{ min-width:180px; }
 
   /* ---------- DAY STRIP + WEEK LIST (dense, no dead space) ---------- */
   .day-strip{ display:flex; justify-content:space-between; gap:6px; padding:4px 4px 20px; }
@@ -692,6 +698,7 @@
           </div>
         </div>
         <div class="schedule-head-actions">
+          <button class="schedule-edit-btn" id="btnAddEvent">+ Lägg till händelse</button>
           <button class="schedule-edit-btn" id="btnUploadSchedule" title="Klicka för att välja fil, eller klistra in en skärmdump med Ctrl+V / Cmd+V">Ladda upp schema</button>
           <button class="schedule-edit-btn" id="btnEditSchedule">Ändra vaken-tid</button>
         </div>
@@ -700,6 +707,16 @@
       <div class="day-strip" id="dayStrip"></div>
       <div class="week-list" id="weekList"></div>
       <div id="weekGridDetail"></div>
+      <form id="addEventForm" class="schedule-form">
+        <label>Dag<select id="addEvDay">
+          <option value="0">Mån</option><option value="1">Tis</option><option value="2">Ons</option>
+          <option value="3">Tors</option><option value="4">Fre</option><option value="5">Lör</option><option value="6">Sön</option>
+        </select></label>
+        <label>Titel<input type="text" id="addEvTitle" placeholder="T.ex. Tandläkare" maxlength="60"></label>
+        <label>Start<input type="time" id="addEvStart"></label>
+        <label>Slut (valfritt)<input type="time" id="addEvEnd"></label>
+        <button type="submit" class="btn btn-gold">Lägg till</button>
+      </form>
       <form id="scheduleForm" class="schedule-form">
         <label>Vaken kl (alla dagar)<input type="time" id="inpWakeTime"></label>
         <label>Träningstid för <span id="scheduleFormDayLabel">idag</span><input type="time" id="inpTrainTime"></label>
@@ -1243,6 +1260,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initPrefs();
   initScheduleForm();
   initScheduleUpload();
+  initAddEventForm();
   initTopbarBack();
   initSidebarToggle();
 
@@ -1489,7 +1507,7 @@ function buildDayRows(dayIdx){
 
 function renderDayRowsHtml(rows){
   return rows.map(r => `
-    <div class="sched-row ${r.workout ? 'workout' : (r.type || '')}">
+    <div class="sched-row ${r.workout ? 'workout' : (r.type || '')} ${r.customId ? 'editable' : ''}" ${r.customId ? `data-editid="${r.customId}" data-edittime="${minToTime(r.m)}" data-editendtime="${r.endTime||''}" data-edittitle="${escapeHtml(r.title)}"` : ''}>
       <span class="sched-time">${minToTime(r.m)}${r.endTime ? `–${r.endTime}` : ''}</span>
       <div class="sched-content">
         <div class="sched-title">${r.title}${r.type==='custom' ? ' <span class="sched-tag-custom">Importerat</span>' : ''}</div>
@@ -1613,12 +1631,18 @@ function showWeekGridDetail(dayIdx){
     el.addEventListener('click', () => askCoachAbout(el.dataset.ask));
   });
   detail.querySelectorAll('[data-delid]').forEach(el => {
-    el.addEventListener('click', () => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
       const day = +el.dataset.delday;
       const id = el.dataset.delid;
       schedule.customEvents[day] = (schedule.customEvents[day] || []).filter(ev => String(ev.id) !== id);
       store.set('muf_schedule', schedule);
       renderWeekList();
+    });
+  });
+  detail.querySelectorAll('[data-editid]').forEach(el => {
+    el.addEventListener('click', () => {
+      openAddEventForm(dayIdx, { id: el.dataset.editid, time: el.dataset.edittime, endTime: el.dataset.editendtime, title: el.dataset.edittitle });
     });
   });
 }
@@ -1637,6 +1661,57 @@ function openScheduleForm(){
   document.getElementById('inpWakeTime').value = schedule.wake;
   document.getElementById('inpTrainTime').value = schedule.trainTimes[scheduleSelectedDay];
   document.getElementById('scheduleFormDayLabel').textContent = scheduleSelectedDay === todayIdx() ? 'idag' : DAY_SHORT[scheduleSelectedDay];
+}
+
+let editingEventId = null;
+
+function openAddEventForm(dayIdx, prefill){
+  const form = document.getElementById('addEventForm');
+  document.getElementById('scheduleForm').classList.remove('show');
+  document.getElementById('addEvDay').value = dayIdx;
+  document.getElementById('addEvTitle').value = prefill ? prefill.title : '';
+  document.getElementById('addEvStart').value = prefill ? prefill.time : '';
+  document.getElementById('addEvEnd').value = prefill && prefill.endTime ? prefill.endTime : '';
+  editingEventId = prefill ? prefill.id : null;
+  form.querySelector('button[type="submit"]').textContent = prefill ? 'Spara ändring' : 'Lägg till';
+  form.classList.add('show');
+  document.getElementById('addEvTitle').focus();
+}
+
+function initAddEventForm(){
+  document.getElementById('btnAddEvent').addEventListener('click', () => {
+    const form = document.getElementById('addEventForm');
+    if (form.classList.contains('show') && !editingEventId){
+      form.classList.remove('show');
+      return;
+    }
+    openAddEventForm(scheduleSelectedDay != null ? scheduleSelectedDay : todayIdx(), null);
+  });
+
+  document.getElementById('addEventForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const dayIdx = +document.getElementById('addEvDay').value;
+    const title = document.getElementById('addEvTitle').value.trim();
+    const start = document.getElementById('addEvStart').value;
+    const end = document.getElementById('addEvEnd').value;
+    if (!title || !start) return;
+    if (!schedule.customEvents[dayIdx]) schedule.customEvents[dayIdx] = [];
+
+    if (editingEventId){
+      // an event can be edited on a different day than it started on — move it there
+      for (let i = 0; i < 7; i++){
+        schedule.customEvents[i] = (schedule.customEvents[i] || []).filter(ev => ev.id !== editingEventId);
+      }
+      schedule.customEvents[dayIdx].push({ id: editingEventId, time: start, endTime: end || null, title: title.slice(0,60) });
+    } else {
+      schedule.customEvents[dayIdx].push({ id: Date.now() + '-manual', time: start, endTime: end || null, title: title.slice(0,60) });
+    }
+    store.set('muf_schedule', schedule);
+    editingEventId = null;
+    document.getElementById('addEventForm').classList.remove('show');
+    scheduleSelectedDay = dayIdx;
+    renderWeekList();
+  });
 }
 
 function initScheduleForm(){
@@ -2263,7 +2338,19 @@ function sendChat(){
 
   askCoachAI(text).then(({ text: reply, source }) => {
     typingRow.remove();
-    chatLog.push({ role:'ai', text: reply, source });
+    let displayText = reply;
+    if (source === 'api'){
+      const data = extractScheduleJson(reply);
+      if (data){
+        displayText = reply.replace(/```json\s*[\s\S]*?```/i, '').replace(/```json[\s\S]*$/i, '').trim();
+        const { added, changed } = applyExtractedEvents(data);
+        const parts = [];
+        if (added > 0) parts.push(`${added} ny${added===1?'':'a'} händelse${added===1?'':'r'}`);
+        if (changed.length) parts.push(changed.join(', '));
+        if (parts.length) displayText += `\n\n**Uppdaterat i ditt schema:** ${parts.join(' · ')}.`;
+      }
+    }
+    chatLog.push({ role:'ai', text: displayText, source });
     store.set(CHAT_LOG_KEY, chatLog);
     renderChatLog();
     if (plan) { store.set('muf_plan', plan); store.set('muf_today_override', todayOverride); if (document.getElementById('phase-dashboard').classList.contains('active')) renderDashboard(); }
