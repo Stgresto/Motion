@@ -2111,6 +2111,12 @@ function applyExtractedEvents(data){
     if (vals.length >= 4 && new Set(vals).size === 1) sameTimeWarning = true;
   }
 
+  const explicitTrainDays = new Set();
+  if (data.trainTimes){
+    Object.keys(data.trainTimes).forEach(k => { const d = dayKeyToIndex(k); if (d !== undefined) explicitTrainDays.add(d); });
+  }
+  const busyByDay = {};
+
   (data.events || []).forEach(ev => {
     const dayIdx = dayKeyToIndex(ev.day);
     if (dayIdx === undefined) return;
@@ -2123,6 +2129,45 @@ function applyExtractedEvents(data){
     const endTime = /^\d{1,2}:\d{2}$/.test(ev.endTime || '') ? ev.endTime : null;
     schedule.customEvents[dayIdx].push({ id: Date.now() + '-' + added, time: ev.time, endTime, title: String(ev.title).slice(0,60) });
     added++;
+
+    const startM = timeToMin(ev.time);
+    const endM = endTime ? timeToMin(endTime) : startM + 30;
+    if (!busyByDay[dayIdx]) busyByDay[dayIdx] = [];
+    busyByDay[dayIdx].push([startM, endM]);
+  });
+
+  // The imported schedule takes priority over an old, now possibly-conflicting
+  // workout time — move the workout into the next free gap on any day that
+  // just received real busy blocks, unless the image itself gave an explicit
+  // training time for that day.
+  Object.keys(busyByDay).forEach(key => {
+    const dayIdx = +key;
+    if (explicitTrainDays.has(dayIdx)) return;
+    if (!plan.week[dayIdx] || !plan.week[dayIdx].active) return;
+
+    const busy = busyByDay[dayIdx].sort((a,b) => a[0]-b[0]);
+    const duration = profile.minutes || 20;
+    const buffer = 10;
+    const wakeM = timeToMin(schedule.wake);
+    const dayStart = wakeM + 60;
+    const dayEnd = 21*60;
+    const currentTrainM = timeToMin(schedule.trainTimes[dayIdx]);
+
+    const overlaps = busy.some(([s,e]) => currentTrainM < e + buffer && currentTrainM + duration > s - buffer);
+    if (!overlaps) return;
+
+    let slot = null;
+    for (let t = dayStart; t + duration <= dayEnd; t += 15){
+      const clash = busy.some(([s,e]) => t < e + buffer && t + duration > s - buffer);
+      if (!clash){ slot = t; break; }
+    }
+    if (slot !== null){
+      const newTime = minToTime(slot);
+      if (schedule.trainTimes[dayIdx] !== newTime){
+        schedule.trainTimes[dayIdx] = newTime;
+        changed.push(`träning ${DAY_SHORT[dayIdx]} → ${newTime} (ledig lucka)`);
+      }
+    }
   });
 
   if (added > 0 || changed.length > 0){
