@@ -468,7 +468,7 @@
   }
 
   /* ---------- AVATAR STUDIO ---------- */
-  .avatar-picker-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; }
+  .avatar-picker-grid{ display:grid; grid-template-columns:repeat(5, 1fr); gap:20px; }
   .avatar-pick-card{ position:relative; padding:10px; cursor:pointer; text-align:center; transition:all .25s ease; }
   .pick-circle{ width:140px; height:140px; margin:0 auto; border-radius:50%; overflow:hidden; border:2px solid var(--line-strong); transition:all .25s ease; }
   .pick-circle img{ width:100%; height:100%; object-fit:cover; object-position:center 22%; }
@@ -505,7 +505,7 @@
 <!-- MINI COACH MASCOT -->
 <div id="mascot-widget">
   <div class="mascot-bubble" id="mascotBubble">Hej! Jag finns här genom hela passet.</div>
-  <div class="mascot-orb" id="mascotOrb"><img id="mascotOrbImg" src="images/avatar-runner.jpg" alt="Din coach"></div>
+  <div class="mascot-orb" id="mascotOrb"><img id="mascotOrbImg" src="images/robo-coach.jpg" alt="Din coach"></div>
 </div>
 
 <!-- TOP BAR -->
@@ -770,7 +770,7 @@
 <section class="phase" id="phase-chat">
   <div class="chat-shell glass">
     <div class="chat-head">
-      <img src="images/avatar-runner.jpg" id="chatHeadAvatar" alt="" style="border-radius:50%; object-fit:cover; object-position:center 22%;">
+      <img src="images/robo-coach.jpg" id="chatHeadAvatar" alt="" style="border-radius:50%; object-fit:cover; object-position:center 22%;">
       <div><h3>Din AI-coach</h3><p>Fråga om passet, kost, sömn eller vanor — och säg hur du mår.</p></div>
     </div>
     <div class="chat-log" id="chatLog"></div>
@@ -798,44 +798,24 @@
     </div>
 
     <div class="avatar-picker-grid" id="avatarPickerGrid">
-      <div class="avatar-pick-card" data-avatar="runner">
-        <div class="pick-circle"><img src="images/avatar-runner.jpg" alt="Löparen"></div>
+      <div class="avatar-pick-card" data-avatar="zenbot">
+        <div class="pick-circle"><img src="images/robo-planera.jpg" alt="Zenbot"></div>
         <span class="pick-check">✓</span>
       </div>
-      <div class="avatar-pick-card" data-avatar="gymnast">
-        <div class="pick-circle"><img src="images/avatar-gymnast.jpg" alt="Gymnasten"></div>
+      <div class="avatar-pick-card" data-avatar="kraftbot">
+        <div class="pick-circle"><img src="images/robo-styrka.jpg" alt="Kraftbot"></div>
         <span class="pick-check">✓</span>
       </div>
-      <div class="avatar-pick-card" data-avatar="basketball">
-        <div class="pick-circle"><img src="images/avatar-basketball.jpg" alt="Basketspelaren"></div>
+      <div class="avatar-pick-card" data-avatar="speedbot">
+        <div class="pick-circle"><img src="images/robo-speed.jpg" alt="Speedbot"></div>
         <span class="pick-check">✓</span>
       </div>
-      <div class="avatar-pick-card" data-avatar="swimmer">
-        <div class="pick-circle"><img src="images/avatar-swimmer.jpg" alt="Simmaren"></div>
+      <div class="avatar-pick-card" data-avatar="tankbot">
+        <div class="pick-circle"><img src="images/robo-kost.jpg" alt="Tänkbot"></div>
         <span class="pick-check">✓</span>
       </div>
-      <div class="avatar-pick-card" data-avatar="cyclist">
-        <div class="pick-circle"><img src="images/avatar-cyclist.jpg" alt="Cyklisten"></div>
-        <span class="pick-check">✓</span>
-      </div>
-      <div class="avatar-pick-card" data-avatar="footballer">
-        <div class="pick-circle"><img src="images/avatar-footballer.jpg" alt="Fotbollsspelaren"></div>
-        <span class="pick-check">✓</span>
-      </div>
-      <div class="avatar-pick-card" data-avatar="tennis">
-        <div class="pick-circle"><img src="images/avatar-tennis.jpg" alt="Tennisspelaren"></div>
-        <span class="pick-check">✓</span>
-      </div>
-      <div class="avatar-pick-card" data-avatar="volleyball">
-        <div class="pick-circle"><img src="images/avatar-volleyball.jpg" alt="Volleybollspelaren"></div>
-        <span class="pick-check">✓</span>
-      </div>
-      <div class="avatar-pick-card" data-avatar="rugby">
-        <div class="pick-circle"><img src="images/avatar-rugby.jpg" alt="Rugbyspelaren"></div>
-        <span class="pick-check">✓</span>
-      </div>
-      <div class="avatar-pick-card" data-avatar="hockey">
-        <div class="pick-circle"><img src="images/avatar-hockey.jpg" alt="Hockeyspelaren"></div>
+      <div class="avatar-pick-card" data-avatar="coachbot">
+        <div class="pick-circle"><img src="images/robo-coach.jpg" alt="Coachbot"></div>
         <span class="pick-check">✓</span>
       </div>
     </div>
@@ -1166,18 +1146,13 @@ function setActiveTab(name){ document.querySelectorAll('.navtab, .sb-navitem').f
 
 /* ============ 3D MINI COACH MASCOT ============ */
 const AVATARS = {
-  runner: { head:'images/avatar-runner.jpg' },
-  gymnast: { head:'images/avatar-gymnast.jpg' },
-  basketball: { head:'images/avatar-basketball.jpg' },
-  swimmer: { head:'images/avatar-swimmer.jpg' },
-  cyclist: { head:'images/avatar-cyclist.jpg' },
-  footballer: { head:'images/avatar-footballer.jpg' },
-  tennis: { head:'images/avatar-tennis.jpg' },
-  volleyball: { head:'images/avatar-volleyball.jpg' },
-  rugby: { head:'images/avatar-rugby.jpg' },
-  hockey: { head:'images/avatar-hockey.jpg' },
+  zenbot: { head:'images/robo-planera.jpg' },
+  kraftbot: { head:'images/robo-styrka.jpg' },
+  speedbot: { head:'images/robo-speed.jpg' },
+  tankbot: { head:'images/robo-kost.jpg' },
+  coachbot: { head:'images/robo-coach.jpg' },
 };
-let avatarParams = store.get('muf_avatar') || { id:'runner' };
+let avatarParams = store.get('muf_avatar') || { id:'coachbot' };
 
 const MASCOT_PHASE_LINES = {
   'phase-dashboard': 'Här är din vecka. Inga ursäkter — bara ett kort i taget.',
@@ -1202,11 +1177,11 @@ function mascotSpeak(text, voice){
   if (voice) speak(text);
 }
 function currentAvatarHeadSrc(){
-  const a = AVATARS[avatarParams.id] || AVATARS.runner;
+  const a = AVATARS[avatarParams.id] || AVATARS.coachbot;
   return a.head;
 }
 function currentAvatarFullSrc(){
-  const a = AVATARS[avatarParams.id] || AVATARS.runner;
+  const a = AVATARS[avatarParams.id] || AVATARS.coachbot;
   return a.head;
 }
 function applyAvatarEverywhere(){
