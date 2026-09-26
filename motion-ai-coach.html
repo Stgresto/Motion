@@ -168,6 +168,13 @@
   .today-photo{ width:38%; flex-shrink:0; position:relative; }
   .today-photo img{ width:100%; height:100%; object-fit:cover; position:absolute; inset:0; }
   @media(max-width:760px){ .today-card{ flex-direction:column; min-height:0; } .today-photo{ width:100%; height:160px; } .today-content{ padding:28px 22px; } }
+
+  .quick-actions{ display:flex; gap:14px; margin-bottom:28px; }
+  .qa-item{ flex:1; display:flex; flex-direction:column; align-items:center; gap:9px; padding:16px 8px; background:var(--white); border:1px solid var(--line); border-radius:4px; cursor:pointer; transition:all .15s ease; font-family:'Plus Jakarta Sans',sans-serif; }
+  .qa-item:hover{ border-color:var(--gold); background:rgba(184,147,90,0.05); }
+  .qa-icn{ width:38px; height:38px; border-radius:50%; background:var(--beige); display:flex; align-items:center; justify-content:center; color:#8c6f37; }
+  .qa-item span:last-child{ font-size:0.76rem; color:var(--chalk-dim); font-weight:500; }
+  @media(max-width:760px){ .quick-actions{ gap:8px; margin-bottom:16px; } .qa-item{ padding:12px 4px; } .qa-icn{ width:32px; height:32px; } }
   .today-card::before{ content:''; position:absolute; inset:0; background:linear-gradient(155deg, rgba(212,175,55,0.1), transparent 55%); pointer-events:none; }
   .today-card .mono{ color:var(--gold-soft); }
   .today-card h2{ font-size:2rem; margin:14px 0 8px; }
@@ -683,7 +690,26 @@
         <div class="today-meta" id="todayMeta"></div>
         <button class="btn btn-gold" id="btnStartWorkout">Starta dagens pass</button>
       </div>
-      <div class="today-photo"><img src="images/hero.jpg" alt=""></div>
+      <div class="today-photo"><img src="images/today-card-photo.jpg" alt=""></div>
+    </div>
+
+    <div class="quick-actions">
+      <button class="qa-item" data-ask="Gör en kostplan åt mig">
+        <span class="qa-icn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 2v14M4 2c-1.5 0-2 1-2 2.5S2.5 7 4 7M4 7V2M14 2v14M14 2c1.7 0 3 1.3 3 3v3c0 1-.5 1.5-1.5 1.5H13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span>Kost</span>
+      </button>
+      <button class="qa-item" data-ask="Ge mig tips för bättre sömn">
+        <span class="qa-icn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M15 10.5A6.5 6.5 0 017.5 3 6.5 6.5 0 1015 10.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></span>
+        <span>Sömn</span>
+      </button>
+      <button class="qa-item" data-ask="Exportera en stretchrutin">
+        <span class="qa-icn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="3.2" r="1.6" stroke="currentColor" stroke-width="1.3"/><path d="M9 6v5M9 11l-3.5 4M9 11l3.5 4M9 8l-4 1.5M9 8l4 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+        <span>Stretch</span>
+      </button>
+      <button class="qa-item" data-ask="Jag är trött idag">
+        <span class="qa-icn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2a7 7 0 100 14A7 7 0 009 2z" stroke="currentColor" stroke-width="1.3"/><path d="M6.3 11c.6.9 1.6 1.5 2.7 1.5s2.1-.6 2.7-1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="6.7" cy="7.3" r=".9" fill="currentColor"/><circle cx="11.3" cy="7.3" r=".9" fill="currentColor"/></svg></span>
+        <span>Humör</span>
+      </button>
     </div>
 
     <div class="schedule-card glass" id="scheduleCard">
@@ -1127,6 +1153,12 @@ function initSidebarToggle(){
   });
 }
 
+function initQuickActions(){
+  document.querySelectorAll('.qa-item[data-ask]').forEach(el => {
+    el.addEventListener('click', () => askCoachAbout(el.dataset.ask));
+  });
+}
+
 function initTopbarBack(){
   const link = document.getElementById('topbarBackLink');
   if (!link) return;
@@ -1237,6 +1269,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initScheduleForm();
   initScheduleUpload();
   initAddEventForm();
+  initQuickActions();
   initTopbarBack();
   initSidebarToggle();
 
