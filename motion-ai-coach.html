@@ -165,9 +165,10 @@
   .dash-greet p{ color:var(--chalk-dim); margin-top:8px; }
   .today-card{ border-radius:6px; padding:0; margin-bottom:28px; position:relative; overflow:hidden; display:flex; align-items:stretch; min-height:260px; }
   .today-content{ padding:42px; flex:1; display:flex; flex-direction:column; justify-content:center; }
-  .today-photo{ width:38%; flex-shrink:0; position:relative; }
+  .today-photo{ width:44%; flex-shrink:0; position:relative; display:flex; gap:2px; }
+  .today-photo .tp-half{ flex:1; position:relative; overflow:hidden; }
   .today-photo img{ width:100%; height:100%; object-fit:cover; position:absolute; inset:0; }
-  @media(max-width:760px){ .today-card{ flex-direction:column; min-height:0; } .today-photo{ width:100%; height:160px; } .today-content{ padding:28px 22px; } }
+  @media(max-width:760px){ .today-card{ flex-direction:column; min-height:0; } .today-photo{ width:100%; height:200px; } .today-content{ padding:28px 22px; } }
 
   .quick-actions{ display:flex; gap:14px; margin-bottom:28px; }
   .qa-item{ flex:1; display:flex; flex-direction:column; align-items:center; gap:9px; padding:16px 8px; background:var(--white); border:1px solid var(--line); border-radius:4px; cursor:pointer; transition:all .15s ease; font-family:'Plus Jakarta Sans',sans-serif; }
@@ -690,7 +691,7 @@
         <div class="today-meta" id="todayMeta"></div>
         <button class="btn btn-gold" id="btnStartWorkout">Starta dagens pass</button>
       </div>
-      <div class="today-photo"><img src="images/today-card-photo.jpg" alt=""></div>
+      <div class="today-photo"><div class="tp-half"><img src="images/motion-focus.jpg" alt=""></div><div class="tp-half"><img src="images/motion-small-steps.jpg" alt=""></div></div>
     </div>
 
     <div class="quick-actions">
