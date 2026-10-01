@@ -15,740 +15,507 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MOTION UF — Rör dig mer. Tänk mindre.</title>
+<title>MOTION UF — Träningskortleken som gör det enkelt att börja</title>
+<meta name="description" content="En fysisk träningskortlek med QR-koder och en AI-planerare som hittar tid för korta pass i din vardag. Ingen app, inget gym.">
+<link rel="icon" href="images/logo_mark_v2.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Hanken+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --white:#faf9f7;
-    --beige:#f4f1ec;
-    --charcoal:#111111;
-    --charcoal-soft:#1c1c1a;
-    --olive:#4f5d4b;
-    --olive-deep:#394437;
-    --brass:#b8935a;
-    --brass-soft:#d0b48a;
-    --line:#e6e1d6;
-    --ink-soft:#6b6a63;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--white); color:var(--charcoal);
-    font-family:'Inter', sans-serif; font-weight:300; font-size:16px; line-height:1.65;
-    overflow-x:hidden;
-  }
-  h1,h2,h3{ font-family:'Cormorant Garamond', serif; font-weight:300; letter-spacing:0.005em; color:var(--charcoal); }
-  a{ color:inherit; text-decoration:none; }
-  img{ display:block; max-width:100%; }
-  .wrap{ max-width:1240px; margin:0 auto; padding:0 48px; }
-  .mono{ font-family:'JetBrains Mono', monospace; font-size:0.7rem; letter-spacing:0.09em; text-transform:uppercase; }
-  .glass{ background:rgba(250,249,247,0.6); border:1px solid rgba(17,17,17,0.08); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); }
+:root{
+  --paper:#F6F1E9;
+  --sand:#EAE0D0;
+  --umber:#2A1F16;
+  --umber-2:#3A2C20;
+  --bronze:#94672F;
+  --sun:#E2B577;
+  --stone:#6E6253;
+  --line:rgba(42,31,22,.14);
+  --serif:'Cormorant Garamond', 'Cormorant', Georgia, 'Times New Roman', serif;
+  --sans:'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --gutter:clamp(20px,5vw,72px);
+  --ease:cubic-bezier(.2,.7,.1,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--umber);font-family:var(--sans);font-size:17px;line-height:1.6;font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+.wrap{padding-inline:var(--gutter);max-width:1440px;margin-inline:auto}
 
-  .reveal{ opacity:0; transform:translateY(26px); transition:opacity .9s ease, transform .9s ease; }
-  .reveal.in{ opacity:1; transform:translateY(0); }
+/* type scale (perfect fourth-ish) */
+.display{font-family:var(--serif);font-weight:300;line-height:.92;letter-spacing:-.02em}
+h2.title{font-family:var(--serif);font-weight:300;font-size:clamp(2.4rem,5.6vw,4.6rem);line-height:1;letter-spacing:-.015em}
+h3{font-family:var(--serif);font-weight:400;font-size:1.65rem;line-height:1.15}
+.kicker{font-size:.9rem;color:var(--stone);margin-bottom:22px;display:block}
+.lede{font-size:clamp(1.05rem,1.4vw,1.2rem);max-width:34em;color:var(--stone)}
 
-  .btn{ display:inline-flex; align-items:center; gap:9px; padding:17px 32px; border-radius:100px; font-size:0.9rem; font-weight:500; transition:all .35s ease; }
-  .btn-dark{ background:var(--charcoal); color:var(--white); }
-  .btn-dark:hover{ background:var(--olive); transform:translateY(-2px); }
-  .btn-outline{ border:1.5px solid rgba(17,17,17,0.22); color:var(--charcoal); }
-  .btn-outline:hover{ border-color:var(--charcoal); background:rgba(17,17,17,0.04); }
-  .btn-light{ background:var(--white); color:var(--charcoal); }
-  .btn-light:hover{ transform:translateY(-2px); }
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;font:500 .95rem/1 var(--sans);padding:17px 26px;border-radius:999px;border:1px solid transparent;cursor:pointer;text-decoration:none;transition:background .25s,color .25s,border-color .25s}
+.btn-sun{background:var(--sun);color:var(--umber)}
+.btn-sun:hover{background:#ecc78f}
+.btn-ghost{border-color:rgba(255,255,255,.55);color:#fff;background:transparent}
+.btn-ghost:hover{background:rgba(255,255,255,.12)}
+.btn-dark{background:var(--umber);color:var(--paper)}
+.btn-dark:hover{background:var(--umber-2)}
 
-  /* NAV */
-  nav{ position:fixed; top:0; left:0; right:0; z-index:150; padding:24px 0; transition:all .4s ease; }
-  nav.scrolled{ background:rgba(250,249,247,0.85); backdrop-filter:blur(14px); border-bottom:1px solid var(--line); padding:16px 0; }
-  nav .wrap{ display:flex; justify-content:space-between; align-items:center; }
-  .logo{ font-family:'Cormorant Garamond', serif; font-size:1.2rem; letter-spacing:0.02em; color:var(--white); transition:color .4s ease; display:flex; align-items:center; gap:10px; }
-  nav.scrolled .logo{ color:var(--charcoal); }
-  .logo-mark{ height:28px; width:auto; display:block; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15)); }
-  .navlinks{ display:flex; gap:36px; }
-  .navlinks a{ font-size:0.86rem; color:rgba(250,249,247,0.75); transition:color .3s ease; }
-  nav.scrolled .navlinks a{ color:var(--ink-soft); }
-  .navlinks a:hover{ color:var(--white); }
-  nav.scrolled .navlinks a:hover{ color:var(--charcoal); }
-  .nav .btn{ padding:11px 22px; font-size:0.82rem; }
+/* nav */
+#nav{position:fixed;inset:0 0 auto 0;z-index:50;color:#fff;transition:background .35s,color .35s,box-shadow .35s}
+#nav .wrap{display:flex;align-items:center;justify-content:space-between;height:78px;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.08em;font-size:.95rem;text-decoration:none}
+.logo img{height:26px;width:auto}
+.navlinks{display:flex;gap:34px;font-size:.93rem}
+.navlinks a{text-decoration:none;opacity:.85}
+.navlinks a:hover{opacity:1;text-decoration:underline;text-underline-offset:6px}
+#nav .btn{padding:12px 20px;font-size:.88rem}
+#nav.scrolled{background:rgba(246,241,233,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--umber);box-shadow:0 1px 0 var(--line)}
+#nav.scrolled .btn-sun{background:var(--umber);color:var(--paper)}
+.nav-burger{display:none;background:none;border:0;width:44px;height:44px;cursor:pointer;color:inherit;position:relative}
+.nav-burger span{position:absolute;left:11px;right:11px;height:1.5px;background:currentColor;transition:transform .3s,opacity .3s}
+.nav-burger span:nth-child(1){top:16px}.nav-burger span:nth-child(2){top:22px}.nav-burger span:nth-child(3){top:28px}
+.nav-burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){opacity:0}
+.nav-burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.mobile-menu{display:none}
 
-  /* HERO */
-  .hero{ position:relative; min-height:100vh; display:flex; align-items:flex-end; overflow:hidden; padding-top:120px; box-sizing:border-box; }
-  .hero-media{ position:absolute; inset:0; overflow:hidden; }
-  .hero-media img{ width:100%; height:100%; object-fit:cover; object-position:center 12%; animation:kenburns 24s ease-in-out infinite alternate; filter:saturate(0.92) brightness(0.96); }
-  @keyframes kenburns{ from{ transform:scale(1.0); } to{ transform:scale(1.09); } }
-  .hero-scrim{ position:absolute; inset:0; background:linear-gradient(0deg, rgba(17,17,17,0.62) 0%, rgba(17,17,17,0.28) 40%, rgba(17,17,17,0.08) 65%, rgba(17,17,17,0.18) 100%); }
-  .particle{ position:absolute; width:4px; height:4px; border-radius:50%; background:rgba(250,249,247,0.55); animation:drift linear infinite; }
-  @keyframes drift{ from{ transform:translateY(0); opacity:0; } 10%{ opacity:0.8; } 90%{ opacity:0.4; } to{ transform:translateY(-90vh); opacity:0; } }
-  .hero-content{ position:relative; z-index:3; padding:0 0 90px; max-width:720px; }
-  .hero .wrap{ display:flex; flex-direction:column; }
-  .hero h1{ color:var(--white); font-size:clamp(3rem, 7vw, 5.6rem); line-height:0.98; font-weight:300; }
-  .hero p.lead{ color:rgba(250,249,247,0.82); font-size:1.1rem; margin-top:24px; max-width:30em; }
-  .hero .cta-row{ margin-top:38px; display:flex; gap:16px; flex-wrap:wrap; }
+/* HERO */
+.hero{position:relative;height:100svh;min-height:620px;overflow:hidden;color:#fff;background:var(--umber)}
+.hero-media{position:absolute;inset:0;will-change:transform}
+.hero-media img{width:100%;height:100%;object-fit:cover;object-position:62% 40%}
+.hero-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,20,12,.35) 0%,rgba(30,20,12,0) 30%,rgba(30,20,12,.1) 55%,rgba(30,20,12,.72) 100%)}
+.hero-inner{position:absolute;inset:auto 0 0 0;padding-bottom:clamp(36px,7vh,80px);will-change:transform}
+.hero h1{font-size:clamp(3.6rem,11vw,10.5rem);max-width:9ch}
+.hero h1 .line{display:block;overflow:hidden}
+.hero h1 .line>span{display:block}
+.hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-top:clamp(24px,4vh,40px);flex-wrap:wrap}
+.hero-foot p{max-width:30em;font-size:1.05rem;color:rgba(255,255,255,.86)}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.scroll-cue{position:absolute;right:var(--gutter);top:50%;writing-mode:vertical-rl;font-size:.8rem;letter-spacing:.12em;color:rgba(255,255,255,.7)}
 
-  /* SECTION SHARED */
-  section{ position:relative; padding:100px 0; }
-  .section-head{ max-width:680px; margin-bottom:52px; }
-  .section-head.center{ margin:0 auto 52px; text-align:center; }
-  .section-head h2{ font-size:clamp(2rem, 3.6vw, 2.9rem); line-height:1.2; font-weight:300; }
-  .section-head p{ color:var(--ink-soft); font-size:1.03rem; margin-top:20px; }
+/* load sequence — the one orchestrated moment */
+.js .hero h1 .line>span{transform:translateY(105%)}
+.js .hero-foot,.js .scroll-cue{opacity:0}
+.js .hero-media img{transform:scale(1.12)}
+.loaded .hero h1 .line>span{transform:none;transition:transform 1.3s var(--ease)}
+.loaded .hero h1 .line:nth-child(2)>span{transition-delay:.12s}
+.loaded .hero h1 .line:nth-child(3)>span{transition-delay:.24s}
+.loaded .hero-foot,.loaded .scroll-cue{opacity:1;transition:opacity 1s .7s}
+.loaded .hero-media img{transform:scale(1);transition:transform 2.4s var(--ease)}
 
-  /* STATS STRIP */
-  .stats-strip{ background:var(--beige); padding:56px 0; border-bottom:1px solid var(--line); }
-  .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:30px; text-align:center; }
-  .stat-block .num{ font-family:'Cormorant Garamond', serif; font-size:2.3rem; color:var(--olive); line-height:1; }
-  .stat-block .lbl{ font-size:0.95rem; font-weight:500; margin-top:10px; }
-  .stat-block .sub{ font-size:0.8rem; color:var(--ink-soft); margin-top:6px; }
+/* INTRO */
+.intro{padding:clamp(96px,14vw,190px) 0 clamp(80px,10vw,140px)}
+.intro-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.2fr);gap:clamp(32px,6vw,96px)}
+.intro-statement{font-family:var(--serif);font-weight:300;font-size:clamp(1.9rem,3.6vw,3.2rem);line-height:1.12;letter-spacing:-.01em;max-width:22ch}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:clamp(56px,7vw,96px);border-top:1px solid var(--line);padding-top:28px}
+.fact strong{display:block;font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,4.4vw,3.8rem);line-height:1;margin-bottom:10px}
+.fact span{color:var(--stone);font-size:.95rem;max-width:18em;display:block}
 
-  /* PROBLEM */
-  .problem{ background:var(--beige); text-align:center; }
-  .problem-head{ max-width:700px; margin:0 auto 80px; }
-  .problem-head h2{ font-size:clamp(2rem,3.6vw,2.8rem); }
-  .qcards{ display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-bottom:50px; }
-  .qcard{
-    background:var(--white); border:1px solid var(--line); border-radius:24px; padding:40px 32px; width:280px;
-    transition:transform .5s cubic-bezier(.2,.8,.2,1), opacity .5s ease;
-  }
-  .qcard .mono{ color:var(--brass); margin-bottom:18px; display:block; }
-  .qcard h3{ font-size:1.25rem; font-weight:300; }
-  .solves{ font-size:clamp(1.4rem,2.6vw,1.9rem); font-family:'Cormorant Garamond', serif; font-style:italic; color:var(--olive); }
+/* parallax frames */
+.frame{position:relative;overflow:hidden;background:var(--sand)}
+.frame img{position:absolute;left:0;top:-12%;width:100%;height:124%;object-fit:cover;will-change:transform}
 
-  /* HOW IT WORKS */
-  .how{ position:relative; overflow:hidden; }
-  .how-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.12); filter:blur(7px) saturate(0.7) brightness(1.15) contrast(0.88); }
-  .how-whitewash{ position:absolute; inset:0; background:rgba(250,249,247,0.72); }
-  .how .wrap{ position:relative; z-index:2; }
-  .steps5{ display:grid; grid-template-columns:repeat(5,1fr); gap:0; position:relative; }
-  .steps5::before{ content:''; position:absolute; top:26px; left:0; right:0; height:1px; background:repeating-linear-gradient(to right, var(--line) 0, var(--line) 6px, transparent 6px, transparent 12px); }
-  .step5{ text-align:center; padding:0 14px; }
-  .step5 .icowrap{ width:52px; height:52px; border-radius:50%; background:var(--beige); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; position:relative; z-index:2; }
-  .step5 .mono{ color:var(--brass); display:block; margin-bottom:10px; }
-  .step5 h3{ font-size:1.05rem; font-weight:500; font-family:'Inter',sans-serif; margin-bottom:8px; }
-  .step5 p{ font-size:0.85rem; color:var(--ink-soft); }
+/* HOW */
+.how{display:grid;grid-template-columns:1fr 1fr;align-items:start;background:var(--sand)}
+.how-media{position:sticky;top:0;height:100svh}
+.how-media .frame{height:100%}
+.how-copy{padding:clamp(80px,10vw,150px) var(--gutter) clamp(80px,10vw,150px) clamp(32px,6vw,96px)}
+.steps{list-style:none;margin-top:clamp(48px,6vw,80px)}
+.steps li{display:grid;grid-template-columns:3.2rem 1fr;gap:12px;padding:30px 0;border-top:1px solid var(--line)}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps .n{font-family:var(--serif);font-size:1.5rem;color:var(--bronze);line-height:1.1}
+.steps h3{margin-bottom:6px}
+.steps p{color:var(--stone);max-width:30em}
 
-  /* DECK SECTION */
-  .deck{ background:
-      radial-gradient(ellipse 900px 500px at 85% 8%, rgba(184,147,90,0.07), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 8% 95%, rgba(184,147,90,0.05), transparent 55%),
-      var(--white);
-    color:var(--charcoal); overflow:hidden; position:relative; }
-  .deck h2{ color:var(--charcoal); }
-  .deck-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
-  .deck-photo{ position:relative; overflow:visible; aspect-ratio:3/4; }
-  .deck-photo img{ width:100%; height:100%; object-fit:cover; display:block; filter:blur(7px) saturate(0.92) brightness(1.04); -webkit-mask-image:radial-gradient(ellipse 85% 88% at 50% 50%, black 55%, transparent 98%); mask-image:radial-gradient(ellipse 85% 88% at 50% 50%, black 55%, transparent 98%); }
-  .deck-cards{ display:flex; gap:26px; justify-content:center; padding:14px 0 6px; }
-  .flipcard3d{ width:150px; height:210px; perspective:1000px; }
-  .flipcard3d .inner{ position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.2,.8,.2,1); }
-  .flipcard3d:hover .inner{ transform:rotateY(180deg); }
-  .flipface{ position:absolute; inset:0; border-radius:16px; backface-visibility:hidden; border:1px solid rgba(17,17,17,0.12); box-shadow:0 14px 30px -16px rgba(17,17,17,0.25); }
-  .flipface.back{ transform:rotateY(180deg); }
-  .flipface.clean{ background:var(--white); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px; text-align:center; box-shadow:inset 0 0 0 1px rgba(184,147,90,0.35); }
-  .flipface.clean::before{ content:''; position:absolute; inset:8px; border:1px solid rgba(184,147,90,0.45); border-radius:10px; pointer-events:none; }
-  .clean-logo{ width:44px; height:44px; object-fit:contain; margin-bottom:10px; }
-  .clean-word{ font-family:'Cormorant Garamond', serif; font-size:0.98rem; letter-spacing:0.02em; color:var(--charcoal); font-weight:500; }
-  .clean-word span{ color:var(--brass); font-weight:400; }
-  .clean-quote{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:0.92rem; color:var(--charcoal); line-height:1.3; }
-  .clean-author{ font-family:'JetBrains Mono', monospace; font-size:0.6rem; letter-spacing:0.06em; color:var(--ink-soft); text-transform:uppercase; margin-top:6px; }
-  .clean-qr{ width:38px; height:38px; margin:14px 0 8px; background-image:linear-gradient(90deg, var(--charcoal) 2px, transparent 2px), linear-gradient(0deg, var(--charcoal) 2px, transparent 2px); background-size:7px 7px; opacity:0.85; border:1px solid var(--line); padding:4px; }
-  .clean-scan{ font-family:'JetBrains Mono', monospace; font-size:0.56rem; letter-spacing:0.05em; color:var(--brass); text-transform:uppercase; line-height:1.4; }
-  .deck-caps{ display:flex; justify-content:space-around; margin-top:26px; }
-  .deck-caps span{ font-size:0.82rem; color:rgba(17,17,17,0.5); }
-  .deck-caps strong.accent{ color:var(--brass); font-weight:600; font-style:normal; }
-  .deck-variants{ display:flex; flex-direction:column; gap:12px; }
-  .dv-item{ display:flex; align-items:center; gap:14px; padding:14px 18px; border-radius:12px; background:rgba(17,17,17,0.03); border:1px solid rgba(17,17,17,0.1); cursor:pointer; transition:border-color .25s ease, background .25s ease, box-shadow .25s ease, transform .25s ease; }
-  .dv-item:hover{ transform:translateX(3px); border-color:rgba(184,147,90,0.55); background:rgba(184,147,90,0.07); }
-  .dv-item.active{ border-color:var(--brass); background:rgba(184,147,90,0.1); box-shadow:0 0 0 1px rgba(184,147,90,0.25), 0 10px 26px -14px rgba(184,147,90,0.55); }
-  .dv-icon{ flex-shrink:0; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:rgba(17,17,17,0.45); background:rgba(17,17,17,0.05); transition:color .25s ease, background .25s ease; }
-  .dv-icon svg{ width:19px; height:19px; }
-  .dv-item.active .dv-icon, .dv-item:hover .dv-icon{ color:var(--brass); background:rgba(184,147,90,0.15); }
-  .dv-text{ display:flex; flex-direction:column; }
-  .dv-item strong{ display:block; font-family:'Cormorant Garamond', serif; font-size:1rem; color:var(--charcoal); margin-bottom:2px; transition:color .25s ease; }
-  .dv-item.active strong{ color:var(--brass-soft); }
-  .dv-item span:not(.dv-icon){ font-size:0.85rem; color:rgba(17,17,17,0.55); }
-  .qr-callout{ display:flex; align-items:flex-start; gap:16px; background:rgba(184,147,90,0.07); border:1px solid rgba(184,147,90,0.28); border-radius:12px; padding:18px 20px; margin:22px 0 28px; }
-  .qr-callout p{ color:rgba(17,17,17,0.65); font-size:0.92rem; line-height:1.6; max-width:26em; margin:0; }
-  .qr-callout-icon{ position:relative; flex-shrink:0; width:36px; height:36px; display:flex; align-items:center; justify-content:center; color:var(--brass); margin-top:2px; }
-  .qr-callout-icon svg{ width:22px; height:22px; position:relative; z-index:2; }
-  .pulse-ring{ position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--brass); animation:pulseRing 2.2s ease-out infinite; }
-  @keyframes pulseRing{ 0%{ transform:scale(0.55); opacity:0.9; } 100%{ transform:scale(1.7); opacity:0; } }
-  .accent-text{ color:var(--brass-soft); font-weight:500; }
-  .badge-pill{ display:inline-block; background:rgba(184,147,90,0.18); color:var(--brass-soft); padding:2px 12px; border-radius:20px; font-weight:500; font-size:0.85em; border:1px solid rgba(184,147,90,0.4); white-space:nowrap; }
+/* DECK */
+.deck{padding:clamp(100px,12vw,180px) 0}
+.deck-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(40px,7vw,120px);align-items:center}
+.deck .frame{aspect-ratio:4/5;border-radius:2px}
+.decks{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin:44px 0 40px}
+.decks div{border-top:1px solid var(--umber);padding-top:18px}
+.decks p{color:var(--stone);font-size:.98rem;margin-top:8px}
+.qr-note{display:flex;gap:16px;align-items:flex-start;padding:22px 24px;background:var(--sand);max-width:32em}
+.qr-note svg{flex-shrink:0;margin-top:3px;color:var(--bronze)}
+.qr-note p{font-size:.98rem}
 
-  /* SURPRISE */
-  .surprise{ background:var(--beige); text-align:center; padding:64px 0; }
-  .surprise .shuffle-stage{ margin-bottom:8px; }
-  .surprise h2{ margin-bottom:14px; }
-  .surprise p{ max-width:36em; margin:0 auto; }
-  .shuffle-stage{ position:relative; width:140px; height:190px; margin:0 auto 60px; }
-  .shuffle-card{ position:absolute; inset:0; border-radius:14px; background:var(--white); box-shadow:0 20px 40px -16px rgba(17,17,17,0.3); animation:shuffle 3.6s ease-in-out infinite; border:1px solid rgba(184,147,90,0.4); display:flex; flex-direction:column; align-items:center; justify-content:center; }
-  .shuffle-card::before{ content:''; position:absolute; inset:7px; border:1px solid rgba(184,147,90,0.35); border-radius:9px; pointer-events:none; }
-  .shuffle-card .clean-logo{ width:34px; height:34px; margin-bottom:8px; }
-  .shuffle-card .clean-word{ font-size:0.72rem; }
-  .shuffle-card:nth-child(1){ animation-delay:0s; z-index:3; }
-  .shuffle-card:nth-child(2){ animation-delay:0.15s; z-index:2; }
-  .shuffle-card:nth-child(3){ animation-delay:0.3s; z-index:1; }
-  @keyframes shuffle{
-    0%,100%{ transform:translate(0,0) rotate(0deg); z-index:1; }
-    25%{ transform:translate(-26px,-10px) rotate(-8deg); z-index:2; }
-    50%{ transform:translate(0,-16px) rotate(0deg); z-index:3; }
-    75%{ transform:translate(26px,-10px) rotate(8deg); z-index:2; }
-  }
-  .surprise h2{ font-size:clamp(2rem,4vw,2.9rem); max-width:14em; margin:0 auto; }
-  .surprise p{ color:var(--ink-soft); margin:20px auto 0; max-width:30em; }
+/* BAND (full-bleed parallax) */
+.band{position:relative;height:clamp(560px,110vh,1100px);overflow:hidden;color:var(--umber)}
+.band .frame{position:absolute;inset:0}
+.band .frame img{top:-15%;height:130%;object-position:50% 40%}
+.band-panel{position:absolute;left:var(--gutter);bottom:clamp(28px,6vw,72px);background:var(--paper);padding:clamp(28px,4vw,52px);max-width:min(560px,calc(100% - 2*var(--gutter)))}
+.band-panel h2{margin-bottom:20px}
+.band-panel p{color:var(--stone)}
+.band-panel .tags{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:.92rem}
+.band-panel .tags span{border-bottom:1px solid var(--line);padding-bottom:3px}
 
-  /* TRAIN ANYWHERE */
-  .anywhere{ background:var(--beige); padding:90px 0; }
-  .anywhere-stage{ position:relative; overflow:hidden; width:100vw; margin-left:calc(50% - 50vw); }
-  .anywhere-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0; height:680px; }
-  .aw-item{ position:relative; overflow:hidden; }
-  .aw-item img{ width:100%; height:100%; object-fit:cover; filter:blur(5px) contrast(0.92) saturate(0.85) brightness(1.08); transform:scale(1.08); }
-  .anywhere-stage::before{ content:''; position:absolute; inset:0; background:rgba(250,249,247,0.5); z-index:1; }
-  .anywhere-stage::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(250,249,247,0.85) 0%, rgba(250,249,247,0.35) 34%, rgba(250,249,247,0.55) 70%, rgba(250,249,247,0.85) 100%); z-index:1; }
-  .aw-overlay{ position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:60px; }
-  .aw-overlay h2{ color:var(--charcoal); font-weight:300; font-size:clamp(1.9rem,3.4vw,2.7rem); max-width:16em; }
-  .aw-overlay .aw-sub{ color:var(--brass); margin-top:40px; }
-  .aw-overlay .aw-float{ color:rgba(17,17,17,0.7); max-width:46em; margin:20px auto 0; font-size:1.2rem; line-height:1.8; font-weight:300; }
-  .aw-cap-line{ font-family:'Inter', sans-serif; font-style:normal; font-weight:400; font-size:1.15rem; color:var(--charcoal); max-width:34em; margin:0 auto; line-height:1.65; }
-  .aw-cap-line + .aw-cap-line{ margin-top:16px; }
-  .aw-cap-line .mono{ display:block; font-family:'JetBrains Mono', monospace; font-style:normal; color:var(--brass); font-size:0.68rem; margin-bottom:20px; }
-  .aw-cap-line:first-of-type{ margin-top:40px; }
+/* SURPRISE */
+.surprise{padding:clamp(110px,14vw,200px) 0}
+.surprise .display{font-size:clamp(3rem,8.5vw,8rem);max-width:12ch}
+.surprise-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,96px);margin-top:clamp(40px,5vw,64px)}
+.surprise-row p{color:var(--stone);font-size:1.08rem;max-width:32em}
+.surprise-row p:first-child{color:var(--umber)}
 
-  /* SCIENCE */
-  .science{ background:var(--olive); color:var(--white); text-align:center; padding:70px 0; }
-  .science .section-head h2{ color:var(--white); }
-  .science .section-head p{ color:rgba(250,249,247,0.7); }
-  .science .section-head{ margin-bottom:36px; }
-  .science-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:26px; max-width:1100px; margin:0 auto; }
-  .sci-card{ padding:10px; }
-  .sci-card .icowrap{ width:56px; height:56px; border-radius:50%; background:rgba(250,249,247,0.12); display:flex; align-items:center; justify-content:center; margin:0 auto 22px; }
-  .sci-card h3{ color:var(--white); font-size:1.15rem; font-weight:300; }
-  .sci-card p{ color:rgba(250,249,247,0.65); font-size:0.9rem; margin-top:10px; }
+/* SCIENCE (dark) */
+.science{background:var(--umber);color:var(--paper);padding:clamp(100px,12vw,180px) 0}
+.science .kicker{color:rgba(246,241,233,.6)}
+.sci-head{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:end;margin-bottom:clamp(56px,7vw,96px)}
+.sci-head p{color:rgba(246,241,233,.68);max-width:28em}
+.sci-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid rgba(246,241,233,.2)}
+.sci{padding:32px 28px 8px 0}
+.sci+.sci{padding-left:28px;border-left:1px solid rgba(246,241,233,.2)}
+.sci strong{display:block;font-family:var(--serif);font-weight:300;font-size:clamp(2.8rem,4.6vw,4.4rem);line-height:1;color:var(--sun);margin-bottom:18px}
+.sci h3{font-size:1.3rem;margin-bottom:10px}
+.sci p{color:rgba(246,241,233,.68);font-size:.95rem}
+.sci small{display:block;margin-top:14px;color:rgba(246,241,233,.45);font-size:.8rem}
 
-  /* MOBILE */
-  .mobile{ background:var(--beige); }
-  .mobile-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
-  .phones{ display:flex; justify-content:center; }
-  .phones img{ border-radius:26px; box-shadow:0 26px 50px -26px rgba(17,17,17,0.22); width:220px; }
-  .mobile-features{ display:flex; flex-direction:column; gap:22px; margin-top:30px; }
-  .mobile-features .mf{ display:flex; gap:14px; align-items:flex-start; }
-  .mobile-features .dot{ width:6px; height:6px; border-radius:50%; background:var(--brass); margin-top:9px; flex-shrink:0; }
-  .mobile-features p{ font-size:0.95rem; color:var(--ink-soft); }
-  .mobile-features strong{ color:var(--charcoal); font-weight:500; }
+/* AI */
+.ai{padding:clamp(100px,12vw,180px) 0}
+.ai-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(40px,7vw,120px);align-items:center}
+.ai-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ai-pair .frame{aspect-ratio:3/4}
+.ai-pair .frame:nth-child(2){margin-top:18%}
+.ai-list{list-style:none;margin:40px 0 44px;display:grid;grid-template-columns:1fr 1fr;gap:28px 36px}
+.ai-list li{border-top:1px solid var(--line);padding-top:16px}
+.ai-list strong{display:block;font-weight:500;margin-bottom:4px}
+.ai-list span{color:var(--stone);font-size:.96rem}
 
-  /* AI PLANNER */
-  .ai-planner{ background:var(--white); }
-  .ai-photo-pair{ display:grid; grid-template-columns:1fr 1fr; gap:2px; max-width:1140px; margin:0 auto 64px; height:340px; }
-  .ai-photo{ overflow:hidden; }
-  .ai-photo img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease; }
-  .ai-photo:hover img{ transform:scale(1.04); }
-  @media(max-width:760px){ .ai-photo-pair{ height:220px; margin-bottom:40px; } }
-  .ai-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:34px; max-width:960px; margin:0 auto; }
-  .ai-grid-4{ grid-template-columns:repeat(4,1fr); max-width:1140px; }
-  .ai-card{ text-align:center; padding:36px 24px; border-radius:20px; background:var(--beige); }
-  .ai-card .icowrap{ width:52px; height:52px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; box-shadow:0 8px 20px -10px rgba(17,17,17,0.15); }
-  .ai-card h3{ font-size:1.1rem; font-weight:500; font-family:'Inter',sans-serif; margin-bottom:10px; }
-  .ai-card p{ font-size:0.9rem; color:var(--ink-soft); }
+/* FINAL */
+.final{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;color:#fff}
+.final .frame{position:absolute;inset:0;background:var(--umber)}
+.final .frame img{object-position:50% 30%}
+.final::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,20,12,.1) 30%,rgba(30,20,12,.78))}
+.final-inner{position:relative;z-index:2;padding-bottom:clamp(48px,9vh,110px);width:100%}
+.final .display{font-size:clamp(3rem,8vw,7.6rem);max-width:11ch;margin-bottom:28px}
+.final p{max-width:30em;color:rgba(255,255,255,.85);margin-bottom:32px;font-size:1.08rem}
 
-  /* EDITORIAL + FINAL CTA — merged into one flowing section */
-  .editorial-final{ position:relative; overflow:hidden; text-align:center; padding:100px 0 120px; }
-  .editorial-final img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.12); filter:blur(7px) saturate(0.7) brightness(1.1) contrast(0.88); }
-  .ef-scrim{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(250,249,247,0.6) 0%, rgba(17,17,17,0.55) 42%, rgba(17,17,17,0.9) 100%); }
-  .ef-content{ position:relative; z-index:2; padding:0 40px; }
-  .ef-content blockquote{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:clamp(1.8rem,3.6vw,2.6rem); font-weight:300; max-width:14em; margin:0 auto; color:var(--charcoal); }
-  .ef-content .mono{ color:var(--brass); margin-top:20px; display:block; }
-  .ef-content .ef-body{ color:rgba(17,17,17,0.7); max-width:32em; margin:20px auto 0; font-size:0.95rem; }
-  .ef-content h2{ color:var(--white); font-size:clamp(2rem,4.2vw,3.4rem); font-weight:300; max-width:15em; margin:0 auto; line-height:1.15; }
-  .ef-content p{ color:rgba(250,249,247,0.68); margin:20px auto 0; max-width:26em; }
-  .ef-content .btn{ margin-top:36px; }
+/* FOOTER */
+footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
+.foot-row{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding-bottom:36px;border-bottom:1px solid var(--line)}
+.foot-links{display:flex;gap:26px;flex-wrap:wrap}
+.foot-links a{text-decoration:none;color:var(--stone)}
+.foot-links a:hover{color:var(--umber)}
+.foot-bottom{display:flex;justify-content:space-between;gap:16px;padding-top:24px;color:var(--stone);flex-wrap:wrap}
 
-  /* FOOTER */
-  footer{ background:var(--white); padding:44px 0 26px; border-top:1px solid var(--line); }
-  .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px; padding-bottom:30px; border-bottom:1px solid var(--line); }
-  .foot-links{ display:flex; gap:30px; }
-  .foot-links a{ font-size:0.86rem; color:var(--ink-soft); }
-  .foot-links a:hover{ color:var(--charcoal); }
-  .foot-bottom{ display:flex; justify-content:space-between; padding-top:22px; font-size:0.78rem; color:var(--ink-soft); flex-wrap:wrap; gap:10px; }
+/* WAITLIST */
+.wl-overlay{position:fixed;inset:0;z-index:100;background:rgba(30,20,12,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity .3s}
+.wl-overlay.show{display:flex}.wl-overlay.in{opacity:1}
+.wl-modal{background:var(--paper);max-width:460px;width:100%;padding:48px 40px 40px;position:relative}
+.wl-close{position:absolute;top:12px;right:14px;background:none;border:0;font-size:1.8rem;line-height:1;cursor:pointer;color:var(--stone);width:40px;height:40px}
+.wl-modal h3{font-size:2.3rem;font-weight:300;margin-bottom:12px}
+.wl-modal>p{color:var(--stone);margin-bottom:26px}
+#wlForm{display:flex;flex-direction:column;gap:12px}
+#wlForm label{font-size:.9rem}
+#wlForm input{font:inherit;padding:16px 18px;border:1px solid var(--line);background:#fff;border-radius:2px}
+#wlForm .btn{justify-content:center}
+.wl-success{display:none}.wl-success.show{display:block}
+.wl-success p{color:var(--stone)}
 
-  @media (max-width:960px){
-    .science-grid{ grid-template-columns:1fr 1fr; }
-    .wrap{ padding:0 24px; }
-    .navlinks{ display:none; }
-    .steps5{ grid-template-columns:1fr 1fr; row-gap:36px; }
-    .steps5::before{ display:none; }
-    .deck-grid, .mobile-grid{ grid-template-columns:1fr; gap:44px; }
-    .deck-cards{ flex-wrap:wrap; }
-    .anywhere-grid{ grid-template-columns:1fr 1fr; height:840px; }
-    .aw-overlay{ padding:30px 24px; }
-    .aw-overlay .aw-float{ font-size:1.02rem; }
-    .aw-cap-line{ font-size:1.05rem; }
-    .science-grid{ grid-template-columns:1fr; }
-    .ai-grid{ grid-template-columns:1fr; }
-    .ai-grid-4{ grid-template-columns:1fr 1fr; }
-    .stats-grid{ grid-template-columns:1fr 1fr; row-gap:36px; }
-  }
-  /* WAITLIST MODAL */
-  .wl-overlay{ position:fixed; inset:0; z-index:900; background:rgba(17,17,17,0.55); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; padding:24px; opacity:0; transition:opacity .3s ease; }
-  .wl-overlay.show{ display:flex; }
-  .wl-overlay.in{ opacity:1; }
-  .wl-modal{ background:var(--white); border-radius:6px; max-width:440px; width:100%; padding:44px 40px; position:relative; text-align:center; transform:translateY(14px); transition:transform .35s cubic-bezier(.2,.8,.2,1); }
-  .wl-overlay.in .wl-modal{ transform:translateY(0); }
-  .wl-close{ position:absolute; top:16px; right:18px; background:none; border:none; font-size:1.6rem; line-height:1; color:var(--ink-soft); cursor:pointer; padding:4px 8px; }
-  .wl-close:hover{ color:var(--charcoal); }
-  .wl-eyebrow{ font-family:'JetBrains Mono', monospace; font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--brass); margin-bottom:16px; }
-  .wl-modal h3{ font-size:1.9rem; line-height:1.15; margin-bottom:28px; }
-  .wl-body{ color:var(--ink-soft); font-size:0.95rem; line-height:1.6; margin-bottom:28px; }
-  #wlForm{ display:flex; flex-direction:column; gap:12px; }
-  #wlForm input{ padding:14px 16px; border:1.5px solid var(--line); border-radius:4px; font-family:'Inter',sans-serif; font-size:0.95rem; background:var(--beige); color:var(--charcoal); }
-  #wlForm input:focus{ outline:none; border-color:var(--brass); }
-  #wlForm button{ border:none; cursor:pointer; padding:14px; border-radius:4px; font-family:'Inter',sans-serif; font-size:0.95rem; }
-  .wl-success{ display:none; padding:10px 0 0; }
-  .wl-success.show{ display:block; }
-  .wl-success-icon{ width:44px; height:44px; border-radius:50%; background:var(--olive); color:var(--white); display:flex; align-items:center; justify-content:center; font-size:1.3rem; margin:0 auto 16px; }
-  .wl-success p{ color:var(--ink-soft); font-size:0.95rem; line-height:1.6; }
-
-  /* MOBILE NAV (hamburger) */
-  .nav-burger{ display:none; flex-direction:column; justify-content:center; gap:5px; width:36px; height:36px; background:none; border:none; cursor:pointer; padding:0; }
-  .nav-burger span{ display:block; width:22px; height:1.5px; background:var(--white); transition:all .25s ease; }
-  nav.scrolled .nav-burger span{ background:var(--charcoal); }
-  .nav-burger.open span:nth-child(1){ transform:translateY(6.5px) rotate(45deg); }
-  .nav-burger.open span:nth-child(2){ opacity:0; }
-  .nav-burger.open span:nth-child(3){ transform:translateY(-6.5px) rotate(-45deg); }
-  .mobile-menu{ display:none; flex-direction:column; gap:2px; background:var(--white); border-top:1px solid var(--line); overflow:hidden; max-height:0; transition:max-height .35s ease; }
-  .mobile-menu.open{ max-height:500px; }
-  .mobile-menu a{ padding:16px 24px; color:var(--charcoal); text-decoration:none; border-bottom:1px solid var(--line); font-size:0.95rem; }
-  .mobile-menu .btn{ margin:16px 24px; text-align:center; }
-
-  /* MOBILE LAYOUT TIGHTENING */
-  @media (max-width:640px){
-    .nav-cta-desktop{ display:none; }
-    .nav-burger{ display:flex; }
-    .mobile-menu{ display:flex; }
-
-    .hero{ min-height:88vh; padding-top:96px; align-items:flex-end; }
-    .hero h1{ font-size:clamp(2.4rem, 9vw, 3rem); }
-    .hero .lead{ font-size:0.95rem; }
-    .hero-content{ padding-bottom:28px; }
-
-    section{ padding:56px 0; }
-    .section-head{ margin-bottom:32px; }
-    .stats-strip{ padding:36px 0; }
-    .anywhere{ padding:56px 0; }
-    .science{ padding:48px 0; }
-    .science .section-head{ margin-bottom:24px; }
-    .editorial-final{ padding:64px 0 72px; }
-    .surprise{ padding:44px 0; }
-
-    h2{ font-size:clamp(1.6rem, 7vw, 2rem) !important; }
-    .qcards{ margin-bottom:32px; }
-    .deck-grid{ gap:32px; }
-    .ai-grid-4{ grid-template-columns:1fr; }
-    .steps5{ grid-template-columns:1fr; }
-    .stats-grid{ grid-template-columns:1fr 1fr; }
-  }
+/* responsive */
+@media(max-width:980px){
+  .navlinks,.nav-cta-desktop{display:none}
+  .nav-burger{display:block}
+  .mobile-menu{display:flex;flex-direction:column;gap:6px;position:fixed;inset:78px 0 auto 0;background:var(--paper);color:var(--umber);padding:16px var(--gutter) 28px;box-shadow:0 12px 30px rgba(30,20,12,.12);transform:translateY(-8px);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+  .mobile-menu.open{opacity:1;transform:none;pointer-events:auto}
+  .mobile-menu a{padding:12px 0;text-decoration:none;border-bottom:1px solid var(--line);font-size:1.05rem}
+  .mobile-menu .btn{margin-top:14px;justify-content:center}
+  #nav.menu-open{background:var(--paper);color:var(--umber)}
+  .intro-grid,.deck-grid,.ai-grid,.sci-head,.surprise-row{grid-template-columns:1fr}
+  .how{grid-template-columns:1fr}
+  .how-media{position:relative;height:70vh}
+  .sci-grid{grid-template-columns:1fr 1fr}
+  .sci:nth-child(3){padding-left:0;border-left:0}
+  .sci:nth-child(n+3){border-top:1px solid rgba(246,241,233,.2)}
+  .scroll-cue{display:none}
+}
+@media(max-width:600px){
+  body{font-size:16px}
+  .facts{grid-template-columns:1fr;gap:28px}
+  .decks,.ai-list{grid-template-columns:1fr}
+  .sci-grid{grid-template-columns:1fr}
+  .sci,.sci+.sci{padding:28px 0 12px;border-left:0}
+  .sci+.sci{border-top:1px solid rgba(246,241,233,.2)}
+  .band-panel{left:12px;right:12px;bottom:12px;max-width:none}
+  .hero-foot{flex-direction:column;align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){
+  .js .hero h1 .line>span,.js .hero-media img{transform:none!important;transition:none!important}
+  .js .hero-foot,.js .scroll-cue{opacity:1!important;transition:none!important}
+  .frame img,.hero-media,.hero-inner{transform:none!important}
+}
 </style>
+<script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
 
-<nav id="nav">
+<nav id="nav" aria-label="Huvudmeny">
   <div class="wrap">
-    <div class="logo"><img class="logo-mark" src="images/logo_mark_v2.png" alt="MOTION UF">MOTION UF</div>
+    <a href="index.html" class="logo"><img src="images/logo_mark_v2.png" alt="">MOTION UF</a>
     <div class="navlinks">
       <a href="#how">Så funkar det</a>
       <a href="#deck">Kortleken</a>
-      <a href="#anywhere">Träna var som helst</a>
-      <a href="#science">Vetenskapen</a>
+      <a href="#science">Forskningen</a>
       <a href="motion-ai-coach.html">AI-coach</a>
     </div>
-    <button onclick="openWaitlist()" class="btn btn-dark nav-cta-desktop">Skaffa din kortlek</button>
-    <button class="nav-burger" id="navBurger" aria-label="Meny" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="btn btn-sun nav-cta-desktop" onclick="openWaitlist()">Skaffa kortleken</button>
+    <button class="nav-burger" id="navBurger" aria-label="Öppna meny" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
   </div>
   <div class="mobile-menu" id="mobileMenu">
     <a href="#how">Så funkar det</a>
     <a href="#deck">Kortleken</a>
-    <a href="#anywhere">Träna var som helst</a>
-    <a href="#science">Vetenskapen</a>
+    <a href="#science">Forskningen</a>
     <a href="motion-ai-coach.html">AI-coach</a>
-    <button onclick="openWaitlist()" class="btn btn-dark">Skaffa din kortlek</button>
+    <button class="btn btn-dark" onclick="openWaitlist()">Skaffa kortleken</button>
   </div>
 </nav>
 
-<section class="hero">
-  <div class="hero-media"><img src="images/hero.jpg" alt="MOTION UF — Bättre vanor. Större drömmar."></div>
+<header class="hero">
+  <div class="hero-media" id="heroMedia"><img src="images/hero-pushup.jpg" alt="Kvinna gör armhävningar i kvällssol på ett betonggolv"></div>
   <div class="hero-scrim"></div>
-  <div id="particles"></div>
+  <div class="hero-inner" id="heroInner">
+    <div class="wrap">
+      <h1 class="display"><span class="line"><span>Gör det</span></span><span class="line"><span>enkelt att</span></span><span class="line"><span>börja.</span></span></h1>
+      <div class="hero-foot">
+        <p>En träningskortlek med QR-koder och en AI-planerare som hittar tiden i din dag. Du drar ett kort, skannar och rör dig.</p>
+        <div class="hero-ctas">
+          <button class="btn btn-sun" onclick="openWaitlist()">Skaffa kortleken</button>
+          <a href="motion-ai-coach.html" class="btn btn-ghost">Prova AI-coachen</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue" aria-hidden="true">Scrolla</div>
+</header>
+
+<main>
+<section class="intro">
   <div class="wrap">
-    <div class="hero-content">
-      <h1>Motion UF —<br>Gör det enkelt<br>att börja.</h1>
-      <p class="lead">En fysisk träningskortlek kombinerad med en AI-driven planerare som tar bort det svåraste steget i träning: att veta vad du ska göra.</p>
-      <div class="cta-row">
-        <a href="motion-ai-coach.html" class="btn btn-light">Möt din AI-coach</a>
+    <div class="intro-grid">
+      <span class="kicker">Varför Motion</span>
+      <div>
+        <p class="intro-statement">Det svåraste med träning är inte passet. Det är att veta vad du ska göra, och när. Det beslutet tar vi bort.</p>
+        <div class="facts">
+          <div class="fact"><strong>104</strong><span>övningar, 52 för dig själv och 52 att göra tillsammans</span></div>
+          <div class="fact"><strong>5–20</strong><span>minuter per pass, anpassat efter hur din dag ser ut</span></div>
+          <div class="fact"><strong>0</strong><span>appar att ladda ner. Allt fungerar i mobilens webbläsare</span></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="stats-strip">
-  <div class="wrap">
-    <div class="stats-grid">
-      <div class="stat-block reveal">
-        <div class="num">104</div>
-        <div class="lbl">Övningar totalt</div>
-        <div class="sub">52 individuella + 52 familj &amp; vänner</div>
-      </div>
-      <div class="stat-block reveal">
-        <div class="num">5–20</div>
-        <div class="lbl">Minuter</div>
-        <div class="sub">Pass som anpassas efter ditt schema</div>
-      </div>
-      <div class="stat-block reveal">
-        <div class="num">✓</div>
-        <div class="lbl">Expertdesignat</div>
-        <div class="sub">Utvecklat med professionella tränare</div>
-      </div>
-      <div class="stat-block reveal">
-        <div class="num">0</div>
-        <div class="lbl">Appar krävs</div>
-        <div class="sub">Fungerar direkt i din mobila webbläsare</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="how" id="how" style="background:var(--beige);">
-  <div class="wrap">
-    <div class="section-head center reveal">
-      <div class="mono" style="color:var(--brass); justify-content:center; display:flex; margin-bottom:18px;">Så funkar det</div>
-      <h2>Från notis till rörelse på under en minut.</h2>
-    </div>
-    <div class="steps5">
-      <div class="step5 reveal">
-        <div class="icowrap"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="15" rx="2" stroke="#111" stroke-width="1.3"/><path d="M3 8h16M7 2v4M15 2v4" stroke="#111" stroke-width="1.3"/></svg></div>
-        <span class="mono">1. Planera</span>
-        <h3>Planeraren hittar en tid som passar din dag.</h3>
-      </div>
-      <div class="step5 reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a5 5 0 00-5 5v3l-2 4h14l-2-4V7a5 5 0 00-5-5z" stroke="#111" stroke-width="1.3"/><path d="M8 17a2 2 0 004 0" stroke="#111" stroke-width="1.3"/></svg></div>
-        <span class="mono">2. Påminn</span>
-        <h3>Du får en notis: "Pass schemalagt."</h3>
-      </div>
-      <div class="step5 reveal">
-        <div class="icowrap"><svg width="22" height="18" viewBox="0 0 22 18" fill="none"><rect x="1" y="2" width="12" height="16" rx="2" transform="rotate(-8 1 2)" stroke="#111" stroke-width="1.2"/><rect x="9" y="1" width="12" height="16" rx="2" transform="rotate(8 9 1)" stroke="#111" stroke-width="1.2"/></svg></div>
-        <span class="mono">3. Dra</span>
-        <h3>Dra dina kort. Leken viks ut naturligt.</h3>
-      </div>
-      <div class="step5 reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="3" stroke="#111" stroke-width="1.3"/><path d="M8 7l5 3-5 3V7z" fill="#111"/></svg></div>
-        <span class="mono">4. Skanna</span>
-        <h3>Skanna QR-koden. Videon visas.</h3>
-      </div>
-      <div class="step5 reveal">
-        <div class="icowrap"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><circle cx="9" cy="3" r="2.4" fill="#111"/><path d="M9 6v6M9 8l-5 3M9 8l5 3M9 12l-4 7M9 12l4 7" stroke="#111" stroke-width="1.4" stroke-linecap="round"/></svg></div>
-        <span class="mono">5. Rör dig</span>
-        <h3>Inget tänkande krävs.</h3>
-      </div>
-    </div>
+<section class="how" id="how">
+  <div class="how-media"><div class="frame"><img data-speed="0.12" src="images/family_living.jpg" alt="Person knyter skorna inför ett pass hemma"></div></div>
+  <div class="how-copy">
+    <span class="kicker">Så funkar det</span>
+    <h2 class="title">Från notis till rörelse på under en minut.</h2>
+    <ol class="steps">
+      <li><span class="n">1</span><div><h3>Planera</h3><p>Planeraren hittar en lucka i din dag som faktiskt passar.</p></div></li>
+      <li><span class="n">2</span><div><h3>Påminn</h3><p>Du får en notis när det är dags. Ingen mer förhandling med dig själv.</p></div></li>
+      <li><span class="n">3</span><div><h3>Dra</h3><p>Dra så många kort som planen säger. Du vet inte i förväg vilka det blir.</p></div></li>
+      <li><span class="n">4</span><div><h3>Skanna</h3><p>Rikta kameran mot QR-koden. Instruktionsvideon öppnas direkt.</p></div></li>
+      <li><span class="n">5</span><div><h3>Rör dig</h3><p>Följ videon. Inget att planera, inget att tänka på.</p></div></li>
+    </ol>
   </div>
 </section>
 
 <section class="deck" id="deck">
   <div class="wrap">
     <div class="deck-grid">
-      <div class="deck-photo reveal"><img src="images/card_context.jpg" alt="MOTION UF träningskort"></div>
+      <div class="frame"><img data-speed="0.1" src="images/card_context.jpg" alt="Två MOTION UF-kort på ett betonggolv bredvid en tennisboll"></div>
       <div>
-        <div class="mono" style="color:var(--brass-soft);">Kortleken</div>
-        <h2 style="margin:16px 0 18px; font-size:clamp(1.9rem,3.2vw,2.6rem);">Två lekar. Alla nivåer.</h2>
-        <p style="color:rgba(17,17,17,0.6); max-width:26em; margin-bottom:24px;">Korta pass som ger dig allt — byggda runt din dag, och det enda passet du inte kan hoppa över.</p>
-        <div class="deck-variants">
-          <div class="dv-item active reveal" onclick="selectDeckVariant(this)">
-            <span class="dv-icon">
-              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7.5" r="3.4" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 20c0-4.1 3.36-6.5 7.5-6.5s7.5 2.4 7.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </span>
-            <span class="dv-text"><strong>Individuell lek</strong><span>Solopass för personlig utveckling och snabba pass hemma.</span></span>
-          </div>
-          <div class="dv-item reveal" onclick="selectDeckVariant(this)">
-            <span class="dv-icon">
-              <svg viewBox="0 0 24 24" fill="none"><circle cx="8" cy="8" r="2.7" stroke="currentColor" stroke-width="1.6"/><circle cx="16.5" cy="8" r="2.7" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 19.5c0-3.3 2.6-5.3 5.5-5.3s5.5 2 5.5 5.3M12.5 19.5c0-2.9 2.2-4.8 4.5-4.8s4.5 1.9 4.5 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </span>
-            <span class="dv-text"><strong>Familj &amp; vänner-lek</strong><span>Övningar byggda för flera personer att träna tillsammans.</span></span>
-          </div>
+        <span class="kicker">Kortleken</span>
+        <h2 class="title">Två lekar. Alla nivåer.</h2>
+        <div class="decks">
+          <div><h3>Individuell</h3><p>Solopass för snabba stunder hemma, på hotellet eller mellan lektioner.</p></div>
+          <div><h3>Familj och vänner</h3><p>Övningar byggda för flera, så att hela hemmet kan vara med samtidigt.</p></div>
         </div>
-        <div class="qr-callout reveal">
-          <div class="qr-callout-icon">
-            <span class="pulse-ring"></span>
-            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.6"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          </div>
-          <p>Varje kort har en unik <span class="accent-text">QR-kod</span> — skanna den med kameran för att direkt få tydliga instruktioner, teknikguider och videotips. <span class="badge-pill">Ingen app krävs</span></p>
+        <div class="qr-note">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="2" y="2" width="7" height="7" stroke="currentColor" stroke-width="1.4"/><rect x="13" y="2" width="7" height="7" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="13" width="7" height="7" stroke="currentColor" stroke-width="1.4"/><path d="M13 13h3v3h-3zM17 17h3v3h-3zM13 19h2M19 13v2" stroke="currentColor" stroke-width="1.4"/></svg>
+          <p>Varje kort har en egen QR-kod med video, teknik och tips. Kameran räcker, ingen app behövs.</p>
         </div>
-        <div class="deck-cards reveal">
-          <div class="flipcard3d">
-            <div class="inner">
-              <div class="flipface front clean">
-                <img class="clean-logo" src="images/logo_mark_v2.png" alt="">
-                <div class="clean-word">MOTION <span>UF</span></div>
-              </div>
-              <div class="flipface back clean">
-                <div class="clean-quote">&ldquo;Disciplin bygger frihet.&rdquo;</div>
-                <div class="clean-author">— Rafael Nadal</div>
-                <div class="clean-qr"></div>
-                <div class="clean-scan">Skanna för ditt<br>nästa pass</div>
-              </div>
-            </div>
-          </div>
-          <div class="flipcard3d">
-            <div class="inner">
-              <div class="flipface front clean">
-                <img class="clean-logo" src="images/logo_mark_v2.png" alt="">
-                <div class="clean-word">MOTION <span>UF</span></div>
-              </div>
-              <div class="flipface back clean">
-                <div class="clean-quote">&ldquo;Disciplin bygger frihet.&rdquo;</div>
-                <div class="clean-author">— Rafael Nadal</div>
-                <div class="clean-qr"></div>
-                <div class="clean-scan">Skanna för ditt<br>nästa pass</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="deck-caps"><span><strong class="accent">104</strong> övningar totalt</span><span><strong class="accent">5–20</strong> min pass</span><span>Byggt med tränare</span></div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="band" aria-labelledby="bandTitle">
+  <div class="frame"><img data-speed="0.18" src="images/friends-sunset.jpg" alt="Fyra personer i olika åldrar gör armhävningar tillsammans i kvällssol"></div>
+  <div class="band-panel">
+    <span class="kicker">Tillsammans</span>
+    <h2 class="title" id="bandTitle">En lek. Alla generationer.</h2>
+    <p>Alla drar ett kort och alla är med, oavsett ålder eller nivå. Kort utspridda på mattan och en tävling om vem som blir klar först.</p>
+    <div class="tags"><span>Vardagsrummet</span><span>Trädgården</span><span>Stugan</span><span>Hotellrummet</span></div>
   </div>
 </section>
 
 <section class="surprise">
   <div class="wrap">
-    <div class="shuffle-stage reveal">
-      <div class="shuffle-card"><img class="clean-logo" src="images/logo_mark_v2.png" alt=""><div class="clean-word">MOTION <span>UF</span></div></div>
-      <div class="shuffle-card"><img class="clean-logo" src="images/logo_mark_v2.png" alt=""><div class="clean-word">MOTION <span>UF</span></div></div>
-      <div class="shuffle-card"><img class="clean-logo" src="images/logo_mark_v2.png" alt=""><div class="clean-word">MOTION <span>UF</span></div></div>
-    </div>
-    <h2 class="reveal">Du vet aldrig vad som väntar.</h2>
-    <p class="reveal">Säg hejdå till beslutströtthet och rutinmässig uttråkning. Överraskningsmomentet gör varje tillfälle spännande och håller motivationen uppe över tid. Du slipper fundera på vad du ska göra — du behöver bara dyka upp, dra ett kort och låta träningen hända.</p>
-  </div>
-</section>
-
-<section class="anywhere" id="anywhere">
-  <div class="wrap">
-    <div class="anywhere-stage">
-      <div class="anywhere-grid">
-        <div class="aw-item aw1 reveal"><img src="images/family_living.jpg" alt="Familj tränar tillsammans i ett ljust vardagsrum"></div>
-        <div class="aw-item aw2 reveal"><img src="images/family_pushups.jpg" alt="Familj tränar tillsammans med MOTION UF-kort" style="object-position:70% 30%;"></div>
-      </div>
-      <div class="aw-overlay">
-        <h2>En lek. Alla generationer. Alla med.</h2>
-        <div class="mono aw-sub">Gjord för gemenskap</div>
-        <p class="aw-float">MOTION UF är inte bara ett träningspass — det är en ursäkt att vara i samma rum, i rörelse samtidigt. Morföräldrar, föräldrar, barn, vem som än är hemma: alla drar ett kort, alla är med. Här finns inget "för gammal" eller "för ung" — bara delade skratt, lite vänskaplig tävling, och den sortens gemenskap som uppstår när en hel familj gör något fånigt och svettigt samtidigt.</p>
-        <p class="aw-cap-line"><span class="mono">Vilket utrymme som helst</span>Kort utspridda på mattan, alla kapplöper om att bli klara först — så här ser familjens spelkväll ut nu.</p>
-      </div>
+    <p class="display">Du vet aldrig vad som väntar.</p>
+    <div class="surprise-row">
+      <p>Varje pass är en överraskning. Det tar bort beslutströttheten och gör att det fortfarande känns roligt vecka åtta.</p>
+      <p>Du behöver bara dyka upp, dra ett kort och skanna. Resten är redan bestämt, av planeraren och av slumpen.</p>
     </div>
   </div>
 </section>
 
 <section class="science" id="science">
   <div class="wrap">
-    <div class="section-head center reveal">
-      <div class="mono" style="color:var(--brass-soft); justify-content:center; display:flex; margin-bottom:18px;">Vetenskapen</div>
-      <h2>Varför du måste röra på dig.</h2>
-      <p>Inte åsikter — bara vad forskningen faktiskt visar om rörelse och hälsa.</p>
+    <div class="sci-head">
+      <div><span class="kicker">Forskningen</span><h2 class="title">Varför korta pass räcker långt.</h2></div>
+      <p>Det här är vad forskningen säger om rörelse och hälsa, och varför Motion är byggt kring korta pass.</p>
     </div>
-    <div class="science-grid">
-      <div class="sci-card reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 17s-7-4.35-7-9.5C3 4.5 5.5 2 8.3 2c1.5 0 2.9.8 3.7 2 .8-1.2 2.2-2 3.7-2C18.5 2 17 4.5 17 7.5 17 12.65 10 17 10 17z" stroke="#faf9f7" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
-        <h3>150 minuter räcker</h3><p>Enligt WHO minskar redan 150 minuters måttlig rörelse i veckan risken att dö av hjärt-kärlsjukdom med 22–31 %.</p>
-      </div>
-      <div class="sci-card reveal">
-        <div class="icowrap"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="12" r="8" stroke="#faf9f7" stroke-width="1.3"/><path d="M11 7v5l4 2" stroke="#faf9f7" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-        <h3>Allt räknas</h3><p>WHO är tydliga: rörelse behöver inte ske i ett långt pass. Uppdelat i korta stunder ger det samma effekt.</p>
-      </div>
-      <div class="sci-card reveal">
-        <div class="icowrap"><svg width="20" height="22" viewBox="0 0 20 22" fill="none"><path d="M4 20V10M10 20V4M16 20v-7" stroke="#faf9f7" stroke-width="1.4" stroke-linecap="round"/></svg></div>
-        <h3>Stillasittande är en riskfaktor</h3><p>Att sitta still över 7 timmar om dagen är kopplat till en dödsrisk i klass med rökning eller fetma (Harvard Health).</p>
-      </div>
-      <div class="sci-card reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2v4M10 14v4M2 10h4M14 10h4M4.9 4.9l2.8 2.8M12.3 12.3l2.8 2.8M4.9 15.1l2.8-2.8M12.3 7.7l2.8-2.8" stroke="#faf9f7" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-        <h3>Global skala</h3><p>WHO uppskattar att upp till 5 miljoner dödsfall per år skulle kunna undvikas om fler människor rörde på sig mer.</p>
-      </div>
+    <div class="sci-grid">
+      <div class="sci"><strong>150</strong><h3>minuter i veckan</h3><p>Måttlig rörelse i den mängden sänker risken att dö i hjärt-kärlsjukdom med 22–31 %.</p><small>Källa: WHO</small></div>
+      <div class="sci"><strong>Allt</strong><h3>räknas</h3><p>Rörelsen behöver inte komma i ett långt pass. Korta stunder över dagen ger samma effekt.</p><small>Källa: WHO</small></div>
+      <div class="sci"><strong>7 h</strong><h3>stillasittande om dagen</h3><p>Är kopplat till en risk i nivå med rökning och fetma.</p><small>Källa: Harvard Health</small></div>
+      <div class="sci"><strong>5 milj.</strong><h3>dödsfall per år</h3><p>Skulle kunna undvikas om fler människor rörde på sig mer.</p><small>Källa: WHO</small></div>
     </div>
   </div>
 </section>
 
-<section class="ai-planner" id="planner">
+<section class="ai" id="planner">
   <div class="wrap">
-    <div class="ai-photo-pair reveal">
-      <div class="ai-photo"><img src="images/ai-focus-eye.jpg" alt="Fokus under ett träningspass"></div>
-      <div class="ai-photo"><img src="images/ai-small-steps.jpg" alt="Små steg, varje dag"></div>
-    </div>
-    <div class="section-head center reveal">
-      <div class="mono" style="color:var(--brass); justify-content:center; display:flex; margin-bottom:18px;">Drivs av AI</div>
-      <h2>Din coach, byggd runt dig.</h2>
-      <p>Planeraren lär sig ditt schema, dina mål och hur varje pass faktiskt kändes — och justerar sedan tyst morgondagens kort.</p>
-    </div>
-    <div class="ai-grid ai-grid-4">
-      <div class="ai-card reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="14" rx="2" stroke="#111" stroke-width="1.3"/><path d="M2 8h16M6 3v14" stroke="#111" stroke-width="1.2"/></svg></div>
-        <h3>Bygger din vecka</h3><p>Skapar ett personligt veckoschema utifrån dina mål, din nivå och tillgänglig tid.</p>
+    <div class="ai-grid">
+      <div class="ai-pair">
+        <div class="frame"><img data-speed="0.08" src="images/motion-focus.jpg" alt="Närbild på ett fokuserat öga i gyllene ljus"></div>
+        <div class="frame"><img data-speed="0.14" src="images/motion-small-steps.jpg" alt="Svettig axel efter ett pass"></div>
       </div>
-      <div class="ai-card reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 15l5-5 4 4 7-8" stroke="#111" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Anpassar sig kontinuerligt</h3><p>Betygsätt hur ett pass kändes så justeras svårighetsgraden automatiskt till nästa gång.</p>
+      <div>
+        <span class="kicker">AI-coachen</span>
+        <h2 class="title">En coach som lär sig din vecka.</h2>
+        <ul class="ai-list">
+          <li><strong>Bygger din vecka</strong><span>Ett schema utifrån dina mål, din nivå och din tid.</span></li>
+          <li><strong>Anpassar sig</strong><span>Säg hur passet kändes, så justeras nästa.</span></li>
+          <li><strong>Svarar på frågor</strong><span>Kost, stretch, sömn och återhämtning, dygnet runt.</span></li>
+          <li><strong>Behåller överraskningen</strong><span>Dagens övningar avslöjas först när du skannar.</span></li>
+        </ul>
+        <a href="motion-ai-coach.html" class="btn btn-dark">Prova AI-coachen</a>
       </div>
-      <div class="ai-card reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 4h16v9H8l-4 4v-4H2V4z" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
-        <h3>Svarar på allt</h3><p>En AI-chattcoach dygnet runt för kost, stretching, återhämtning och motivation.</p>
-      </div>
-      <div class="ai-card reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.4 5.8L18 10l-5.6 2.2L10 18l-2.4-5.8L2 10l5.6-2.2z" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
-        <h3>Överraskningsmoment</h3><p>Skanna ditt kort för att avslöja dagens övningar — fräscht och engagerande, varje gång.</p>
-      </div>
-    </div>
-    <div style="text-align:center; margin-top:56px;">
-      <a href="motion-ai-coach.html" class="btn btn-dark">Möt din AI-coach</a>
     </div>
   </div>
 </section>
 
-<section class="editorial-final" id="get">
-  <img src="images/sweaty-blur.jpg" alt="Efter ett genomfört träningspass">
-  <div class="ef-scrim"></div>
-  <div class="wrap ef-content">
-    <h2>En bättre rutin börjar med ett kort.</h2>
-    <p>Skaffa din kortlek. Låt planeraren sköta resten.</p>
-    <a href="motion-ai-coach.html" class="btn btn-light">Börja röra dig</a>
+<section class="final" id="get">
+  <div class="frame"><img data-speed="0.15" src="images/focus-light.jpg" alt="Man i gyllene ljus efter ett träningspass"></div>
+  <div class="final-inner">
+    <div class="wrap">
+      <h2 class="display">En bättre rutin börjar med ett kort.</h2>
+      <p>Skriv upp dig på väntelistan så hör vi av oss när kortleken går att beställa.</p>
+      <button class="btn btn-sun" onclick="openWaitlist()">Skaffa kortleken</button>
+    </div>
   </div>
 </section>
+</main>
 
 <footer>
   <div class="wrap">
     <div class="foot-row">
-      <div class="logo" style="color:var(--charcoal);"><img class="logo-mark" src="images/logo_mark_v2.png" alt="MOTION UF" style="height:22px;">MOTION UF</div>
+      <a href="index.html" class="logo"><img src="images/logo_mark_v2.png" alt="">MOTION UF</a>
       <div class="foot-links">
+        <a href="motion-ai-coach.html">AI-coach</a>
         <a href="#">Om oss</a>
         <a href="#">Kontakt</a>
         <a href="#">Integritet</a>
-        <a href="#">Villkor</a>
         <a href="#">Instagram</a>
       </div>
     </div>
     <div class="foot-bottom">
       <span>© 2026 MOTION UF</span>
-      <span>Mer rörelse. Mindre tänk.</span>
+      <span>We think. You move.</span>
     </div>
   </div>
 </footer>
 
-<script>
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 30));
-
-  // mobile hamburger menu
-  const navBurger = document.getElementById('navBurger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  navBurger.addEventListener('click', () => {
-    const open = navBurger.classList.toggle('open');
-    mobileMenu.classList.toggle('open', open);
-    navBurger.setAttribute('aria-expanded', open);
-  });
-  mobileMenu.querySelectorAll('a, button').forEach(el => el.addEventListener('click', () => {
-    navBurger.classList.remove('open');
-    mobileMenu.classList.remove('open');
-    navBurger.setAttribute('aria-expanded', false);
-  }));
-
-
-  // scroll reveal
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(en => { if(en.isIntersecting) en.target.classList.add('in'); });
-  }, { threshold:0.15 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-  // floating particles in hero
-  const pWrap = document.getElementById('particles');
-  for(let i=0;i<16;i++){
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = Math.random()*100 + '%';
-    p.style.bottom = (Math.random()*30) + '%';
-    p.style.animationDuration = (8 + Math.random()*10) + 's';
-    p.style.animationDelay = (Math.random()*10) + 's';
-    pWrap.appendChild(p);
-  }
-  pWrap.style.position='absolute'; pWrap.style.inset='0'; pWrap.style.zIndex='2'; pWrap.style.pointerEvents='none';
-
-  // subtle mouse-follow parallax on hero content
-  const heroContent = document.querySelector('.hero-content');
-  document.querySelector('.hero').addEventListener('mousemove', (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 14;
-    const y = (e.clientY / window.innerHeight - 0.5) * 10;
-    heroContent.style.transform = `translate(${x}px, ${y}px)`;
-  });
-
-  // deck hero card: auto-flip every few seconds to reveal the quote + QR
-  const heroCardInner = document.getElementById('heroCardInner');
-  if (heroCardInner){
-    setInterval(() => heroCardInner.classList.toggle('flipped'), 3200);
-  }
-
-  function selectDeckVariant(el){
-    document.querySelectorAll('.dv-item').forEach(item => item.classList.remove('active'));
-    el.classList.add('active');
-  }
-
-  // waitlist modal
-  function openWaitlist(){
-    const ov = document.getElementById('wlOverlay');
-    ov.classList.add('show');
-    requestAnimationFrame(() => ov.classList.add('in'));
-    document.body.style.overflow = 'hidden';
-  }
-  function closeWaitlist(){
-    const ov = document.getElementById('wlOverlay');
-    ov.classList.remove('in');
-    document.body.style.overflow = '';
-    setTimeout(() => ov.classList.remove('show'), 300);
-  }
-  document.getElementById('wlOverlay').addEventListener('click', (e) => {
-    if (e.target.id === 'wlOverlay') closeWaitlist();
-  });
-  function submitWaitlist(e){
-    e.preventDefault();
-    const email = document.getElementById('wlEmail').value;
-    const submitBtn = document.querySelector('#wlForm button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Skickar...';
-
-    fetch('https://formspree.io/f/mjykbdey', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, källa: 'Motion UF väntelista' })
-    })
-    .then(res => {
-      document.getElementById('wlForm').style.display = 'none';
-      document.getElementById('wlSuccess').classList.add('show');
-    })
-    .catch(() => {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Gå med i väntelistan';
-      alert('Något gick fel — testa igen om en liten stund.');
-    });
-    return false;
-  }
-</script>
-
-<div class="wl-overlay" id="wlOverlay">
+<div class="wl-overlay" id="wlOverlay" role="dialog" aria-modal="true" aria-labelledby="wlTitle">
   <div class="wl-modal">
     <button class="wl-close" onclick="closeWaitlist()" aria-label="Stäng">&times;</button>
-    <div class="wl-eyebrow">Kommer snart</div>
-    <h3>Vanan börjar<br>med ett kort.</h3>
+    <h3 id="wlTitle">Vanan börjar med ett kort.</h3>
+    <p>Lämna din mejladress så hör vi av oss när kortleken finns att beställa.</p>
     <form id="wlForm" onsubmit="return submitWaitlist(event)">
-      <input type="email" id="wlEmail" name="email" placeholder="din@mejl.se" required>
+      <label for="wlEmail">Mejladress</label>
+      <input type="email" id="wlEmail" name="email" placeholder="namn@mejl.se" required autocomplete="email">
       <button type="submit" class="btn btn-dark">Gå med i väntelistan</button>
     </form>
-    <div class="wl-success" id="wlSuccess">
-      <div class="wl-success-icon">✓</div>
-      <p>Tack! Du är på listan — vi hör av oss så fort kortleken finns att beställa.</p>
+    <div class="wl-success" id="wlSuccess" role="status">
+      <h3>Du är med.</h3>
+      <p>Vi mejlar dig så fort kortleken går att beställa.</p>
     </div>
   </div>
 </div>
 
+<script>
+(function(){
+  const nav=document.getElementById('nav');
+  const burger=document.getElementById('navBurger');
+  const menu=document.getElementById('mobileMenu');
+  function setMenu(open){
+    burger.classList.toggle('open',open);menu.classList.toggle('open',open);
+    nav.classList.toggle('menu-open',open);burger.setAttribute('aria-expanded',open);
+    burger.setAttribute('aria-label',open?'Stäng meny':'Öppna meny');
+  }
+  burger.addEventListener('click',()=>setMenu(!menu.classList.contains('open')));
+  menu.querySelectorAll('a,button').forEach(el=>el.addEventListener('click',()=>setMenu(false)));
+
+  // page-load sequence
+  const img=document.querySelector('.hero-media img');
+  const go=()=>requestAnimationFrame(()=>document.documentElement.classList.add('loaded'));
+  if(img.complete) go(); else { img.addEventListener('load',go); setTimeout(go,1500); }
+
+  // scroll-driven parallax
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const heroMedia=document.getElementById('heroMedia');
+  const heroInner=document.getElementById('heroInner');
+  const layers=[...document.querySelectorAll('img[data-speed]')];
+  let ticking=false;
+  function update(){
+    ticking=false;
+    const y=window.scrollY, vh=window.innerHeight;
+    nav.classList.toggle('scrolled',y>vh*0.8);
+    if(reduce) return;
+    if(y<vh*1.2){
+      heroMedia.style.transform=`translate3d(0,${y*0.35}px,0)`;
+      heroInner.style.transform=`translate3d(0,${y*0.15}px,0)`;
+      heroInner.style.opacity=Math.max(0,1-y/(vh*0.75));
+    }
+    for(const el of layers){
+      const r=el.parentElement.getBoundingClientRect();
+      if(r.bottom<-100||r.top>vh+100) continue;
+      const p=(r.top+r.height/2-vh/2)/(vh/2+r.height/2); // -1..1
+      el.style.transform=`translate3d(0,${(-p*parseFloat(el.dataset.speed)*r.height).toFixed(1)}px,0)`;
+    }
+  }
+  window.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(update)}},{passive:true});
+  window.addEventListener('resize',update);
+  update();
+})();
+
+// waitlist
+let lastFocus=null;
+function openWaitlist(){
+  lastFocus=document.activeElement;
+  const ov=document.getElementById('wlOverlay');
+  ov.classList.add('show');requestAnimationFrame(()=>ov.classList.add('in'));
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('wlEmail').focus(),50);
+}
+function closeWaitlist(){
+  const ov=document.getElementById('wlOverlay');
+  ov.classList.remove('in');document.body.style.overflow='';
+  setTimeout(()=>ov.classList.remove('show'),300);
+  if(lastFocus) lastFocus.focus();
+}
+document.getElementById('wlOverlay').addEventListener('click',e=>{if(e.target.id==='wlOverlay')closeWaitlist()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('wlOverlay').classList.contains('show'))closeWaitlist()});
+function submitWaitlist(e){
+  e.preventDefault();
+  const email=document.getElementById('wlEmail').value;
+  const btn=document.querySelector('#wlForm button[type="submit"]');
+  btn.disabled=true;btn.textContent='Skickar…';
+  fetch('https://formspree.io/f/mjykbdey',{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify({email:email,källa:'Motion UF väntelista'})})
+  .then(res=>{if(!res.ok)throw new Error();document.getElementById('wlForm').style.display='none';document.getElementById('wlSuccess').classList.add('show')})
+  .catch(()=>{btn.disabled=false;btn.textContent='Gå med i väntelistan';alert('Det gick inte att skicka. Kontrollera din uppkoppling och försök igen.')});
+  return false;
+}
+</script>
 </body>
 </html>
