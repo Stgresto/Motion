@@ -235,6 +235,11 @@
 
   /* AI PLANNER */
   .ai-planner{ background:var(--white); }
+  .ai-photo-pair{ display:grid; grid-template-columns:1fr 1fr; gap:2px; max-width:1140px; margin:0 auto 64px; height:340px; }
+  .ai-photo{ overflow:hidden; }
+  .ai-photo img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease; }
+  .ai-photo:hover img{ transform:scale(1.04); }
+  @media(max-width:760px){ .ai-photo-pair{ height:220px; margin-bottom:40px; } }
   .ai-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:34px; max-width:960px; margin:0 auto; }
   .ai-grid-4{ grid-template-columns:repeat(4,1fr); max-width:1140px; }
   .ai-card{ text-align:center; padding:36px 24px; border-radius:20px; background:var(--beige); }
@@ -569,6 +574,10 @@
 
 <section class="ai-planner" id="planner">
   <div class="wrap">
+    <div class="ai-photo-pair reveal">
+      <div class="ai-photo"><img src="images/ai-focus-eye.jpg" alt="Fokus under ett träningspass"></div>
+      <div class="ai-photo"><img src="images/ai-small-steps.jpg" alt="Små steg, varje dag"></div>
+    </div>
     <div class="section-head center reveal">
       <div class="mono" style="color:var(--brass); justify-content:center; display:flex; margin-bottom:18px;">Drivs av AI</div>
       <h2>Din coach, byggd runt dig.</h2>
