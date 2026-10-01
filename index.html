@@ -140,33 +140,40 @@ h3{font-family:var(--serif);font-weight:400;font-size:1.65rem;line-height:1.15}
 
 
 /* CARD STAGE (pinned, scroll-driven) */
-.cards{position:relative;height:420vh;background:var(--umber);color:var(--paper)}
+.cards{position:relative;height:420vh;background:#E9E2D6;color:var(--umber)}
 .cards-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:center;gap:clamp(24px,4vw,64px);padding-inline:var(--gutter)}
-.cards-glow{position:absolute;inset:-20%;background:radial-gradient(40% 45% at 68% 52%,rgba(226,181,119,.28),rgba(226,181,119,0) 70%);pointer-events:none}
-.cards-copy{position:relative;height:min(360px,46svh);z-index:2}
+.cards-glow{position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(45% 55% at 66% 50%,rgba(255,252,246,.85),rgba(255,252,246,0) 70%),
+  repeating-linear-gradient(118deg,rgba(120,100,75,0) 0 140px,rgba(120,100,75,.07) 140px 230px,rgba(120,100,75,0) 230px 420px)}
+.cards-copy{position:relative;height:min(380px,46svh);z-index:2}
 .cc{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;opacity:0;filter:blur(12px);transform:translateY(24px);will-change:opacity,filter,transform}
-.cc .step{font-size:.9rem;color:rgba(246,241,233,.55);margin-bottom:18px;display:block}
+.cc .step{font-size:.9rem;color:var(--stone);margin-bottom:18px;display:block}
 .cc h2{font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,5.4vw,5rem);line-height:.98;letter-spacing:-.015em;margin-bottom:20px}
-.cc p{color:rgba(246,241,233,.72);max-width:24em;font-size:1.05rem}
+.cc p{color:var(--stone);max-width:25em;font-size:1.05rem}
 .cards-progress{position:absolute;left:var(--gutter);bottom:clamp(24px,5vh,48px);display:flex;gap:8px;z-index:2}
-.cards-progress i{display:block;width:34px;height:2px;background:rgba(246,241,233,.2);position:relative;overflow:hidden}
-.cards-progress i b{position:absolute;inset:0;background:var(--sun);transform-origin:left;transform:scaleX(0)}
+.cards-progress i{display:block;width:34px;height:2px;background:rgba(42,31,22,.15);position:relative;overflow:hidden}
+.cards-progress i b{position:absolute;inset:0;background:var(--bronze);transform-origin:left;transform:scaleX(0)}
 .stage3d{position:relative;height:100%;perspective:1600px;display:flex;align-items:center;justify-content:center}
-.pcard{position:absolute;width:clamp(170px,17vw,250px);aspect-ratio:5/7.4;transform-style:preserve-3d;will-change:transform}
-.pcard .face{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06) inset}
-.pcard .front{background:linear-gradient(160deg,#fbf8f2 0%,#efe6d6 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--umber)}
-.pcard .front img{width:44%;height:auto}
-.pcard .front span{font-weight:600;letter-spacing:.14em;font-size:.82rem}
-.pcard .front::after{content:"";position:absolute;inset:10px;border:1px solid rgba(148,103,47,.28);border-radius:9px}
-.pcard .back{transform:rotateY(180deg);background:linear-gradient(170deg,#3b2c1f 0%,#22180f 100%);color:var(--paper);padding:20px 18px;display:flex;flex-direction:column}
-.pcard .back .lvl{font-size:.72rem;color:var(--sun);border:1px solid rgba(226,181,119,.45);border-radius:99px;padding:3px 10px;align-self:flex-start}
-.pcard .back .ex{font-family:var(--serif);font-weight:400;font-size:clamp(1.4rem,1.9vw,1.9rem);line-height:1.05;margin-top:auto}
-.pcard .back .dose{font-size:.85rem;color:rgba(246,241,233,.7);margin:6px 0 14px}
-.pcard .back .qr{width:44%;aspect-ratio:1;background:#fbf8f2;border-radius:6px;padding:6px}
+.pcard{--gold:#B08A3E;--green:#1E3B2C;position:absolute;width:clamp(180px,18vw,260px);aspect-ratio:5/7;transform-style:preserve-3d;will-change:transform;container-type:inline-size}
+.pcard .face{position:absolute;inset:0;border-radius:6.5cqw;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;background:linear-gradient(165deg,#FBF8F1 0%,#F1EBDF 100%);color:var(--umber);box-shadow:0 34px 50px -24px rgba(70,52,30,.45),0 6px 14px -6px rgba(70,52,30,.25)}
+.pcard .face::after{content:"";position:absolute;inset:5cqw;border:1px solid var(--gold);border-radius:4cqw;opacity:.85;pointer-events:none}
+.pcard .front{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7cqw}
+.pcard .front img{width:52%;height:auto}
+.pcard .wm{font-family:var(--sans);font-weight:400;font-size:9.5cqw;letter-spacing:.06em;color:var(--green);line-height:1}
+.pcard .wm b{font-weight:400;color:var(--gold)}
+.pcard .back{transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;text-align:center;padding:13cqw 10cqw 11cqw}
+.pcard .back .cat{font-size:5.2cqw;letter-spacing:.32em;color:var(--gold);font-weight:500;padding-left:.32em}
+.pcard .back .rule{width:22%;height:1px;background:var(--gold);opacity:.8;margin:5cqw 0 7cqw}
+.pcard .back .qr{width:40%;aspect-ratio:1}
 .pcard .back .qr svg{width:100%;height:100%;display:block}
-.pcard .back .scan{font-size:.7rem;color:rgba(246,241,233,.55);margin-top:8px}
-.pcard .face::before{content:"";position:absolute;inset:0;background:rgba(20,14,9,var(--dim,0));z-index:5;pointer-events:none;transition:background .3s}
-.pcard .sheen{position:absolute;inset:0;border-radius:14px;background:linear-gradient(115deg,rgba(255,255,255,0) 35%,rgba(255,255,255,.35) 50%,rgba(255,255,255,0) 65%);mix-blend-mode:soft-light;pointer-events:none;opacity:0}
+.pcard .back .ex{font-family:var(--serif);font-style:italic;font-weight:400;font-size:10cqw;line-height:1.05;margin-top:7cqw}
+.pcard .back .dose{font-size:4.2cqw;letter-spacing:.2em;color:var(--stone);margin-top:3cqw}
+.pcard .back .rule2{width:22%;height:1px;background:var(--gold);opacity:.8;margin:6cqw 0 auto}
+.pcard .back .meta{display:grid;grid-template-columns:repeat(3,1fr);width:100%;gap:2cqw;margin-top:6cqw}
+.pcard .back .meta span{display:flex;flex-direction:column;align-items:center;gap:2cqw;font-size:3.9cqw;letter-spacing:.12em;color:var(--gold);font-weight:500}
+.pcard .back .meta svg{width:8cqw;height:8cqw}
+.pcard .face::before{content:"";position:absolute;inset:0;background:rgba(60,44,26,var(--dim,0));z-index:5;pointer-events:none;transition:background .3s}
+.pcard .sheen{position:absolute;inset:0;border-radius:6.5cqw;background:linear-gradient(115deg,rgba(255,255,255,0) 35%,rgba(255,255,255,.6) 50%,rgba(255,255,255,0) 65%);mix-blend-mode:soft-light;pointer-events:none;opacity:0}
 
 /* DECKS row */
 .decks-row{padding:clamp(90px,11vw,160px) 0}
@@ -189,12 +196,7 @@ h3{font-family:var(--serif);font-weight:400;font-size:1.65rem;line-height:1.15}
   .cc h2{font-size:clamp(2.1rem,8vw,3rem);margin-bottom:12px}
   .cc p{font-size:.98rem}
   .cc .step{margin-bottom:10px}
-  .pcard{width:clamp(130px,34vw,190px)}
-  .pcard .back{padding:14px 12px}
-  .pcard .back .ex{font-size:1.12rem}
-  .pcard .back .dose{font-size:.72rem;margin:4px 0 8px}
-  .pcard .back .lvl{font-size:.62rem;padding:2px 8px}
-  .pcard .back .scan{font-size:.6rem}
+  .pcard{width:clamp(140px,36vw,200px)}
   .decks-grid{grid-template-columns:1fr}
 }
 
@@ -382,25 +384,25 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
   <div class="cards-pin">
     <div class="cards-glow" aria-hidden="true"></div>
     <div class="cards-copy">
-      <div class="cc" data-k="0"><span class="step">Kortleken</span><h2>Tre kort. Ett pass.</h2><p>Planeraren säger hur många kort du ska dra idag. Leken bestämmer vad det blir.</p></div>
-      <div class="cc" data-k="1"><span class="step">Kort 1 av 3</span><h2>Vänd det första.</h2><p>Varje kort är en övning. Du vet inte vilken förrän du vänder det, och det är hela poängen.</p></div>
-      <div class="cc" data-k="2"><span class="step">Kort 2 av 3</span><h2>Ingen plan att följa.</h2><p>Övningarna blandar muskelgrupper automatiskt, så du slipper fundera på vad som borde komma härnäst.</p></div>
-      <div class="cc" data-k="3"><span class="step">Kort 3 av 3</span><h2>Skanna och kör.</h2><p>QR-koden öppnar en kort video med teknik och tempo. Kameran räcker, ingen app behövs.</p></div>
+      <div class="cc" data-k="0"><span class="step">Så fungerar korten</span><h2>Dra. Skanna. Gör.</h2><p>Motion UF tar bort frågan ”Vad ska jag träna idag?”. Varje kort är en övning eller en träningsutmaning.</p></div>
+      <div class="cc" data-k="1"><span class="step">Dra</span><h2>Dra ett kort.</h2><p>Du ser direkt vad du ska göra och kan sätta igång. Inget att planera, inget att välja.</p></div>
+      <div class="cc" data-k="2"><span class="step">Skanna</span><h2>Skanna koden.</h2><p>QR-koden på kortet leder till en tydlig instruktion för hur övningen utförs.</p></div>
+      <div class="cc" data-k="3"><span class="step">Gör</span><h2>Gör.</h2><p>Svårighetsgrad, ungefärlig tid och typ av träning står på kortet, så att du vet vad som väntar innan du börjar.</p></div>
     </div>
     <div class="stage3d" aria-hidden="true">
       <div class="pcard" data-i="0">
-        <div class="face front"><img src="images/logo_mark_v2.png" alt=""><span>MOTION UF</span></div>
-        <div class="face back"><span class="lvl">Enkel</span><div class="ex">Armhävningar</div><div class="dose">3 × 10 repetitioner</div><div class="qr" data-seed="3"></div><div class="scan">Skanna för video</div></div>
+        <div class="face front"><img src="images/logo_mark_v2.png" alt=""><div class="wm">MOTION <b>UF</b></div></div>
+        <div class="face back"><span class="cat">STYRKA</span><span class="rule"></span><div class="qr" data-seed="3"></div><div class="ex">Armhävningar</div><div class="dose">3 × 10 REPS</div><span class="rule2"></span><div class="meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19v-3M10 19v-6M15 19v-9M20 19V6"/></svg>MEDIUM</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M10 3h4M12 3v2.5"/></svg>10 MIN</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M5.5 8.5v7M8 7v10M16 7v10M18.5 8.5v7"/></svg>HELKROPP</span></div></div>
         <div class="sheen"></div>
       </div>
       <div class="pcard" data-i="1">
-        <div class="face front"><img src="images/logo_mark_v2.png" alt=""><span>MOTION UF</span></div>
-        <div class="face back"><span class="lvl">Enkel</span><div class="ex">Utfallssteg</div><div class="dose">12 per ben</div><div class="qr" data-seed="4"></div><div class="scan">Skanna för video</div></div>
+        <div class="face front"><img src="images/logo_mark_v2.png" alt=""><div class="wm">MOTION <b>UF</b></div></div>
+        <div class="face back"><span class="cat">KONDITION</span><span class="rule"></span><div class="qr" data-seed="4"></div><div class="ex">Burpees</div><div class="dose">40 SEK × 4</div><span class="rule2"></span><div class="meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19v-3M10 19v-6M15 19v-9M20 19V6"/></svg>SVÅR</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M10 3h4M12 3v2.5"/></svg>5 MIN</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M5.5 8.5v7M8 7v10M16 7v10M18.5 8.5v7"/></svg>HELKROPP</span></div></div>
         <div class="sheen"></div>
       </div>
       <div class="pcard" data-i="2">
-        <div class="face front"><img src="images/logo_mark_v2.png" alt=""><span>MOTION UF</span></div>
-        <div class="face back"><span class="lvl">Svår</span><div class="ex">Planka</div><div class="dose">45 sekunder</div><div class="qr" data-seed="5"></div><div class="scan">Skanna för video</div></div>
+        <div class="face front"><img src="images/logo_mark_v2.png" alt=""><div class="wm">MOTION <b>UF</b></div></div>
+        <div class="face back"><span class="cat">TILLSAMMANS</span><span class="rule"></span><div class="qr" data-seed="5"></div><div class="ex">Plankduell</div><div class="dose">SIST KVAR VINNER</div><span class="rule2"></span><div class="meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19v-3M10 19v-6M15 19v-9M20 19V6"/></svg>LÄTT</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M10 3h4M12 3v2.5"/></svg>3 MIN</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M5.5 8.5v7M8 7v10M16 7v10M18.5 8.5v7"/></svg>BÅL</span></div></div>
         <div class="sheen"></div>
       </div>
     </div>
@@ -416,8 +418,8 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
         <span class="kicker">Två lekar</span>
         <h2 class="title">En för dig. En för alla hemma.</h2>
         <div class="decks">
-          <div><h3>Individuell</h3><p>52 övningar för snabba solopass hemma, på hotellet eller mellan lektioner.</p></div>
-          <div><h3>Familj och vänner</h3><p>52 övningar byggda för flera, så att hela hemmet kan vara med samtidigt.</p></div>
+          <div><h3>Individuell</h3><p>Kort för korta träningspass och övningar du gör själv.</p></div>
+          <div><h3>Familj och vänner</h3><p>Mer lekfulla utmaningar där ni tävlar, samarbetar och rör på er tillsammans.</p></div>
         </div>
         <button class="btn btn-dark" onclick="openWaitlist()">Skaffa kortleken</button>
       </div>
@@ -567,10 +569,10 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
   document.querySelectorAll('.qr').forEach(q=>{
     let seed=+q.dataset.seed*9301+49297; const rnd=()=>((seed=(seed*9301+49297)%233280)/233280);
     const n=21; let r='';
-    const finder=(x,y)=>`<rect x="${x}" y="${y}" width="7" height="7" fill="#2A1F16"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="#fbf8f2"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#2A1F16"/>`;
+    const finder=(x,y)=>`<rect x="${x}" y="${y}" width="7" height="7" fill="#1b1a17"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="#F7F3EA"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#1b1a17"/>`;
     for(let y=0;y<n;y++)for(let x=0;x<n;x++){
       const inF=(x<8&&y<8)||(x>12&&y<8)||(x<8&&y>12); if(inF) continue;
-      if(rnd()>.52) r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="#2A1F16"/>`;
+      if(rnd()>.52) r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="#1b1a17"/>`;
     }
     q.innerHTML=`<svg viewBox="0 0 21 21" shape-rendering="crispEdges">${finder(0,0)+finder(14,0)+finder(0,14)+r}</svg>`;
   });
@@ -581,19 +583,19 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
     const spread=ease(seg(p,.06,.24));
     const flips=[ease(seg(p,.28,.42)),ease(seg(p,.50,.64)),ease(seg(p,.72,.86))];
     const active=p<.28?-1:p<.50?0:p<.72?1:2;
-    const gap=mobile?Math.min(window.innerWidth*0.28,120):Math.min(window.innerWidth*0.14,230);
+    const gap=mobile?Math.min(window.innerWidth*0.19,90):Math.min(window.innerWidth*0.14,230);
     pcs.forEach((c,i)=>{
       const o=i-1;
       const x=o*gap*spread, rz=o*(10-8*spread)*(1-spread)+o*4*spread;
       const y=(1-spread)*(i*-6)+Math.abs(o)*14*spread;
       const isA=i===active;
       const lift=isA?1:0;
-      const z=lift*120 - Math.abs(o)*20;
+      const z=lift*(mobile?50:120) - Math.abs(o)*20;
       const ry=flips[i]*180 + (1-spread)*(-8);
       const s=1+lift*0.06;
       c.style.transform=`translate3d(${x}px,${y - lift*16}px,${z}px) rotateZ(${rz}deg) rotateY(${ry}deg) scale(${s})`;
       c.style.zIndex=isA?10:3-Math.abs(o);
-      c.style.setProperty('--dim',(active>=0&&!isA&&p<.9)?'.45':'0');
+      c.style.setProperty('--dim',(active>=0&&!isA&&p<.9)?'.14':'0');
       const sh=c.querySelector('.sheen'); sh.style.opacity=Math.sin(flips[i]*Math.PI)*0.9;
     });
     const windows=[[0,.28],[.28,.50],[.50,.72],[.72,1.01]];
