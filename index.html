@@ -138,6 +138,66 @@ h3{font-family:var(--serif);font-weight:400;font-size:1.65rem;line-height:1.15}
 .qr-note svg{flex-shrink:0;margin-top:3px;color:var(--bronze)}
 .qr-note p{font-size:.98rem}
 
+
+/* CARD STAGE (pinned, scroll-driven) */
+.cards{position:relative;height:420vh;background:var(--umber);color:var(--paper)}
+.cards-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:center;gap:clamp(24px,4vw,64px);padding-inline:var(--gutter)}
+.cards-glow{position:absolute;inset:-20%;background:radial-gradient(40% 45% at 68% 52%,rgba(226,181,119,.28),rgba(226,181,119,0) 70%);pointer-events:none}
+.cards-copy{position:relative;height:min(360px,46svh);z-index:2}
+.cc{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;opacity:0;filter:blur(12px);transform:translateY(24px);will-change:opacity,filter,transform}
+.cc .step{font-size:.9rem;color:rgba(246,241,233,.55);margin-bottom:18px;display:block}
+.cc h2{font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,5.4vw,5rem);line-height:.98;letter-spacing:-.015em;margin-bottom:20px}
+.cc p{color:rgba(246,241,233,.72);max-width:24em;font-size:1.05rem}
+.cards-progress{position:absolute;left:var(--gutter);bottom:clamp(24px,5vh,48px);display:flex;gap:8px;z-index:2}
+.cards-progress i{display:block;width:34px;height:2px;background:rgba(246,241,233,.2);position:relative;overflow:hidden}
+.cards-progress i b{position:absolute;inset:0;background:var(--sun);transform-origin:left;transform:scaleX(0)}
+.stage3d{position:relative;height:100%;perspective:1600px;display:flex;align-items:center;justify-content:center}
+.pcard{position:absolute;width:clamp(170px,17vw,250px);aspect-ratio:5/7.4;transform-style:preserve-3d;will-change:transform}
+.pcard .face{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06) inset}
+.pcard .front{background:linear-gradient(160deg,#fbf8f2 0%,#efe6d6 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--umber)}
+.pcard .front img{width:44%;height:auto}
+.pcard .front span{font-weight:600;letter-spacing:.14em;font-size:.82rem}
+.pcard .front::after{content:"";position:absolute;inset:10px;border:1px solid rgba(148,103,47,.28);border-radius:9px}
+.pcard .back{transform:rotateY(180deg);background:linear-gradient(170deg,#3b2c1f 0%,#22180f 100%);color:var(--paper);padding:20px 18px;display:flex;flex-direction:column}
+.pcard .back .lvl{font-size:.72rem;color:var(--sun);border:1px solid rgba(226,181,119,.45);border-radius:99px;padding:3px 10px;align-self:flex-start}
+.pcard .back .ex{font-family:var(--serif);font-weight:400;font-size:clamp(1.4rem,1.9vw,1.9rem);line-height:1.05;margin-top:auto}
+.pcard .back .dose{font-size:.85rem;color:rgba(246,241,233,.7);margin:6px 0 14px}
+.pcard .back .qr{width:44%;aspect-ratio:1;background:#fbf8f2;border-radius:6px;padding:6px}
+.pcard .back .qr svg{width:100%;height:100%;display:block}
+.pcard .back .scan{font-size:.7rem;color:rgba(246,241,233,.55);margin-top:8px}
+.pcard .face::before{content:"";position:absolute;inset:0;background:rgba(20,14,9,var(--dim,0));z-index:5;pointer-events:none;transition:background .3s}
+.pcard .sheen{position:absolute;inset:0;border-radius:14px;background:linear-gradient(115deg,rgba(255,255,255,0) 35%,rgba(255,255,255,.35) 50%,rgba(255,255,255,0) 65%);mix-blend-mode:soft-light;pointer-events:none;opacity:0}
+
+/* DECKS row */
+.decks-row{padding:clamp(90px,11vw,160px) 0}
+.decks-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(40px,7vw,120px);align-items:center}
+.decks-grid .frame{aspect-ratio:4/5}
+
+/* blur-fade frames */
+.frame img{transition:none}
+.hero-media img,.hero-media video{filter:blur(0)}
+.js .hero-media img,.js .hero-media video{filter:blur(18px)}
+.loaded .hero-media img,.loaded .hero-media video{filter:blur(0);transition:transform 2.4s var(--ease),filter 1.6s var(--ease)}
+.hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 40%;opacity:0;transition:opacity 1.2s}
+.hero-media video.ready{opacity:1}
+
+@media(max-width:980px){
+  .cards{height:460vh}
+  .cards-pin{grid-template-columns:1fr;grid-template-rows:1fr auto;align-content:center;padding-top:90px;padding-bottom:70px;gap:12px}
+  .stage3d{order:1;height:52svh}
+  .cards-copy{order:2;height:30svh}
+  .cc h2{font-size:clamp(2.1rem,8vw,3rem);margin-bottom:12px}
+  .cc p{font-size:.98rem}
+  .cc .step{margin-bottom:10px}
+  .pcard{width:clamp(130px,34vw,190px)}
+  .pcard .back{padding:14px 12px}
+  .pcard .back .ex{font-size:1.12rem}
+  .pcard .back .dose{font-size:.72rem;margin:4px 0 8px}
+  .pcard .back .lvl{font-size:.62rem;padding:2px 8px}
+  .pcard .back .scan{font-size:.6rem}
+  .decks-grid{grid-template-columns:1fr}
+}
+
 /* BAND (full-bleed parallax) */
 .band{position:relative;height:clamp(560px,110vh,1100px);overflow:hidden;color:var(--umber)}
 .band .frame{position:absolute;inset:0}
@@ -269,7 +329,7 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
 </nav>
 
 <header class="hero">
-  <div class="hero-media" id="heroMedia"><img src="images/hero-pushup.jpg" alt="Kvinna gör armhävningar i kvällssol på ett betonggolv"></div>
+  <div class="hero-media" id="heroMedia"><img src="images/hero-pushup.jpg" alt="Kvinna gör armhävningar i kvällssol på ett betonggolv"><video id="heroVideo" muted playsinline loop preload="none" aria-hidden="true"></video></div>
   <div class="hero-scrim"></div>
   <div class="hero-inner" id="heroInner">
     <div class="wrap">
@@ -318,21 +378,48 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
   </div>
 </section>
 
-<section class="deck" id="deck">
+<section class="cards" id="deck" aria-label="Så fungerar korten">
+  <div class="cards-pin">
+    <div class="cards-glow" aria-hidden="true"></div>
+    <div class="cards-copy">
+      <div class="cc" data-k="0"><span class="step">Kortleken</span><h2>Tre kort. Ett pass.</h2><p>Planeraren säger hur många kort du ska dra idag. Leken bestämmer vad det blir.</p></div>
+      <div class="cc" data-k="1"><span class="step">Kort 1 av 3</span><h2>Vänd det första.</h2><p>Varje kort är en övning. Du vet inte vilken förrän du vänder det, och det är hela poängen.</p></div>
+      <div class="cc" data-k="2"><span class="step">Kort 2 av 3</span><h2>Ingen plan att följa.</h2><p>Övningarna blandar muskelgrupper automatiskt, så du slipper fundera på vad som borde komma härnäst.</p></div>
+      <div class="cc" data-k="3"><span class="step">Kort 3 av 3</span><h2>Skanna och kör.</h2><p>QR-koden öppnar en kort video med teknik och tempo. Kameran räcker, ingen app behövs.</p></div>
+    </div>
+    <div class="stage3d" aria-hidden="true">
+      <div class="pcard" data-i="0">
+        <div class="face front"><img src="images/logo_mark_v2.png" alt=""><span>MOTION UF</span></div>
+        <div class="face back"><span class="lvl">Enkel</span><div class="ex">Armhävningar</div><div class="dose">3 × 10 repetitioner</div><div class="qr" data-seed="3"></div><div class="scan">Skanna för video</div></div>
+        <div class="sheen"></div>
+      </div>
+      <div class="pcard" data-i="1">
+        <div class="face front"><img src="images/logo_mark_v2.png" alt=""><span>MOTION UF</span></div>
+        <div class="face back"><span class="lvl">Enkel</span><div class="ex">Utfallssteg</div><div class="dose">12 per ben</div><div class="qr" data-seed="4"></div><div class="scan">Skanna för video</div></div>
+        <div class="sheen"></div>
+      </div>
+      <div class="pcard" data-i="2">
+        <div class="face front"><img src="images/logo_mark_v2.png" alt=""><span>MOTION UF</span></div>
+        <div class="face back"><span class="lvl">Svår</span><div class="ex">Planka</div><div class="dose">45 sekunder</div><div class="qr" data-seed="5"></div><div class="scan">Skanna för video</div></div>
+        <div class="sheen"></div>
+      </div>
+    </div>
+    <div class="cards-progress" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i></div>
+  </div>
+</section>
+
+<section class="decks-row">
   <div class="wrap">
-    <div class="deck-grid">
+    <div class="decks-grid">
       <div class="frame"><img data-speed="0.1" src="images/card_context.jpg" alt="Två MOTION UF-kort på ett betonggolv bredvid en tennisboll"></div>
       <div>
-        <span class="kicker">Kortleken</span>
-        <h2 class="title">Två lekar. Alla nivåer.</h2>
+        <span class="kicker">Två lekar</span>
+        <h2 class="title">En för dig. En för alla hemma.</h2>
         <div class="decks">
-          <div><h3>Individuell</h3><p>Solopass för snabba stunder hemma, på hotellet eller mellan lektioner.</p></div>
-          <div><h3>Familj och vänner</h3><p>Övningar byggda för flera, så att hela hemmet kan vara med samtidigt.</p></div>
+          <div><h3>Individuell</h3><p>52 övningar för snabba solopass hemma, på hotellet eller mellan lektioner.</p></div>
+          <div><h3>Familj och vänner</h3><p>52 övningar byggda för flera, så att hela hemmet kan vara med samtidigt.</p></div>
         </div>
-        <div class="qr-note">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="2" y="2" width="7" height="7" stroke="currentColor" stroke-width="1.4"/><rect x="13" y="2" width="7" height="7" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="13" width="7" height="7" stroke="currentColor" stroke-width="1.4"/><path d="M13 13h3v3h-3zM17 17h3v3h-3zM13 19h2M19 13v2" stroke="currentColor" stroke-width="1.4"/></svg>
-          <p>Varje kort har en egen QR-kod med video, teknik och tips. Kameran räcker, ingen app behövs.</p>
-        </div>
+        <button class="btn btn-dark" onclick="openWaitlist()">Skaffa kortleken</button>
       </div>
     </div>
   </div>
@@ -466,12 +553,65 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
   const heroMedia=document.getElementById('heroMedia');
   const heroInner=document.getElementById('heroInner');
   const layers=[...document.querySelectorAll('img[data-speed]')];
+
+  // blur-fade on frames is handled inside update()
+  // ---- card stage ----
+  const cardsSec=document.querySelector('.cards');
+  const pcs=[...document.querySelectorAll('.pcard')];
+  const ccs=[...document.querySelectorAll('.cc')];
+  const bars=[...document.querySelectorAll('.cards-progress b')];
+  const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+  const seg=(p,a,b)=>clamp((p-a)/(b-a));
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  // decorative QR codes
+  document.querySelectorAll('.qr').forEach(q=>{
+    let seed=+q.dataset.seed*9301+49297; const rnd=()=>((seed=(seed*9301+49297)%233280)/233280);
+    const n=21; let r='';
+    const finder=(x,y)=>`<rect x="${x}" y="${y}" width="7" height="7" fill="#2A1F16"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="#fbf8f2"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#2A1F16"/>`;
+    for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+      const inF=(x<8&&y<8)||(x>12&&y<8)||(x<8&&y>12); if(inF) continue;
+      if(rnd()>.52) r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="#2A1F16"/>`;
+    }
+    q.innerHTML=`<svg viewBox="0 0 21 21" shape-rendering="crispEdges">${finder(0,0)+finder(14,0)+finder(0,14)+r}</svg>`;
+  });
+  function updateCards(vh){
+    const r=cardsSec.getBoundingClientRect();
+    const total=r.height-vh; const p=clamp(-r.top/total);
+    const mobile=window.innerWidth<=980;
+    const spread=ease(seg(p,.06,.24));
+    const flips=[ease(seg(p,.28,.42)),ease(seg(p,.50,.64)),ease(seg(p,.72,.86))];
+    const active=p<.28?-1:p<.50?0:p<.72?1:2;
+    const gap=mobile?Math.min(window.innerWidth*0.28,120):Math.min(window.innerWidth*0.14,230);
+    pcs.forEach((c,i)=>{
+      const o=i-1;
+      const x=o*gap*spread, rz=o*(10-8*spread)*(1-spread)+o*4*spread;
+      const y=(1-spread)*(i*-6)+Math.abs(o)*14*spread;
+      const isA=i===active;
+      const lift=isA?1:0;
+      const z=lift*120 - Math.abs(o)*20;
+      const ry=flips[i]*180 + (1-spread)*(-8);
+      const s=1+lift*0.06;
+      c.style.transform=`translate3d(${x}px,${y - lift*16}px,${z}px) rotateZ(${rz}deg) rotateY(${ry}deg) scale(${s})`;
+      c.style.zIndex=isA?10:3-Math.abs(o);
+      c.style.setProperty('--dim',(active>=0&&!isA&&p<.9)?'.45':'0');
+      const sh=c.querySelector('.sheen'); sh.style.opacity=Math.sin(flips[i]*Math.PI)*0.9;
+    });
+    const windows=[[0,.28],[.28,.50],[.50,.72],[.72,1.01]];
+    ccs.forEach((el,k)=>{
+      const [a,b]=windows[k];
+      const fin=clamp((p-a)/0.05), fout=k===3?1:clamp((b-p)/0.05);
+      const v=Math.min(fin,fout); const vv=k===0&&p<.01?1:v;
+      el.style.opacity=vv; el.style.filter=`blur(${(1-vv)*12}px)`; el.style.transform=`translateY(${(1-vv)*(p<a+.05?24:-24)}px)`;
+    });
+    bars.forEach((b,i)=>b.style.transform=`scaleX(${flips[i]})`);
+  }
+
   let ticking=false;
   function update(){
     ticking=false;
     const y=window.scrollY, vh=window.innerHeight;
     nav.classList.toggle('scrolled',y>vh*0.8);
-    if(reduce) return;
+    if(reduce){ if(cardsSec) updateCards(vh); return; }
     if(y<vh*1.2){
       heroMedia.style.transform=`translate3d(0,${y*0.35}px,0)`;
       heroInner.style.transform=`translate3d(0,${y*0.15}px,0)`;
@@ -481,8 +621,21 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
       const r=el.parentElement.getBoundingClientRect();
       if(r.bottom<-100||r.top>vh+100) continue;
       const p=(r.top+r.height/2-vh/2)/(vh/2+r.height/2); // -1..1
-      el.style.transform=`translate3d(0,${(-p*parseFloat(el.dataset.speed)*r.height).toFixed(1)}px,0)`;
+      const a=Math.min(1,Math.abs(p)); const e=Math.max(0,(a-0.25)/0.75);
+      el.style.transform=`translate3d(0,${(-p*parseFloat(el.dataset.speed)*r.height).toFixed(1)}px,0) scale(${(1+e*0.06).toFixed(3)})`;
+      el.style.filter=`blur(${(e*e*16).toFixed(1)}px)`;
+      el.style.opacity=(1-e*e*0.75).toFixed(3);
     }
+    if(cardsSec) updateCards(vh);
+  }
+
+  // optional hero loop: drop images/hero-loop.mp4 in the repo and it fades in over the photo
+  const hv=document.getElementById('heroVideo');
+  if(hv && !reduce){
+    hv.src='images/hero-loop.mp4';
+    hv.addEventListener('canplay',()=>{hv.classList.add('ready');hv.play().catch(()=>{})},{once:true});
+    hv.addEventListener('error',()=>hv.remove(),{once:true});
+    hv.load();
   }
   window.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(update)}},{passive:true});
   window.addEventListener('resize',update);
