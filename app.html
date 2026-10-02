@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F5F0">
 <title>Motion UF</title>
-<link rel="icon" href="/images/logo_mark_v2.png">
+<link rel="icon" href="/images/logo_mark_c.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#F7F5F0;--white:#FFFFFF;--warm:#EFEAE2;--green:#123C32;--green-2:#1B4A3E;
-  --text:#171A18;--muted:#72746F;--gold:#C6A15B;--gold-l:#E6D5AE;--border:#E5E1D9;
+  --text:#171A18;--muted:#72746F;--gold:#C6A15B;--gold-l:#E6D5AE;--border:#D6CFC1;--border-soft:#E3DDD1;
   --gold-ink:#94733A; /* gold dark enough for text on light bg */
   --r-lg:22px;--r-md:16px;--r-sm:12px;
-  --shadow:0 1px 2px rgba(23,26,24,.04),0 8px 24px -12px rgba(23,26,24,.12);
+  --shadow:0 1px 2px rgba(23,26,24,.06),0 6px 16px -10px rgba(23,26,24,.14);
   --ease:cubic-bezier(.2,.7,.1,1);
   --font:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;
   --sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);
@@ -89,7 +89,10 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 /* ---------- TODAY ---------- */
 .today{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;margin-top:36px}
 @media(max-width:960px){.today{grid-template-columns:1fr}}
-.next{position:relative;overflow:hidden;background:var(--green);color:#fff;border-radius:28px;padding:36px;min-height:340px;display:flex;flex-direction:column}
+.next{position:relative;overflow:hidden;color:#fff;border-radius:28px;padding:36px;min-height:340px;display:flex;flex-direction:column;isolation:isolate;
+  background:linear-gradient(100deg,rgba(14,30,24,.74) 0%,rgba(14,30,24,.48) 50%,rgba(14,30,24,.12) 100%),url('/images/next-bg.jpg') center 62%/cover no-repeat,var(--green)}
+.next:not(.empty)::before{content:"";position:absolute;inset:-20px;z-index:-1;background:inherit;filter:blur(6px);transform:scale(1.04)}
+.next:not(.empty) .swirl{display:none}
 .next .swirl{position:absolute;right:-60px;top:-60px;width:280px;opacity:.12;filter:grayscale(.2) brightness(1.4)}
 .next .eyebrow{color:var(--gold-l)}
 .next .time{font-size:clamp(3.4rem,8vw,5.4rem);font-weight:600;letter-spacing:-.04em;line-height:1;margin-top:22px}
@@ -108,7 +111,7 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 .tl li::after{content:"";position:absolute;left:82px;top:30px;bottom:-12px;width:1px;background:var(--border)}
 .tl li:last-child::after{display:none}
 .tl .t{font-variant-numeric:tabular-nums;font-weight:600;font-size:.95rem;padding-top:1px}
-.tl .dot{width:10px;height:10px;border-radius:50%;background:#d7d2c7;margin-top:7px;position:relative;z-index:1}
+.tl .dot{width:10px;height:10px;border-radius:50%;background:#c9c1b2;margin-top:7px;position:relative;z-index:1}
 .tl .lbl{font-weight:600;font-size:.92rem;letter-spacing:.06em;text-transform:uppercase}
 .tl .sub{color:var(--muted);font-size:.9rem}
 .tl li.motion .dot{background:var(--gold);box-shadow:0 0 0 4px rgba(198,161,91,.18)}
@@ -159,7 +162,7 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 .wk-head .is-today .dd::after{content:"";display:block;width:5px;height:5px;border-radius:50%;background:var(--gold);margin:4px auto 0}
 .wk-body{display:grid;grid-template-columns:60px repeat(7,minmax(0,1fr));position:relative;max-height:calc(100vh - 290px);min-height:480px;overflow-y:auto}
 .hours div{height:var(--hh);font-size:.75rem;color:var(--muted);text-align:right;padding-right:10px;transform:translateY(-.6em);font-variant-numeric:tabular-nums}
-.daycol{position:relative;border-left:1px solid var(--border);background-image:linear-gradient(var(--border) 1px,transparent 1px);background-size:100% var(--hh)}
+.daycol{position:relative;border-left:1px solid var(--border);background-image:linear-gradient(var(--border-soft) 1px,transparent 1px);background-size:100% var(--hh)}
 .daycol.is-today{background-color:rgba(239,234,226,.45)}
 .ev{position:absolute;left:4px;right:4px;display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;border-radius:10px;padding:6px 9px;overflow:hidden;font-size:.8rem;line-height:1.3;text-align:left;border:1px solid transparent;transition:transform .2s var(--ease),box-shadow .2s}
 .ev:hover{transform:translateY(-1px);box-shadow:var(--shadow);z-index:3}
@@ -183,7 +186,7 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 @media(max-width:760px){
   .wk-head{display:none}
   .p-bar h2{width:100%;font-size:1.2rem}
-  .p-bar #addBtn{margin-left:auto}
+  .p-bar #impBtn{margin-left:auto}
   .daystrip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px}
   .daystrip button{display:flex;flex-direction:column;align-items:center;padding:10px 0;border-radius:14px;min-height:62px}
   .daystrip .dn{font-size:.7rem;letter-spacing:.1em;color:var(--muted);font-weight:600}
@@ -262,6 +265,31 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 .composer input{flex:1;border:0;outline:0;background:transparent;font-size:1rem;min-height:44px}
 .composer button{width:46px;height:46px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;flex-shrink:0}
 .composer button:disabled{opacity:.4}
+.composer .clip{background:transparent;color:var(--muted);width:42px;height:42px}
+.composer .clip:hover{background:var(--warm);color:var(--text)}
+.drop{margin-top:20px;border:1.5px dashed #d8d1c3;border-radius:var(--r-lg);padding:34px 20px;text-align:center;background:var(--bg);transition:border-color .2s,background .2s;cursor:pointer;display:block}
+.drop:hover,.drop.over{border-color:var(--gold);background:#fbf8f2}
+.drop svg{color:var(--gold);margin:0 auto 10px}
+.drop b{display:block;font-size:1.05rem}
+.drop span{color:var(--muted);font-size:.9rem}
+.imp-load{text-align:center;padding:40px 0 20px}
+.imp-load img{width:46px;margin:0 auto 14px;animation:spin 1.6s linear infinite}
+.imp-list{list-style:none;margin-top:14px;max-height:46svh;overflow:auto;border-top:1px solid var(--border)}
+.imp-list li{display:grid;grid-template-columns:24px 1fr auto;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)}
+.imp-list li.off{opacity:.4}
+.imp-list input[type=checkbox]{appearance:none;width:20px;height:20px;border-radius:6px;border:1.5px solid #cfc9bd;display:grid;place-items:center;cursor:pointer}
+.imp-list input[type=checkbox]:checked{background:var(--green);border-color:var(--green)}
+.imp-list input[type=checkbox]:checked::after{content:"";width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.imp-list .t{font-weight:600}
+.imp-list .m{color:var(--muted);font-size:.88rem}
+.imp-list .tm{font-variant-numeric:tabular-nums;font-weight:600;font-size:.92rem;white-space:nowrap}
+.toggle{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:.95rem;cursor:pointer}
+.toggle input{width:18px;height:18px;accent-color:var(--green)}
+.hint{display:flex;gap:10px;align-items:center;margin-top:14px;padding:12px 14px;border-radius:var(--r-sm);background:var(--warm);font-size:.9rem}
+.hint img{width:18px}
+.hint a{color:var(--green);font-weight:600}
+.act .scope{display:flex;gap:8px;flex-wrap:wrap}
+.act .mv{font-size:1.35rem;flex-wrap:wrap;white-space:nowrap}
 .act{margin-top:14px;border:1px solid var(--border);background:var(--white);border-radius:var(--r-lg);padding:20px;max-width:420px}
 .act .eyebrow{margin-bottom:8px}
 .act .main{font-size:1.3rem;font-weight:600;letter-spacing:-.01em}
@@ -291,7 +319,7 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 .dots{display:flex;gap:7px}
 .dots i{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--green)}
 .dots i.on{background:var(--green)}
-.cam{position:relative;margin-top:24px;aspect-ratio:1/1.08;border-radius:30px;overflow:hidden;background:#1d211f}
+.cam{position:relative;margin-top:24px;aspect-ratio:1/1.08;border-radius:30px;overflow:hidden;background:#EFE8DB}
 .cam video{width:100%;height:100%;object-fit:cover}
 .cam .frame{position:absolute;inset:18%;border-radius:22px}
 .cam .frame i{position:absolute;width:34px;height:34px;border-color:#fff;border-style:solid;border-width:0}
@@ -302,8 +330,9 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 .cam .line{position:absolute;left:8%;right:8%;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:scanline 2.6s ease-in-out infinite}
 @keyframes scanline{0%,100%{top:10%}50%{top:88%}}
 .cam .hint{position:absolute;left:0;right:0;bottom:22px;color:rgba(255,255,255,.85);font-size:.92rem}
-.cam .off{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:rgba(255,255,255,.85);padding:30px;background:radial-gradient(circle at 50% 40%,#26302c,#161917)}
-.cam .off img{width:52px;opacity:.9}
+.cam .off{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;color:var(--text);padding:30px;text-align:center;background:radial-gradient(75% 65% at 50% 42%,#FBF8F2 0%,#EFE8DB 100%);border:1px solid var(--border);border-radius:30px}
+.cam .off img{width:96px;height:96px;display:block;margin:0 auto 4px;animation:breathe 7s ease-in-out infinite}
+.cam .off div{max-width:22em;color:var(--muted)}
 .scan-alt{display:flex;flex-direction:column;gap:10px;margin-top:20px}
 .manual{display:flex;gap:8px;margin-top:4px}
 .manual input{flex:1;min-width:0;min-height:52px;border:1px solid var(--border);border-radius:999px;padding:0 20px;background:var(--white);letter-spacing:.04em;font-weight:600}
@@ -354,7 +383,7 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 .wo h2{font-size:clamp(1.7rem,4.5vw,2.6rem);font-weight:600;letter-spacing:-.02em}
 .ring{position:relative;width:min(72vw,340px);aspect-ratio:1;margin:18px 0}
 .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
-.ring .tr{stroke:var(--border)}
+.ring .tr{stroke:#D6CFC1}
 .ring .pr{stroke:var(--green);transition:stroke-dashoffset .25s linear}
 .ring.rest .pr{stroke:var(--gold)}
 .ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -385,7 +414,7 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 @media(max-width:620px){.stats{grid-template-columns:1fr 1fr 1fr;gap:10px}.stat{padding:18px}.stat .l{font-size:.68rem;letter-spacing:.08em}}
 .bars{padding:28px;margin-top:16px}
 .bar{display:grid;grid-template-columns:110px 1fr 64px;gap:14px;align-items:center;padding:9px 0}
-.bar .track{height:10px;border-radius:6px;background:var(--warm);overflow:hidden}
+.bar .track{height:10px;border-radius:6px;background:var(--warm);box-shadow:inset 0 0 0 1px var(--border-soft);overflow:hidden}
 .bar .fill{height:100%;border-radius:6px;background:var(--green);width:0;transition:width 1s var(--ease)}
 .bar .v{white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
 .bar.is-today .d{font-weight:700}
@@ -393,8 +422,8 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 .badges{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:16px}
 @media(max-width:760px){.badges{grid-template-columns:repeat(3,1fr)}}
 .badge{padding:22px 14px;text-align:center}
-.badge .ic{width:66px;height:66px;margin:0 auto 12px;border-radius:50%;border:1.5px solid var(--gold);display:grid;place-items:center;background:radial-gradient(circle,#fff,#f6f0e3)}
-.badge .ic img{width:30px}
+.badge .ic{width:66px;height:66px;margin:0 auto 12px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#fff,#f6f0e3)}
+.badge .ic img{width:34px;height:34px;display:block}
 .badge .t{font-weight:700;font-size:.78rem;letter-spacing:.12em}
 .badge .s{color:var(--muted);font-size:.82rem;margin-top:2px}
 .badge.locked{opacity:.42}
@@ -412,6 +441,35 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 .welcome .btn{margin-top:12px}
 .welcome .tag{margin-top:34px;font-size:.78rem;letter-spacing:.24em;color:var(--gold-ink);font-weight:700}
 
+.qz{position:fixed;inset:0;z-index:120;background:var(--bg);display:flex;flex-direction:column;padding:calc(18px + var(--sat)) 24px calc(24px + var(--sab));overflow:auto}
+.qz-top{display:flex;align-items:center;gap:14px;max-width:640px;width:100%;margin:0 auto}
+.qz-top img{width:26px}
+.qz-bar{flex:1;height:3px;border-radius:2px;background:var(--border);overflow:hidden}
+.qz-bar i{display:block;height:100%;background:var(--gold);transition:width .5s var(--ease)}
+.qz-top .btn{min-height:40px;padding:0 12px}
+.qz-body{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:640px;width:100%;margin:0 auto;padding:30px 0;animation:fadein .4s var(--ease)}
+.qz-body .eyebrow{color:var(--gold-ink)}
+.qz-body h1{font-size:clamp(1.8rem,4.6vw,2.6rem);font-weight:600;letter-spacing:-.025em;line-height:1.12;margin-top:10px}
+.qz-body .lead{color:var(--muted);margin-top:8px;font-size:1.05rem}
+.qz-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:28px}
+.qz-opts.four{grid-template-columns:repeat(4,1fr)}
+.qz-opts.one{grid-template-columns:1fr}
+@media(max-width:560px){.qz-opts,.qz-opts.four{grid-template-columns:1fr 1fr}}
+.qo{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-height:78px;padding:16px 18px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--white);text-align:left;transition:border-color .2s,box-shadow .2s,transform .15s}
+.qo:hover{border-color:var(--gold)}
+.qo:active{transform:scale(.99)}
+.qo b{font-size:1.05rem;font-weight:600}
+.qo span{color:var(--muted);font-size:.9rem;line-height:1.35}
+.qo.on{border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}
+.qz-opts.four .qo{align-items:center;justify-content:center;text-align:center}
+.qz-opts.four .qo b{font-size:1.5rem;letter-spacing:-.02em}
+.qz-sum{margin-top:26px;border-radius:var(--r-lg);background:var(--green);color:#fff;padding:26px;position:relative;overflow:hidden}
+.qz-sum img{position:absolute;right:-30px;bottom:-30px;width:160px;opacity:.12}
+.qz-sum dl{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px}
+.qz-sum dt{font-size:.75rem;letter-spacing:.14em;color:var(--gold-l);font-weight:700}
+.qz-sum dd{font-size:1.15rem;font-weight:600;margin-top:2px}
+.qz-actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.qz-actions .btn{flex:1;min-width:200px}
 .toast{position:fixed;left:50%;bottom:calc(30px + var(--sab));transform:translate(-50%,20px);background:var(--text);color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.92rem;opacity:0;transition:opacity .3s,transform .3s var(--ease);z-index:200;pointer-events:none}
 .toast.in{opacity:1;transform:translate(-50%,0)}
 @media(max-width:760px){.toast{bottom:calc(100px + var(--sab))}}
@@ -421,7 +479,7 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 <body>
 <header class="topnav">
   <div class="in">
-    <a class="brand" href="#today"><img src="/images/logo_mark_v2.png" alt="">MOTION UF</a>
+    <a class="brand" href="#today"><img src="/images/logo_mark_c.png" alt="">MOTION UF</a>
     <nav class="tabs" aria-label="Huvudmeny">
       <a href="#today" data-tab="today">Idag</a>
       <a href="#planner" data-tab="planner">Planerare</a>
@@ -440,7 +498,7 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
   <a href="#today" data-tab="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>Idag</a>
   <a href="#planner" data-tab="planner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Planerare</a>
   <a href="#scan" data-tab="scan" class="scanbtn"><div class="disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M4 12h16"/></svg></div><span>Skanna</span></a>
-  <a href="#ai" data-tab="ai"><img src="/images/logo_mark_v2.png" alt="" style="width:24px;height:24px">AI</a>
+  <a href="#ai" data-tab="ai"><img src="/images/logo_mark_c.png" alt="" style="width:24px;height:24px">AI</a>
   <a href="#progress" data-tab="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 19V11M12 19V5M19 19v-5"/></svg>Framsteg</a>
 </nav>
 
@@ -454,7 +512,7 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
    ========================================================= */
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const LOGO='/images/logo_mark_v2.png';
+const LOGO='/images/logo_mark_c.png';
 const CARDS=window.MUF_CARDS||[];
 const cardById=id=>CARDS.find(c=>c.id===String(id).toUpperCase());
 
@@ -474,7 +532,7 @@ const DS=['MÅN','TIS','ONS','TOR','FRE','LÖR','SÖN'];
 const MN=['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
 const niceDate=d=>`${DN[dow(d)]} ${d.getDate()} ${MN[d.getMonth()]}`;
 const relDay=s=>{const t=todayStr();if(s===t)return'Idag';if(s===ymd(addDays(new Date(),1)))return'Imorgon';const d=parseYmd(s);return `${DN[dow(d)]} ${d.getDate()}/${d.getMonth()+1}`};
-const greeting=()=>{const h=new Date().getHours();return h<10?'God morgon':h<17?'God eftermiddag':'God kväll'};
+const greeting=()=>{const h=new Date().getHours();return h<5?'God natt':h<10?'God morgon':h<12?'God förmiddag':h<17?'God eftermiddag':h<23?'God kväll':'God natt'};
 
 /* ---------- categories ---------- */
 const CAT={
@@ -558,16 +616,26 @@ function freeWindows(dateStr){
   return res.map(([a,b])=>({date:dateStr,start:a,end:b}));
 }
 /* One sensible suggestion per day, only if the day has no Motion session yet. */
+const P=()=>(S.user&&S.user.prefs)||{};
+const TIMEPREF={morning:[390,570],lunch:[690,810],afternoon:[900,1080],evening:[1080,1260]};
+const GOALNEED={energy:'energy',strength:'strength',mobility:'mobility',stress:'reset',habit:'surprise'};
+const goalNeed=()=>GOALNEED[P().goal]||'reset';
 function suggestFor(dateStr){
   if(eventsOn(dateStr).some(e=>e.category==='motion')) return null;
   const w=freeWindows(dateStr); if(!w.length) return null;
-  const score=x=>{const mid=(x.start+x.end)/2;let s=Math.min(x.end-x.start,120);if(mid>=15*60&&mid<=19.5*60)s+=80;if(mid<9*60)s-=40;return s};
+  const pr=TIMEPREF[P().time];
+  const overlap=(x,r)=>Math.max(0,Math.min(x.end,r[1])-Math.max(x.start,r[0]));
+  const score=x=>{const mid=(x.start+x.end)/2;let s=Math.min(x.end-x.start,120);
+    if(pr){ if(overlap(x,pr)>=20) s+=120; } else if(mid>=15*60&&mid<=19.5*60) s+=80;
+    if(mid<9*60&&P().time!=='morning') s-=40; return s};
   const best=[...w].sort((a,b)=>score(b)-score(a))[0];
   const len=best.end-best.start;
-  const dur=len>=90?15:len>=45?10:5;
+  const want=P().len||null;
+  const dur=want&&len>=want+10?want:len>=90?15:len>=45?10:5;
   let st=best.start+(len>=60?Math.min(45,Math.round(len/3)):0);
+  if(pr&&overlap(best,pr)>=dur){ st=Math.max(st,pr[0]); if(st+dur>best.end) st=best.end-dur; }
   st=Math.ceil(st/15)*15; if(st+dur>best.end) st=Math.floor((best.end-dur)/5)*5;
-  return {date:dateStr,window:[best.start,best.end],start:st,duration:dur,need:dur<=5?'reset':'reset'};
+  return {date:dateStr,window:[best.start,best.end],start:st,duration:dur,need:goalNeed()};
 }
 function weekSessionCount(ref=new Date()){
   const ws=weekStart(ref); const a=ymd(ws), b=ymd(addDays(ws,6));
@@ -577,16 +645,18 @@ function weekSessionCount(ref=new Date()){
 function planWeek(ref=new Date()){
   const ws=weekStart(ref); const t=todayStr(); const picks=[];
   const order=[0,2,5,3,1,4,6];
-  const needs=['reset','strength','surprise'];
+  const g=goalNeed(); const sec={energy:'strength',strength:'energy',mobility:'reset',reset:'mobility',surprise:'surprise'}[g];
+  const needs=[g,sec,g,'reset',g];
+  const target=Math.min(5,Math.max(0,(P().perWeek||3)-weekSessionCount(ref))); const gap=(P().perWeek||3)>=4?1:2;
   let lastIdx=-9;
   const taken=new Set(S.sessions.filter(s=>s.status!=='skipped').map(s=>s.date));
   for(const i of order){
-    if(picks.length>=3) break;
+    if(picks.length>=target) break;
     const ds=ymd(addDays(ws,i)); if(ds<t||taken.has(ds)) continue;
-    if(picks.some(p=>Math.abs(p.i-i)<2)) continue;
+    if(picks.some(p=>Math.abs(p.i-i)<gap)) continue;
     const sg=suggestFor(ds); if(!sg) continue;
-    const need=needs[picks.length]; const dur=i>=5?Math.max(sg.duration,15):sg.duration;
-    picks.push({i,date:ds,start:toHM(sg.start),duration:need==='strength'?Math.max(dur,15):dur,need});
+    const need=needs[picks.length]; const dur=i>=5?Math.min(20,sg.duration+5):sg.duration;
+    picks.push({i,date:ds,start:toHM(sg.start),duration:dur,need});
   }
   return picks.sort((a,b)=>a.i-b.i);
 }
@@ -645,6 +715,8 @@ function openSheet(html,onMount){
 function closeSheet(instant){const sc=$('#scrim');if(!sc)return;if(instant){sc.remove();return}sc.classList.remove('in');setTimeout(()=>sc.remove(),250);lastFocus&&lastFocus.focus&&lastFocus.focus()}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){ if($('#scrim'))closeSheet(); }});
 const IC={
+  up:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 15V4M7 9l5-5 5 5M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg>',
+  clip:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 11.5l-8.2 8.2a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4L15 7"/></svg>',
   x:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   plus:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>',
   l:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg>',
@@ -803,7 +875,7 @@ function vPlanner(el){
           <button class="iconbtn" data-w="-1" aria-label="Föregående vecka">${IC.l}</button>
           <button class="btn btn-line btn-sm" data-w="0">Idag</button>
           <button class="iconbtn" data-w="1" aria-label="Nästa vecka">${IC.r}</button>
-          <button class="btn btn-primary btn-sm" id="addBtn">${IC.plus} Lägg till</button>
+          <button class="btn btn-line btn-sm" id="impBtn">${IC.up} Importera schema</button><button class="btn btn-primary btn-sm" id="addBtn">${IC.plus} Lägg till</button>
         </div>
         <div class="daystrip">${days.map((d,i)=>{const ds=ymd(d);return `<button class="${ds===pSel?'on':''}" data-sel="${ds}"><span class="dn">${DS[i]}</span><span class="dd">${d.getDate()}</span>${eventsOn(ds).some(e=>e.category==='motion')?'<i class="has"></i>':'<i></i>'}</button>`}).join('')}</div>
         <div class="card week" style="--hh:${HH}px">
@@ -818,6 +890,7 @@ function vPlanner(el){
     const w=e.target.closest('[data-w]'); if(w){ const v=+w.dataset.w; pRef=v===0?new Date():addDays(pRef,7*v); if(v===0)pSel=todayStr(); return render(); }
     const sel=e.target.closest('[data-sel]'); if(sel){ pSel=sel.dataset.sel; return render(); }
     if(e.target.closest('#addBtn')) return addFlow({date:pSel});
+    if(e.target.closest('#impBtn')) return importFlow();
     const g=e.target.closest('[data-g]'); if(g){ const [d,st,du]=g.dataset.g.split('|'); return motionFlow({date:d,start:st,duration:+du,step:2}); }
     const s=e.target.closest('[data-s]'); if(s) return sessionSheet(S.sessions.find(x=>x.id===s.dataset.s));
     const ev=e.target.closest('[data-e]'); if(ev) return eventSheet(S.events.find(x=>x.id===ev.dataset.e), ev.closest('[data-day]').dataset.day);
@@ -881,9 +954,9 @@ function motionFlow(pre={}){
     if(step===0) h=`${dots}<h3>Hur mycket tid har du?</h3><div class="opts four">${[5,10,15,20].map(m=>`<button class="opt" data-m="${m}">${m} min</button>`).join('')}</div>`;
     else if(step===1) h=`${dots}<h3>Vad behöver du?</h3><div class="opts five">${Object.entries(NEED).map(([k,v])=>`<button class="opt" data-n="${k}">${v}</button>`).join('')}</div>`;
     else {
-      st.need=st.need||'reset';
+      st.need=st.need||goalNeed();
       if(!st.start){ const sg=suggestFor(st.date); st.start=sg?toHM(sg.start):toHM(Math.ceil((Math.max(nowMin()+15,16*60))/15)*15) }
-      const cards=cardsFor(st.duration); const diff=st.duration>=15?'MEDIUM':'LÄTT';
+      const cards=cardsFor(st.duration); const lv=P().level; const diff=lv==='beginner'?'LÄTT':lv==='regular'?(st.duration>=15?'SVÅR':'MEDIUM'):(st.duration>=15?'MEDIUM':'LÄTT');
       h=`${dots}<h3>Ditt pass</h3>
       <div class="gen"><img src="${LOGO}" alt=""><span class="eyebrow">${NEED_LABEL[st.need]}</span><div class="big">${st.duration} min</div>
         <div class="row"><span class="tag">${cards} KORT</span><span class="tag">${st.need==='mobility'||st.need==='reset'?'RÖRLIGHET':'HELKROPP'}</span><span class="tag">${diff}</span></div></div>
@@ -943,8 +1016,9 @@ function vProgress(el){
     </section>
     <div class="eyebrow" style="margin:34px 0 0">Milstolpar</div>
     <div class="badges">${B.map(([tt2,s,ok])=>`<div class="card badge ${ok?'':'locked'}"><div class="ic"><img src="${LOGO}" alt=""></div><div class="t">${tt2}</div><div class="s">${s}</div></div>`).join('')}</div>
-    <div style="margin-top:34px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-line btn-sm" id="rename">Byt namn</button><button class="btn btn-ghost btn-sm" id="reset">Återställ appen</button></div>`;
+    <div style="margin-top:34px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-line btn-sm" id="requiz">Ändra mina svar</button><button class="btn btn-line btn-sm" id="rename">Byt namn</button><button class="btn btn-ghost btn-sm" id="reset">Återställ appen</button></div>`;
   requestAnimationFrame(()=>$$('.fill',el).forEach(f=>f.style.width=f.dataset.w+'%'));
+  $('#requiz',el).onclick=()=>quiz(true);
   $('#rename',el).onclick=()=>{const n=prompt('Vad heter du?',S.user.name);if(n&&n.trim()){S.user.name=n.trim();save();setAvatar();render()}};
   $('#reset',el).onclick=()=>{if(confirm('Rensa all data i appen på den här enheten?')){localStorage.removeItem(KEY);location.reload()}};
 }
@@ -963,7 +1037,7 @@ function aiContext(){
   const sched=ds=>eventsOn(ds).map(e=>({id:e.session?e.session.id:e.id,title:e.category==='motion'?'Motion':e.title,category:e.category,start:e.start,end:e.end,status:e.session?e.session.status:undefined}));
   return {
     current_time:`${ymd(new Date())} ${toHM(nowMin())} (${DN[dow(new Date())]})`,
-    user:{name:S.user.name,preferred_session_minutes:S.user.prefLen||10},
+    user:{name:S.user.name,preferred_session_minutes:P().len||10,preferences:P()},
     today:sched(t), tomorrow:sched(tm),
     free_windows_today:freeWindows(t).map(w=>`${toHM(w.start)}-${toHM(w.end)}`),
     this_week_motion_sessions:S.sessions.filter(s=>s.date>=ymd(ws)&&s.date<=ymd(addDays(ws,6))).map(s=>({id:s.id,date:s.date,start:s.start,duration:s.duration,need:s.need,status:s.status})),
@@ -978,11 +1052,13 @@ const TOOLS=[
   {name:'propose_move_session',description:'FÖRESLÅ att flytta ett befintligt Motion-pass. Kräver bekräftelse.',input_schema:{type:'object',properties:{session_id:{type:'string'},new_date:{type:'string'},new_start:{type:'string'}},required:['session_id','new_start']}},
   {name:'propose_delete_session',description:'FÖRESLÅ att ta bort ett Motion-pass. Kräver bekräftelse.',input_schema:{type:'object',properties:{session_id:{type:'string'}},required:['session_id']}},
   {name:'propose_event',description:'FÖRESLÅ en ny kalenderhändelse (skola, jobb, träning, måltid, personligt). Kräver bekräftelse.',input_schema:{type:'object',properties:{title:{type:'string'},category:{type:'string',enum:['school','work','training','meal','personal']},date:{type:'string'},start:{type:'string'},end:{type:'string'},repeat:{type:'string',enum:['none','daily','weekdays','weekly']}},required:['title','category','date','start','end']}},
+  {name:'propose_change_event',description:'FÖRESLÅ ny tid för en befintlig kalenderhändelse (skola, tennis, middag osv). Ange event_id från schemat och datumet för tillfället. Användaren väljer själv om det gäller bara denna gång eller alla gånger.',input_schema:{type:'object',properties:{event_id:{type:'string'},date:{type:'string'},new_start:{type:'string'},new_end:{type:'string'}},required:['event_id','date','new_start','new_end']}},
   {name:'propose_week_plan',description:'FÖRESLÅ en veckoplan med flera Motion-pass. Användaren kan redigera innan bekräftelse.',input_schema:{type:'object',properties:{sessions:{type:'array',items:{type:'object',properties:{date:{type:'string'},start:{type:'string'},duration:{type:'integer'},need:{type:'string'}},required:['date','start','duration']}}},required:['sessions']}},
 ];
 const SYSTEM=()=>`Du är Motion AI i appen Motion UF (slogan: We Think. You Move.). Du hjälper ${S.user.name} att röra sig i vardagen med korta pass. Ett pass = användaren drar fysiska träningskort ur leken och skannar dem.
+Respektera användarens svar i quizet (preferences): mål, nivå, passlängd, bästa tid på dagen och antal pass per vecka.
 Ton: lugn, kort, praktisk, mänsklig. Svenska. Max 3 korta meningar. Inga utropstecken, inga emojis, ingen peppig influencer-ton. Föreslå hellre mindre än mer. Fyll aldrig varje lucka med träning.
-Använd verktygen för att läsa schemat. Ändringar görs ENDAST via propose_*-verktygen, som visar ett kort som användaren bekräftar. Säg aldrig att något är tillagt eller flyttat – säg att det väntar på bekräftelse eller låt kortet tala.
+Använd verktygen för att läsa schemat. Vill användaren ändra tiden för något i kalendern (t.ex. skola, tennis, middag) använder du propose_change_event. Ändringar görs ENDAST via propose_*-verktygen, som visar ett kort som användaren bekräftar. Säg aldrig att något är tillagt eller flyttat – säg att det väntar på bekräftelse eller låt kortet tala.
 Sammanhang (JSON): ${JSON.stringify(aiContext())}`;
 
 function runReadTool(name,inp){
@@ -996,6 +1072,7 @@ function proposalFromTool(name,inp){
   if(name==='propose_move_session'){ const s=S.sessions.find(x=>x.id===inp.session_id); if(!s) return null; return {type:'move',id:s.id,from:s.start,fromDate:s.date,date:inp.new_date||s.date,start:inp.new_start}; }
   if(name==='propose_delete_session'){ const s=S.sessions.find(x=>x.id===inp.session_id); return s?{type:'delete',id:s.id,date:s.date,start:s.start}:null; }
   if(name==='propose_event') return {type:'event',...inp,repeat:inp.repeat||'none'};
+  if(name==='propose_change_event'){ const ev=S.events.find(x=>x.id===inp.event_id); if(!ev) return null; return {type:'editEvent',id:ev.id,title:ev.title,date:inp.date||ev.date,from:[ev.start,ev.end],to:[inp.new_start,inp.new_end],repeating:ev.repeat&&ev.repeat!=='none'}; }
   if(name==='propose_week_plan') return {type:'week',sessions:inp.sessions.map(s=>({...s,need:s.need||'reset',on:true}))};
   return null;
 }
@@ -1025,6 +1102,8 @@ function localAI(raw){
   const q=raw.toLowerCase(); const t=todayStr(), tm=ymd(addDays(new Date(),1));
   const times=[...raw.matchAll(/(\d{1,2})[:.](\d{2})/g)].map(m=>`${pad(+m[1])}:${m[2]}`);
   const day=/imorgon|morgondag|tomorrow/.test(q)?tm:t;
+  // change a calendar event ("flytta tennis på torsdag till 17:30", "skolan slutar 14:00 imorgon")
+  const ec=localEventChange(raw,q); if(ec) return ec;
   // move
   if(/flytta|move/.test(q)&&times.length){
     const named=/imorgon|morgondag|tomorrow|idag|today|dagens/.test(q);
@@ -1038,8 +1117,8 @@ function localAI(raw){
   const mm=q.match(/(\d{1,2})\s*(min|minuter|minutes)/);
   if(mm&&/har|have|got/.test(q)){ const d=[5,10,15,20].reduce((a,b)=>Math.abs(b-+mm[1])<Math.abs(a-+mm[1])?b:a); return {text:`${d} minuter räcker. ${cardsFor(d)} kort, sedan är du klar.`,actions:[{type:'add',date:t,start:toHM(Math.ceil((nowMin()+5)/5)*5),duration:d,need:'surprise',startNow:true}]}; }
   // plan week
-  if(/vecka|week/.test(q)){ const p=planWeek(); if(!p.length) return {text:'Veckan är redan full eller har pass inlagda. Jag skulle låta den vara.',actions:[]};
-    return {text:`Tre korta pass räcker, med vila emellan.`,actions:[{type:'week',sessions:p.map(x=>({...x,on:true}))}]}; }
+  if(/vecka|week/.test(q)){ const p=planWeek(); if(!p.length) return {text:`Du har redan ${weekSessionCount()} pass den här veckan, och ditt mål är ${P().perWeek||3}. Jag skulle låta den vara.`,actions:[]};
+    return {text:`${p.length===1?'Ett pass till':p.length+' korta pass'} så når du ditt mål på ${P().perWeek||3} i veckan.`,actions:[{type:'week',sessions:p.map(x=>({...x,on:true}))}]}; }
   // user tells their day: "skola till 15:30 och middag 18:00"
   if(times.length>=2&&!/flytta/.test(q)){ const a=toMin(times[0]),b=toMin(times[times.length-1]); if(b-a>=40){ const st=Math.ceil((a+45)/15)*15; return {text:`Du har en bra lucka mellan dem.\nJag skulle lägga ett pass på 10 minuter kl ${toHM(st)}.`,actions:[{type:'add',date:day,start:toHM(st),duration:10,need:'reset'}]}; } }
   // change today's session
@@ -1067,6 +1146,8 @@ function actionHTML(a,idx){
   if(a.type==='resize') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Ändra längd</div><div class="main">${a.duration} min · ${a.start}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Bekräfta</button><button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok">Ändrat.</div></div>`;
   if(a.type==='delete') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Ta bort pass</div><div class="main">${relDay(a.date)} · ${a.start}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Ta bort</button><button class="btn btn-ghost btn-sm" data-do="no">Behåll</button></div><div class="ok">Borttaget.</div></div>`;
   if(a.type==='event') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Ny händelse</div><div class="main">${esc(a.title)}</div><div class="sub">${relDay(a.date)} · ${a.start}–${a.end}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Lägg till</button><button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok">Tillagt.</div></div>`;
+  if(a.type==='editEvent') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Ändra tid · ${esc(a.title)}</div><div class="sub">${relDay(a.date)}</div><div class="mv">${a.from[0]}–${a.from[1]}<span>→</span>${a.to[0]}–${a.to[1]}</div><div class="btns">${a.repeating?'<button class="btn btn-primary btn-sm" data-do="ok">Bara denna gång</button><button class="btn btn-line btn-sm" data-do="okall">Alla gånger</button>':'<button class="btn btn-primary btn-sm" data-do="ok">Bekräfta ändringen</button>'}<button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok">Ändrat i planeraren.</div></div>`;
+  if(a.type==='import'){ const n=a.items.filter(i=>i.on).length; return `<div class="act" data-a="${idx}" style="max-width:520px"><div class="eyebrow gold">Importera schema</div>${importListHTML(a.items,'data-ic')}${a.hasSchool?`<label class="toggle"><input type="checkbox" data-merge ${a.merge?'checked':''}>Slå ihop lektioner till ett skolblock per dag</label>`:''}<div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Lägg till ${n} i planeraren</button><button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok">Schemat är inlagt. Säg till om någon tid ska ändras.</div></div>`; }
   if(a.type==='week') return `<div class="act" data-a="${idx}" style="max-width:480px"><div class="eyebrow gold">Din Motion-vecka</div><ul class="wk-prop">${a.sessions.map((s,i)=>`<li class="${s.on?'':'off'}"><div><div class="d">${DN[dow(parseYmd(s.date))].toUpperCase()}</div><div class="s">${s.duration} min ${lbl(s.need).toLowerCase()}</div></div><input type="time" value="${s.start}" data-wt="${i}" step="300" aria-label="Tid"><button class="rm" data-wr="${i}" aria-label="${s.on?'Ta bort':'Ta med'}">${s.on?IC.x:IC.plus}</button></li>`).join('')}</ul><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Lägg till alla</button><button class="btn btn-ghost btn-sm" data-do="no">Inte nu</button></div><div class="ok">Veckan är planerad.</div></div>`;
   return '';
 }
@@ -1077,21 +1158,29 @@ function applyAction(a){
   if(a.type==='delete'){ S.sessions=S.sessions.filter(x=>x.id!==a.id); save(); }
   if(a.type==='event'){ S.events.push({id:uid(),title:a.title,category:a.category,date:a.date,start:a.start,end:a.end,repeat:a.repeat}); save(); }
   if(a.type==='week'){ a.sessions.filter(s=>s.on).forEach(s=>createSession(s)); }
+  if(a.type==='editEvent') changeEvent(a.id,a.date,a.to[0],a.to[1],a.scope||'one');
+  if(a.type==='import') applyImport(a.items);
 }
 
 function vAI(el){
   el.innerHTML=`<div class="ai">
     <div class="ai-head"><img src="${LOGO}" alt=""><h1>MOTION AI</h1><p>Mindre tänkande. Mer rörelse.</p></div>
     <div class="thread" id="thread" aria-live="polite"></div>
-    <div class="composer"><form id="cf"><label class="sr" for="ci">Skriv till Motion AI</label><input id="ci" autocomplete="off" placeholder="Skriv något, till exempel ”flytta morgondagens pass till 17:30”"><button type="submit" aria-label="Skicka">${IC.send}</button></form></div>
+    <div class="composer"><form id="cf"><label class="sr" for="ci">Skriv till Motion AI</label><input id="ci" autocomplete="off" placeholder="Skriv något, t.ex. ”flytta tennis på torsdag till 17:30”"><input type="file" id="cfile" accept="image/*,.pdf,.ics,text/calendar" hidden><button type="button" class="clip" id="clip" aria-label="Bifoga schema (bild, PDF eller kalenderfil)" title="Bifoga schema">${IC.clip}</button><button type="submit" aria-label="Skicka">${IC.send}</button></form></div>
   </div>`;
   drawThread();
   $('#cf',el).onsubmit=e=>{e.preventDefault();const v=$('#ci').value.trim();if(v){$('#ci').value='';sendAI(v)}};
+  $('#clip',el).onclick=()=>$('#cfile').click();
+  $('#cfile',el).onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)aiImport(f)};
   $('#thread',el).addEventListener('click',e=>{
     const ch=e.target.closest('[data-chip]'); if(ch) return sendAI(ch.dataset.chip);
+    if(e.target.closest('[data-upload]')) return $('#cfile').click();
+    const ic=e.target.closest('[data-ic]'); if(ic){ const card=ic.closest('[data-a]'); const [mi,ai]=card.dataset.a.split('.').map(Number); const a=chat[mi].actions[ai]; a.items[+ic.dataset.ic].on=ic.checked; ic.closest('li').classList.toggle('off',!ic.checked); const n=a.items.filter(i=>i.on).length; $('[data-do="ok"]',card).textContent=`Lägg till ${n} i planeraren`; return; }
+    const mg=e.target.closest('[data-merge]'); if(mg){ const card=mg.closest('[data-a]'); const [mi,ai]=card.dataset.a.split('.').map(Number); const a=chat[mi].actions[ai]; a.merge=mg.checked; a.items=prepImport(a.raw,a.merge); card.outerHTML=actionHTML(a,`${mi}.${ai}`); return; }
     const b=e.target.closest('[data-do]'); if(!b) return;
     const card=b.closest('[data-a]'); const [mi,ai]=card.dataset.a.split('.').map(Number); const a=chat[mi].actions[ai];
     if(b.dataset.do==='no'){ a.state='no'; card.remove(); return; }
+    if(b.dataset.do==='okall') a.scope='all'; else if(a.type==='editEvent') a.scope='one';
     if(a.type==='week') $$('[data-wt]',card).forEach(inp=>a.sessions[+inp.dataset.wt].start=inp.value);
     const res=applyAction(a); a.state='done'; card.classList.add('done');
     if(a.startNow&&res) startSession(res.id);
@@ -1102,7 +1191,7 @@ function drawThread(){
   const th=$('#thread'); if(!th) return;
   if(!chat.length){
     th.innerHTML=`<div class="hello"><h2>${greeting()}, ${esc(S.user.name)}.</h2><p>Vad behöver du hjälp med?</p>
-      <div class="sugg">${['Planera min dag','Jag har 10 minuter','Planera min vecka','Ändra dagens pass','Jag orkar inte träna idag'].map(s=>`<button class="chip" data-chip="${s}">${s}</button>`).join('')}</div></div>`;
+      <div class="sugg">${['Planera min dag','Jag har 10 minuter','Planera min vecka','Ändra dagens pass','Jag orkar inte träna idag'].map(s=>`<button class="chip" data-chip="${s}">${s}</button>`).join('')}<button class="chip" data-upload>Ladda upp mitt schema</button></div></div>`;
     return;
   }
   th.innerHTML=chat.map((m,mi)=>m.role==='user'?`<div class="msg me">${esc(m.text)}</div>`:
@@ -1123,6 +1212,163 @@ async function sendAI(text){
   Object.assign(bot,{typing:false,text:out.text||'Här är mitt förslag.',actions:out.actions||[],chips:out.chips});
   aiBusy=false; drawThread();
 }
+
+/* =========================================================
+   CALENDAR EDITS + SCHEDULE IMPORT
+   ========================================================= */
+const WD={'måndag':0,'mån':0,'tisdag':1,'tis':1,'onsdag':2,'ons':2,'torsdag':3,'tors':3,'tor':3,'fredag':4,'fre':4,'lördag':5,'lör':5,'söndag':6,'sön':6,'monday':0,'tuesday':1,'wednesday':2,'thursday':3,'friday':4,'saturday':5,'sunday':6};
+function dayFromText(q){
+  if(/imorgon|morgondag|tomorrow/.test(q)) return ymd(addDays(new Date(),1));
+  if(/idag|today|ikväll|i kväll/.test(q)) return todayStr();
+  for(const [k,v] of Object.entries(WD)){ if(new RegExp('(^|\\s|på\\s)'+k+'(en|ar|s)?(\\s|$|\\?|\\.|,)').test(q)){ const d=new Date(); const diff=(v-dow(d)+7)%7; return ymd(addDays(d,diff)); } }
+  return null;
+}
+function timesFromText(raw){
+  const out=[]; const re=/(?:kl\.?\s*)?\b(\d{1,2})(?:[:.](\d{2}))?\b/g; let m;
+  while((m=re.exec(raw))){ const h=+m[1], mi=m[2]?+m[2]:0; const ctx=raw.slice(Math.max(0,m.index-4),m.index+m[0].length+1);
+    if(h>23||mi>59) continue; if(!m[2]&&!/kl|till|från|vid|mellan|–|-/.test(raw.slice(Math.max(0,m.index-7),m.index+m[0].length+2))) continue; if(/\d\/\d/.test(ctx)) continue;
+    out.push(`${pad(h)}:${pad(mi)}`); }
+  return out;
+}
+function localEventChange(raw,q){
+  if(!/flytta|ändra|byt|slutar|börjar|senare|tidigare|move|change|starts|ends/.test(q)) return null;
+  const titles=[...new Set(S.events.map(e=>e.title))].filter(t=>{const w=t.toLowerCase();return q.includes(w)||q.includes(w.slice(0,Math.max(4,w.length-1)))});
+  if(!titles.length) return null;
+  const day=dayFromText(q);
+  let target=null, date=null;
+  const days=day?[day]:[...Array(8)].map((_,i)=>ymd(addDays(new Date(),i)));
+  for(const ds of days){ const ev=eventsOn(ds).find(e=>e.kind==='event'&&titles.includes(e.title)); if(ev){target=S.events.find(x=>x.id===ev.id);date=ds;break} }
+  if(!target) return {text:`Jag hittar ingen ${titles[0].toLowerCase()} ${day?relDay(day).toLowerCase():'den närmaste veckan'}.`,actions:[]};
+  const tms=timesFromText(raw); const dur=toMin(target.end)-toMin(target.start);
+  let ns=target.start, ne=target.end;
+  const rel=q.match(/(\d{1,3})\s*min(?:uter)?\s*(senare|tidigare)/); const hr=/en timme (senare|tidigare)/.exec(q);
+  if(tms.length>=2){ ns=tms[0]; ne=tms[1]; }
+  else if(tms.length===1){ if(/slutar|ends|till\s+\d/.test(q)&&!/flytta|börjar|starts/.test(q)) ne=tms[0]; else { ns=tms[0]; ne=toHM(toMin(ns)+dur); } }
+  else if(rel||hr){ const k=(rel?+rel[1]:60)*((rel?rel[2]:hr[1])==='senare'?1:-1); ns=toHM(toMin(target.start)+k); ne=toHM(toMin(target.end)+k); }
+  else return {text:`Vilken tid ska ${target.title.toLowerCase()} ${relDay(date).toLowerCase()} ha i stället?`,actions:[]};
+  if(toMin(ne)<=toMin(ns)) return {text:'Sluttiden hamnar före starttiden. Skriv gärna både start och slut.',actions:[]};
+  const repeating=target.repeat&&target.repeat!=='none';
+  return {text:repeating?`${target.title} upprepas. Vill du ändra bara ${relDay(date).toLowerCase()} eller alla gånger?`:'Så här blir det.',actions:[{type:'editEvent',id:target.id,title:target.title,date,from:[target.start,target.end],to:[ns,ne],repeating}]};
+}
+function changeEvent(id,date,start,end,scope){
+  const ev=S.events.find(x=>x.id===id); if(!ev) return;
+  if(scope==='all'||!ev.repeat||ev.repeat==='none'){ ev.start=start; ev.end=end; }
+  else { ev.exdates=[...(ev.exdates||[]),date]; S.events.push({id:uid(),title:ev.title,category:ev.category,date,start,end,repeat:'none'}); }
+  save();
+}
+
+/* ---- import: .ics locally, images/PDF via Motion AI (vision) ---- */
+function parseICS(text){
+  const un=text.replace(/\r?\n[ \t]/g,''); const out=[];
+  for(const blk of un.split('BEGIN:VEVENT').slice(1)){
+    const g=k=>{const m=blk.match(new RegExp('^'+k+'[^:\\n]*:(.*)$','m'));return m?m[1].trim():''};
+    const st=g('DTSTART'), en=g('DTEND'); if(!st) continue;
+    const dt=v=>{const m=v.match(/(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2}))?/);if(!m)return null;let d=new Date(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0));if(/Z$/.test(v))d=new Date(Date.UTC(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0)));return d};
+    const a=dt(st), b=dt(en)||new Date(a.getTime()+3600e3); if(!a) continue;
+    const rr=g('RRULE'); const repeat=/FREQ=DAILY/.test(rr)?'daily':/FREQ=WEEKLY/.test(rr)?'weekly':'none';
+    out.push({title:g('SUMMARY').replace(/\\,/g,',')||'Händelse',date:ymd(a),start:toHM(a.getHours()*60+a.getMinutes()),end:toHM(b.getHours()*60+b.getMinutes()),repeat});
+  }
+  // keep this week onwards, max 60
+  const ws=ymd(weekStart(new Date()));
+  return out.filter(e=>e.repeat!=='none'||e.date>=ws).slice(0,60).map(e=>({...e,category:guessCat(e.title)}));
+}
+function guessCat(t){t=t.toLowerCase();if(/lunch|middag|frukost|brunch|fika|(^|\s)mat(\s|$)/.test(t))return 'meal';if(/jobb|arbete|work|pass på/.test(t))return 'work';if(/tennis|fotboll|gym|träning|löp|simning|handboll|innebandy|dans|ridning/.test(t))return 'training';if(/lektion|matematik|matte|svenska|engelska|skola|kemi|fysik|biologi|historia|idrott|samhäll|religion|geografi|teknik|musik|bild|slöjd|spanska|tyska|franska|mentor|ekonomi|juridik|ämne/.test(t))return 'school';return 'personal'}
+async function fileToPayload(file){
+  const name=file.name.toLowerCase();
+  if(name.endsWith('.ics')||file.type==='text/calendar') return {kind:'ics',text:await file.text()};
+  if(file.type==='application/pdf'||name.endsWith('.pdf')){ if(file.size>3.2e6) throw new Error('PDF:en är för stor. Ta en skärmdump i stället.'); const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file)}); return {kind:'pdf',b64}; }
+  if(file.type.startsWith('image/')){
+    const url=URL.createObjectURL(file); const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error('Kunde inte läsa bilden.'));i.src=url});
+    const k=Math.min(1,1800/Math.max(img.width,img.height)); const c=document.createElement('canvas'); c.width=Math.round(img.width*k); c.height=Math.round(img.height*k);
+    const cx=c.getContext('2d'); cx.fillStyle='#fff'; cx.fillRect(0,0,c.width,c.height); cx.drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url);
+    return {kind:'image',b64:c.toDataURL('image/jpeg',.86).split(',')[1]};
+  }
+  throw new Error('Den filtypen kan jag inte läsa. Använd en bild, PDF eller .ics-fil.');
+}
+async function aiExtract(payload){
+  if(!location.protocol.startsWith('http')) throw new Error('offline');
+  const src=payload.kind==='pdf'?{type:'document',source:{type:'base64',media_type:'application/pdf',data:payload.b64}}:{type:'image',source:{type:'base64',media_type:'image/jpeg',data:payload.b64}};
+  const prompt=`Det här är ett schema (t.ex. skolschema, jobbschema eller kalender). Läs av alla återkommande händelser.
+Svara ENDAST med JSON, utan annan text, i formatet:
+{"events":[{"title":"Matematik","category":"school","day":0,"start":"08:30","end":"09:30","repeat":"weekly"}]}
+- day: 0=måndag … 6=söndag. Om ett exakt datum syns, lägg även till "date":"YYYY-MM-DD".
+- category: school, work, training, meal eller personal. Lektioner och raster i ett skolschema = school, lunch = meal.
+- start/end i 24-timmarsformat HH:MM. repeat: weekly för veckoscheman, annars none.
+- Hoppa över sådant som inte har en tid. Hitta inte på något.`;
+  const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:3000,messages:[{role:'user',content:[src,{type:'text',text:prompt}]}]})});
+  if(!r.ok) throw new Error('api');
+  const data=await r.json(); const txt=(data.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('');
+  const clean=txt.replace(/```json|```/g,''); const js=JSON.parse(clean.slice(clean.indexOf('{'),clean.lastIndexOf('}')+1));
+  const ws=weekStart(new Date());
+  return (js.events||[]).filter(e=>e.start&&e.end).map(e=>({title:String(e.title||'Händelse').slice(0,40),category:['school','work','training','meal','personal'].includes(e.category)?e.category:guessCat(e.title||''),
+    date:e.date&&/^\d{4}-\d{2}-\d{2}$/.test(e.date)?e.date:ymd(addDays(ws,Math.min(6,Math.max(0,+e.day||0)))),start:String(e.start).slice(0,5).padStart(5,'0'),end:String(e.end).slice(0,5).padStart(5,'0'),repeat:e.repeat==='none'?'none':'weekly'}));
+}
+// merge lessons into one school block per day (keeps the planner calm)
+function prepImport(raw,merge){
+  let list=raw.map(e=>({...e}));
+  if(merge){
+    const school=list.filter(e=>e.category==='school'), rest=list.filter(e=>e.category!=='school');
+    const byKey={}; school.forEach(e=>{const k=(e.repeat==='weekly'?dow(parseYmd(e.date)):e.date)+'';(byKey[k]=byKey[k]||[]).push(e)});
+    const merged=Object.values(byKey).map(g=>({title:'Skola',category:'school',date:g[0].date,start:toHM(Math.min(...g.map(e=>toMin(e.start)))),end:toHM(Math.max(...g.map(e=>toMin(e.end)))),repeat:g[0].repeat,n:g.length}));
+    list=[...merged,...rest];
+  }
+  const exists=e=>S.events.some(x=>x.title===e.title&&x.start===e.start&&(x.date===e.date||(x.repeat!=='none'&&occursOn(x,e.date))));
+  return list.sort((a,b)=>(dow(parseYmd(a.date))-dow(parseYmd(b.date)))||toMin(a.start)-toMin(b.start)).map(e=>({...e,on:!exists(e),dup:exists(e)}));
+}
+function importListHTML(items,attr){
+  return `<ul class="imp-list">${items.map((e,i)=>`<li class="${e.on?'':'off'}"><input type="checkbox" ${attr}="${i}" ${e.on?'checked':''} aria-label="Ta med ${esc(e.title)}"><div><div class="t">${esc(e.title)}${e.n>1?` <span class="m">(${e.n} lektioner)</span>`:''}</div><div class="m">${e.repeat==='weekly'?DN[dow(parseYmd(e.date))]+'ar':relDay(e.date)} · ${CAT[e.category].sv}${e.dup?' · finns redan':''}</div></div><span class="tm">${e.start}–${e.end}</span></li>`).join('')}</ul>`;
+}
+function applyImport(items){
+  const n=items.filter(i=>i.on).length;
+  items.filter(i=>i.on).forEach(e=>S.events.push({id:uid(),title:e.title,category:e.category,date:e.date,start:e.start,end:e.end,repeat:e.repeat}));
+  save(); return n;
+}
+async function readSchedule(file){
+  const pl=await fileToPayload(file);
+  if(pl.kind==='ics') return parseICS(pl.text);
+  try{ return await aiExtract(pl); }
+  catch(e){ throw new Error(e.message==='api'||e.message==='offline'?'Bilder och PDF:er läses av Motion AI, som inte är kopplad just nu. Lägg in ANTHROPIC_API_KEY i Vercel, eller ladda upp en .ics-fil från din kalender.':e instanceof SyntaxError?'Jag kunde inte läsa ut några tider. Prova en tydligare skärmdump.':e.message); }
+}
+function importFlow(){
+  const drawPick=sh=>{sh.innerHTML=`<button class="x" aria-label="Stäng" data-close>${IC.x}</button><h3>Importera ditt schema</h3><p class="muted">Ladda upp en skärmdump, ett foto, en PDF eller en kalenderfil (.ics). Du får se allt innan något läggs in.</p>
+    <label class="drop" id="drop"><input type="file" id="impf" accept="image/*,.pdf,.ics,text/calendar" hidden>${IC.up.replace('width="18" height="18"','width="30" height="30"')}<b>Välj fil eller dra hit</b><span>Skolschema, jobbschema, träningstider</span></label>
+    <div class="hint"><img src="${LOGO}" alt=""><span>Vill du ändra en tid efteråt? Skriv till <a href="#ai">Motion AI</a>, t.ex. ”skolan slutar 14:00 på fredag”.</span></div>`;
+    const inp=$('#impf',sh), dz=$('#drop',sh);
+    inp.onchange=()=>inp.files[0]&&run(sh,inp.files[0]);
+    dz.ondragover=e=>{e.preventDefault();dz.classList.add('over')}; dz.ondragleave=()=>dz.classList.remove('over');
+    dz.ondrop=e=>{e.preventDefault();dz.classList.remove('over');const f=e.dataTransfer.files[0];f&&run(sh,f)};
+  };
+  const run=async(sh,file)=>{
+    sh.innerHTML=`<button class="x" aria-label="Stäng" data-close>${IC.x}</button><div class="imp-load"><img src="${LOGO}" alt=""><div style="font-weight:600">Läser ditt schema…</div><div class="muted" style="font-size:.9rem">${esc(file.name)}</div></div>`;
+    try{
+      const raw=await readSchedule(file); if(!raw.length) throw new Error('Jag hittade inga tider i filen.');
+      let merge=raw.some(e=>e.category==='school'); let items=prepImport(raw,merge);
+      const draw=()=>{const n=items.filter(i=>i.on).length;
+        sh.innerHTML=`<button class="x" aria-label="Stäng" data-close>${IC.x}</button><h3>Stämmer det här?</h3><p class="muted">Bocka ur det du inte vill ha med.</p>${importListHTML(items,'data-i')}
+        ${raw.some(e=>e.category==='school')?`<label class="toggle"><input type="checkbox" id="mg" ${merge?'checked':''}>Slå ihop lektioner till ett skolblock per dag</label>`:''}
+        <div class="sheet-actions"><button class="btn btn-line" id="again">Annan fil</button><button class="btn btn-primary" id="ok" ${n?'':'disabled'}>Lägg till ${n}</button></div>`;
+        sh.onchange=e=>{const i=e.target.dataset.i; if(i!==undefined){items[+i].on=e.target.checked;draw()} if(e.target.id==='mg'){merge=e.target.checked;items=prepImport(raw,merge);draw()}};
+        $('#again',sh).onclick=()=>drawPick(sh);
+        $('#ok',sh).onclick=()=>{const k=applyImport(items);closeSheet();toast(`${k} händelser inlagda`);render()};
+      }; draw();
+    }catch(err){
+      sh.innerHTML=`<button class="x" aria-label="Stäng" data-close>${IC.x}</button><h3>Det gick inte att läsa filen</h3><p class="muted" style="margin-top:8px">${esc(err.message)}</p><div class="sheet-actions"><button class="btn btn-primary" id="again">Försök igen</button></div>`;
+      $('#again',sh).onclick=()=>drawPick(sh);
+    }
+  };
+  openSheet('',sh=>drawPick(sh));
+}
+async function aiImport(file){
+  if(aiBusy) return; aiBusy=true;
+  chat.push({role:'user',text:`Bifogat schema: ${file.name}`}); const bot={role:'bot',text:'',typing:true}; chat.push(bot); drawThread();
+  try{
+    const raw=await readSchedule(file); if(!raw.length) throw new Error('Jag hittade inga tider i filen.');
+    const hasSchool=raw.some(e=>e.category==='school');
+    Object.assign(bot,{typing:false,text:`Jag hittade ${raw.length} ${raw.length===1?'händelse':'händelser'}. Kolla att det stämmer innan jag lägger in dem.`,actions:[{type:'import',raw,merge:hasSchool,hasSchool,items:prepImport(raw,hasSchool)}]});
+  }catch(err){ Object.assign(bot,{typing:false,text:err.message,actions:[]}); }
+  aiBusy=false; drawThread();
+}
+
 /* =========================================================
    SESSION RUNNER — Draw → Scan → Move → Repeat
    ========================================================= */
@@ -1148,7 +1394,7 @@ function vScan(el){
       <video id="vid" playsinline muted></video>
       <div class="frame"><i></i><i></i><i></i><i></i><div class="line"></div></div>
       <div class="hint">Placera QR-koden inuti ramen.</div>
-      <div class="off" id="camoff"><img src="${LOGO}" alt=""><div id="camtxt">Kameran används bara för att läsa korten.</div><button class="btn btn-gold" id="camgo">Starta kameran</button></div>
+      <div class="off" id="camoff"><img src="${LOGO}" alt=""><div id="camtxt">Kameran används bara för att läsa korten.</div><button class="btn btn-primary" id="camgo">Starta kameran</button></div>
     </div>
     <div class="scan-alt">
       <form class="manual" id="mf"><label class="sr" for="mc">Kortkod</label><input id="mc" placeholder="Ange kod, t.ex. MOT-IND-018" autocomplete="off"><button class="btn btn-primary" type="submit">Öppna</button></form>
@@ -1316,6 +1562,55 @@ function familyMode(c){
   run();
 }
 
+
+/* =========================================================
+   ONBOARDING QUIZ — so Motion can do the thinking
+   ========================================================= */
+const QZ=[
+  {k:'goal',eb:'Ditt mål',q:'Vad vill du få ut av Motion?',lead:'Välj det som känns viktigast just nu.',o:[['energy','Mer energi','Piggare i vardagen'],['strength','Bli starkare','Styrka i hela kroppen'],['mobility','Bli rörligare','Mjukare kropp, mindre stelhet'],['stress','Mindre stress','Lugn och återhämtning'],['habit','Skapa en vana','Röra mig lite, men ofta']]},
+  {k:'level',eb:'Din nivå',q:'Hur mycket rör du dig idag?',lead:'Inga rätt eller fel. Det styr hur tuffa passen blir.',cls:'one',o:[['beginner','Sällan','Jag vill komma igång'],['some','Ibland','Några gånger i månaden'],['regular','Ofta','Flera gånger i veckan']]},
+  {k:'len',eb:'Tid',q:'Hur lång tid vill du lägga per pass?',lead:'Kortare är oftast lättare att hålla.',cls:'four',o:[[5,'5','min'],[10,'10','min'],[15,'15','min'],[20,'20','min']]},
+  {k:'time',eb:'Tid på dagen',q:'När passar det bäst?',lead:'Planeraren letar luckor där först.',o:[['morning','Morgon','Innan skola eller jobb'],['lunch','Lunch','Mitt på dagen'],['afternoon','Eftermiddag','Efter skolan'],['evening','Kväll','Efter middagen']]},
+  {k:'perWeek',eb:'Rytm',q:'Hur många pass i veckan låter rimligt?',lead:'Hellre för få än för många. Du kan alltid lägga till.',cls:'four',o:[[2,'2','pass'],[3,'3','pass'],[4,'4','pass'],[5,'5','pass']]},
+  {k:'deck',eb:'Sällskap',q:'Vem tränar du oftast med?',lead:'Vi anpassar förslagen efter det.',cls:'one',o:[['individual','Mest själv','Individuella kortleken'],['family','Familj eller vänner','Familj & vänner-leken'],['both','Både och','Vi blandar']]},
+];
+const QLABEL={goal:{energy:'Mer energi',strength:'Bli starkare',mobility:'Bli rörligare',stress:'Mindre stress',habit:'Skapa en vana'},time:{morning:'Morgon',lunch:'Lunch',afternoon:'Eftermiddag',evening:'Kväll'},level:{beginner:'Nybörjare',some:'Medel',regular:'Van'},deck:{individual:'Själv',family:'Familj & vänner',both:'Både och'}};
+function quiz(editing=false){
+  const ans={...(S.user.prefs||{})}; let i=0;
+  const o=document.createElement('div'); o.className='qz'; o.setAttribute('role','dialog'); o.setAttribute('aria-modal','true'); document.body.appendChild(o); document.body.style.overflow='hidden';
+  const close=()=>{o.style.transition='opacity .35s';o.style.opacity=0;setTimeout(()=>{o.remove();document.body.style.overflow=''},350)};
+  const draw=()=>{
+    const done=i>=QZ.length; const pct=Math.round(Math.min(i,QZ.length)/QZ.length*100);
+    const top=`<div class="qz-top">${i>0?`<button class="btn btn-ghost" data-back aria-label="Tillbaka">${IC.l}</button>`:`<img src="${LOGO}" alt="">`}<div class="qz-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div>${editing?`<button class="btn btn-ghost" data-close-q>Stäng</button>`:`<span class="muted" style="font-size:.85rem;font-variant-numeric:tabular-nums">${Math.min(i+1,QZ.length)}/${QZ.length}</span>`}</div>`;
+    if(!done){
+      const q=QZ[i];
+      o.innerHTML=top+`<div class="qz-body" key="${i}"><span class="eyebrow">${q.eb}</span><h1>${i===0&&!editing?`${esc(S.user.name)}, `+q.q.charAt(0).toLowerCase()+q.q.slice(1):q.q}</h1><p class="lead">${q.lead}</p>
+        <div class="qz-opts ${q.cls||''}">${q.o.map(([v,t,sub])=>`<button class="qo ${ans[q.k]===v?'on':''}" data-v="${v}"><b>${t}</b><span>${sub}</span></button>`).join('')}</div></div>`;
+      const f=$('.qo.on',o)||$('.qo',o); f&&f.focus({preventScroll:true});
+    } else {
+      o.innerHTML=top+`<div class="qz-body"><span class="eyebrow">Klart</span><h1>Din rytm är satt.</h1><p class="lead">Vi tänker. Du rör dig. Allt går att ändra senare under Framsteg.</p>
+        <div class="qz-sum"><img src="${LOGO}" alt=""><dl>
+          <div><dt>MÅL</dt><dd>${QLABEL.goal[ans.goal]}</dd></div><div><dt>PASS</dt><dd>${ans.perWeek} i veckan</dd></div>
+          <div><dt>LÄNGD</dt><dd>${ans.len} minuter</dd></div><div><dt>BÄST</dt><dd>${QLABEL.time[ans.time]}</dd></div>
+          <div><dt>NIVÅ</dt><dd>${QLABEL.level[ans.level]}</dd></div><div><dt>MED</dt><dd>${QLABEL.deck[ans.deck]}</dd></div></dl></div>
+        <div class="qz-actions"><button class="btn btn-primary" data-finish="week">Planera min vecka</button><button class="btn btn-line" data-finish="today">${editing?'Spara':'Bara idag'}</button></div></div>`;
+    }
+  };
+  o.addEventListener('click',e=>{
+    if(e.target.closest('[data-back]')){i=Math.max(0,i-1);return draw()}
+    if(e.target.closest('[data-close-q]')) return close();
+    const b=e.target.closest('[data-v]'); if(b){ const q=QZ[i]; const v=b.dataset.v; ans[q.k]=isNaN(+v)?v:+v; $$('.qo',o).forEach(x=>x.classList.toggle('on',x===b)); setTimeout(()=>{i++;draw()},220); return; }
+    const f=e.target.closest('[data-finish]'); if(!f) return;
+    S.user.prefs=ans; S.user.prefLen=ans.len; S.user.quiz=true;
+    if(!editing&&!S.sessions.some(s=>s.date===todayStr()&&s.status==='planned')){ const sg=suggestFor(todayStr()); if(sg) createSession({date:todayStr(),start:toHM(sg.start),duration:sg.duration,need:sg.need}); }
+    let added=0; if(f.dataset.finish==='week'){ planWeek().forEach(p=>{createSession(p);added++}); }
+    save(); close(); render(); toast(added?`${added} pass inlagda i veckan`:editing?'Sparat':'Klart. Välkommen');
+    if(f.dataset.finish==='week') go('planner');
+  });
+  o.addEventListener('keydown',e=>{ if(e.key==='Escape'&&editing) close(); });
+  draw();
+}
+
 /* =========================================================
    BOOT
    ========================================================= */
@@ -1326,11 +1621,10 @@ function welcome(){
   w.innerHTML=`<form class="box" id="wf"><img src="${LOGO}" alt=""><h1>Välkommen till Motion.</h1><p>Vi tänker. Du rör dig. Vad heter du?</p><label class="sr" for="wn">Ditt namn</label><input id="wn" placeholder="Ditt förnamn" autocomplete="given-name" required maxlength="24"><button class="btn btn-primary btn-block" type="submit">Börja</button><div class="tag">WE THINK. YOU MOVE.</div></form>`;
   document.body.appendChild(w); setTimeout(()=>$('#wn').focus(),50);
   $('#wf').onsubmit=e=>{e.preventDefault();const n=$('#wn').value.trim();if(!n)return;S.user={name:n,prefLen:10,created_at:new Date().toISOString()};
-    const sg=suggestFor(todayStr()); if(sg) createSession({date:todayStr(),start:toHM(sg.start),duration:sg.duration,need:'reset'});
-    save();setAvatar();w.style.transition='opacity .4s';w.style.opacity=0;setTimeout(()=>w.remove(),400);render()};
+    save();setAvatar();render();quiz();setTimeout(()=>w.remove(),60)};
 }
 load();
-if(!S.user){ S.user={name:'',prefLen:10}; render(); S.user=null; welcome(); } else { setAvatar(); render(); }
+if(!S.user){ S.user={name:'',prefLen:10}; render(); S.user=null; welcome(); } else { setAvatar(); render(); if(!S.user.quiz) quiz(); }
 </script>
 </body>
 </html>
