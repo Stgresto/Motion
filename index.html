@@ -140,22 +140,22 @@ h3{font-family:var(--serif);font-weight:400;font-size:1.65rem;line-height:1.15}
 
 
 /* CARD STAGE (pinned, scroll-driven) */
-.cards{position:relative;height:420vh;background:#E9E2D6;color:var(--umber)}
+.cards{position:relative;height:420vh;background:var(--umber);color:var(--paper)}
 .cards-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:center;gap:clamp(24px,4vw,64px);padding-inline:var(--gutter)}
 .cards-glow{position:absolute;inset:0;pointer-events:none;background:
-  radial-gradient(45% 55% at 66% 50%,rgba(255,252,246,.85),rgba(255,252,246,0) 70%),
-  repeating-linear-gradient(118deg,rgba(120,100,75,0) 0 140px,rgba(120,100,75,.07) 140px 230px,rgba(120,100,75,0) 230px 420px)}
+  radial-gradient(42% 50% at 66% 50%,rgba(226,181,119,.26),rgba(226,181,119,0) 70%),
+  repeating-linear-gradient(118deg,rgba(226,181,119,0) 0 140px,rgba(226,181,119,.035) 140px 230px,rgba(226,181,119,0) 230px 420px)}
 .cards-copy{position:relative;height:min(380px,46svh);z-index:2}
 .cc{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;opacity:0;filter:blur(12px);transform:translateY(24px);will-change:opacity,filter,transform}
-.cc .step{font-size:.9rem;color:var(--stone);margin-bottom:18px;display:block}
+.cc .step{font-size:.9rem;color:rgba(246,241,233,.55);margin-bottom:18px;display:block}
 .cc h2{font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,5.4vw,5rem);line-height:.98;letter-spacing:-.015em;margin-bottom:20px}
-.cc p{color:var(--stone);max-width:25em;font-size:1.05rem}
+.cc p{color:rgba(246,241,233,.72);max-width:25em;font-size:1.05rem}
 .cards-progress{position:absolute;left:var(--gutter);bottom:clamp(24px,5vh,48px);display:flex;gap:8px;z-index:2}
-.cards-progress i{display:block;width:34px;height:2px;background:rgba(42,31,22,.15);position:relative;overflow:hidden}
-.cards-progress i b{position:absolute;inset:0;background:var(--bronze);transform-origin:left;transform:scaleX(0)}
+.cards-progress i{display:block;width:34px;height:2px;background:rgba(246,241,233,.2);position:relative;overflow:hidden}
+.cards-progress i b{position:absolute;inset:0;background:var(--sun);transform-origin:left;transform:scaleX(0)}
 .stage3d{position:relative;height:100%;perspective:1600px;display:flex;align-items:center;justify-content:center}
 .pcard{--gold:#B08A3E;--green:#1E3B2C;position:absolute;width:clamp(180px,18vw,260px);aspect-ratio:5/7;transform-style:preserve-3d;will-change:transform;container-type:inline-size}
-.pcard .face{position:absolute;inset:0;border-radius:6.5cqw;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;background:linear-gradient(165deg,#FBF8F1 0%,#F1EBDF 100%);color:var(--umber);box-shadow:0 34px 50px -24px rgba(70,52,30,.45),0 6px 14px -6px rgba(70,52,30,.25)}
+.pcard .face{position:absolute;inset:0;border-radius:6.5cqw;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;background:linear-gradient(165deg,#FBF8F1 0%,#F1EBDF 100%);color:var(--umber);box-shadow:0 36px 60px -22px rgba(0,0,0,.6),0 8px 16px -8px rgba(0,0,0,.4)}
 .pcard .face::after{content:"";position:absolute;inset:5cqw;border:1px solid var(--gold);border-radius:4cqw;opacity:.85;pointer-events:none}
 .pcard .front{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7cqw}
 .pcard .front img{width:52%;height:auto}
@@ -316,7 +316,7 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
       <a href="#how">Så funkar det</a>
       <a href="#deck">Kortleken</a>
       <a href="#science">Forskningen</a>
-      <a href="motion-ai-coach.html">AI-coach</a>
+      <a href="app.html">Appen</a>
     </div>
     <button class="btn btn-sun nav-cta-desktop" onclick="openWaitlist()">Skaffa kortleken</button>
     <button class="nav-burger" id="navBurger" aria-label="Öppna meny" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
@@ -325,7 +325,7 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
     <a href="#how">Så funkar det</a>
     <a href="#deck">Kortleken</a>
     <a href="#science">Forskningen</a>
-    <a href="motion-ai-coach.html">AI-coach</a>
+    <a href="app.html">Appen</a>
     <button class="btn btn-dark" onclick="openWaitlist()">Skaffa kortleken</button>
   </div>
 </nav>
@@ -340,7 +340,7 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
         <p>En träningskortlek med QR-koder och en AI-planerare som hittar tiden i din dag. Du drar ett kort, skannar och rör dig.</p>
         <div class="hero-ctas">
           <button class="btn btn-sun" onclick="openWaitlist()">Skaffa kortleken</button>
-          <a href="motion-ai-coach.html" class="btn btn-ghost">Prova AI-coachen</a>
+          <a href="app.html" class="btn btn-ghost">Öppna appen</a>
         </div>
       </div>
     </div>
@@ -478,7 +478,7 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
           <li><strong>Svarar på frågor</strong><span>Kost, stretch, sömn och återhämtning, dygnet runt.</span></li>
           <li><strong>Behåller överraskningen</strong><span>Dagens övningar avslöjas först när du skannar.</span></li>
         </ul>
-        <a href="motion-ai-coach.html" class="btn btn-dark">Prova AI-coachen</a>
+        <a href="app.html" class="btn btn-dark">Öppna appen</a>
       </div>
     </div>
   </div>
@@ -501,7 +501,7 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
     <div class="foot-row">
       <a href="index.html" class="logo"><img src="images/logo_mark_v2.png" alt="">MOTION UF</a>
       <div class="foot-links">
-        <a href="motion-ai-coach.html">AI-coach</a>
+        <a href="app.html">Appen</a>
         <a href="#">Om oss</a>
         <a href="#">Kontakt</a>
         <a href="#">Integritet</a>
@@ -595,7 +595,7 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
       const s=1+lift*0.06;
       c.style.transform=`translate3d(${x}px,${y - lift*16}px,${z}px) rotateZ(${rz}deg) rotateY(${ry}deg) scale(${s})`;
       c.style.zIndex=isA?10:3-Math.abs(o);
-      c.style.setProperty('--dim',(active>=0&&!isA&&p<.9)?'.14':'0');
+      c.style.setProperty('--dim',(active>=0&&!isA&&p<.9)?'.35':'0');
       const sh=c.querySelector('.sheen'); sh.style.opacity=Math.sin(flips[i]*Math.PI)*0.9;
     });
     const windows=[[0,.28],[.28,.50],[.50,.72],[.72,1.01]];

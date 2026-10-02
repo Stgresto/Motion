@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F5F0">
+<title>Motion UF</title>
+<link rel="icon" href="/images/logo_mark_v2.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F5F0;--white:#FFFFFF;--warm:#EFEAE2;--green:#123C32;--green-2:#1B4A3E;
+  --text:#171A18;--muted:#72746F;--gold:#C6A15B;--gold-l:#E6D5AE;--border:#E5E1D9;
+  --gold-ink:#94733A; /* gold dark enough for text on light bg */
+  --r-lg:22px;--r-md:16px;--r-sm:12px;
+  --shadow:0 1px 2px rgba(23,26,24,.04),0 8px 24px -12px rgba(23,26,24,.12);
+  --ease:cubic-bezier(.2,.7,.1,1);
+  --font:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+img{display:block}
+
+/* ---------- top nav (desktop) ---------- */
+.topnav{position:sticky;top:0;z-index:40;background:rgba(247,245,240,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding-top:var(--sat)}
+.topnav .in{max-width:1280px;margin:0 auto;height:68px;padding:0 32px;display:flex;align-items:center;gap:32px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.08em;font-size:.92rem;text-decoration:none;color:var(--text)}
+.brand img{width:26px;height:26px}
+.tabs{display:flex;gap:4px;margin:0 auto}
+.tabs a{padding:9px 16px;border-radius:999px;text-decoration:none;color:var(--muted);font-weight:500;font-size:.95rem;transition:background .2s,color .2s}
+.tabs a:hover{color:var(--text)}
+.tabs a.on{background:var(--white);color:var(--text);box-shadow:var(--shadow)}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:600;font-size:.95rem}
+
+/* ---------- bottom nav (mobile) ---------- */
+.botnav{display:none}
+@media(max-width:760px){
+  .topnav .tabs,.topnav .avatar{display:none}
+  .topnav .in{height:58px;padding:0 20px;justify-content:space-between}
+  .botnav{display:grid;grid-template-columns:1fr 1fr 1.1fr 1fr 1fr;align-items:end;position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--border);padding:8px 8px calc(8px + var(--sab))}
+  .botnav a{display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;color:var(--muted);font-size:.74rem;font-weight:600;min-height:52px;justify-content:center}
+  .botnav a svg{width:24px;height:24px}
+  .botnav a.on{color:var(--green)}
+  .botnav .scanbtn{position:relative;top:-14px}
+  .botnav .scanbtn .disc{width:64px;height:64px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;box-shadow:0 10px 24px -8px rgba(18,60,50,.55);border:4px solid var(--bg)}
+  .botnav .scanbtn .disc svg{width:28px;height:28px}
+  .botnav .scanbtn span{margin-top:2px}
+  .topnav .mobile-av{display:grid}
+}
+.topnav .mobile-av{display:none}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:40px 32px 120px}
+@media(max-width:760px){main{padding:24px 20px calc(130px + var(--sab))}}
+.view{animation:fadein .45s var(--ease)}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.eyebrow.gold{color:var(--gold-ink)}
+h1.big{font-size:clamp(2rem,4.2vw,3.2rem);font-weight:600;letter-spacing:-.025em;line-height:1.08}
+h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
+.muted{color:var(--muted)}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border-radius:999px;font-weight:600;font-size:.98rem;letter-spacing:.01em;transition:transform .15s var(--ease),background .2s,box-shadow .2s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--green);color:#fff}
+.btn-primary:hover{background:var(--green-2)}
+.btn-gold{background:var(--gold);color:#171A18}
+.btn-gold:hover{background:#cfac69}
+.btn-line{border:1px solid var(--border);background:var(--white)}
+.btn-line:hover{border-color:#d5cfc3}
+.btn-ghost{color:var(--muted)}
+.btn-ghost:hover{color:var(--text)}
+.btn-sm{min-height:40px;padding:0 16px;font-size:.9rem}
+.btn-block{width:100%}
+.chip{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--border);background:var(--white);font-weight:600;font-size:.88rem;letter-spacing:.02em;transition:border-color .2s,background .2s,color .2s}
+.chip:hover{border-color:var(--gold-l)}
+.chip.on{background:var(--green);border-color:var(--green);color:#fff}
+
+/* ---------- TODAY ---------- */
+.today{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;margin-top:36px}
+@media(max-width:960px){.today{grid-template-columns:1fr}}
+.next{position:relative;overflow:hidden;background:var(--green);color:#fff;border-radius:28px;padding:36px;min-height:340px;display:flex;flex-direction:column}
+.next .swirl{position:absolute;right:-60px;top:-60px;width:280px;opacity:.12;filter:grayscale(.2) brightness(1.4)}
+.next .eyebrow{color:var(--gold-l)}
+.next .time{font-size:clamp(3.4rem,8vw,5.4rem);font-weight:600;letter-spacing:-.04em;line-height:1;margin-top:22px}
+.next .what{font-size:1.25rem;font-weight:600;margin-top:12px;letter-spacing:.01em}
+.next .meta{display:flex;gap:18px;margin-top:10px;color:rgba(255,255,255,.72);font-size:.95rem}
+.next .why{color:rgba(255,255,255,.82);margin-top:18px;max-width:28em}
+.next .actions{margin-top:auto;padding-top:28px;display:flex;gap:10px;flex-wrap:wrap}
+.next .btn-line{background:transparent;border-color:rgba(255,255,255,.3);color:#fff}
+.next.empty{background:var(--white);color:var(--text);border:1px solid var(--border)}
+.next.empty .eyebrow{color:var(--gold-ink)}
+.next.empty .why{color:var(--muted)}
+.next.empty .swirl{opacity:.08;filter:none}
+.timeline{padding:28px}
+.tl{list-style:none;margin-top:18px}
+.tl li{display:grid;grid-template-columns:62px 14px 1fr;gap:14px;align-items:start;padding:10px 0;position:relative}
+.tl li::after{content:"";position:absolute;left:82px;top:30px;bottom:-12px;width:1px;background:var(--border)}
+.tl li:last-child::after{display:none}
+.tl .t{font-variant-numeric:tabular-nums;font-weight:600;font-size:.95rem;padding-top:1px}
+.tl .dot{width:10px;height:10px;border-radius:50%;background:#d7d2c7;margin-top:7px;position:relative;z-index:1}
+.tl .lbl{font-weight:600;font-size:.92rem;letter-spacing:.06em;text-transform:uppercase}
+.tl .sub{color:var(--muted);font-size:.9rem}
+.tl li.motion .dot{background:var(--gold);box-shadow:0 0 0 4px rgba(198,161,91,.18)}
+.tl li.motion .lbl{color:var(--green)}
+.tl li.past{opacity:.45}
+.tl li.done .dot{background:var(--green)}
+.weeksum{margin-top:28px;padding:28px;display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:28px;align-items:center}
+.weeksum .n{font-size:1.9rem;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.weeksum .l{color:var(--muted);font-size:.92rem}
+@media(max-width:620px){.weeksum{grid-template-columns:1fr 1fr 1fr}.weeksum .eyebrow{grid-column:1/-1}}
+
+/* ---------- PLANNER ---------- */
+.planner{display:grid;grid-template-columns:270px minmax(0,1fr);gap:28px;margin-top:28px}
+.p-side{display:flex;flex-direction:column;gap:20px}
+.mini{padding:20px}
+.mini-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-weight:600}
+.mini-h button{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--muted)}
+.mini-h button:hover{background:var(--warm);color:var(--text)}
+.mini-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:.85rem}
+.mini-g .wd{color:var(--muted);font-size:.72rem;font-weight:600;padding:4px 0}
+.mini-g button{height:32px;border-radius:9px;font-variant-numeric:tabular-nums;display:grid;place-items:center;line-height:1;padding:0}
+.mini-g button:hover{background:var(--warm)}
+.mini-g button.out{color:#bdb8ad}
+.mini-g button.inweek{background:var(--warm)}
+.mini-g button.is-today{color:var(--green);font-weight:700;box-shadow:inset 0 0 0 1px var(--gold)}
+.filters{padding:20px}
+.filters label{display:flex;align-items:center;gap:12px;padding:8px 0;cursor:pointer;font-size:.95rem}
+.filters input{appearance:none;width:20px;height:20px;border-radius:6px;border:1.5px solid #cfc9bd;display:grid;place-items:center}
+.filters input:checked{background:var(--green);border-color:var(--green)}
+.filters input:checked::after{content:"";width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.filters .sw{width:10px;height:10px;border-radius:3px;margin-left:auto}
+.windows{padding:20px}
+.win{padding:14px 0;border-top:1px solid var(--border)}
+.win:first-of-type{border-top:0}
+.win .d{font-size:.8rem;color:var(--muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.win .r{font-weight:600;margin:2px 0 8px}
+.p-main{min-width:0}
+.p-bar{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.p-bar h2{font-size:1.5rem;font-weight:600;letter-spacing:-.01em;margin-right:auto}
+.iconbtn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--border);background:var(--white)}
+.iconbtn:hover{border-color:#d5cfc3}
+.week{overflow:hidden}
+.wk-head{display:grid;grid-template-columns:60px repeat(7,minmax(0,1fr));border-bottom:1px solid var(--border)}
+.wk-head div{padding:14px 8px;text-align:center}
+.wk-head .dn{font-size:.75rem;letter-spacing:.12em;color:var(--muted);font-weight:600}
+.wk-head .dd{font-size:1.25rem;font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums}
+.wk-head .is-today .dd{color:var(--green)}
+.wk-head .is-today .dd::after{content:"";display:block;width:5px;height:5px;border-radius:50%;background:var(--gold);margin:4px auto 0}
+.wk-body{display:grid;grid-template-columns:60px repeat(7,minmax(0,1fr));position:relative;max-height:calc(100vh - 290px);min-height:480px;overflow-y:auto}
+.hours div{height:var(--hh);font-size:.75rem;color:var(--muted);text-align:right;padding-right:10px;transform:translateY(-.6em);font-variant-numeric:tabular-nums}
+.daycol{position:relative;border-left:1px solid var(--border);background-image:linear-gradient(var(--border) 1px,transparent 1px);background-size:100% var(--hh)}
+.daycol.is-today{background-color:rgba(239,234,226,.45)}
+.ev{position:absolute;left:4px;right:4px;display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;border-radius:10px;padding:6px 9px;overflow:hidden;font-size:.8rem;line-height:1.3;text-align:left;border:1px solid transparent;transition:transform .2s var(--ease),box-shadow .2s}
+.ev:hover{transform:translateY(-1px);box-shadow:var(--shadow);z-index:3}
+.ev .et{font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.72rem}
+.ev .eh{font-variant-numeric:tabular-nums;opacity:.75}
+.ev.cat-school{background:#EAE6DE;color:#3d3f3b}
+.ev.cat-work{background:#E4E7E3;color:#33403a}
+.ev.cat-training{background:#E8E1D2;color:#4a3d22}
+.ev.cat-meal{background:#F1ECE3;color:#5a5a55;border-color:#E5E1D9}
+.ev.cat-personal{background:#ECE7EE;color:#43384a}
+.ev.cat-motion{background:var(--green);color:#fff;border-left:3px solid var(--gold)}
+.ev.cat-motion .et{color:var(--gold-l)}
+.ev.cat-motion.done{opacity:.6}
+.ev .go{display:inline-block;margin-top:4px;font-size:.68rem;font-weight:700;letter-spacing:.1em;color:var(--gold-l)}
+.ghost{position:absolute;left:4px;right:4px;border-radius:10px;border:1.5px dashed var(--gold);background:rgba(198,161,91,.07);padding:6px 9px;font-size:.74rem;color:var(--gold-ink);text-align:left}
+.ghost b{display:block;font-size:.7rem;letter-spacing:.08em}
+.nowline{position:absolute;left:0;right:0;height:2px;background:var(--gold);z-index:4}
+.nowline::before{content:"";position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.daystrip{display:none}
+@media(max-width:1060px){.planner{grid-template-columns:1fr}.p-side{display:none}.p-side.mobile-show{display:flex}}
+@media(max-width:760px){
+  .wk-head{display:none}
+  .p-bar h2{width:100%;font-size:1.2rem}
+  .p-bar #addBtn{margin-left:auto}
+  .daystrip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px}
+  .daystrip button{display:flex;flex-direction:column;align-items:center;padding:10px 0;border-radius:14px;min-height:62px}
+  .daystrip .dn{font-size:.7rem;letter-spacing:.1em;color:var(--muted);font-weight:600}
+  .daystrip .dd{font-size:1.1rem;font-weight:600;font-variant-numeric:tabular-nums}
+  .daystrip button.on{background:var(--green);color:#fff}
+  .daystrip button.on .dn{color:var(--gold-l)}
+  .daystrip .has{width:4px;height:4px;border-radius:50%;background:var(--gold);margin-top:3px}
+  .wk-body{grid-template-columns:52px 1fr;max-height:none}
+  .wk-body .daycol:not(.sel){display:none}
+  .ev{font-size:.88rem;padding:8px 12px}
+  .ev .et{font-size:.78rem}
+}
+
+/* ---------- SHEETS / MODALS ---------- */
+.scrim{position:fixed;inset:0;z-index:80;background:rgba(23,26,24,.32);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity .25s}
+.scrim.in{opacity:1}
+.sheet{background:var(--white);border-radius:26px;width:100%;max-width:520px;max-height:calc(100svh - 40px);overflow:auto;padding:30px;transform:translateY(12px) scale(.98);transition:transform .35s var(--ease);position:relative}
+.scrim.in .sheet{transform:none}
+.sheet h3{font-size:1.45rem;font-weight:600;letter-spacing:-.01em;margin-bottom:6px}
+.sheet .x{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--muted)}
+.sheet .x:hover{background:var(--warm);color:var(--text)}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:20px}
+.opt{display:flex;align-items:center;gap:12px;min-height:60px;padding:0 18px;border:1px solid var(--border);border-radius:var(--r-md);font-weight:600;text-align:left;transition:border-color .2s,background .2s}
+.opt:hover{border-color:var(--gold-l);background:#fdfcf9}
+.opt.on{border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}
+.opt .sw{width:12px;height:12px;border-radius:4px;flex-shrink:0}
+.opt.motion{grid-column:1/-1;background:var(--green);color:#fff;border-color:var(--green)}
+.opt.motion img{width:22px;height:22px}
+.opts.four{grid-template-columns:repeat(4,1fr)}
+.opts.four .opt{justify-content:center;min-height:64px;font-size:1.05rem}
+.opts.five{grid-template-columns:repeat(2,1fr)}
+.opts.five .opt:last-child{grid-column:1/-1;justify-content:center}
+@media(max-width:480px){.opts.four{grid-template-columns:repeat(2,1fr)}}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-size:.82rem;font-weight:600;color:var(--muted)}
+.field input,.field select{min-height:50px;border:1px solid var(--border);border-radius:var(--r-sm);padding:0 14px;background:var(--bg);font-size:1rem}
+.field input:focus,.field select:focus{outline:none;border-color:var(--gold);background:#fff}
+.sheet-actions{display:flex;gap:10px;margin-top:24px}
+.sheet-actions .btn{flex:1}
+.gen{margin-top:20px;border-radius:var(--r-lg);background:var(--green);color:#fff;padding:26px;position:relative;overflow:hidden}
+.gen .eyebrow{color:var(--gold-l)}
+.gen .big{font-size:2.6rem;font-weight:600;letter-spacing:-.03em;margin-top:8px}
+.gen .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.gen .tag{border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:6px 12px;font-size:.8rem;font-weight:600;letter-spacing:.08em}
+.gen img{position:absolute;right:-30px;bottom:-30px;width:150px;opacity:.12}
+.steps-dots{display:flex;gap:6px;margin-bottom:16px}
+.steps-dots i{width:22px;height:3px;border-radius:2px;background:var(--border)}
+.steps-dots i.on{background:var(--gold)}
+
+/* ---------- AI ---------- */
+.ai{max-width:780px;margin:0 auto;display:flex;flex-direction:column;min-height:calc(100svh - 200px)}
+.ai-head{text-align:center;padding:12px 0 8px}
+.ai-head img{width:40px;height:40px;margin:0 auto 14px;animation:breathe 6s ease-in-out infinite}
+@keyframes breathe{50%{transform:rotate(25deg) scale(1.04)}}
+.ai-head h1{font-size:.85rem;letter-spacing:.24em;font-weight:700}
+.ai-head p{color:var(--muted);margin-top:4px}
+.thread{flex:1;padding:28px 0 20px;display:flex;flex-direction:column;gap:22px}
+.msg{max-width:100%;animation:fadein .35s var(--ease)}
+.msg.me{align-self:flex-end;background:var(--warm);padding:12px 18px;border-radius:20px 20px 6px 20px;max-width:80%}
+.msg.bot{display:grid;grid-template-columns:28px 1fr;gap:14px}
+.msg.bot>img{width:24px;height:24px;margin-top:3px}
+.msg.bot .body p+p{margin-top:8px}
+.msg.bot .body{font-size:1.05rem;line-height:1.6}
+.typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:4px;animation:blink 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.hello{text-align:center;padding:40px 0 10px}
+.hello h2{font-size:clamp(1.7rem,3.6vw,2.4rem);font-weight:600;letter-spacing:-.02em}
+.hello p{color:var(--muted);margin-top:6px;font-size:1.1rem}
+.sugg{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px}
+.composer{position:sticky;bottom:0;padding:12px 0 18px;background:linear-gradient(transparent,var(--bg) 30%)}
+@media(max-width:760px){.composer{bottom:calc(76px + var(--sab))}}
+.composer form{display:flex;gap:8px;align-items:center;background:var(--white);border:1px solid var(--border);border-radius:999px;padding:6px 6px 6px 22px;box-shadow:var(--shadow)}
+.composer input{flex:1;border:0;outline:0;background:transparent;font-size:1rem;min-height:44px}
+.composer button{width:46px;height:46px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;flex-shrink:0}
+.composer button:disabled{opacity:.4}
+.act{margin-top:14px;border:1px solid var(--border);background:var(--white);border-radius:var(--r-lg);padding:20px;max-width:420px}
+.act .eyebrow{margin-bottom:8px}
+.act .main{font-size:1.3rem;font-weight:600;letter-spacing:-.01em}
+.act .sub{color:var(--muted);font-size:.95rem}
+.act .btns{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.act.done{opacity:.7}
+.act.done .btns{display:none}
+.act .ok{display:none;color:var(--green);font-weight:600;margin-top:12px;font-size:.95rem}
+.act.done .ok{display:block}
+.wk-prop{list-style:none;margin-top:6px}
+.wk-prop li{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--border)}
+.wk-prop li:first-child{border-top:0}
+.wk-prop .d{font-size:.75rem;letter-spacing:.12em;font-weight:700;color:var(--muted)}
+.wk-prop .s{font-weight:600}
+.wk-prop input[type=time]{border:1px solid var(--border);border-radius:10px;padding:6px 8px;background:var(--bg);font-variant-numeric:tabular-nums}
+.wk-prop .rm{width:36px;height:36px;border-radius:50%;color:var(--muted);display:grid;place-items:center}
+.wk-prop .rm:hover{background:var(--warm)}
+.wk-prop li.off{opacity:.35}
+.mv{display:flex;align-items:center;gap:14px;font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums;margin-top:4px}
+.mv span{color:var(--gold)}
+
+/* ---------- SCAN ---------- */
+.scan{max-width:520px;margin:0 auto;text-align:center}
+.scan h1{font-size:1.9rem;font-weight:600;letter-spacing:-.02em;margin-top:6px}
+.scan .lead{color:var(--muted);margin-top:4px}
+.sess-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--white);border:1px solid var(--border);border-radius:var(--r-md);padding:14px 18px;margin-bottom:22px;text-align:left}
+.dots{display:flex;gap:7px}
+.dots i{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--green)}
+.dots i.on{background:var(--green)}
+.cam{position:relative;margin-top:24px;aspect-ratio:1/1.08;border-radius:30px;overflow:hidden;background:#1d211f}
+.cam video{width:100%;height:100%;object-fit:cover}
+.cam .frame{position:absolute;inset:18%;border-radius:22px}
+.cam .frame i{position:absolute;width:34px;height:34px;border-color:#fff;border-style:solid;border-width:0}
+.cam .frame i:nth-child(1){top:0;left:0;border-top-width:3px;border-left-width:3px;border-top-left-radius:18px}
+.cam .frame i:nth-child(2){top:0;right:0;border-top-width:3px;border-right-width:3px;border-top-right-radius:18px}
+.cam .frame i:nth-child(3){bottom:0;left:0;border-bottom-width:3px;border-left-width:3px;border-bottom-left-radius:18px}
+.cam .frame i:nth-child(4){bottom:0;right:0;border-bottom-width:3px;border-right-width:3px;border-bottom-right-radius:18px}
+.cam .line{position:absolute;left:8%;right:8%;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:scanline 2.6s ease-in-out infinite}
+@keyframes scanline{0%,100%{top:10%}50%{top:88%}}
+.cam .hint{position:absolute;left:0;right:0;bottom:22px;color:rgba(255,255,255,.85);font-size:.92rem}
+.cam .off{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:rgba(255,255,255,.85);padding:30px;background:radial-gradient(circle at 50% 40%,#26302c,#161917)}
+.cam .off img{width:52px;opacity:.9}
+.scan-alt{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.manual{display:flex;gap:8px;margin-top:4px}
+.manual input{flex:1;min-width:0;min-height:52px;border:1px solid var(--border);border-radius:999px;padding:0 20px;background:var(--white);letter-spacing:.04em;font-weight:600}
+.manual input::placeholder{font-weight:500;letter-spacing:0;color:#9a9b96}
+.manual input:focus{outline:none;border-color:var(--gold)}
+.found{position:fixed;inset:0;z-index:90;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.found img{width:72px;animation:spin 1.4s var(--ease) infinite}
+.found.ok img{animation:settle .8s var(--ease) forwards}
+.found .lbl{font-weight:700;letter-spacing:.22em;font-size:.85rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes settle{from{transform:rotate(0) scale(1)}to{transform:rotate(200deg) scale(1.12)}}
+
+/* ---------- EXERCISE ---------- */
+.ex{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;max-width:1080px;margin:0 auto}
+@media(max-width:860px){.ex{grid-template-columns:1fr;gap:28px}}
+.ex-visual{position:relative;aspect-ratio:1;border-radius:32px;background:radial-gradient(70% 70% at 50% 45%,#fbf8f2,#efe8db);display:grid;place-items:center;overflow:hidden;border:1px solid var(--border)}
+.ex-visual video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pc{width:min(56%,280px);aspect-ratio:5/7;border-radius:18px;background:linear-gradient(165deg,#FBF8F1,#F1EBDF);box-shadow:0 30px 50px -22px rgba(70,52,30,.45);position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:12% 9%;animation:floaty 6s ease-in-out infinite;container-type:inline-size}
+@keyframes floaty{50%{transform:translateY(-8px) rotate(-1deg)}}
+.pc::after{content:"";position:absolute;inset:5%;border:1px solid var(--gold);border-radius:12px;pointer-events:none}
+.pc .cat{font-size:5.2cqw;letter-spacing:.32em;color:var(--gold-ink);font-weight:700}
+.pc .rule{width:22%;height:1px;background:var(--gold);margin:5cqw 0 6cqw}
+.pc img{width:44%;opacity:.95}
+.pc .nm{font-size:9.5cqw;font-weight:600;line-height:1.1;margin-top:7cqw;letter-spacing:-.01em}
+.pc .id{font-size:4cqw;letter-spacing:.2em;color:var(--muted);margin-top:auto}
+.ex-info h1{font-size:clamp(2.2rem,4.6vw,3.4rem);font-weight:600;letter-spacing:-.03em;line-height:1.05;margin-top:10px}
+.facts{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.fact{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;background:var(--white);border:1px solid var(--border);font-weight:700;font-size:.82rem;letter-spacing:.1em}
+.fact svg{color:var(--gold)}
+.howto{margin-top:30px;list-style:none;counter-reset:s}
+.howto li{counter-increment:s;display:grid;grid-template-columns:36px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--border);font-size:1.05rem}
+.howto li::before{content:counter(s);width:28px;height:28px;border-radius:50%;border:1px solid var(--gold);color:var(--gold-ink);display:grid;place-items:center;font-size:.85rem;font-weight:700}
+.ex-cta{margin-top:30px;display:flex;gap:10px}
+.ex-cta .btn-primary{flex:1;min-height:60px;font-size:1.05rem;letter-spacing:.12em}
+.players{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.player{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 8px 0 16px;border-radius:999px;background:var(--white);border:1px solid var(--border);font-weight:600}
+.player button{width:30px;height:30px;border-radius:50%;color:var(--muted);display:grid;place-items:center}
+.player button:hover{background:var(--warm)}
+.addp{display:flex;gap:8px;margin-top:10px}
+.addp input{flex:1;min-height:48px;border:1px solid var(--border);border-radius:999px;padding:0 18px;background:var(--white)}
+
+/* ---------- WORKOUT ---------- */
+.wo{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;padding:calc(20px + var(--sat)) 24px calc(24px + var(--sab));animation:fadein .4s var(--ease)}
+.wo.fam{background:#F3EEE4}
+.wo-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.wo-top .eyebrow{font-size:.8rem}
+.wo-mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+.wo h2{font-size:clamp(1.7rem,4.5vw,2.6rem);font-weight:600;letter-spacing:-.02em}
+.ring{position:relative;width:min(72vw,340px);aspect-ratio:1;margin:18px 0}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .tr{stroke:var(--border)}
+.ring .pr{stroke:var(--green);transition:stroke-dashoffset .25s linear}
+.ring.rest .pr{stroke:var(--gold)}
+.ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .num b{font-size:clamp(3.2rem,12vw,5rem);font-weight:600;letter-spacing:-.04em;font-variant-numeric:tabular-nums;line-height:1}
+.ring .num span{color:var(--muted);font-size:.9rem;margin-top:6px;letter-spacing:.12em;font-weight:600}
+.ring img.mark{position:absolute;width:24%;left:38%;top:38%;opacity:.08}
+.wo-bot{display:flex;flex-direction:column;align-items:center;gap:14px}
+.wo-bot .btn{min-width:220px;min-height:60px;font-size:1.02rem;letter-spacing:.1em}
+.wo .cue{color:var(--muted);max-width:26em;min-height:1.6em}
+.done-mark{width:110px;height:110px;position:relative;margin-bottom:10px}
+.done-mark img{width:100%;animation:settle 1.2s var(--ease) forwards}
+.done-mark svg{position:absolute;inset:-14px;width:calc(100% + 28px);height:calc(100% + 28px)}
+.done-mark circle{stroke:var(--gold);stroke-dasharray:420;stroke-dashoffset:420;animation:draw 1.2s .2s var(--ease) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.wo .bigword{font-size:clamp(2.6rem,8vw,4rem);font-weight:600;letter-spacing:-.03em}
+.winner{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;width:100%;max-width:520px;margin-top:18px}
+.winner button{min-height:64px;border-radius:var(--r-md);background:var(--white);border:1px solid var(--border);font-weight:700;font-size:1.05rem}
+.winner button:hover{border-color:var(--gold)}
+.score{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.score span{padding:8px 14px;border-radius:999px;background:var(--white);border:1px solid var(--border);font-weight:600;font-size:.9rem}
+.score b{color:var(--gold-ink)}
+
+/* ---------- PROGRESS ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+.stat{padding:28px}
+.stat .n{font-size:clamp(2.6rem,6vw,3.8rem);font-weight:600;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.stat .l{color:var(--muted);margin-top:10px;font-weight:600;font-size:.8rem;letter-spacing:.14em}
+@media(max-width:620px){.stats{grid-template-columns:1fr 1fr 1fr;gap:10px}.stat{padding:18px}.stat .l{font-size:.68rem;letter-spacing:.08em}}
+.bars{padding:28px;margin-top:16px}
+.bar{display:grid;grid-template-columns:110px 1fr 64px;gap:14px;align-items:center;padding:9px 0}
+.bar .track{height:10px;border-radius:6px;background:var(--warm);overflow:hidden}
+.bar .fill{height:100%;border-radius:6px;background:var(--green);width:0;transition:width 1s var(--ease)}
+.bar .v{white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.bar.is-today .d{font-weight:700}
+@media(max-width:520px){.bar{grid-template-columns:76px 1fr 54px}}
+.badges{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:16px}
+@media(max-width:760px){.badges{grid-template-columns:repeat(3,1fr)}}
+.badge{padding:22px 14px;text-align:center}
+.badge .ic{width:66px;height:66px;margin:0 auto 12px;border-radius:50%;border:1.5px solid var(--gold);display:grid;place-items:center;background:radial-gradient(circle,#fff,#f6f0e3)}
+.badge .ic img{width:30px}
+.badge .t{font-weight:700;font-size:.78rem;letter-spacing:.12em}
+.badge .s{color:var(--muted);font-size:.82rem;margin-top:2px}
+.badge.locked{opacity:.42}
+.badge.locked .ic{border-color:var(--border);background:var(--bg)}
+.badge.locked .ic img{filter:grayscale(1);opacity:.5}
+
+/* ---------- WELCOME ---------- */
+.welcome{position:fixed;inset:0;z-index:120;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
+.welcome .box{max-width:420px;width:100%;text-align:center}
+.welcome img{width:64px;margin:0 auto 26px;animation:breathe 6s ease-in-out infinite}
+.welcome h1{font-size:2rem;font-weight:600;letter-spacing:-.02em}
+.welcome p{color:var(--muted);margin-top:6px}
+.welcome input{width:100%;min-height:56px;border:1px solid var(--border);border-radius:999px;padding:0 22px;margin-top:28px;font-size:1.05rem;text-align:center;background:#fff}
+.welcome input:focus{outline:none;border-color:var(--gold)}
+.welcome .btn{margin-top:12px}
+.welcome .tag{margin-top:34px;font-size:.78rem;letter-spacing:.24em;color:var(--gold-ink);font-weight:700}
+
+.toast{position:fixed;left:50%;bottom:calc(30px + var(--sab));transform:translate(-50%,20px);background:var(--text);color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.92rem;opacity:0;transition:opacity .3s,transform .3s var(--ease);z-index:200;pointer-events:none}
+.toast.in{opacity:1;transform:translate(-50%,0)}
+@media(max-width:760px){.toast{bottom:calc(100px + var(--sab))}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<header class="topnav">
+  <div class="in">
+    <a class="brand" href="#today"><img src="/images/logo_mark_v2.png" alt="">MOTION UF</a>
+    <nav class="tabs" aria-label="Huvudmeny">
+      <a href="#today" data-tab="today">Idag</a>
+      <a href="#planner" data-tab="planner">Planerare</a>
+      <a href="#ai" data-tab="ai">Motion AI</a>
+      <a href="#scan" data-tab="scan">Skanna</a>
+      <a href="#progress" data-tab="progress">Framsteg</a>
+    </nav>
+    <button class="avatar" id="avatar" aria-label="Profil"></button>
+    <a class="avatar mobile-av" href="#progress" id="avatarM" aria-label="Framsteg"></a>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<nav class="botnav" aria-label="Meny">
+  <a href="#today" data-tab="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>Idag</a>
+  <a href="#planner" data-tab="planner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Planerare</a>
+  <a href="#scan" data-tab="scan" class="scanbtn"><div class="disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M4 12h16"/></svg></div><span>Skanna</span></a>
+  <a href="#ai" data-tab="ai"><img src="/images/logo_mark_v2.png" alt="" style="width:24px;height:24px">AI</a>
+  <a href="#progress" data-tab="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 19V11M12 19V5M19 19v-5"/></svg>Framsteg</a>
+</nav>
+
+<div class="toast" id="toast" role="status"></div>
+<script src="/cards.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js" defer></script>
+<script>
+/* =========================================================
+   MOTION UF — app core
+   Store → schedule engine → smart planner → views
+   ========================================================= */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LOGO='/images/logo_mark_v2.png';
+const CARDS=window.MUF_CARDS||[];
+const cardById=id=>CARDS.find(c=>c.id===String(id).toUpperCase());
+
+/* ---------- dates ---------- */
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parseYmd=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const todayStr=()=>ymd(new Date());
+const dow=d=>(d.getDay()+6)%7; // Mon=0
+const weekStart=d=>{const x=new Date(d);x.setHours(0,0,0,0);return addDays(x,-dow(x))};
+const toMin=t=>{if(!t)return null;const [h,m]=t.split(':').map(Number);return h*60+m};
+const toHM=m=>`${pad(Math.floor(m/60))}:${pad(m%60)}`;
+const nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
+const DN=['Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag','Söndag'];
+const DS=['MÅN','TIS','ONS','TOR','FRE','LÖR','SÖN'];
+const MN=['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+const niceDate=d=>`${DN[dow(d)]} ${d.getDate()} ${MN[d.getMonth()]}`;
+const relDay=s=>{const t=todayStr();if(s===t)return'Idag';if(s===ymd(addDays(new Date(),1)))return'Imorgon';const d=parseYmd(s);return `${DN[dow(d)]} ${d.getDate()}/${d.getMonth()+1}`};
+const greeting=()=>{const h=new Date().getHours();return h<10?'God morgon':h<17?'God eftermiddag':'God kväll'};
+
+/* ---------- categories ---------- */
+const CAT={
+  school:{sv:'Skola',sw:'#CFC7B8'},work:{sv:'Jobb',sw:'#B7C2BB'},training:{sv:'Träning',sw:'#D9C49A'},
+  meal:{sv:'Måltid',sw:'#E5E1D9'},personal:{sv:'Personligt',sw:'#CDBFD3'},motion:{sv:'Motion',sw:'#123C32'}
+};
+const NEED={energy:'Energi',strength:'Styrka',mobility:'Rörlighet',reset:'Reset',surprise:'Överraska mig'};
+const NEED_LABEL={energy:'ENERGY',strength:'STRENGTH',mobility:'MOBILITY',reset:'RESET',surprise:'MIX'};
+const CAT_SV={strength:'STYRKA',energy:'KONDITION',mobility:'RÖRLIGHET',reset:'RESET',challenge:'UTMANING',together:'TILLSAMMANS'};
+const DIFF_SV={easy:'LÄTT',medium:'MEDIUM',hard:'SVÅR'};
+
+/* ---------- store (localStorage, versioned) ---------- */
+const KEY='muf.v1';
+let S;
+const uid=()=>Math.random().toString(36).slice(2,10);
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function load(){
+  try{S=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){S=null}
+  if(!S){S={user:null,events:[],sessions:[],completions:[],players:[]};seed();}
+}
+function seed(){
+  const ws=weekStart(new Date());
+  const d=i=>ymd(addDays(ws,i));
+  S.events=[
+    {id:uid(),title:'Skola',category:'school',date:d(0),start:'08:30',end:'15:30',repeat:'weekdays'},
+    {id:uid(),title:'Lunch',category:'meal',date:d(0),start:'12:00',end:'12:45',repeat:'weekdays'},
+    {id:uid(),title:'Middag',category:'meal',date:d(0),start:'18:30',end:'19:15',repeat:'daily'},
+    {id:uid(),title:'Tennis',category:'training',date:d(1),start:'16:00',end:'17:30',repeat:'weekly'},
+    {id:uid(),title:'Tennis',category:'training',date:d(3),start:'17:00',end:'18:15',repeat:'weekly'},
+    {id:uid(),title:'Brunch',category:'meal',date:d(5),start:'10:00',end:'11:00',repeat:'weekly'},
+  ];
+  // a little history so Progress isn't empty — only days before today
+  const t=dow(new Date());
+  const hist=[[0,'16:30',10,'reset',['MOT-IND-006','MOT-IND-002','MOT-IND-010','MOT-IND-013']],[2,'16:15',15,'strength',['MOT-IND-001','MOT-IND-003','MOT-IND-004','MOT-IND-005']]];
+  hist.forEach(([i,st,dur,need,cards])=>{
+    if(i>=t) return;
+    const id=uid();
+    S.sessions.push({id,date:d(i),start:st,duration:dur,need,count:cards.length,status:'completed',cards:cards.map((c,k)=>({card_id:c,order:k+1,completed:true}))});
+    cards.forEach(c=>S.completions.push({card_id:c,date:d(i),seconds:Math.round(dur*60/cards.length),session_id:id}));
+  });
+  // today's suggested session goes in once the user has a name (see welcome)
+}
+
+/* ---------- schedule engine ---------- */
+function occursOn(ev,dateStr){
+  if(ev.date===dateStr) return true;
+  if(!ev.repeat||ev.repeat==='none') return false;
+  if(dateStr<ev.date) return false;
+  if(ev.exdates&&ev.exdates.includes(dateStr)) return false;
+  const d=parseYmd(dateStr), o=parseYmd(ev.date);
+  if(ev.repeat==='daily') return true;
+  if(ev.repeat==='weekdays') return dow(d)<5;
+  if(ev.repeat==='weekly') return dow(d)===dow(o);
+  return false;
+}
+function eventsOn(dateStr){
+  const evs=S.events.filter(e=>occursOn(e,dateStr)).map(e=>({...e,date:dateStr,kind:'event'}));
+  const ses=S.sessions.filter(s=>s.date===dateStr&&s.status!=='skipped').map(s=>({
+    id:s.id,kind:'session',category:'motion',title:`${s.duration} min ${NEED[s.need]||'Motion'}`,date:s.date,start:s.start,end:toHM(toMin(s.start)+s.duration),session:s
+  }));
+  return [...evs,...ses].sort((a,b)=>toMin(a.start)-toMin(b.start));
+}
+function busy(dateStr){return eventsOn(dateStr).map(e=>[toMin(e.start),toMin(e.end||toHM(toMin(e.start)+30))])}
+
+/* Free windows: realistic, not every gap.
+   Day bounded 07:00–21:00, 20 min buffer after school/work/training, 30 min before meals. */
+function freeWindows(dateStr){
+  const evs=eventsOn(dateStr);
+  const blocks=evs.map(e=>{
+    let a=toMin(e.start), b=toMin(e.end||toHM(a+30));
+    if(['school','work','training'].includes(e.category)) b+=20;
+    if(e.category==='meal') a-=30;
+    return [a,b];
+  }).sort((x,y)=>x[0]-y[0]);
+  const isWeekend=dow(parseYmd(dateStr))>=5;
+  let cur=isWeekend?9*60:7*60; const end=21*60; const out=[];
+  for(const [a,b] of blocks){ if(a>cur) out.push([cur,a]); cur=Math.max(cur,b); }
+  if(end>cur) out.push([cur,end]);
+  let res=out.filter(([a,b])=>b-a>=30);
+  if(dateStr===todayStr()){const n=nowMin()+10;res=res.map(([a,b])=>[Math.max(a,n),b]).filter(([a,b])=>b-a>=25)}
+  return res.map(([a,b])=>({date:dateStr,start:a,end:b}));
+}
+/* One sensible suggestion per day, only if the day has no Motion session yet. */
+function suggestFor(dateStr){
+  if(eventsOn(dateStr).some(e=>e.category==='motion')) return null;
+  const w=freeWindows(dateStr); if(!w.length) return null;
+  const score=x=>{const mid=(x.start+x.end)/2;let s=Math.min(x.end-x.start,120);if(mid>=15*60&&mid<=19.5*60)s+=80;if(mid<9*60)s-=40;return s};
+  const best=[...w].sort((a,b)=>score(b)-score(a))[0];
+  const len=best.end-best.start;
+  const dur=len>=90?15:len>=45?10:5;
+  let st=best.start+(len>=60?Math.min(45,Math.round(len/3)):0);
+  st=Math.ceil(st/15)*15; if(st+dur>best.end) st=Math.floor((best.end-dur)/5)*5;
+  return {date:dateStr,window:[best.start,best.end],start:st,duration:dur,need:dur<=5?'reset':'reset'};
+}
+function weekSessionCount(ref=new Date()){
+  const ws=weekStart(ref); const a=ymd(ws), b=ymd(addDays(ws,6));
+  return S.sessions.filter(s=>s.date>=a&&s.date<=b&&s.status!=='skipped').length;
+}
+/* Week plan: ~3 sessions spread out (≥1 rest day between), skipping days that already have one. */
+function planWeek(ref=new Date()){
+  const ws=weekStart(ref); const t=todayStr(); const picks=[];
+  const order=[0,2,5,3,1,4,6];
+  const needs=['reset','strength','surprise'];
+  let lastIdx=-9;
+  const taken=new Set(S.sessions.filter(s=>s.status!=='skipped').map(s=>s.date));
+  for(const i of order){
+    if(picks.length>=3) break;
+    const ds=ymd(addDays(ws,i)); if(ds<t||taken.has(ds)) continue;
+    if(picks.some(p=>Math.abs(p.i-i)<2)) continue;
+    const sg=suggestFor(ds); if(!sg) continue;
+    const need=needs[picks.length]; const dur=i>=5?Math.max(sg.duration,15):sg.duration;
+    picks.push({i,date:ds,start:toHM(sg.start),duration:need==='strength'?Math.max(dur,15):dur,need});
+  }
+  return picks.sort((a,b)=>a.i-b.i);
+}
+const cardsFor=min=>min<=5?2:min<=10?4:min<=15?5:6;
+function createSession({date,start,duration,need}){
+  const s={id:uid(),date,start,duration:+duration,need:need||'surprise',count:cardsFor(+duration),status:'planned',cards:[]};
+  S.sessions.push(s); save(); return s;
+}
+function nextMotion(){
+  const t=todayStr(), n=nowMin();
+  const up=S.sessions.filter(s=>s.status==='planned'&&(s.date>t||(s.date===t&&toMin(s.start)+s.duration>=n-5)))
+    .sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start));
+  return up[0]||null;
+}
+function contextLine(s){
+  const evs=eventsOn(s.date).filter(e=>e.kind==='event'); const st=toMin(s.start);
+  const before=[...evs].reverse().find(e=>toMin(e.end||e.start)<=st);
+  const after=evs.find(e=>toMin(e.start)>=st+s.duration);
+  const nm=e=>e.title.toLowerCase();
+  if(before&&after) return `Passar fint mellan ${nm(before)} och ${nm(after)}.`;
+  if(after) return `Hinns med innan ${nm(after)}.`;
+  if(before) return `En lugn stund efter ${nm(before)}.`;
+  return 'Ett kort pass, sedan är du klar.';
+}
+
+/* ---------- stats ---------- */
+function weekStats(ref=new Date()){
+  const ws=weekStart(ref);const days=[...Array(7)].map((_,i)=>ymd(addDays(ws,i)));
+  const comp=S.completions.filter(c=>days.includes(c.date));
+  const per=days.map(d=>Math.round(comp.filter(c=>c.date===d).reduce((a,c)=>a+c.seconds,0)/60));
+  const sessions=S.sessions.filter(s=>days.includes(s.date)&&s.status==='completed').length;
+  return {days,per,minutes:per.reduce((a,b)=>a+b,0),sessions,cards:comp.length};
+}
+function totals(){
+  const minutes=Math.round(S.completions.reduce((a,c)=>a+c.seconds,0)/60);
+  const sessions=S.sessions.filter(s=>s.status==='completed').length;
+  const cards=S.completions.length;
+  const ds=new Set(S.completions.map(c=>c.date)); let best=0,run=0;
+  const all=[...ds].sort(); let prev=null;
+  for(const d of all){ if(prev&&ymd(addDays(parseYmd(prev),1))===d) run++; else run=1; best=Math.max(best,run); prev=d; }
+  return {minutes,sessions,cards,streak:best};
+}
+
+/* ---------- ui helpers ---------- */
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('in');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('in'),2200)}
+let lastFocus=null;
+function openSheet(html,onMount){
+  closeSheet(true); lastFocus=document.activeElement;
+  const sc=document.createElement('div'); sc.className='scrim'; sc.id='scrim';
+  sc.innerHTML=`<div class="sheet" role="dialog" aria-modal="true"><button class="x" aria-label="Stäng" data-close>${IC.x}</button>${html}</div>`;
+  document.body.appendChild(sc); requestAnimationFrame(()=>sc.classList.add('in'));
+  sc.addEventListener('click',e=>{if(e.target===sc||e.target.closest('[data-close]'))closeSheet()});
+  onMount&&onMount($('.sheet',sc));
+  const f=$('.sheet input,.sheet button:not(.x)',sc); f&&f.focus({preventScroll:true});
+}
+function closeSheet(instant){const sc=$('#scrim');if(!sc)return;if(instant){sc.remove();return}sc.classList.remove('in');setTimeout(()=>sc.remove(),250);lastFocus&&lastFocus.focus&&lastFocus.focus()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){ if($('#scrim'))closeSheet(); }});
+const IC={
+  x:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  plus:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>',
+  l:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg>',
+  r:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg>',
+  send:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  bars:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 19v-3M10 19v-6M15 19v-9M20 19V6"/></svg>',
+  time:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M10 3h4"/></svg>',
+  body:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="5" r="2"/><path d="M12 8v6M7 10l5-2 5 2M9 21l3-7 3 7"/></svg>',
+  users:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 5a3 3 0 0 1 0 6M21 20c0-2.6-1.6-4.8-4-5.6"/></svg>',
+};
+/* =========================================================
+   ROUTER
+   ========================================================= */
+const app=$('#app');
+let route='today', routeArg=null;
+function go(h){ if(location.hash!=='#'+h) location.hash=h; else render(); }
+function parseRoute(){
+  const m=location.pathname.match(/\/play\/(MOT-[A-Z]{3}-\d{3})/i);
+  if(m){ history.replaceState(null,'','/app.html#play/'+m[1].toUpperCase()); }
+  const h=(location.hash||'#today').slice(1).split('/');
+  route=h[0]||'today'; routeArg=h.slice(1).join('/')||null;
+}
+function render(){
+  parseRoute(); stopCamera();
+  $$('[data-tab]').forEach(a=>a.classList.toggle('on',a.dataset.tab===route||(route==='play'&&a.dataset.tab==='scan')));
+  const V={today:vToday,planner:vPlanner,ai:vAI,scan:vScan,play:vPlay,progress:vProgress}[route]||vToday;
+  app.innerHTML=''; const w=document.createElement('div'); w.className='view'; app.appendChild(w); V(w);
+  window.scrollTo({top:0});
+}
+window.addEventListener('hashchange',render);
+
+/* =========================================================
+   TODAY — "What am I doing today?"
+   ========================================================= */
+function vToday(el){
+  const t=todayStr(), now=new Date();
+  const nm=nextMotion(); const sg=nm?null:suggestFor(t);
+  let next='';
+  if(nm){
+    const isToday=nm.date===t;
+    next=`<section class="next" aria-label="Nästa pass">
+      <img class="swirl" src="${LOGO}" alt="">
+      <span class="eyebrow">Nästa rörelse${isToday?'':' · '+relDay(nm.date)}</span>
+      <div class="time">${nm.start}</div>
+      <div class="what">${nm.duration} MIN ${NEED_LABEL[nm.need]||''}</div>
+      <div class="meta"><span>${nm.count} kort</span><span>·</span><span>${NEED[nm.need]||''}</span></div>
+      <p class="why">${contextLine(nm)}</p>
+      <div class="actions"><button class="btn btn-gold" data-start="${nm.id}">Starta passet</button><button class="btn btn-line" data-edit-s="${nm.id}">Ändra</button></div>
+    </section>`;
+  } else if(sg){
+    next=`<section class="next empty">
+      <img class="swirl" src="${LOGO}" alt="">
+      <span class="eyebrow">Du har en lucka</span>
+      <div class="time">${toHM(sg.window[0])}–${toHM(sg.window[1])}</div>
+      <div class="what">Förslag: ${sg.duration} min reset kl ${toHM(sg.start)}</div>
+      <p class="why">Inget är planerat än. Ett kort pass i luckan räcker gott.</p>
+      <div class="actions"><button class="btn btn-primary" id="addSg">Lägg till i dagen</button><a class="btn btn-line" href="#scan">Kör direkt</a></div>
+    </section>`;
+  } else {
+    next=`<section class="next empty">
+      <img class="swirl" src="${LOGO}" alt="">
+      <span class="eyebrow">Idag</span>
+      <div class="time" style="font-size:2.6rem">Inget planerat</div>
+      <p class="why">Dagen är full eller redan klar. Vill du ändå röra dig räcker fem minuter.</p>
+      <div class="actions"><button class="btn btn-primary" id="newS">Skapa pass</button><a class="btn btn-line" href="#scan">Skanna ett kort</a></div>
+    </section>`;
+  }
+  const evs=eventsOn(t); const n=nowMin();
+  const tl=evs.map(e=>{
+    const motion=e.category==='motion'; const end=toMin(e.end||e.start);
+    const done=motion&&e.session.status==='completed';
+    const past=!motion&&end<n;
+    return `<li class="${motion?'motion':''} ${past?'past':''} ${done?'done':''}"><span class="t">${e.start}</span><span class="dot"></span><div><div class="lbl">${motion?'Motion':esc(e.title)}</div><div class="sub">${motion?`${e.session.duration} min · ${e.session.count} kort${done?' · klart':''}`:`till ${e.end}`}</div></div></li>`;
+  }).join('')||'<li><span class="t">—</span><span class="dot"></span><div class="sub">Inget i kalendern idag.</div></li>';
+  const ws=weekStats();
+  el.innerHTML=`
+    <span class="eyebrow">${niceDate(now)}</span>
+    <h1 class="big" style="margin-top:8px">${greeting()}, ${esc(S.user.name)}.</h1>
+    <div class="today">
+      ${next}
+      <section class="card timeline" aria-label="Dagens schema">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span class="eyebrow">Dagens schema</span><a href="#planner" class="btn btn-ghost btn-sm">Öppna planeraren</a></div>
+        <ul class="tl">${tl}</ul>
+      </section>
+    </div>
+    <section class="card weeksum" aria-label="Veckan">
+      <span class="eyebrow">Den här veckan</span>
+      <div><div class="n">${ws.sessions}</div><div class="l">pass</div></div>
+      <div><div class="n">${ws.minutes}</div><div class="l">minuter</div></div>
+      <div><div class="n">${ws.cards}</div><div class="l">kort klara</div></div>
+    </section>`;
+  el.addEventListener('click',e=>{
+    const st=e.target.closest('[data-start]'); if(st) return startSession(st.dataset.start);
+    const ed=e.target.closest('[data-edit-s]'); if(ed) return sessionSheet(S.sessions.find(s=>s.id===ed.dataset.editS));
+    if(e.target.closest('#addSg')){ createSession({date:t,start:toHM(sg.start),duration:sg.duration,need:'reset'}); toast('Tillagt i dagen'); render(); }
+    if(e.target.closest('#newS')) motionFlow({date:t});
+  });
+}
+
+/* =========================================================
+   PLANNER — "When should I move?"
+   ========================================================= */
+let pRef=new Date(), pSel=todayStr(), pMonth=new Date(), pFilter=new Set(Object.keys(CAT));
+const H0=6,H1=22,HH=56;
+function vPlanner(el){
+  const ws=weekStart(pRef); const days=[...Array(7)].map((_,i)=>addDays(ws,i)); const t=todayStr();
+  if(!days.some(d=>ymd(d)===pSel)) pSel=days.some(d=>ymd(d)===t)?t:ymd(days[0]);
+  const range=`${days[0].getDate()} ${MN[days[0].getMonth()].slice(0,3)} – ${days[6].getDate()} ${MN[days[6].getMonth()].slice(0,3)}`;
+  const hours=[...Array(H1-H0)].map((_,i)=>`<div>${pad(H0+i)}:00</div>`).join('');
+  const cols=days.map(d=>{
+    const ds=ymd(d);
+    const evs=eventsOn(ds).filter(e=>pFilter.has(e.category));
+    // lane layout: overlapping events share the column width
+    const items=evs.map(e=>({e,a:toMin(e.start),b:toMin(e.end||toHM(toMin(e.start)+30))}));
+    // short events fully inside a longer one (lunch during school) sit on top, inset to the right
+    items.forEach(it=>{it.inner=items.some(o=>o!==it&&o.a<=it.a&&o.b>=it.b&&(o.b-o.a)>(it.b-it.a))});
+    const flow=items.filter(i=>!i.inner);
+    flow.forEach(it=>{it.lane=0;const used=flow.filter(o=>o!==it&&o.done&&o.a<it.b&&it.a<o.b).map(o=>o.lane);while(used.includes(it.lane))it.lane++;it.done=true});
+    flow.forEach(it=>{it.n=1+Math.max(0,...flow.filter(o=>o.a<it.b&&it.a<o.b).map(o=>o.lane))});
+    items.filter(i=>i.inner).forEach(i=>{i.lane=0;i.n=1});
+    const blocks=items.map(({e,lane,n,inner})=>{
+      const a=Math.max(toMin(e.start),H0*60), b=Math.min(toMin(e.end||toHM(toMin(e.start)+30)),H1*60);
+      if(b<=H0*60||a>=H1*60) return '';
+      const top=(a-H0*60)/60*HH, h=Math.max((b-a)/60*HH,26);
+      const pos=inner?'left:34%;right:4px;z-index:2;box-shadow:0 0 0 2px var(--white);':n>1?`left:calc(${lane/n*100}% + 3px);right:auto;width:calc(${100/n}% - 6px);`:'';
+      if(e.category==='motion'){
+        const s=e.session, done=s.status==='completed';
+        return `<button class="ev cat-motion ${done?'done':''}" style="${pos}top:${top}px;height:${Math.max(h,58)}px" data-s="${s.id}"><div class="eh">${s.start}</div><div class="et">Motion</div><div>${s.duration} min · ${s.count} kort</div>${done?'':'<span class="go">STARTA</span>'}</button>`;
+      }
+      return `<button class="ev cat-${e.category}" style="${pos}top:${top}px;height:${h}px" data-e="${e.id}"><div class="et">${esc(e.title)}</div>${h>34?`<div class="eh">${e.start}–${e.end||''}</div>`:''}</button>`;
+    }).join('');
+    const sg=pFilter.has('motion')&&ds>=t?suggestFor(ds):null;
+    const ghost=sg?`<button class="ghost" style="top:${(sg.start-H0*60)/60*HH}px;height:${Math.max(sg.duration/60*HH,44)}px" data-g="${ds}|${toHM(sg.start)}|${sg.duration}"><b>FÖRSLAG ${toHM(sg.start)}</b>${sg.duration} min · lägg till</button>`:'';
+    const now=ds===t&&nowMin()>H0*60&&nowMin()<H1*60?`<div class="nowline" style="top:${(nowMin()-H0*60)/60*HH}px"></div>`:'';
+    return `<div class="daycol ${ds===t?'is-today':''} ${ds===pSel?'sel':''}" data-day="${ds}" style="height:${(H1-H0)*HH}px">${blocks}${ghost}${now}</div>`;
+  }).join('');
+  // windows list (sidebar)
+  const wins=days.map(d=>ymd(d)).filter(ds=>ds>=t).map(ds=>({ds,sg:suggestFor(ds)})).filter(x=>x.sg).slice(0,3);
+  el.innerHTML=`
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div><span class="eyebrow">Planerare</span><h1 class="big" style="margin-top:6px">När ska jag röra mig?</h1></div>
+    </div>
+    <div class="planner">
+      <aside class="p-side">
+        <div class="card mini" id="mini"></div>
+        <div class="card filters"><div class="eyebrow" style="margin-bottom:6px">Visa</div>
+          ${Object.entries(CAT).map(([k,v])=>`<label><input type="checkbox" data-f="${k}" ${pFilter.has(k)?'checked':''}>${v.sv}<span class="sw" style="background:${v.sw}"></span></label>`).join('')}
+        </div>
+        <div class="card windows"><div class="eyebrow gold" style="margin-bottom:6px">Luckor den här veckan</div>
+          ${wins.length?wins.map(w=>`<div class="win"><div class="d">${relDay(w.ds)}</div><div class="r">${toHM(w.sg.window[0])}–${toHM(w.sg.window[1])}</div><button class="btn btn-line btn-sm" data-g="${w.ds}|${toHM(w.sg.start)}|${w.sg.duration}">${w.sg.duration} min kl ${toHM(w.sg.start)}</button></div>`).join(''):'<p class="muted" style="font-size:.92rem">Inga fler luckor som passar den här veckan. Det är också okej.</p>'}
+        </div>
+      </aside>
+      <section class="p-main">
+        <div class="p-bar">
+          <h2>${range}</h2>
+          <button class="iconbtn" data-w="-1" aria-label="Föregående vecka">${IC.l}</button>
+          <button class="btn btn-line btn-sm" data-w="0">Idag</button>
+          <button class="iconbtn" data-w="1" aria-label="Nästa vecka">${IC.r}</button>
+          <button class="btn btn-primary btn-sm" id="addBtn">${IC.plus} Lägg till</button>
+        </div>
+        <div class="daystrip">${days.map((d,i)=>{const ds=ymd(d);return `<button class="${ds===pSel?'on':''}" data-sel="${ds}"><span class="dn">${DS[i]}</span><span class="dd">${d.getDate()}</span>${eventsOn(ds).some(e=>e.category==='motion')?'<i class="has"></i>':'<i></i>'}</button>`}).join('')}</div>
+        <div class="card week" style="--hh:${HH}px">
+          <div class="wk-head"><div></div>${days.map((d,i)=>`<div class="${ymd(d)===t?'is-today':''}"><div class="dn">${DS[i]}</div><div class="dd">${d.getDate()}</div></div>`).join('')}</div>
+          <div class="wk-body" id="wkb"><div class="hours">${hours}</div>${cols}</div>
+        </div>
+      </section>
+    </div>`;
+  miniCal($('#mini',el));
+  const wkb=$('#wkb',el); const target=Math.max(0,((ymd(new Date())===pSel?nowMin():15*60)-H0*60-90)/60*HH); wkb.scrollTop=target;
+  el.addEventListener('click',e=>{
+    const w=e.target.closest('[data-w]'); if(w){ const v=+w.dataset.w; pRef=v===0?new Date():addDays(pRef,7*v); if(v===0)pSel=todayStr(); return render(); }
+    const sel=e.target.closest('[data-sel]'); if(sel){ pSel=sel.dataset.sel; return render(); }
+    if(e.target.closest('#addBtn')) return addFlow({date:pSel});
+    const g=e.target.closest('[data-g]'); if(g){ const [d,st,du]=g.dataset.g.split('|'); return motionFlow({date:d,start:st,duration:+du,step:2}); }
+    const s=e.target.closest('[data-s]'); if(s) return sessionSheet(S.sessions.find(x=>x.id===s.dataset.s));
+    const ev=e.target.closest('[data-e]'); if(ev) return eventSheet(S.events.find(x=>x.id===ev.dataset.e), ev.closest('[data-day]').dataset.day);
+  });
+  el.addEventListener('change',e=>{const f=e.target.dataset.f; if(!f)return; e.target.checked?pFilter.add(f):pFilter.delete(f); render();});
+}
+function miniCal(box){
+  const m=pMonth; const first=new Date(m.getFullYear(),m.getMonth(),1); const start=addDays(first,-dow(first));
+  const ws=ymd(weekStart(pRef)), we=ymd(addDays(weekStart(pRef),6)), t=todayStr();
+  let cells=''; for(let i=0;i<42;i++){const d=addDays(start,i),ds=ymd(d);cells+=`<button data-md="${ds}" class="${d.getMonth()!==m.getMonth()?'out':''} ${ds>=ws&&ds<=we?'inweek':''} ${ds===t?'is-today':''}">${d.getDate()}</button>`}
+  box.innerHTML=`<div class="mini-h"><button data-mm="-1" aria-label="Föregående månad">${IC.l}</button><span style="text-transform:capitalize">${MN[m.getMonth()]} ${m.getFullYear()}</span><button data-mm="1" aria-label="Nästa månad">${IC.r}</button></div><div class="mini-g">${['M','T','O','T','F','L','S'].map(x=>`<span class="wd">${x}</span>`).join('')}${cells}</div>`;
+  box.onclick=e=>{const mm=e.target.closest('[data-mm]');if(mm){pMonth=new Date(m.getFullYear(),m.getMonth()+ +mm.dataset.mm,1);return miniCal(box)}
+    const md=e.target.closest('[data-md]');if(md){pRef=parseYmd(md.dataset.md);pSel=md.dataset.md;render()}};
+}
+
+/* ---------- Add event ---------- */
+function addFlow(pre={}){
+  openSheet(`<h3>Vad lägger du till?</h3><p class="muted">Välj typ, sedan tid. Klart på några sekunder.</p>
+    <div class="opts">
+      ${['school','work','training','meal','personal'].map(k=>`<button class="opt" data-c="${k}"><span class="sw" style="background:${CAT[k].sw}"></span>${CAT[k].sv}</button>`).join('')}
+      <button class="opt motion" data-c="motion"><img src="${LOGO}" alt="">Motion-pass</button>
+    </div>`, sh=>{
+    sh.addEventListener('click',e=>{const c=e.target.closest('[data-c]'); if(!c)return; c.dataset.c==='motion'?motionFlow({date:pre.date}):eventForm({category:c.dataset.c,date:pre.date})});
+  });
+}
+function eventForm(ev,occDate){
+  const isNew=!ev.id; const v={title:ev.title||CAT[ev.category].sv,date:ev.date||todayStr(),start:ev.start||'16:00',end:ev.end||'17:00',repeat:ev.repeat||'none'};
+  openSheet(`<h3>${isNew?'Ny':'Ändra'}: ${CAT[ev.category].sv.toLowerCase()}</h3>
+    <form class="form" id="evf">
+      <div class="field full"><label for="f-t">Titel</label><input id="f-t" name="title" value="${esc(v.title)}" required></div>
+      <div class="field full"><label for="f-d">Datum</label><input id="f-d" type="date" name="date" value="${v.date}" required></div>
+      <div class="field"><label for="f-s">Start</label><input id="f-s" type="time" name="start" value="${v.start}" required></div>
+      <div class="field"><label for="f-e">Slut</label><input id="f-e" type="time" name="end" value="${v.end}" required></div>
+      <div class="field full"><label for="f-r">Upprepa</label><select id="f-r" name="repeat">
+        ${[['none','Upprepas inte'],['daily','Varje dag'],['weekdays','Vardagar'],['weekly','Varje vecka']].map(([k,l])=>`<option value="${k}" ${v.repeat===k?'selected':''}>${l}</option>`).join('')}</select></div>
+    </form>
+    <div class="sheet-actions">${isNew?'<button class="btn btn-line" data-close>Avbryt</button>':'<button class="btn btn-line" id="del">Ta bort</button>'}<button class="btn btn-primary" id="sv">Spara</button></div>`,sh=>{
+    $('#sv',sh).onclick=()=>{const f=new FormData($('#evf',sh));const o=Object.fromEntries(f);
+      if(!o.title||!o.date||!o.start||!o.end) return toast('Fyll i titel, datum och tid');
+      if(toMin(o.end)<=toMin(o.start)) return toast('Sluttiden måste vara efter start');
+      if(isNew) S.events.push({id:uid(),category:ev.category,...o}); else Object.assign(ev,o);
+      save(); closeSheet(); toast(isNew?'Sparat':'Uppdaterat'); render();};
+    const d=$('#del',sh); if(d) d.onclick=()=>{
+      if(ev.repeat&&ev.repeat!=='none'&&occDate){ openSheet(`<h3>Ta bort upprepad händelse</h3><p class="muted">${esc(ev.title)} upprepas.</p><div class="sheet-actions" style="flex-direction:column"><button class="btn btn-line" id="one">Bara ${relDay(occDate).toLowerCase()}</button><button class="btn btn-primary" id="all">Alla tillfällen</button></div>`,s2=>{
+        $('#one',s2).onclick=()=>{ev.exdates=[...(ev.exdates||[]),occDate];save();closeSheet();render()};
+        $('#all',s2).onclick=()=>{S.events=S.events.filter(x=>x.id!==ev.id);save();closeSheet();render()};});
+      } else { S.events=S.events.filter(x=>x.id!==ev.id); save(); closeSheet(); toast('Borttaget'); render(); }
+    };
+  });
+}
+function eventSheet(ev,occDate){ if(ev) eventForm(ev,occDate); }
+
+/* ---------- Motion session creation: time → need → generated ---------- */
+function motionFlow(pre={}){
+  const st={date:pre.date||todayStr(),start:pre.start||null,duration:pre.duration||null,need:pre.need||null};
+  let step=pre.step||0;
+  if(st.duration&&!pre.step) step=1;
+  const draw=sh=>{
+    const dots=`<div class="steps-dots">${[0,1,2].map(i=>`<i class="${i<=step?'on':''}"></i>`).join('')}</div>`;
+    let h='';
+    if(step===0) h=`${dots}<h3>Hur mycket tid har du?</h3><div class="opts four">${[5,10,15,20].map(m=>`<button class="opt" data-m="${m}">${m} min</button>`).join('')}</div>`;
+    else if(step===1) h=`${dots}<h3>Vad behöver du?</h3><div class="opts five">${Object.entries(NEED).map(([k,v])=>`<button class="opt" data-n="${k}">${v}</button>`).join('')}</div>`;
+    else {
+      st.need=st.need||'reset';
+      if(!st.start){ const sg=suggestFor(st.date); st.start=sg?toHM(sg.start):toHM(Math.ceil((Math.max(nowMin()+15,16*60))/15)*15) }
+      const cards=cardsFor(st.duration); const diff=st.duration>=15?'MEDIUM':'LÄTT';
+      h=`${dots}<h3>Ditt pass</h3>
+      <div class="gen"><img src="${LOGO}" alt=""><span class="eyebrow">${NEED_LABEL[st.need]}</span><div class="big">${st.duration} min</div>
+        <div class="row"><span class="tag">${cards} KORT</span><span class="tag">${st.need==='mobility'||st.need==='reset'?'RÖRLIGHET':'HELKROPP'}</span><span class="tag">${diff}</span></div></div>
+      <div class="form"><div class="field"><label for="m-d">Dag</label><input id="m-d" type="date" value="${st.date}"></div><div class="field"><label for="m-s">Tid</label><input id="m-s" type="time" value="${st.start}" step="300"></div></div>
+      <p class="muted" style="font-size:.92rem;margin-top:12px">Du drar korten ur leken när det är dags. Vilka övningar det blir avgörs av dem.</p>
+      <div class="sheet-actions"><button class="btn btn-line" id="back">Tillbaka</button><button class="btn btn-primary" id="addp">Lägg till i planeraren</button></div>`;
+    }
+    sh.innerHTML=`<button class="x" aria-label="Stäng" data-close>${IC.x}</button>`+h;
+  };
+  openSheet('',sh=>{
+    draw(sh);
+    sh.addEventListener('click',e=>{
+      const m=e.target.closest('[data-m]'); if(m){st.duration=+m.dataset.m;step=1;return draw(sh)}
+      const n=e.target.closest('[data-n]'); if(n){st.need=n.dataset.n;step=2;return draw(sh)}
+      if(e.target.closest('#back')){step=st.duration&&step===2?1:0;return draw(sh)}
+      if(e.target.closest('#addp')){st.date=$('#m-d',sh).value;st.start=$('#m-s',sh).value;createSession(st);closeSheet();toast('Tillagt i planeraren');render()}
+    });
+  });
+}
+function sessionSheet(s){
+  if(!s) return;
+  const done=s.status==='completed';
+  openSheet(`<span class="eyebrow gold">Motion · ${relDay(s.date)}</span><h3 style="margin-top:6px">${s.start} · ${s.duration} min ${NEED[s.need]||''}</h3>
+    <p class="muted">${s.count} kort. ${done?'Klart.':contextLine(s)}</p>
+    ${done?`<ul class="howto">${s.cards.map(c=>`<li>${esc((cardById(c.card_id)||{}).name||c.card_id)}</li>`).join('')}</ul>`:`
+    <div class="form"><div class="field"><label for="s-d">Dag</label><input id="s-d" type="date" value="${s.date}"></div><div class="field"><label for="s-s">Tid</label><input id="s-s" type="time" value="${s.start}" step="300"></div>
+    <div class="field full"><label for="s-m">Längd</label><select id="s-m">${[5,10,15,20].map(m=>`<option ${m===s.duration?'selected':''} value="${m}">${m} min</option>`).join('')}</select></div></div>
+    <div class="sheet-actions"><button class="btn btn-line" id="rm">Ta bort</button><button class="btn btn-line" id="sv">Spara</button></div>
+    <button class="btn btn-primary btn-block" style="margin-top:10px" id="go">Starta nu</button>`}`,sh=>{
+    if(done) return;
+    $('#sv',sh).onclick=()=>{s.date=$('#s-d',sh).value;s.start=$('#s-s',sh).value;s.duration=+$('#s-m',sh).value;s.count=cardsFor(s.duration);save();closeSheet();toast('Uppdaterat');render()};
+    $('#rm',sh).onclick=()=>{S.sessions=S.sessions.filter(x=>x.id!==s.id);save();closeSheet();toast('Borttaget');render()};
+    $('#go',sh).onclick=()=>{closeSheet(true);startSession(s.id)};
+  });
+}
+
+/* =========================================================
+   PROGRESS — "How much have I actually moved?"
+   ========================================================= */
+function vProgress(el){
+  const ws=weekStats(), tt=totals(); const mx=Math.max(20,...ws.per); const t=todayStr();
+  const B=[
+    ['FÖRSTA RÖRELSEN','Ditt första kort',tt.cards>=1],
+    ['50 MINUTER','Totalt i rörelse',tt.minutes>=50],
+    ['10 PASS','Genomförda pass',tt.sessions>=10],
+    ['25 KORT','Klara kort',tt.cards>=25],
+    ['7 DAGARS RYTM','Rörelse sju dagar i rad',tt.streak>=7],
+  ];
+  el.innerHTML=`<span class="eyebrow">Framsteg</span><h1 class="big" style="margin-top:6px">Så mycket har du rört dig.</h1>
+    <div class="stats">
+      <div class="card stat"><div class="n">${ws.minutes}</div><div class="l">MINUTER</div></div>
+      <div class="card stat"><div class="n">${ws.sessions}</div><div class="l">PASS</div></div>
+      <div class="card stat"><div class="n">${ws.cards}</div><div class="l">KORT</div></div>
+    </div>
+    <section class="card bars" aria-label="Minuter per dag"><div class="eyebrow" style="margin-bottom:10px">Den här veckan</div>
+      ${ws.days.map((d,i)=>`<div class="bar ${d===t?'is-today':''}"><span class="d">${DN[i]}</span><div class="track"><div class="fill" data-w="${ws.per[i]/mx*100}"></div></div><span class="v">${ws.per[i]?ws.per[i]+' min':'–'}</span></div>`).join('')}
+    </section>
+    <div class="eyebrow" style="margin:34px 0 0">Milstolpar</div>
+    <div class="badges">${B.map(([tt2,s,ok])=>`<div class="card badge ${ok?'':'locked'}"><div class="ic"><img src="${LOGO}" alt=""></div><div class="t">${tt2}</div><div class="s">${s}</div></div>`).join('')}</div>
+    <div style="margin-top:34px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-line btn-sm" id="rename">Byt namn</button><button class="btn btn-ghost btn-sm" id="reset">Återställ appen</button></div>`;
+  requestAnimationFrame(()=>$$('.fill',el).forEach(f=>f.style.width=f.dataset.w+'%'));
+  $('#rename',el).onclick=()=>{const n=prompt('Vad heter du?',S.user.name);if(n&&n.trim()){S.user.name=n.trim();save();setAvatar();render()}};
+  $('#reset',el).onclick=()=>{if(confirm('Rensa all data i appen på den här enheten?')){localStorage.removeItem(KEY);location.reload()}};
+}
+/* =========================================================
+   MOTION AI — "Help me decide."
+   Tool-based: the model reads the planner through tools and can only
+   PROPOSE changes. Nothing touches the calendar until the user confirms.
+   ========================================================= */
+let chat=[];            // rendered thread: {role,text,action?}
+let apiMsgs=[];         // Anthropic message history
+let apiOK=true;         // falls back to the local engine if /api/chat is unreachable
+let aiBusy=false;
+
+function aiContext(){
+  const t=todayStr(), tm=ymd(addDays(new Date(),1)); const ws=weekStart(new Date());
+  const sched=ds=>eventsOn(ds).map(e=>({id:e.session?e.session.id:e.id,title:e.category==='motion'?'Motion':e.title,category:e.category,start:e.start,end:e.end,status:e.session?e.session.status:undefined}));
+  return {
+    current_time:`${ymd(new Date())} ${toHM(nowMin())} (${DN[dow(new Date())]})`,
+    user:{name:S.user.name,preferred_session_minutes:S.user.prefLen||10},
+    today:sched(t), tomorrow:sched(tm),
+    free_windows_today:freeWindows(t).map(w=>`${toHM(w.start)}-${toHM(w.end)}`),
+    this_week_motion_sessions:S.sessions.filter(s=>s.date>=ymd(ws)&&s.date<=ymd(addDays(ws,6))).map(s=>({id:s.id,date:s.date,start:s.start,duration:s.duration,need:s.need,status:s.status})),
+    recent_cards:S.completions.slice(-8).map(c=>({card:(cardById(c.card_id)||{}).name,date:c.date}))
+  };
+}
+const TOOLS=[
+  {name:'get_schedule',description:'Hämta schemat (händelser och Motion-pass) för ett datumintervall. Datum som YYYY-MM-DD.',input_schema:{type:'object',properties:{from:{type:'string'},to:{type:'string'}},required:['from','to']}},
+  {name:'find_free_windows',description:'Hitta realistiska lediga luckor för ett datum, med buffert kring skola, träning och måltider.',input_schema:{type:'object',properties:{date:{type:'string'}},required:['date']}},
+  {name:'get_recent_sessions',description:'Senaste Motion-passen och klara kort.',input_schema:{type:'object',properties:{}}},
+  {name:'propose_motion_session',description:'FÖRESLÅ ett Motion-pass. Visar ett kort som användaren måste bekräfta. Ändrar inget själv.',input_schema:{type:'object',properties:{date:{type:'string'},start:{type:'string',description:'HH:MM'},duration:{type:'integer',enum:[5,10,15,20]},need:{type:'string',enum:['energy','strength','mobility','reset','surprise']}},required:['date','start','duration']}},
+  {name:'propose_move_session',description:'FÖRESLÅ att flytta ett befintligt Motion-pass. Kräver bekräftelse.',input_schema:{type:'object',properties:{session_id:{type:'string'},new_date:{type:'string'},new_start:{type:'string'}},required:['session_id','new_start']}},
+  {name:'propose_delete_session',description:'FÖRESLÅ att ta bort ett Motion-pass. Kräver bekräftelse.',input_schema:{type:'object',properties:{session_id:{type:'string'}},required:['session_id']}},
+  {name:'propose_event',description:'FÖRESLÅ en ny kalenderhändelse (skola, jobb, träning, måltid, personligt). Kräver bekräftelse.',input_schema:{type:'object',properties:{title:{type:'string'},category:{type:'string',enum:['school','work','training','meal','personal']},date:{type:'string'},start:{type:'string'},end:{type:'string'},repeat:{type:'string',enum:['none','daily','weekdays','weekly']}},required:['title','category','date','start','end']}},
+  {name:'propose_week_plan',description:'FÖRESLÅ en veckoplan med flera Motion-pass. Användaren kan redigera innan bekräftelse.',input_schema:{type:'object',properties:{sessions:{type:'array',items:{type:'object',properties:{date:{type:'string'},start:{type:'string'},duration:{type:'integer'},need:{type:'string'}},required:['date','start','duration']}}},required:['sessions']}},
+];
+const SYSTEM=()=>`Du är Motion AI i appen Motion UF (slogan: We Think. You Move.). Du hjälper ${S.user.name} att röra sig i vardagen med korta pass. Ett pass = användaren drar fysiska träningskort ur leken och skannar dem.
+Ton: lugn, kort, praktisk, mänsklig. Svenska. Max 3 korta meningar. Inga utropstecken, inga emojis, ingen peppig influencer-ton. Föreslå hellre mindre än mer. Fyll aldrig varje lucka med träning.
+Använd verktygen för att läsa schemat. Ändringar görs ENDAST via propose_*-verktygen, som visar ett kort som användaren bekräftar. Säg aldrig att något är tillagt eller flyttat – säg att det väntar på bekräftelse eller låt kortet tala.
+Sammanhang (JSON): ${JSON.stringify(aiContext())}`;
+
+function runReadTool(name,inp){
+  if(name==='get_schedule'){ const out={}; let d=parseYmd(inp.from); const end=parseYmd(inp.to); let n=0; while(d<=end&&n<14){const ds=ymd(d);out[ds]=eventsOn(ds).map(e=>({id:e.session?e.session.id:e.id,title:e.category==='motion'?'Motion':e.title,category:e.category,start:e.start,end:e.end}));d=addDays(d,1);n++} return out; }
+  if(name==='find_free_windows') return freeWindows(inp.date).map(w=>`${toHM(w.start)}-${toHM(w.end)}`);
+  if(name==='get_recent_sessions') return {sessions:S.sessions.slice(-6),cards:S.completions.slice(-10).map(c=>({...c,name:(cardById(c.card_id)||{}).name}))};
+  return {error:'unknown tool'};
+}
+function proposalFromTool(name,inp){
+  if(name==='propose_motion_session') return {type:'add',date:inp.date,start:inp.start,duration:inp.duration,need:inp.need||'reset'};
+  if(name==='propose_move_session'){ const s=S.sessions.find(x=>x.id===inp.session_id); if(!s) return null; return {type:'move',id:s.id,from:s.start,fromDate:s.date,date:inp.new_date||s.date,start:inp.new_start}; }
+  if(name==='propose_delete_session'){ const s=S.sessions.find(x=>x.id===inp.session_id); return s?{type:'delete',id:s.id,date:s.date,start:s.start}:null; }
+  if(name==='propose_event') return {type:'event',...inp,repeat:inp.repeat||'none'};
+  if(name==='propose_week_plan') return {type:'week',sessions:inp.sessions.map(s=>({...s,need:s.need||'reset',on:true}))};
+  return null;
+}
+
+async function askAPI(text){
+  apiMsgs.push({role:'user',content:text});
+  const actions=[]; let finalText='';
+  for(let i=0;i<5;i++){
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:700,system:SYSTEM(),messages:apiMsgs,tools:TOOLS})});
+    if(!r.ok) throw new Error('api '+r.status);
+    const data=await r.json(); const content=data.content||[];
+    apiMsgs.push({role:'assistant',content});
+    const uses=content.filter(c=>c.type==='tool_use');
+    finalText+=content.filter(c=>c.type==='text').map(c=>c.text).join('\n');
+    if(!uses.length||data.stop_reason!=='tool_use') break;
+    const results=uses.map(u=>{
+      if(u.name.startsWith('propose_')){ const p=proposalFromTool(u.name,u.input||{}); if(p) actions.push(p); return {type:'tool_result',tool_use_id:u.id,content:p?'Förslaget visas för användaren och väntar på bekräftelse.':'Kunde inte skapa förslaget (okänt id).'}; }
+      return {type:'tool_result',tool_use_id:u.id,content:JSON.stringify(runReadTool(u.name,u.input||{}))};
+    });
+    apiMsgs.push({role:'user',content:results});
+  }
+  return {text:finalText.trim(),actions};
+}
+
+/* ---------- local engine (works offline / without API key) ---------- */
+function localAI(raw){
+  const q=raw.toLowerCase(); const t=todayStr(), tm=ymd(addDays(new Date(),1));
+  const times=[...raw.matchAll(/(\d{1,2})[:.](\d{2})/g)].map(m=>`${pad(+m[1])}:${m[2]}`);
+  const day=/imorgon|morgondag|tomorrow/.test(q)?tm:t;
+  // move
+  if(/flytta|move/.test(q)&&times.length){
+    const named=/imorgon|morgondag|tomorrow|idag|today|dagens/.test(q);
+    const s=S.sessions.filter(x=>x.status==='planned'&&x.date===day)[0]||(!named&&S.sessions.filter(x=>x.status==='planned'&&x.date>=t).sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start))[0]);
+    if(!s) return {text:`Du har inget pass ${day===t?'idag':'imorgon'} att flytta.\nVill du att jag lägger ett kl ${times[times.length-1]} i stället?`,actions:[{type:'add',date:day,start:times[times.length-1],duration:S.user.prefLen||10,need:'reset'}]};
+    return {text:'Så här blir det.',actions:[{type:'move',id:s.id,from:s.start,fromDate:s.date,date:s.date,start:times[times.length-1]}]};
+  }
+  // no motivation
+  if(/orkar inte|inte lust|ingen lust|don.?t feel|pallar inte|trött/.test(q)) return {text:'Då gör vi det mindre.\nGe mig fem minuter. Jag bygger något enkelt.',actions:[{type:'add',date:t,start:toHM(Math.ceil((nowMin()+5)/5)*5),duration:5,need:'reset',startNow:true}]};
+  // I have N minutes
+  const mm=q.match(/(\d{1,2})\s*(min|minuter|minutes)/);
+  if(mm&&/har|have|got/.test(q)){ const d=[5,10,15,20].reduce((a,b)=>Math.abs(b-+mm[1])<Math.abs(a-+mm[1])?b:a); return {text:`${d} minuter räcker. ${cardsFor(d)} kort, sedan är du klar.`,actions:[{type:'add',date:t,start:toHM(Math.ceil((nowMin()+5)/5)*5),duration:d,need:'surprise',startNow:true}]}; }
+  // plan week
+  if(/vecka|week/.test(q)){ const p=planWeek(); if(!p.length) return {text:'Veckan är redan full eller har pass inlagda. Jag skulle låta den vara.',actions:[]};
+    return {text:`Tre korta pass räcker, med vila emellan.`,actions:[{type:'week',sessions:p.map(x=>({...x,on:true}))}]}; }
+  // user tells their day: "skola till 15:30 och middag 18:00"
+  if(times.length>=2&&!/flytta/.test(q)){ const a=toMin(times[0]),b=toMin(times[times.length-1]); if(b-a>=40){ const st=Math.ceil((a+45)/15)*15; return {text:`Du har en bra lucka mellan dem.\nJag skulle lägga ett pass på 10 minuter kl ${toHM(st)}.`,actions:[{type:'add',date:day,start:toHM(st),duration:10,need:'reset'}]}; } }
+  // change today's session
+  if(/ändra|change/.test(q)&&/(dagens|today)/.test(q)){ const s=S.sessions.find(x=>x.date===t&&x.status==='planned'); if(!s) return {text:'Du har inget pass idag än. Vill du att jag hittar en lucka?',actions:[],chips:['Planera min dag']};
+    return {text:`Dagens pass är ${s.duration} minuter kl ${s.start}. Vad vill du ändra?`,actions:[],chips:['Gör det kortare','Flytta det en timme',`Ta bort dagens pass`]}; }
+  if(/kortare|shorter/.test(q)){ const s=S.sessions.find(x=>x.date===t&&x.status==='planned'); if(s){const nd=Math.max(5,s.duration-5);return {text:`Då kör vi ${nd} minuter i stället.`,actions:[{type:'resize',id:s.id,duration:nd,start:s.start}]}} }
+  if(/en timme|one hour/.test(q)){ const s=S.sessions.find(x=>x.date===t&&x.status==='planned'); if(s) return {text:'En timme senare, så här.',actions:[{type:'move',id:s.id,from:s.start,fromDate:s.date,date:s.date,start:toHM(toMin(s.start)+60)}]} }
+  if(/ta bort|delete|remove/.test(q)){ const s=S.sessions.find(x=>x.date===day&&x.status==='planned'); if(s) return {text:'Okej. Bekräfta så tar jag bort det.',actions:[{type:'delete',id:s.id,date:s.date,start:s.start}]} }
+  // when should I train / plan my day
+  if(/när|when|planera min dag|plan my day|dag/.test(q)){
+    const sg=suggestFor(day); const has=S.sessions.find(x=>x.date===day&&x.status==='planned');
+    if(has) return {text:`Du har redan ett pass ${day===t?'idag':'imorgon'} kl ${has.start}. Det räcker.`,actions:[]};
+    if(!sg) return {text:`${day===t?'Idag':'Imorgon'} ser fullt ut. Jag skulle hoppa över, eller ta fem minuter efter middagen.`,actions:[]};
+    const full=eventsOn(day).length>=3;
+    return {text:`${full?(day===t?'Dagen':'Imorgon')+' ser ganska full ut.\n':''}Du har en tydlig lucka ${toHM(sg.window[0])}–${toHM(sg.window[1])}.\nJag skulle använda ${sg.duration} minuter där.`,actions:[{type:'add',date:day,start:toHM(sg.start),duration:sg.duration,need:'reset'}]};
+  }
+  return {text:'Jag kan planera din dag eller vecka, hitta en lucka, flytta ett pass eller bygga något kort just nu.',actions:[],chips:['Planera min dag','Jag har 10 minuter','Planera min vecka']};
+}
+
+/* ---------- action cards ---------- */
+function actionHTML(a,idx){
+  const lbl=n=>NEED[n]||'Motion';
+  if(a.type==='add') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">${a.startNow?'Nytt pass':'Föreslaget pass'}</div><div class="main">${a.duration} min ${lbl(a.need).toLowerCase()} · ${a.start}</div><div class="sub">${relDay(a.date)} · ${cardsFor(a.duration)} kort</div><div class="btns">${a.startNow?`<button class="btn btn-primary btn-sm" data-do="startnow">Skapa ${a.duration} min-pass</button>`:`<button class="btn btn-primary btn-sm" data-do="ok">Lägg till i planeraren</button>`}<button class="btn btn-ghost btn-sm" data-do="no">Inte nu</button></div><div class="ok">Tillagt.</div></div>`;
+  if(a.type==='move') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Flytta pass</div><div class="sub">${relDay(a.date)}</div><div class="mv">${a.from}<span>→</span>${a.start}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Bekräfta ändringen</button><button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok">Flyttat.</div></div>`;
+  if(a.type==='resize') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Ändra längd</div><div class="main">${a.duration} min · ${a.start}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Bekräfta</button><button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok">Ändrat.</div></div>`;
+  if(a.type==='delete') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Ta bort pass</div><div class="main">${relDay(a.date)} · ${a.start}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Ta bort</button><button class="btn btn-ghost btn-sm" data-do="no">Behåll</button></div><div class="ok">Borttaget.</div></div>`;
+  if(a.type==='event') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Ny händelse</div><div class="main">${esc(a.title)}</div><div class="sub">${relDay(a.date)} · ${a.start}–${a.end}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Lägg till</button><button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok">Tillagt.</div></div>`;
+  if(a.type==='week') return `<div class="act" data-a="${idx}" style="max-width:480px"><div class="eyebrow gold">Din Motion-vecka</div><ul class="wk-prop">${a.sessions.map((s,i)=>`<li class="${s.on?'':'off'}"><div><div class="d">${DN[dow(parseYmd(s.date))].toUpperCase()}</div><div class="s">${s.duration} min ${lbl(s.need).toLowerCase()}</div></div><input type="time" value="${s.start}" data-wt="${i}" step="300" aria-label="Tid"><button class="rm" data-wr="${i}" aria-label="${s.on?'Ta bort':'Ta med'}">${s.on?IC.x:IC.plus}</button></li>`).join('')}</ul><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Lägg till alla</button><button class="btn btn-ghost btn-sm" data-do="no">Inte nu</button></div><div class="ok">Veckan är planerad.</div></div>`;
+  return '';
+}
+function applyAction(a){
+  if(a.type==='add'){ const s=createSession(a); return s; }
+  if(a.type==='move'){ const s=S.sessions.find(x=>x.id===a.id); if(s){s.date=a.date;s.start=a.start;save()} }
+  if(a.type==='resize'){ const s=S.sessions.find(x=>x.id===a.id); if(s){s.duration=a.duration;s.count=cardsFor(a.duration);save()} }
+  if(a.type==='delete'){ S.sessions=S.sessions.filter(x=>x.id!==a.id); save(); }
+  if(a.type==='event'){ S.events.push({id:uid(),title:a.title,category:a.category,date:a.date,start:a.start,end:a.end,repeat:a.repeat}); save(); }
+  if(a.type==='week'){ a.sessions.filter(s=>s.on).forEach(s=>createSession(s)); }
+}
+
+function vAI(el){
+  el.innerHTML=`<div class="ai">
+    <div class="ai-head"><img src="${LOGO}" alt=""><h1>MOTION AI</h1><p>Mindre tänkande. Mer rörelse.</p></div>
+    <div class="thread" id="thread" aria-live="polite"></div>
+    <div class="composer"><form id="cf"><label class="sr" for="ci">Skriv till Motion AI</label><input id="ci" autocomplete="off" placeholder="Skriv något, till exempel ”flytta morgondagens pass till 17:30”"><button type="submit" aria-label="Skicka">${IC.send}</button></form></div>
+  </div>`;
+  drawThread();
+  $('#cf',el).onsubmit=e=>{e.preventDefault();const v=$('#ci').value.trim();if(v){$('#ci').value='';sendAI(v)}};
+  $('#thread',el).addEventListener('click',e=>{
+    const ch=e.target.closest('[data-chip]'); if(ch) return sendAI(ch.dataset.chip);
+    const b=e.target.closest('[data-do]'); if(!b) return;
+    const card=b.closest('[data-a]'); const [mi,ai]=card.dataset.a.split('.').map(Number); const a=chat[mi].actions[ai];
+    if(b.dataset.do==='no'){ a.state='no'; card.remove(); return; }
+    if(a.type==='week') $$('[data-wt]',card).forEach(inp=>a.sessions[+inp.dataset.wt].start=inp.value);
+    const res=applyAction(a); a.state='done'; card.classList.add('done');
+    if(a.startNow&&res) startSession(res.id);
+  });
+  $('#thread',el).addEventListener('click',e=>{const r=e.target.closest('[data-wr]');if(!r)return;const card=r.closest('[data-a]');const [mi,ai]=card.dataset.a.split('.').map(Number);const s=chat[mi].actions[ai].sessions[+r.dataset.wr];s.on=!s.on;card.outerHTML=actionHTML(chat[mi].actions[ai],`${mi}.${ai}`)});
+}
+function drawThread(){
+  const th=$('#thread'); if(!th) return;
+  if(!chat.length){
+    th.innerHTML=`<div class="hello"><h2>${greeting()}, ${esc(S.user.name)}.</h2><p>Vad behöver du hjälp med?</p>
+      <div class="sugg">${['Planera min dag','Jag har 10 minuter','Planera min vecka','Ändra dagens pass','Jag orkar inte träna idag'].map(s=>`<button class="chip" data-chip="${s}">${s}</button>`).join('')}</div></div>`;
+    return;
+  }
+  th.innerHTML=chat.map((m,mi)=>m.role==='user'?`<div class="msg me">${esc(m.text)}</div>`:
+    `<div class="msg bot"><img src="${LOGO}" alt=""><div class="body">${m.typing?'<div class="typing"><span></span><span></span><span></span></div>':m.text.split('\n').filter(Boolean).map(p=>`<p>${esc(p)}</p>`).join('')}
+      ${(m.actions||[]).map((a,ai)=>a.state==='no'?'':a.state==='done'?actionHTML(a,mi+'.'+ai).replace('class="act"','class="act done"'):actionHTML(a,mi+'.'+ai)).join('')}
+      ${m.chips?`<div class="sugg" style="justify-content:flex-start;margin-top:12px">${m.chips.map(c=>`<button class="chip" data-chip="${c}">${c}</button>`).join('')}</div>`:''}</div></div>`).join('');
+  const last=th.lastElementChild; last&&last.scrollIntoView({block:'end',behavior:'smooth'});
+}
+async function sendAI(text){
+  if(aiBusy) return; aiBusy=true;
+  chat.push({role:'user',text}); const bot={role:'bot',text:'',typing:true}; chat.push(bot); drawThread();
+  let out=null;
+  if(apiOK&&location.protocol.startsWith('http')){
+    try{ out=await Promise.race([askAPI(text),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),20000))]); if(!out.text&&!out.actions.length) throw new Error('empty'); }
+    catch(e){ apiOK=false; apiMsgs=[]; out=null; }
+  }
+  if(!out){ await new Promise(r=>setTimeout(r,550)); out=localAI(text); }
+  Object.assign(bot,{typing:false,text:out.text||'Här är mitt förslag.',actions:out.actions||[],chips:out.chips});
+  aiBusy=false; drawThread();
+}
+/* =========================================================
+   SESSION RUNNER — Draw → Scan → Move → Repeat
+   ========================================================= */
+let ACTIVE=null; // {sessionId}
+function activeSession(){return ACTIVE&&S.sessions.find(s=>s.id===ACTIVE.sessionId)}
+function startSession(id){ ACTIVE={sessionId:id}; go('scan'); }
+function dotsHTML(s){const n=s.cards.filter(c=>c.completed).length;return `<span class="dots" aria-label="${n} av ${s.count} klara">${[...Array(s.count)].map((_,i)=>`<i class="${i<n?'on':''}"></i>`).join('')}</span>`}
+
+/* =========================================================
+   SCAN — "What card did I draw?"
+   ========================================================= */
+let stream=null, scanTimer=null, detector=null;
+function stopCamera(){ if(scanTimer){clearInterval(scanTimer);scanTimer=null} if(stream){stream.getTracks().forEach(t=>t.stop());stream=null} }
+function parseCode(txt){ const m=String(txt).toUpperCase().match(/MOT-(IND|FAM)-\d{3}/); return m?m[0]:null; }
+function vScan(el){
+  const s=activeSession(); const n=s?s.cards.filter(c=>c.completed).length:0;
+  el.innerHTML=`<div class="scan">
+    ${s?`<div class="sess-banner"><div><div class="eyebrow gold">Dagens pass · ${s.duration} min</div><div style="font-weight:600;margin-top:2px">${n===0?'Dra ditt första kort':`${n} av ${s.count} klara · dra nästa`}</div></div>${dotsHTML(s)}</div>`:''}
+    <span class="eyebrow">Skanna</span>
+    <h1>Skanna ditt kort</h1>
+    <p class="lead">Rikta kameran mot QR-koden.</p>
+    <div class="cam" id="cam">
+      <video id="vid" playsinline muted></video>
+      <div class="frame"><i></i><i></i><i></i><i></i><div class="line"></div></div>
+      <div class="hint">Placera QR-koden inuti ramen.</div>
+      <div class="off" id="camoff"><img src="${LOGO}" alt=""><div id="camtxt">Kameran används bara för att läsa korten.</div><button class="btn btn-gold" id="camgo">Starta kameran</button></div>
+    </div>
+    <div class="scan-alt">
+      <form class="manual" id="mf"><label class="sr" for="mc">Kortkod</label><input id="mc" placeholder="Ange kod, t.ex. MOT-IND-018" autocomplete="off"><button class="btn btn-primary" type="submit">Öppna</button></form>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:6px"><button class="btn btn-ghost btn-sm" data-draw="individual">Ingen lek här? Dra ett digitalt kort</button><button class="btn btn-ghost btn-sm" data-draw="family">Familjekort</button></div>
+      ${s?`<button class="btn btn-line" id="endS" style="margin-top:8px">Avsluta passet</button>`:''}
+    </div>
+  </div>`;
+  $('#mf',el).onsubmit=e=>{e.preventDefault();const id=parseCode($('#mc').value)||$('#mc').value.trim().toUpperCase();if(cardById(id))found(id);else toast('Hittar inget kort med den koden')};
+  el.addEventListener('click',e=>{
+    const d=e.target.closest('[data-draw]'); if(d){const pool=CARDS.filter(c=>c.deck===d.dataset.draw);found(pool[Math.floor(Math.random()*pool.length)].id)}
+    if(e.target.closest('#camgo')) startCamera();
+    if(e.target.closest('#endS')) finishSession();
+  });
+  if(window.matchMedia('(pointer:coarse)').matches) startCamera();
+}
+async function startCamera(){
+  const txt=$('#camtxt'), off=$('#camoff');
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ txt.textContent='Kameran är inte tillgänglig här. Ange koden manuellt nedan.'; $('#camgo')?.remove(); return; }
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1280}},audio:false});
+    const v=$('#vid'); if(!v){stopCamera();return} v.srcObject=stream; await v.play(); off.style.display='none';
+    if('BarcodeDetector' in window){ try{detector=new BarcodeDetector({formats:['qr_code']})}catch(e){detector=null} }
+    const cv=document.createElement('canvas'), cx=cv.getContext('2d',{willReadFrequently:true});
+    scanTimer=setInterval(async()=>{
+      if(!v.videoWidth) return; let txt2=null;
+      if(detector){ try{const r=await detector.detect(v); if(r[0]) txt2=r[0].rawValue}catch(e){} }
+      else if(window.jsQR){ const w=480,h=Math.round(v.videoHeight/v.videoWidth*w); cv.width=w;cv.height=h;cx.drawImage(v,0,0,w,h); const r=jsQR(cx.getImageData(0,0,w,h).data,w,h,{inversionAttempts:'dontInvert'}); if(r) txt2=r.data; }
+      const id=txt2&&parseCode(txt2); if(id&&cardById(id)){ stopCamera(); found(id); }
+    },260);
+  }catch(e){ txt.textContent='Ingen åtkomst till kameran. Tillåt kameran i webbläsaren eller ange koden manuellt.'; }
+}
+function found(id){
+  stopCamera();
+  const ov=document.createElement('div'); ov.className='found'; ov.innerHTML=`<img src="${LOGO}" alt=""><div class="lbl">SKANNAR…</div>`; document.body.appendChild(ov);
+  setTimeout(()=>{ov.classList.add('ok');$('.lbl',ov).textContent='KORT HITTAT'},650);
+  setTimeout(()=>{go('play/'+id);setTimeout(()=>{ov.style.transition='opacity .35s';ov.style.opacity=0;setTimeout(()=>ov.remove(),350)},60)},1250);
+}
+
+/* =========================================================
+   EXERCISE — the card, opened
+   ========================================================= */
+function vPlay(el){
+  const c=cardById(routeArg||''); if(!c){ el.innerHTML=`<div class="scan"><h1>Kortet hittades inte</h1><p class="lead">Kontrollera koden och försök igen.</p><a class="btn btn-primary" style="margin-top:20px" href="#scan">Skanna igen</a></div>`; return; }
+  const fam=c.deck==='family'; const s=activeSession(); const num=+c.id.slice(-3);
+  const durTxt=c.mode==='longest'?'SÅ LÄNGE NI ORKAR':`${c.duration} SEK`;
+  if(!S.players.length) S.players=[S.user.name];
+  el.innerHTML=`<div class="ex">
+    <div class="ex-visual">${c.video_url?`<video src="${esc(c.video_url)}" autoplay muted loop playsinline></video>`:`<div class="pc"><span class="cat">${CAT_SV[c.category]}</span><span class="rule"></span><img src="${LOGO}" alt=""><div class="nm">${esc(c.name)}</div><div class="id">${c.id}</div></div>`}</div>
+    <div class="ex-info">
+      ${s&&!fam?`<div class="sess-banner" style="margin-bottom:22px"><div style="font-weight:600">Kort ${s.cards.filter(x=>x.completed).length+1} av ${s.count}</div>${dotsHTML(s)}</div>`:''}
+      <span class="eyebrow gold">${fam?'Familjeutmaning':'Kort '+num} · ${CAT_SV[c.category]}</span>
+      <h1>${esc(c.name)}</h1>
+      <p class="muted" style="margin-top:10px;font-size:1.08rem">${esc(c.description)}</p>
+      <div class="facts"><span class="fact">${IC.time}${durTxt}</span><span class="fact">${IC.bars}${DIFF_SV[c.difficulty]}</span><span class="fact">${fam?IC.users:IC.body}${fam?c.players_min+'–'+c.players_max+' SPELARE':c.muscle_group.toUpperCase()}</span></div>
+      ${fam?`<div class="eyebrow" style="margin-top:28px">Spelare</div><div class="players" id="pl"></div><form class="addp" id="ap"><label class="sr" for="pn">Ny spelare</label><input id="pn" placeholder="Lägg till spelare" maxlength="20"><button class="btn btn-line btn-sm" type="submit">${IC.plus}</button></form>`:''}
+      <div class="eyebrow" style="margin-top:28px">Så gör du</div>
+      <ol class="howto">${c.instructions.map(i=>`<li>${esc(i)}</li>`).join('')}</ol>
+      <div class="ex-cta"><button class="btn btn-primary" id="go">${fam?'STARTA UTMANINGEN':'STARTA'}</button></div>
+      <div style="margin-top:10px;text-align:center"><a class="btn btn-ghost btn-sm" href="#scan">Skanna ett annat kort</a></div>
+    </div></div>`;
+  const drawPl=()=>{const pl=$('#pl',el);if(!pl)return;pl.innerHTML=S.players.map((p,i)=>`<span class="player">${esc(p)}<button data-rp="${i}" aria-label="Ta bort ${esc(p)}">${IC.x}</button></span>`).join('')};
+  drawPl();
+  if(fam){ $('#ap',el).onsubmit=e=>{e.preventDefault();const v=$('#pn').value.trim();if(v&&S.players.length<c.players_max){S.players.push(v);save();$('#pn').value='';drawPl()}};
+    $('#pl',el).onclick=e=>{const b=e.target.closest('[data-rp]');if(b){S.players.splice(+b.dataset.rp,1);save();drawPl()}}; }
+  $('#go',el).onclick=()=>{ if(fam&&S.players.length<c.players_min) return toast(`Lägg till minst ${c.players_min} spelare`); fam?familyMode(c):workout(c); };
+}
+
+/* =========================================================
+   WORKOUT MODE — "What do I do right now?"
+   ========================================================= */
+let wake=null;
+async function keepAwake(on){try{if(on&&'wakeLock' in navigator)wake=await navigator.wakeLock.request('screen');else if(wake){wake.release();wake=null}}catch(e){}}
+function overlay(cls=''){const o=document.createElement('div');o.className='wo '+cls;o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');document.body.appendChild(o);document.body.style.overflow='hidden';keepAwake(true);return o}
+function closeOverlay(o){o.remove();document.body.style.overflow='';keepAwake(false)}
+const R=150, CIRC=2*Math.PI*R;
+function ring(cls=''){return `<div class="ring ${cls}"><svg viewBox="0 0 340 340"><circle class="tr" cx="170" cy="170" r="${R}" fill="none" stroke-width="6"/><circle class="pr" cx="170" cy="170" r="${R}" fill="none" stroke-width="6" stroke-linecap="round" stroke-dasharray="${CIRC}" stroke-dashoffset="0"/></svg><img class="mark" src="${LOGO}" alt=""><div class="num"><b>00:00</b><span></span></div></div>`}
+const mmss=s=>`${pad(Math.floor(s/60))}:${pad(Math.max(0,Math.ceil(s))%60)}`;
+
+function workout(c){
+  const s=activeSession();
+  const rounds=s?Math.max(1,Math.round((s.duration*60/s.count)/(c.duration+15))):1;
+  const doneN=s?s.cards.filter(x=>x.completed).length:0;
+  const o=overlay();
+  o.innerHTML=`<div class="wo-top"><span class="eyebrow">${s?`Kort ${doneN+1} av ${s.count}`:CAT_SV[c.category]}</span><button class="btn btn-ghost btn-sm" id="q">Avsluta</button></div>
+    <div class="wo-mid"><h2>${esc(c.name)}</h2>${ring()}<p class="cue" id="cue">${esc(c.instructions[0])}</p></div>
+    <div class="wo-bot"><button class="btn btn-primary" id="pp">PAUS</button>${s?`<div class="muted" style="font-size:.9rem">${dotsHTML(s)}</div>`:''}</div>`;
+  const pr=$('.pr',o), num=$('.num b',o), sub=$('.num span',o), rg=$('.ring',o), cue=$('#cue',o);
+  // phases: work, rest, work, ...
+  const phases=[]; for(let r=0;r<rounds;r++){phases.push({k:'work',t:c.duration,r:r+1}); if(r<rounds-1) phases.push({k:'rest',t:15});}
+  let pi=0, left=phases[0].t, paused=false, last=performance.now(), worked=0, raf;
+  const tick=now=>{
+    const dt=(now-last)/1000; last=now;
+    if(!paused){ left-=dt; if(phases[pi].k==='work') worked+=dt; }
+    if(left<=0){ pi++; if(pi>=phases.length){ cancelAnimationFrame(raf); return complete(); } left=phases[pi].t; }
+    const ph=phases[pi]; rg.classList.toggle('rest',ph.k==='rest');
+    num.textContent=mmss(left); sub.textContent=ph.k==='rest'?'VILA':(rounds>1?`SET ${ph.r} AV ${rounds}`:'');
+    cue.textContent=ph.k==='rest'?'Andas. Nästa set strax.':c.instructions[Math.min(c.instructions.length-1,Math.floor((1-left/ph.t)*c.instructions.length))];
+    pr.style.strokeDashoffset=CIRC*(1-left/ph.t);
+    raf=requestAnimationFrame(tick);
+  };
+  raf=requestAnimationFrame(tick);
+  $('#pp',o).onclick=e=>{paused=!paused;e.currentTarget.textContent=paused?'FORTSÄTT':'PAUS';last=performance.now()};
+  $('#q',o).onclick=()=>{cancelAnimationFrame(raf);closeOverlay(o)};
+  function complete(){
+    record(c.id,Math.round(worked)||c.duration*rounds);
+    const s2=activeSession(); const n=s2?s2.cards.filter(x=>x.completed).length:0; const all=s2&&n>=s2.count;
+    o.innerHTML=`<div class="wo-top"><span class="eyebrow">${s2?`${n} av ${s2.count} klara`:'Klart'}</span><span></span></div>
+      <div class="wo-mid"><div class="done-mark"><svg viewBox="0 0 140 140"><circle cx="70" cy="70" r="66" fill="none" stroke-width="1.5"/></svg><img src="${LOGO}" alt=""></div>
+      <div class="bigword">${all?'Passet klart.':'Klart.'}</div>${s2?dotsHTML(s2):''}<p class="cue">${all?`${s2.duration} minuter i rörelse. Bra jobbat.`:esc(c.name)+' avklarat.'}</p></div>
+      <div class="wo-bot">${all?`<button class="btn btn-primary" id="fin">AVSLUTA PASSET</button>`:`<button class="btn btn-primary" id="nx">SKANNA NÄSTA KORT</button><button class="btn btn-ghost" id="fin">${s2?'Avsluta passet':'Klar för idag'}</button>`}</div>`;
+    $('#nx',o)&&($('#nx',o).onclick=()=>{closeOverlay(o);go('scan')});
+    $('#fin',o).onclick=()=>{closeOverlay(o);finishSession()};
+  }
+}
+function record(cardId,seconds){
+  let s=activeSession();
+  if(!s){ // ad-hoc: a scanned card outside a plan becomes a small session of its own
+    const t=todayStr(); s=S.sessions.find(x=>x.adhoc&&x.date===t);
+    if(!s){ s={id:uid(),date:t,start:toHM(nowMin()),duration:0,need:'surprise',count:0,status:'completed',adhoc:true,cards:[]}; S.sessions.push(s); }
+    s.count++; s.duration=Math.max(1,Math.round((s.duration*60+seconds)/60));
+  }
+  s.cards.push({card_id:cardId,order:s.cards.length+1,completed:true});
+  if(!s.adhoc&&s.cards.filter(x=>x.completed).length>=s.count) s.status='completed';
+  S.completions.push({card_id:cardId,date:todayStr(),seconds,session_id:s.id}); save();
+}
+function finishSession(){
+  const s=activeSession();
+  if(s&&s.status!=='completed'){ if(s.cards.length){s.status='completed';s.count=s.cards.length} }
+  ACTIVE=null; save(); go('today'); toast('Bra jobbat');
+}
+
+/* ---------- Family & friends ---------- */
+function familyMode(c){
+  const o=overlay('fam'); const wins=S.famScore||(S.famScore={});
+  const run=()=>{
+    const longest=c.mode==='longest';
+    o.innerHTML=`<div class="wo-top"><span class="eyebrow">Familjeutmaning</span><button class="btn btn-ghost btn-sm" id="q">Avsluta</button></div>
+      <div class="wo-mid"><h2>${esc(c.name)}</h2>${ring()}<p class="cue">${esc(S.players.join(' · '))}</p></div>
+      <div class="wo-bot"><button class="btn btn-primary" id="pp">${longest?'STOPP':'PAUS'}</button></div>`;
+    const pr=$('.pr',o),num=$('.num b',o),sub=$('.num span',o); let el2=0,paused=false,last=performance.now(),raf;
+    const total=c.duration||0;
+    const tick=now=>{const dt=(now-last)/1000;last=now;if(!paused)el2+=dt;
+      if(longest){num.textContent=mmss(el2);sub.textContent='HÅLL';pr.style.strokeDashoffset=CIRC*(1-((el2%60)/60))}
+      else{const left=total-el2;num.textContent=mmss(left);sub.textContent=c.mode==='race'?'RÄKNA':'TILLSAMMANS';pr.style.strokeDashoffset=CIRC*(1-left/total);if(left<=0){cancelAnimationFrame(raf);return end(Math.round(el2))}}
+      raf=requestAnimationFrame(tick)};
+    raf=requestAnimationFrame(tick);
+    $('#pp',o).onclick=e=>{ if(longest){cancelAnimationFrame(raf);return end(Math.round(el2))} paused=!paused;e.currentTarget.textContent=paused?'FORTSÄTT':'PAUS';last=performance.now() };
+    $('#q',o).onclick=()=>{cancelAnimationFrame(raf);closeOverlay(o)};
+  };
+  const end=secs=>{
+    record(c.id,Math.max(secs,20));
+    if(c.mode==='together'){ return roundDone(null); }
+    o.innerHTML=`<div class="wo-top"><span class="eyebrow">${c.mode==='longest'?mmss(secs):'Tiden är ute'}</span><span></span></div>
+      <div class="wo-mid"><div class="bigword">Vem vann?</div><div class="winner">${S.players.map((p,i)=>`<button data-w="${i}">${esc(p)}</button>`).join('')}</div></div><div class="wo-bot"></div>`;
+    o.onclick=e=>{const b=e.target.closest('[data-w]');if(!b)return;o.onclick=null;const p=S.players[+b.dataset.w];wins[p]=(wins[p]||0)+1;save();roundDone(p)};
+  };
+  const roundDone=winner=>{
+    o.innerHTML=`<div class="wo-top"><span class="eyebrow">Rundan klar</span><span></span></div>
+      <div class="wo-mid"><div class="done-mark"><svg viewBox="0 0 140 140"><circle cx="70" cy="70" r="66" fill="none" stroke-width="1.5"/></svg><img src="${LOGO}" alt=""></div>
+      <div class="bigword">${winner?esc(winner)+' vann.':'Snyggt jobbat, tillsammans.'}</div>
+      ${Object.keys(wins).length?`<div class="score">${S.players.map(p=>`<span>${esc(p)} <b>${wins[p]||0}</b></span>`).join('')}</div>`:''}</div>
+      <div class="wo-bot"><button class="btn btn-primary" id="again">SPELA IGEN</button><button class="btn btn-line" id="nx">SKANNA NÄSTA KORT</button><button class="btn btn-ghost btn-sm" id="fin">Klar</button></div>`;
+    $('#again',o).onclick=run; $('#nx',o).onclick=()=>{closeOverlay(o);go('scan')}; $('#fin',o).onclick=()=>{closeOverlay(o);ACTIVE=null;go('today')};
+  };
+  run();
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+function setAvatar(){const i=(S.user?.name||'?').trim()[0].toUpperCase();$('#avatar').textContent=i;$('#avatarM').textContent=i}
+$('#avatar').onclick=()=>go('progress');
+function welcome(){
+  const w=document.createElement('div'); w.className='welcome';
+  w.innerHTML=`<form class="box" id="wf"><img src="${LOGO}" alt=""><h1>Välkommen till Motion.</h1><p>Vi tänker. Du rör dig. Vad heter du?</p><label class="sr" for="wn">Ditt namn</label><input id="wn" placeholder="Ditt förnamn" autocomplete="given-name" required maxlength="24"><button class="btn btn-primary btn-block" type="submit">Börja</button><div class="tag">WE THINK. YOU MOVE.</div></form>`;
+  document.body.appendChild(w); setTimeout(()=>$('#wn').focus(),50);
+  $('#wf').onsubmit=e=>{e.preventDefault();const n=$('#wn').value.trim();if(!n)return;S.user={name:n,prefLen:10,created_at:new Date().toISOString()};
+    const sg=suggestFor(todayStr()); if(sg) createSession({date:todayStr(),start:toHM(sg.start),duration:sg.duration,need:'reset'});
+    save();setAvatar();w.style.transition='opacity .4s';w.style.opacity=0;setTimeout(()=>w.remove(),400);render()};
+}
+load();
+if(!S.user){ S.user={name:'',prefLen:10}; render(); S.user=null; welcome(); } else { setAvatar(); render(); }
+</script>
+</body>
+</html>
