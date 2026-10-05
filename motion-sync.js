@@ -4,17 +4,17 @@
    not by this file. */
 window.Sync=(function(){
   const C=window.MOTION_CONFIG||{}; const enabled=!!(C.supabaseUrl&&C.supabaseAnonKey);
-  let sb=null, user=null, timer=null, lastIds=new Set(), ready=false;
+  let sb=null, user=null, timer=null, lastIds=new Set(), ready=false, failed=false;
   const loadLib=()=>new Promise((res,rej)=>{ if(window.supabase) return res(); const s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js'; s.onload=res; s.onerror=rej; document.head.appendChild(s); });
   const toRow=(e,uid)=>({id:String(e.id),user_id:uid,title:e.title,category:e.category,date:e.date,start_time:e.start,end_time:e.end,recurrence:{repeat:e.repeat||'none',days:e.days||null,exdates:e.exdates||[]},source:e.source||'user',updated_at:new Date().toISOString()});
   const fromRow=r=>({id:r.id,title:r.title,category:r.category,date:r.date,start:String(r.start_time).slice(0,5),end:String(r.end_time).slice(0,5),repeat:(r.recurrence||{}).repeat||'none',...((r.recurrence||{}).days?{days:r.recurrence.days}:{}),exdates:(r.recurrence||{}).exdates||[],source:r.source});
   async function init(){
     if(!enabled) return;
     try{ await loadLib(); sb=window.supabase.createClient(C.supabaseUrl,C.supabaseAnonKey,{auth:{persistSession:true,storageKey:'motion_auth'}}); }
-    catch(e){ console.warn('Motion sync unavailable',e); return; }
+    catch(e){ console.warn('Motion sync unavailable',e); failed=true; if(typeof render==='function'&&S&&S.user) render(); return; }
     const {data}=await sb.auth.getSession(); if(data.session) await onUser(data.session.user,false);
     sb.auth.onAuthStateChange((ev,ses)=>{ if(ev==='SIGNED_IN'&&ses&&(!user||user.id!==ses.user.id)) onUser(ses.user,true); if(ev==='SIGNED_OUT') onOut(); });
-    ready=true;
+    ready=true; if(typeof render==='function'&&S&&S.user) render();
   }
   async function onUser(u,fresh){
     const guest=OWNER.kind==='guest'?JSON.parse(JSON.stringify(S)):null;
@@ -50,9 +50,9 @@ window.Sync=(function(){
     const r2=await sb.from('motion_state').upsert({user_id:user.id,data:{user:S.user,sessions:S.sessions,completions:S.completions,players:S.players},updated_at:new Date().toISOString()}); if(r2.error) console.warn(r2.error);
   }
   return {
-    init, push, get enabled(){return enabled}, get user(){return user}, get ready(){return ready},
+    init, push, get enabled(){return enabled}, get user(){return user}, get ready(){return ready}, get failed(){return failed},
     signIn:(email,password)=>sb.auth.signInWithPassword({email,password}),
-    signUp:(email,password)=>sb.auth.signUp({email,password}),
+    signUp:(email,password)=>sb.auth.signUp({email,password,options:{emailRedirectTo:location.origin+'/app.html#progress'}}),
     signOut:async()=>{ await flush().catch(()=>{}); await sb.auth.signOut(); },
   };
 })();

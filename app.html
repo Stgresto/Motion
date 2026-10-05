@@ -1704,6 +1704,8 @@ function drawAccount(box){
   const Y=window.Sync;
   if(DEMO){ box.innerHTML=`<span class="eyebrow">Demo</span><p>Du tittar på ett exempelschema. Inget sparas. <a href="/app.html">Lämna demot</a></p>`; return; }
   if(!Y||!Y.enabled){ box.innerHTML=`<span class="eyebrow">${SYMI}Ditt schema</span><p><b>Privat på den här enheten.</b> Inget delas med andra besökare eller andra konton. Konton för att synka mellan enheter aktiveras snart.</p>`; return; }
+  if(Y.failed){ box.innerHTML=`<span class="eyebrow">${SYMI}Konto</span><p>Kontotjänsten går inte att nå just nu. Ditt schema sparas privat på den här enheten under tiden.</p>`; return; }
+  if(!Y.ready){ box.innerHTML=`<span class="eyebrow">${SYMI}Konto</span><p>Ansluter…</p>`; return; }
   if(Y.user){ box.innerHTML=`<span class="eyebrow">${SYMI}Konto</span><p>Inloggad som <b>${esc(Y.user.email)}</b>. Ditt schema är privat och synkas till ditt konto.</p><button class="btn btn-line btn-sm" id="out">Logga ut</button>`; $('#out',box).onclick=async()=>{await Y.signOut();toast('Utloggad')}; return; }
   box.innerHTML=`<span class="eyebrow">${SYMI}Konto</span><p>Logga in för att spara schemat på ditt konto och nå det från flera enheter.</p>
     <form class="acct-f" id="af"><label class="sr" for="ae">Mejl</label><input id="ae" type="email" placeholder="namn@mejl.se" autocomplete="email" required><label class="sr" for="ap">Lösenord</label><input id="ap" type="password" placeholder="Lösenord (minst 8 tecken)" autocomplete="current-password" minlength="8" required>
