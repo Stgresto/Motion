@@ -43,7 +43,8 @@ body{padding-left:var(--nav-w);transition:padding-left .3s var(--ease)}
 .sn-link svg,.sn-link img{width:22px;height:22px;flex-shrink:0}
 .sn-link:hover{color:var(--text);background:var(--bg)}
 .sn-link.on{color:var(--text);background:var(--bg);border-left-color:var(--gold);font-weight:600}
-.sn-profile{margin-top:auto;display:flex;align-items:center;gap:12px;padding:14px 8px 0;border-top:1px solid var(--border);text-decoration:none;color:var(--text);white-space:nowrap}
+.sn-home{margin-top:auto;margin-bottom:10px;font-size:.92rem}
+.sn-profile{display:flex;align-items:center;gap:12px;padding:14px 8px 0;border-top:1px solid var(--border);text-decoration:none;color:var(--text);white-space:nowrap}
 .sn-profile .avatar{flex-shrink:0}
 .sn-profile b{display:block;font-size:.95rem;font-weight:600}
 .sn-profile small{display:block;color:var(--muted);font-size:.8rem}
@@ -54,6 +55,8 @@ html.nav-min .sn-toggle{transform:rotate(180deg)}
 html.nav-min .sn-link{justify-content:center;padding:0}
 html.nav-min .sn-profile{justify-content:center;padding:14px 0 0}
 .mtop{display:none}
+.mback{gap:8px}
+.mback svg{color:var(--muted)}
 @media(max-width:760px){
   body{padding-left:0}
   .sidenav{display:none}
@@ -503,7 +506,7 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 <body>
 <aside class="sidenav" id="sidenav" aria-label="Huvudmeny">
   <div class="sn-top">
-    <a class="brand" href="#today" title="Motion UF"><img src="/images/logo_mark_c.png" alt=""><span class="lbl">MOTION UF</span></a>
+    <a class="brand" href="/" title="Till startsidan"><img src="/images/logo_mark_c.png" alt=""><span class="lbl">MOTION UF</span></a>
     <button class="sn-toggle" id="snToggle" aria-label="Fäll in menyn" aria-expanded="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg></button>
   </div>
   <nav class="sn-nav">
@@ -513,10 +516,11 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
       <a href="#scan" data-tab="scan" class="sn-link" title="Skanna"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4M4 12h16"/></svg><span class="lbl">Skanna</span></a>
       <a href="#progress" data-tab="progress" class="sn-link" title="Framsteg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 19V11M12 19V5M19 19v-5"/></svg><span class="lbl">Framsteg</span></a>
   </nav>
+  <a href="/" class="sn-link sn-home" title="Till startsidan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 6l-6 6 6 6M4 12h16"/></svg><span class="lbl">Till startsidan</span></a>
   <a href="#progress" class="sn-profile" title="Profil"><span class="avatar" id="avatar"></span><span class="lbl"><b id="snName"></b><small>Profil och svar</small></span></a>
 </aside>
 <header class="mtop">
-  <a class="brand" href="#today"><img src="/images/logo_mark_c.png" alt="">MOTION UF</a>
+  <a class="brand mback" href="/" aria-label="Till startsidan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 6l-6 6 6 6"/></svg><img src="/images/logo_mark_c.png" alt="">MOTION UF</a>
   <a class="avatar" href="#progress" id="avatarM" aria-label="Framsteg"></a>
 </header>
 
