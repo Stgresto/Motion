@@ -5,7 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F5F0">
 <title>Motion UF</title>
-<link rel="icon" href="/images/logo_mark_c.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/images/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -213,7 +218,6 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
   .daystrip button.on .dn{color:var(--gold-l)}
   .daystrip .has{width:4px;height:4px;border-radius:50%;background:var(--gold);margin-top:3px}
   .wk-body{grid-template-columns:52px 1fr;max-height:none}
-  .wk-body .daycol:not(.sel){display:none}
   .ev{font-size:.88rem;padding:8px 12px}
   .ev .et{font-size:.78rem}
 }
@@ -500,38 +504,213 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 .toast{position:fixed;left:50%;bottom:calc(30px + var(--sab));transform:translate(-50%,20px);background:var(--text);color:#fff;padding:12px 20px;border-radius:0;font-weight:600;font-size:.92rem;opacity:0;transition:opacity .3s,transform .3s var(--ease);z-index:200;pointer-events:none}
 .toast.in{opacity:1;transform:translate(-50%,0)}
 @media(max-width:760px){.toast{bottom:calc(100px + var(--sab))}}
+
+/* =========================================================
+   MOTION design tokens (brand system v2)
+   ========================================================= */
+:root{
+  --motion-bg:#F7F5F0; --motion-surface:#FFFFFF; --motion-surface-2:#EFEAE2; --motion-surface-dark:#141412;
+  --motion-text:#171A18; --motion-muted:#6B6D68; --motion-border:#E2DDD3;
+  --motion-gold:#B68E4E; --motion-gold-light:#E0C187; --motion-gold-dark:#977430; --motion-gold-ink:#7A5C25; --motion-gold-tint:#F6EEDC;
+  --motion-radius-sm:10px; --motion-radius-md:14px; --motion-radius-lg:18px;
+  --motion-shadow:0 1px 2px rgba(23,26,24,.04),0 4px 14px -8px rgba(23,26,24,.12);
+  --bg:var(--motion-bg); --white:var(--motion-surface); --warm:var(--motion-surface-2); --text:var(--motion-text); --muted:var(--motion-muted);
+  --border:var(--motion-border); --gold:var(--motion-gold); --gold-l:var(--motion-gold-light); --gold-ink:var(--motion-gold-ink);
+  --green:#1E3B2F; --green-2:#264A3C; --shadow:var(--motion-shadow);
+  --r-lg:var(--motion-radius-lg); --r-md:var(--motion-radius-md); --r-sm:var(--motion-radius-sm);
+}
+/* radii: calm, consistent */
+.card,.next,.sheet,.act,.cam,.ex-visual,.gen,.qz-sum,.dayline,.p-empty,.week,.focus-in .no-think span,.badge,.stat,.tips{border-radius:var(--r-lg)}
+.btn,.chip,.opt,.qo,.iconbtn,.seg,.composer form,.field input,.field select,.manual input,.player,.addp input,.sess-banner,.wk-prop input,.winner button,.score span,.fact,.sn-link,.sn-toggle,.daystrip button,.mini-g button,.welcome input,.drop,.hint,.imp-list,.toggle,.qz-bar{border-radius:var(--r-sm)}
+.ev,.ghost,.dsg{border-radius:var(--r-sm)}
+.seg button:first-child{border-radius:var(--r-sm) 0 0 var(--r-sm)}.seg button:last-child{border-radius:0 var(--r-sm) var(--r-sm) 0}
+.msg.me{border-radius:16px 16px 4px 16px}
+.toast{border-radius:var(--r-md)}
+.sym-xs{width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:6px}
+.eyebrow .sym-xs{margin-right:8px}
+
+/* nav: brand + gold indicator */
+.brand .wmk-svg{height:13px;width:auto;color:var(--text);display:block}
+.brand img{width:28px;height:28px}
+.sn-link.on{border-left-color:transparent;background:var(--warm);position:relative}
+.sn-link.on::after{content:"";position:absolute;left:0;top:10px;bottom:10px;width:2px;border-radius:2px;background:var(--gold)}
+.sn-profile.on b{color:var(--gold-ink)}
+.mtop .brand{gap:10px}.mtop .brand .wmk-svg{height:12px}
+@media(max-width:760px){
+  .botnav{grid-template-columns:repeat(4,1fr)!important;align-items:center}
+  .botnav a{position:relative}
+  .botnav a img{width:24px;height:24px}
+  .botnav a.on{color:var(--text)}
+  .botnav a.on::before{content:"";position:absolute;top:-8px;left:30%;right:30%;height:2px;border-radius:2px;background:var(--gold)}
+}
+
+/* rich confirmation toast */
+.toast.rich{display:flex;align-items:center;gap:12px;background:var(--motion-surface-dark);padding:14px 20px 14px 14px;font-weight:500;line-height:1.35;text-align:left}
+.toast.rich img{width:28px;height:28px}
+.toast.rich b{font-weight:600}
+
+/* focused start */
+.focus{position:fixed;inset:0;z-index:110;background:var(--motion-surface-dark);color:#FAF8F3;display:flex;align-items:center;justify-content:center;padding:calc(24px + var(--sat)) 24px calc(24px + var(--sab));animation:fadein .35s var(--ease)}
+.focus-x{position:absolute;top:calc(16px + var(--sat));right:16px;color:rgba(250,248,243,.7)}
+.focus-in{text-align:center;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.focus-sym{width:56px;height:56px;margin-bottom:6px;animation:sway 4s ease-in-out infinite}
+.focus .eyebrow{color:var(--gold-l)}
+.focus-t{font-size:clamp(4.2rem,16vw,6.4rem);font-weight:600;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.focus-d{font-weight:700;letter-spacing:.2em;font-size:1rem;color:var(--gold-l)}
+.focus .muted{color:rgba(250,248,243,.66);margin-top:4px}
+.focus-a{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:22px}
+.focus-a .btn{width:100%;min-height:56px}
+.focus .btn-primary{background:var(--gold);color:#171A18}
+.focus .btn-line{background:transparent;color:#FAF8F3;border-color:rgba(250,248,243,.25)}
+@keyframes sway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+
+/* "no thinking required" chips */
+.no-think{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.no-think span{font-size:.76rem;font-weight:700;letter-spacing:.12em;padding:7px 11px;border:1px solid rgba(255,255,255,.28);border-radius:8px}
+.next.empty .no-think span,.dsg .no-think span,.act .no-think span,.sheet .no-think span{border-color:var(--border);color:var(--text)}
+.no-think.sm span{font-size:.7rem;padding:5px 9px}
+.next .time{margin-top:16px}
+.next .eyebrow{display:flex;align-items:center}
+.ai-nudge{margin-top:20px;padding:18px 22px;display:grid;grid-template-columns:34px 1fr auto;gap:16px;align-items:center}
+.ai-nudge img{width:30px;height:30px}
+.ai-nudge b{display:block;font-weight:600}
+.ai-nudge span{color:var(--muted);font-size:.93rem}
+@media(max-width:560px){.ai-nudge{grid-template-columns:30px 1fr}.ai-nudge .btn{grid-column:1/-1}}
+.tl .dot img{width:14px;height:14px;position:absolute;inset:-2px}
+.tl li.motion .dot{background:transparent;box-shadow:none}
+.tl li.motion .lbl{color:var(--gold-ink)}
+
+/* planner header */
+.p-head{display:grid;grid-template-columns:1fr auto;grid-template-areas:"t a" "c c";gap:16px 24px;align-items:end;margin-bottom:22px}
+.p-title{grid-area:t;display:flex;align-items:center;gap:16px}
+.p-sym{width:44px;height:44px}
+.p-title h1{font-size:clamp(1.8rem,3.2vw,2.5rem);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin-top:2px}
+.p-ctl{grid-area:c;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.p-act{grid-area:a;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.btn-ai{background:var(--motion-surface-dark);color:#FAF8F3;gap:8px}
+.btn-ai:hover{background:#26251f}
+.btn-ai .sym-xs{width:16px;height:16px;margin:0}
+.seg.sm{display:inline-grid;grid-template-columns:1fr 1fr;width:auto;margin-right:8px;border:1px solid var(--border);background:var(--white)}
+.seg.sm button{min-height:40px;padding:0 18px}
+.seg.sm button.on{background:var(--text);color:#fff}
+@media(max-width:760px){
+  .p-ctl{flex-wrap:nowrap}.p-ctl .seg.sm{margin-right:auto}.p-ctl .seg.sm button{padding:0 14px}
+  .wk-head{display:grid!important;grid-template-columns:30px repeat(7,minmax(0,1fr))}
+  .wk-head button{padding:8px 0}.wk-head .dn{font-size:.62rem;letter-spacing:.04em}.wk-head .dd{font-size:1rem}
+  .wk-body{grid-template-columns:30px repeat(7,minmax(0,1fr))!important}
+  .hours div{font-size:.6rem;padding-right:3px}
+  .week .ev{left:1px!important;right:1px!important;width:auto!important;padding:3px;font-size:.6rem}
+  .week .ev .eh,.week .ev .go,.week .ghost span:not(.gk){display:none}
+  .week .ev .et{font-size:.56rem;letter-spacing:0;white-space:nowrap;overflow:hidden}
+  .week .ev .et .sym-xs{display:none}
+  .week .ghost{left:1px;right:1px;padding:3px;font-size:.56rem}.week .ghost .gk{font-size:.52rem;letter-spacing:0}.week .ghost .sym-xs{display:none}
+  .daystrip{display:none!important}
+}
+@media(max-width:760px){.p-head{grid-template-columns:1fr;grid-template-areas:"t" "a" "c"}.p-act{justify-content:flex-start}.p-act .btn{flex:1 1 auto}.p-sym{width:36px;height:36px}}
+.planner{margin-top:0}
+.wk-head button{display:block;width:100%;padding:14px 8px;text-align:center;border-radius:0}
+.wk-head button:hover .dd{color:var(--gold-ink)}
+/* events: neutral; Motion: gold accent, not a gold slab */
+.ev{gap:2px;padding:7px 10px;border:1px solid transparent}
+.ev .et{display:flex;align-items:center}
+.ev.cat-school{background:#EDEAE4;color:#36383A}
+.ev.cat-meal{background:#F4F1EB;border-color:var(--border)}
+.ev.cat-motion{background:var(--motion-gold-tint);color:var(--text);border:1px solid #E6D3AA;border-left:2px solid var(--gold);box-shadow:none}
+.ev.cat-motion .et{color:var(--gold-ink)}
+.ev.cat-motion .go{color:var(--text);font-size:.7rem;letter-spacing:.12em;font-weight:700;text-transform:uppercase;margin-top:auto}
+.ev.cat-motion.done{opacity:.55}
+.ghost{display:flex;flex-direction:column;gap:2px;border:1px dashed #D8C08E;background:rgba(246,238,220,.55);color:var(--gold-ink);font-size:.74rem;padding:6px 9px;transition:background .2s,border-color .2s}
+.ghost:hover{background:var(--motion-gold-tint);border-color:var(--gold)}
+.ghost .gk{font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.68rem;display:flex;align-items:center}
+.ghost.fam{border-style:solid;border-color:#E6D3AA}
+.nowline{background:var(--text);height:1px}.nowline::before{background:var(--text)}
+.windows .win p{color:var(--muted);font-size:.86rem;margin:2px 0 10px;line-height:1.45}
+.windows .win .d{font-size:.74rem}
+/* day view */
+.dayhead{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:10px;margin-bottom:12px;text-align:center}
+.dayhead b{display:block;font-size:1.15rem;letter-spacing:.08em}
+.dayhead span{color:var(--muted);font-size:.85rem}
+.dayline{padding:8px 20px}
+.dayline ul{list-style:none}
+.dayline li{display:grid;grid-template-columns:56px 1fr;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
+.dayline li:last-child{border-bottom:0}
+.dayline .dt{font-variant-numeric:tabular-nums;font-weight:600;padding-top:9px}
+.dayline .ev{position:static;width:100%;min-height:52px;font-size:.92rem}
+.dsg{border:1px solid #E6D3AA;border-left:2px solid var(--gold);background:var(--motion-gold-tint);padding:16px 18px}
+.dsg .gk{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink);display:flex;align-items:center}
+.dsg-t{font-size:1.5rem;font-weight:600;letter-spacing:-.02em;margin-top:6px;font-variant-numeric:tabular-nums}
+.dsg p{color:var(--muted);font-size:.92rem;margin-top:10px}
+.dsg-a{display:flex;gap:8px;margin-top:12px}
+.p-empty{display:grid;grid-template-columns:48px 1fr;gap:18px;padding:24px;margin-bottom:18px;align-items:center}
+.p-empty img{width:44px;height:44px}
+.p-empty h3{font-size:1.25rem;font-weight:600}
+.p-empty p{color:var(--muted)}
+.p-empty-a{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
+@media(max-width:760px){.daystrip{margin-bottom:12px}}
+
+/* AI */
+.ai{position:relative}
+.ai:not(.has) .ai-head{display:none}
+.ai-head{display:flex;align-items:center;justify-content:center;gap:10px;padding:4px 0 0}
+.ai-head img{width:22px;height:22px;margin:0;animation:none}
+.hello{position:relative;padding:48px 0 10px;overflow:visible}
+.hello .wmk{position:absolute;left:50%;top:-40px;width:min(560px,120%);transform:translateX(-50%);opacity:.035;pointer-events:none;z-index:-1}
+.hello .hs{width:44px;height:44px;margin:0 auto 18px;animation:sway 6s ease-in-out infinite}
+.hello h2{font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.04;letter-spacing:-.03em;margin-top:10px}
+.hello p{max-width:30em;margin:12px auto 0}
+.hello-q{margin-top:34px;font-weight:600;font-size:1.05rem}
+.sugg{margin-top:14px}
+.sugg.minor{margin-top:8px}
+.chip.ghosty{border-color:transparent;background:transparent;color:var(--muted);font-weight:500}
+.chip.ghosty:hover{color:var(--text);background:var(--white);border-color:var(--border)}
+.msg.bot>img{width:24px;height:24px}
+.think-sym{animation:sway 1.6s ease-in-out infinite}
+.thinking{color:var(--muted);font-size:.98rem;padding-top:2px;animation:pulsetxt 1.6s ease-in-out infinite}
+@keyframes pulsetxt{50%{opacity:.5}}
+.act{box-shadow:var(--motion-shadow)}
+.act .oc-d{font-size:1.5rem;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:2px}
+.act .sub{margin-top:10px}
+.act .ok{display:none;align-items:center;gap:8px}
+.act.done .ok{display:flex}
+.act .ok img{width:18px;height:18px}
+.opts-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;max-width:560px}
+.opts-row .act{margin-top:0;max-width:none}
+.opts-row .eyebrow{font-size:.7rem}
+@media(max-width:520px){.opts-row{grid-template-columns:1fr}}
+.composer input::placeholder{transition:opacity .3s}
+@media(max-width:760px){.thread{padding-bottom:96px}.hello{padding-top:28px}.hello .sugg{gap:8px}.hello .chip{min-height:40px;padding:0 14px;font-size:.84rem}.hello h2{font-size:2.1rem}.hello-q{margin-top:24px}}
+
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="wm" viewBox="0 0 138.1 24"><g fill="none" stroke="currentColor" stroke-width="2.6"><path d="M1.3 22.7V2.6l8.9 13.2 8.9-13.2v20.1"/><circle cx="37.2" cy="12.65" r="10.05"/><path d="M55.3 2.6h18.2M64.4 2.6v20.1M82 2.6v20.1"/><circle cx="101.6" cy="12.65" r="10.05"/><path d="M121.2 22.7V2.6l15.6 20.1V2.6"/></g></symbol></svg>
 <aside class="sidenav" id="sidenav" aria-label="Huvudmeny">
   <div class="sn-top">
-    <a class="brand" href="/" title="Till startsidan"><img src="/images/logo_mark_c.png" alt=""><span class="lbl">MOTION UF</span></a>
+    <a class="brand" href="/" title="Till startsidan"><img src="/images/motion-symbol-gold.svg" alt=""><span class="lbl"><svg class="wmk-svg" viewBox="0 0 138.1 24" aria-label="MOTION"><use href="#wm"/></svg></span></a>
     <button class="sn-toggle" id="snToggle" aria-label="Fäll in menyn" aria-expanded="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg></button>
   </div>
   <nav class="sn-nav">
-      <a href="#today" data-tab="today" class="sn-link" title="Idag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><span class="lbl">Idag</span></a>
-      <a href="#planner" data-tab="planner" class="sn-link" title="Planerare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="15.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span class="lbl">Planerare</span></a>
-      <a href="#ai" data-tab="ai" class="sn-link" title="Motion AI"><img src="/images/logo_mark_c.png" alt=""><span class="lbl">Motion AI</span></a>
-      <a href="#scan" data-tab="scan" class="sn-link" title="Skanna"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4M4 12h16"/></svg><span class="lbl">Skanna</span></a>
-      <a href="#progress" data-tab="progress" class="sn-link" title="Framsteg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 19V11M12 19V5M19 19v-5"/></svg><span class="lbl">Framsteg</span></a>
+      <a href="#today" data-tab="today" class="sn-link" title="Hem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10.5 12 4l8 6.5V20h-5.5v-6h-5v6H4z"/></svg><span class="lbl">Hem</span></a>
+      <a href="#planner" data-tab="planner" class="sn-link" title="Planerare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span class="lbl">Planerare</span></a>
+      <a href="#ai" data-tab="ai" class="sn-link" title="AI Coach"><img src="/images/motion-symbol-gold.svg" alt=""><span class="lbl">AI Coach</span></a>
+      <a href="#scan" data-tab="scan" class="sn-link" title="Kort"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6.5" y="3.5" width="12" height="17" rx="2"/><path d="M4 7v11.5a2 2 0 0 0 2 2h8"/></svg><span class="lbl">Kort</span></a>
   </nav>
   <a href="/" class="sn-link sn-home" title="Till startsidan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 6l-6 6 6 6M4 12h16"/></svg><span class="lbl">Till startsidan</span></a>
   <a href="#progress" class="sn-profile" title="Profil"><span class="avatar" id="avatar"></span><span class="lbl"><b id="snName"></b><small>Profil och svar</small></span></a>
 </aside>
 <header class="mtop">
-  <a class="brand mback" href="/" aria-label="Till startsidan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 6l-6 6 6 6"/></svg><img src="/images/logo_mark_c.png" alt="">MOTION UF</a>
+  <a class="brand mback" href="/" aria-label="Till startsidan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 6l-6 6 6 6"/></svg><img src="/images/motion-symbol-gold.svg" alt=""><svg class="wmk-svg" viewBox="0 0 138.1 24" aria-label="MOTION"><use href="#wm"/></svg></a>
   <a class="avatar" href="#progress" id="avatarM" aria-label="Framsteg"></a>
 </header>
 
 <main id="app"></main>
 
 <nav class="botnav" aria-label="Meny">
-  <a href="#today" data-tab="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>Idag</a>
-  <a href="#planner" data-tab="planner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Planerare</a>
-  <a href="#scan" data-tab="scan" class="scanbtn"><div class="disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M4 12h16"/></svg></div><span>Skanna</span></a>
-  <a href="#ai" data-tab="ai"><img src="/images/logo_mark_c.png" alt="" style="width:24px;height:24px">AI</a>
-  <a href="#progress" data-tab="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 19V11M12 19V5M19 19v-5"/></svg>Framsteg</a>
+  <a href="#today" data-tab="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10.5 12 4l8 6.5V20h-5.5v-6h-5v6H4z"/></svg>Hem</a>
+  <a href="#planner" data-tab="planner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Plan</a>
+  <a href="#ai" data-tab="ai"><img src="/images/motion-symbol-gold.svg" alt="">AI</a>
+  <a href="#scan" data-tab="scan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6.5" y="3.5" width="12" height="17" rx="2"/><path d="M4 7v11.5a2 2 0 0 0 2 2h8"/></svg>Kort</a>
 </nav>
 
 <div class="toast" id="toast" role="status"></div>
@@ -544,7 +723,7 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
    ========================================================= */
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const LOGO='/images/logo_mark_c.png';
+const LOGO='/images/motion-symbol-gold.svg';
 const CARDS=window.MUF_CARDS||[];
 const cardById=id=>CARDS.find(c=>c.id===String(id).toUpperCase());
 
@@ -571,8 +750,8 @@ const CAT={
   school:{sv:'Skola',sw:'#CFC7B8'},work:{sv:'Jobb',sw:'#B7C2BB'},training:{sv:'Träning',sw:'#D9C49A'},
   meal:{sv:'Måltid',sw:'#E5E1D9'},personal:{sv:'Personligt',sw:'#CDBFD3'},motion:{sv:'Motion',sw:'#123C32'}
 };
-const NEED={energy:'Energi',strength:'Styrka',mobility:'Rörlighet',reset:'Reset',surprise:'Överraska mig'};
-const NEED_LABEL={energy:'ENERGY',strength:'STRENGTH',mobility:'MOBILITY',reset:'RESET',surprise:'MIX'};
+const NEED={energy:'Energi',strength:'Styrka',mobility:'Rörlighet',reset:'Reset',surprise:'Överraska mig',family:'Familjeutmaning'};
+const NEED_LABEL={energy:'ENERGI',strength:'STYRKA',mobility:'RÖRLIGHET',reset:'RESET',surprise:'MIX',family:'FAMILY CHALLENGE'};
 const CAT_SV={strength:'STYRKA',energy:'KONDITION',mobility:'RÖRLIGHET',reset:'RESET',challenge:'UTMANING',together:'TILLSAMMANS'};
 const DIFF_SV={easy:'LÄTT',medium:'MEDIUM',hard:'SVÅR'};
 
@@ -667,28 +846,45 @@ function suggestFor(dateStr){
   let st=best.start+(len>=60?Math.min(45,Math.round(len/3)):0);
   if(pr&&overlap(best,pr)>=dur){ st=Math.max(st,pr[0]); if(st+dur>best.end) st=best.end-dur; }
   st=Math.ceil(st/15)*15; if(st+dur>best.end) st=Math.floor((best.end-dur)/5)*5;
-  return {date:dateStr,window:[best.start,best.end],start:st,duration:dur,need:goalNeed()};
+  const sg={date:dateStr,window:[best.start,best.end],start:st,duration:dur,need:goalNeed()};
+  // Family Motion: weekend afternoons, when the user plays with others
+  const d=parseYmd(dateStr);
+  if(['family','both'].includes(P().deck)&&dow(d)===6&&overlap(best,[13*60,17*60])>=30){ sg.family=true; sg.need='family'; sg.duration=15; sg.start=Math.max(best.start,14*60); if(sg.start+15>best.end) sg.start=best.end-15; }
+  return sg;
+}
+function reasonFor(sg){
+  const evs=eventsOn(sg.date).filter(e=>e.kind==='event');
+  const before=[...evs].reverse().find(e=>toMin(e.end||e.start)<=sg.start);
+  const after=evs.find(e=>toMin(e.start)>=sg.start+sg.duration);
+  const free=(after?toMin(after.start):sg.window[1])-sg.start;
+  const nm=e=>e.title.toLowerCase();
+  if(sg.family) return 'Alla är hemma. Femton minuter tillsammans.';
+  if(before&&after) return `Du har ${free} minuter mellan ${nm(before)} och ${nm(after)}.`;
+  if(after) return `Du har ${free} minuter innan ${nm(after)}.`;
+  if(before) return `Lugnt efter ${nm(before)}. Det räcker gott.`;
+  return 'Inget annat inplanerat där. Det räcker gott.';
 }
 function weekSessionCount(ref=new Date()){
   const ws=weekStart(ref); const a=ymd(ws), b=ymd(addDays(ws,6));
   return S.sessions.filter(s=>s.date>=a&&s.date<=b&&s.status!=='skipped').length;
 }
 /* Week plan: ~3 sessions spread out (≥1 rest day between), skipping days that already have one. */
-function planWeek(ref=new Date()){
+function planWeek(ref=new Date(),opt={}){
   const ws=weekStart(ref); const t=todayStr(); const picks=[];
   const order=[0,2,5,3,1,4,6];
   const g=goalNeed(); const sec={energy:'strength',strength:'energy',mobility:'reset',reset:'mobility',surprise:'surprise'}[g];
   const needs=[g,sec,g,'reset',g];
-  const target=Math.min(5,Math.max(0,(P().perWeek||3)-weekSessionCount(ref))); const gap=(P().perWeek||3)>=4?1:2;
+  const goal=opt.count||P().perWeek||3; const target=Math.min(5,Math.max(0,goal-weekSessionCount(ref))); const gap=goal>=4?1:2;
+  const skip=opt.exclude||new Set();
   let lastIdx=-9;
   const taken=new Set(S.sessions.filter(s=>s.status!=='skipped').map(s=>s.date));
   for(const i of order){
     if(picks.length>=target) break;
-    const ds=ymd(addDays(ws,i)); if(ds<t||taken.has(ds)) continue;
+    const ds=ymd(addDays(ws,i)); if(ds<t||taken.has(ds)||skip.has(i)) continue;
     if(picks.some(p=>Math.abs(p.i-i)<gap)) continue;
     const sg=suggestFor(ds); if(!sg) continue;
     const need=needs[picks.length]; const dur=i>=5?Math.min(20,sg.duration+5):sg.duration;
-    picks.push({i,date:ds,start:toHM(sg.start),duration:dur,need});
+    picks.push({i,date:ds,start:toHM(sg.start),duration:sg.family?15:dur,need:sg.family?'family':need});
   }
   return picks.sort((a,b)=>a.i-b.i);
 }
@@ -733,7 +929,8 @@ function totals(){
 }
 
 /* ---------- ui helpers ---------- */
-function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('in');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('in'),2200)}
+function toast(t,detail){const el=$('#toast');el.innerHTML=detail!==undefined?`<img src="${LOGO}" alt=""><span><b>${esc(t)}</b>${detail?`<br>${esc(detail)}`:''}</span>`:esc(t);el.classList.toggle('rich',detail!==undefined);el.classList.add('in');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('in'),detail!==undefined?3000:2200)}
+const done=(s)=>toast('Klart.',`${s.duration} minuter ${relDay(s.date).toLowerCase()} ${s.start}.`);
 let lastFocus=null;
 function openSheet(html,onMount){
   closeSheet(true); lastFocus=document.activeElement;
@@ -774,6 +971,7 @@ function parseRoute(){
 function render(){
   parseRoute(); stopCamera();
   $$('[data-tab]').forEach(a=>a.classList.toggle('on',a.dataset.tab===route||(route==='play'&&a.dataset.tab==='scan')));
+  $('.sn-profile')?.classList.toggle('on',route==='progress');
   const V={today:vToday,planner:vPlanner,ai:vAI,scan:vScan,play:vPlay,progress:vProgress}[route]||vToday;
   app.innerHTML=''; const w=document.createElement('div'); w.className='view'; app.appendChild(w); V(w);
   window.scrollTo({top:0});
@@ -786,34 +984,30 @@ window.addEventListener('hashchange',render);
 function vToday(el){
   const t=todayStr(), now=new Date();
   const nm=nextMotion(); const sg=nm?null:suggestFor(t);
+  const chips=(s)=>`<div class="no-think"><span>${s.duration} MIN</span><span>${s.need==='family'?'FAMILJEKORT':'DRA '+s.count+' KORT'}</span><span>INGEN UTRUSTNING</span></div>`;
   let next='';
   if(nm){
-    const isToday=nm.date===t;
     next=`<section class="next" aria-label="Nästa pass">
-      <img class="swirl" src="${LOGO}" alt="">
-      <span class="eyebrow">Nästa rörelse${isToday?'':' · '+relDay(nm.date)}</span>
+      <span class="eyebrow">Nästa rörelse${nm.date===t?'':' · '+relDay(nm.date)}</span>
       <div class="time">${nm.start}</div>
-      <div class="what">${nm.duration} MIN ${NEED_LABEL[nm.need]||''}</div>
-      <div class="meta"><span>${nm.count} kort</span><span>·</span><span>${NEED[nm.need]||''}</span></div>
+      ${chips(nm)}
       <p class="why">${contextLine(nm)}</p>
-      <div class="actions"><button class="btn btn-gold" data-start="${nm.id}">Starta passet</button><button class="btn btn-line" data-edit-s="${nm.id}">Ändra</button></div>
+      <div class="actions"><button class="btn btn-gold" data-start="${nm.id}">Starta</button><button class="btn btn-line" data-edit-s="${nm.id}">Byt pass</button></div>
     </section>`;
   } else if(sg){
     next=`<section class="next empty">
-      <img class="swirl" src="${LOGO}" alt="">
-      <span class="eyebrow">Du har en lucka</span>
-      <div class="time">${toHM(sg.window[0])}–${toHM(sg.window[1])}</div>
-      <div class="what">Förslag: ${sg.duration} min reset kl ${toHM(sg.start)}</div>
-      <p class="why">Inget är planerat än. Ett kort pass i luckan räcker gott.</p>
-      <div class="actions"><button class="btn btn-primary" id="addSg">Lägg till i dagen</button><a class="btn btn-line" href="#scan">Kör direkt</a></div>
+      <span class="eyebrow"><img src="${LOGO}" alt="" class="sym-xs">Motion hittade en lucka</span>
+      <div class="time">${toHM(sg.start)}</div>
+      ${chips({duration:sg.duration,count:cardsFor(sg.duration),need:sg.need})}
+      <p class="why">${reasonFor(sg)}</p>
+      <div class="actions"><button class="btn btn-primary" id="addSg">Lägg till</button><a class="btn btn-line" href="#scan">Kör direkt</a></div>
     </section>`;
   } else {
     next=`<section class="next empty">
-      <img class="swirl" src="${LOGO}" alt="">
       <span class="eyebrow">Idag</span>
-      <div class="time" style="font-size:2.6rem">Inget planerat</div>
-      <p class="why">Dagen är full eller redan klar. Vill du ändå röra dig räcker fem minuter.</p>
-      <div class="actions"><button class="btn btn-primary" id="newS">Skapa pass</button><a class="btn btn-line" href="#scan">Skanna ett kort</a></div>
+      <div class="time" style="font-size:2.4rem;letter-spacing:-.02em">Ingen lucka idag.</div>
+      <p class="why">Dagen är full, och det är okej. Vill du ändå röra dig räcker fem minuter.</p>
+      <div class="actions"><button class="btn btn-primary" id="newS">Fem minuter nu</button><a class="btn btn-line" href="#scan">Skanna ett kort</a></div>
     </section>`;
   }
   const evs=eventsOn(t); const n=nowMin();
@@ -821,19 +1015,25 @@ function vToday(el){
     const motion=e.category==='motion'; const end=toMin(e.end||e.start);
     const done=motion&&e.session.status==='completed';
     const past=!motion&&end<n;
-    return `<li class="${motion?'motion':''} ${past?'past':''} ${done?'done':''}"><span class="t">${e.start}</span><span class="dot"></span><div><div class="lbl">${motion?'Motion':esc(e.title)}</div><div class="sub">${motion?`${e.session.duration} min · ${e.session.count} kort${done?' · klart':''}`:`till ${e.end}`}</div></div></li>`;
+    return `<li class="${motion?'motion':''} ${past?'past':''} ${done?'done':''}"><span class="t">${e.start}</span><span class="dot">${motion?`<img src="${LOGO}" alt="">`:''}</span><div><div class="lbl">${motion?'Motion':esc(e.title)}</div><div class="sub">${motion?`${e.session.duration} min · ${e.session.need==='family'?'familjekort':'dra '+e.session.count+' kort'}${done?' · klart':''}`:`till ${e.end}`}</div></div></li>`;
   }).join('')||'<li><span class="t">—</span><span class="dot"></span><div class="sub">Inget i kalendern idag.</div></li>';
-  const ws=weekStats();
+  const ws=weekStats(); const left=Math.max(0,(P().perWeek||3)-weekSessionCount());
   el.innerHTML=`
-    <span class="eyebrow">${niceDate(now)}</span>
-    <h1 class="big" style="margin-top:8px">${greeting()}, ${esc(S.user.name)}.</h1>
+    <span class="eyebrow">${greeting()}</span>
+    <h1 class="big" style="margin-top:8px">Din ${DN[dow(now)].toLowerCase()}, ${esc(S.user.name)}.</h1>
+    <p class="muted" style="margin-top:6px">${now.getDate()} ${MN[now.getMonth()]}</p>
     <div class="today">
       ${next}
       <section class="card timeline" aria-label="Dagens schema">
-        <div style="display:flex;justify-content:space-between;align-items:center"><span class="eyebrow">Dagens schema</span><a href="#planner" class="btn btn-ghost btn-sm">Öppna planeraren</a></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span class="eyebrow">Dagens schema</span><a href="#planner" class="btn btn-ghost btn-sm">Planeraren</a></div>
         <ul class="tl">${tl}</ul>
       </section>
     </div>
+    <section class="card ai-nudge">
+      <img src="${LOGO}" alt="">
+      <div><b>${left?`${left} pass kvar till ditt veckomål.`:'Veckomålet är nått.'}</b><span>${left?'Vill du att jag planerar resten av veckan?':'Fortsätt i din takt, eller vila. Båda räknas.'}</span></div>
+      <button class="btn btn-line btn-sm" id="aiWeek">${left?'Planera veckan':'Fråga Motion AI'}</button>
+    </section>
     <section class="card weeksum" aria-label="Veckan">
       <span class="eyebrow">Den här veckan</span>
       <div><div class="n">${ws.sessions}</div><div class="l">pass</div></div>
@@ -843,8 +1043,9 @@ function vToday(el){
   el.addEventListener('click',e=>{
     const st=e.target.closest('[data-start]'); if(st) return startSession(st.dataset.start);
     const ed=e.target.closest('[data-edit-s]'); if(ed) return sessionSheet(S.sessions.find(s=>s.id===ed.dataset.editS));
-    if(e.target.closest('#addSg')){ createSession({date:t,start:toHM(sg.start),duration:sg.duration,need:'reset'}); toast('Tillagt i dagen'); render(); }
-    if(e.target.closest('#newS')) motionFlow({date:t});
+    if(e.target.closest('#addSg')){ const s2=createSession({date:t,start:toHM(sg.start),duration:sg.duration,need:sg.need}); done(s2); render(); }
+    if(e.target.closest('#newS')){ const s2=createSession({date:t,start:toHM(Math.ceil((nowMin()+5)/5)*5),duration:5,need:'reset'}); startSession(s2.id); }
+    if(e.target.closest('#aiWeek')){ window._pendingAI=left?'Planera min vecka':'Hur ligger jag till den här veckan?'; go('ai'); }
   });
 }
 
@@ -852,84 +1053,118 @@ function vToday(el){
    PLANNER — "When should I move?"
    ========================================================= */
 let pRef=new Date(), pSel=todayStr(), pMonth=new Date(), pFilter=new Set(Object.keys(CAT));
-const H0=6,H1=22,HH=56;
+let pView=null; // 'day' | 'week' — default: day on phones, week on desktop
+const H0=7,H1=22,HH=56;
+const SYMI=`<img src="${LOGO}" alt="" class="sym-xs">`;
+function blockHTML(e,style){
+  if(e.category==='motion'){
+    const s=e.session, done=s.status==='completed';
+    return `<button class="ev cat-motion ${done?'done':''}" style="${style}" data-s="${s.id}"><span class="et">${SYMI}Motion · ${s.duration} min</span><span class="eh">${s.start} · ${s.need==='family'?'familjekort':'dra '+s.count+' kort'}</span>${done?'<span class="go">Klart</span>':'<span class="go">Starta</span>'}</button>`;
+  }
+  return `<button class="ev cat-${e.category}" style="${style}" data-e="${e.id}"><span class="et">${esc(e.title)}</span><span class="eh">${e.start}–${e.end||''}</span></button>`;
+}
+function sgHTML(sg,style){
+  return `<button class="ghost ${sg.family?'fam':''}" style="${style}" data-g="${sg.date}|${toHM(sg.start)}|${sg.duration}"><span class="gk">${SYMI}${sg.family?'Family':'Lucka'} ${toHM(sg.start)}</span><span>${sg.duration} min · lägg till</span></button>`;
+}
 function vPlanner(el){
+  if(!pView) pView=window.matchMedia('(max-width:760px)').matches?'day':'week';
   const ws=weekStart(pRef); const days=[...Array(7)].map((_,i)=>addDays(ws,i)); const t=todayStr();
   if(!days.some(d=>ymd(d)===pSel)) pSel=days.some(d=>ymd(d)===t)?t:ymd(days[0]);
-  const range=`${days[0].getDate()} ${MN[days[0].getMonth()].slice(0,3)} – ${days[6].getDate()} ${MN[days[6].getMonth()].slice(0,3)}`;
-  const hours=[...Array(H1-H0)].map((_,i)=>`<div>${pad(H0+i)}:00</div>`).join('');
-  const cols=days.map(d=>{
-    const ds=ymd(d);
-    const evs=eventsOn(ds).filter(e=>pFilter.has(e.category));
-    // lane layout: overlapping events share the column width
-    const items=evs.map(e=>({e,a:toMin(e.start),b:toMin(e.end||toHM(toMin(e.start)+30))}));
-    // short events fully inside a longer one (lunch during school) sit on top, inset to the right
-    items.forEach(it=>{it.inner=items.some(o=>o!==it&&o.a<=it.a&&o.b>=it.b&&(o.b-o.a)>(it.b-it.a))});
-    const flow=items.filter(i=>!i.inner);
-    flow.forEach(it=>{it.lane=0;const used=flow.filter(o=>o!==it&&o.done&&o.a<it.b&&it.a<o.b).map(o=>o.lane);while(used.includes(it.lane))it.lane++;it.done=true});
-    flow.forEach(it=>{it.n=1+Math.max(0,...flow.filter(o=>o.a<it.b&&it.a<o.b).map(o=>o.lane))});
-    items.filter(i=>i.inner).forEach(i=>{i.lane=0;i.n=1});
-    const blocks=items.map(({e,lane,n,inner})=>{
-      const a=Math.max(toMin(e.start),H0*60), b=Math.min(toMin(e.end||toHM(toMin(e.start)+30)),H1*60);
-      if(b<=H0*60||a>=H1*60) return '';
-      const top=(a-H0*60)/60*HH, h=Math.max((b-a)/60*HH,26);
-      const pos=inner?'left:34%;right:4px;z-index:2;box-shadow:0 0 0 2px var(--white);':n>1?`left:calc(${lane/n*100}% + 3px);right:auto;width:calc(${100/n}% - 6px);`:'';
-      if(e.category==='motion'){
-        const s=e.session, done=s.status==='completed';
-        return `<button class="ev cat-motion ${done?'done':''}" style="${pos}top:${top}px;height:${Math.max(h,58)}px" data-s="${s.id}"><div class="eh">${s.start}</div><div class="et">Motion</div><div>${s.duration} min · ${s.count} kort</div>${done?'':'<span class="go">STARTA</span>'}</button>`;
-      }
-      return `<button class="ev cat-${e.category}" style="${pos}top:${top}px;height:${h}px" data-e="${e.id}"><div class="et">${esc(e.title)}</div>${h>34?`<div class="eh">${e.start}–${e.end||''}</div>`:''}</button>`;
-    }).join('');
-    const sg=pFilter.has('motion')&&ds>=t?suggestFor(ds):null;
-    const ghost=sg?`<button class="ghost" style="top:${(sg.start-H0*60)/60*HH}px;height:${Math.max(sg.duration/60*HH,44)}px" data-g="${ds}|${toHM(sg.start)}|${sg.duration}"><b>FÖRSLAG ${toHM(sg.start)}</b>${sg.duration} min · lägg till</button>`:'';
-    const now=ds===t&&nowMin()>H0*60&&nowMin()<H1*60?`<div class="nowline" style="top:${(nowMin()-H0*60)/60*HH}px"></div>`:'';
-    return `<div class="daycol ${ds===t?'is-today':''} ${ds===pSel?'sel':''}" data-day="${ds}" style="height:${(H1-H0)*HH}px">${blocks}${ghost}${now}</div>`;
-  }).join('');
-  // windows list (sidebar)
+  const d0=days[0], d6=days[6];
+  const range=d0.getMonth()===d6.getMonth()?`${d0.getDate()}–${d6.getDate()} ${MN[d6.getMonth()]}`:`${d0.getDate()} ${MN[d0.getMonth()].slice(0,3)} – ${d6.getDate()} ${MN[d6.getMonth()].slice(0,3)}`;
+  const weekEvents=days.reduce((n,d)=>n+eventsOn(ymd(d)).filter(e=>e.kind==='event').length,0);
   const wins=days.map(d=>ymd(d)).filter(ds=>ds>=t).map(ds=>({ds,sg:suggestFor(ds)})).filter(x=>x.sg).slice(0,3);
+  const sel=parseYmd(pSel);
+  // ---- day view ----
+  const dayView=()=>{
+    const evs=eventsOn(pSel).filter(e=>pFilter.has(e.category)); const sg=pSel>=t&&pFilter.has('motion')?suggestFor(pSel):null;
+    const items=[...evs.map(e=>({m:toMin(e.start),h:blockHTML(e,'')})), ...(sg?[{m:sg.start,h:`<div class="dsg${sg.family?' fam':''}"><span class="gk">${SYMI}${sg.family?'Family Motion':'Motion hittade en lucka'}</span><div class="dsg-t">${toHM(sg.start)}–${toHM(sg.start+sg.duration)}</div><div class="no-think sm"><span>${sg.duration} MIN</span><span>${sg.family?'FAMILJEKORT':'DRA '+cardsFor(sg.duration)+' KORT'}</span><span>INGEN UTRUSTNING</span></div><p>${reasonFor(sg)}</p><div class="dsg-a"><button class="btn btn-primary btn-sm" data-ga="${sg.date}|${toHM(sg.start)}|${sg.duration}|${sg.need}">Lägg till</button><button class="btn btn-ghost btn-sm" data-g="${sg.date}|${toHM(sg.start)}|${sg.duration}">Ändra</button></div></div>`}]:[])].sort((a,b)=>a.m-b.m);
+    return `<div class="dayhead"><button class="iconbtn" data-d="-1" aria-label="Föregående dag">${IC.l}</button><div><b>${DS[dow(sel)]} ${sel.getDate()} ${MN[sel.getMonth()].slice(0,3).toUpperCase()}</b><span>${relDay(pSel)}</span></div><button class="iconbtn" data-d="1" aria-label="Nästa dag">${IC.r}</button></div>
+      <div class="card dayline" id="dayline">${items.length?`<ul>${items.map(x=>`<li><span class="dt">${toHM(x.m)}</span><div>${x.h}</div></li>`).join('')}</ul>`:`<p class="muted" style="padding:28px">Inget planerat. En lugn dag.</p>`}</div>`;
+  };
+  // ---- week grid ----
+  const weekView=()=>{
+    const hours=[...Array(H1-H0)].map((_,i)=>`<div>${pad(H0+i)}:00</div>`).join('');
+    const cols=days.map(d=>{
+      const ds=ymd(d); const evs=eventsOn(ds).filter(e=>pFilter.has(e.category));
+      const items=evs.map(e=>({e,a:toMin(e.start),b:toMin(e.end||toHM(toMin(e.start)+30))}));
+      items.forEach(it=>{it.inner=items.some(o=>o!==it&&o.a<=it.a&&o.b>=it.b&&(o.b-o.a)>(it.b-it.a))});
+      const flow=items.filter(i=>!i.inner);
+      flow.forEach(it=>{it.lane=0;const used=flow.filter(o=>o!==it&&o.done&&o.a<it.b&&it.a<o.b).map(o=>o.lane);while(used.includes(it.lane))it.lane++;it.done=true});
+      flow.forEach(it=>{it.n=1+Math.max(0,...flow.filter(o=>o.a<it.b&&it.a<o.b).map(o=>o.lane))});
+      const blocks=items.map(({e,a,b,inner,lane,n})=>{
+        a=Math.max(a,H0*60); b=Math.min(b,H1*60); if(b<=a) return '';
+        const top=(a-H0*60)/60*HH, h=Math.max((b-a)/60*HH,e.category==='motion'?60:28);
+        const pos=inner?'left:34%;right:4px;z-index:2;':n>1?`left:calc(${lane/n*100}% + 3px);right:auto;width:calc(${100/n}% - 6px);`:'';
+        return blockHTML(e,`${pos}top:${top}px;height:${h}px`);
+      }).join('');
+      const sg=pFilter.has('motion')&&ds>=t?suggestFor(ds):null;
+      const ghost=sg?sgHTML(sg,`top:${(sg.start-H0*60)/60*HH}px;height:${Math.max(sg.duration/60*HH,48)}px`):'';
+      const now=ds===t&&nowMin()>H0*60&&nowMin()<H1*60?`<div class="nowline" style="top:${(nowMin()-H0*60)/60*HH}px"></div>`:'';
+      return `<div class="daycol ${ds===t?'is-today':''}" data-day="${ds}" style="height:${(H1-H0)*HH}px">${blocks}${ghost}${now}</div>`;
+    }).join('');
+    return `<div class="card week" style="--hh:${HH}px">
+      <div class="wk-head"><div></div>${days.map((d,i)=>`<button class="${ymd(d)===t?'is-today':''}" data-open="${ymd(d)}" aria-label="Visa ${DN[i]}"><div class="dn">${DS[i]}</div><div class="dd">${d.getDate()}</div></button>`).join('')}</div>
+      <div class="wk-body" id="wkb"><div class="hours">${hours}</div>${cols}</div></div>`;
+  };
+  const empty=weekEvents===0?`<section class="card p-empty"><img src="${LOGO}" alt=""><div><h3>Din vecka börjar här.</h3><p>Lägg in det som redan tar plats i livet. Motion hittar resten.</p></div><div class="p-empty-a"><button class="btn btn-primary btn-sm" data-add>${IC.plus} Lägg till aktivitet</button><button class="btn btn-line btn-sm" data-ai>Planera med AI</button><button class="btn btn-ghost btn-sm" data-imp>${IC.up} Importera schema</button></div></section>`:'';
   el.innerHTML=`
-    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
-      <div><span class="eyebrow">Planerare</span><h1 class="big" style="margin-top:6px">När ska jag röra mig?</h1></div>
-    </div>
-    <div class="planner">
+    <header class="p-head">
+      <div class="p-title"><img src="${LOGO}" alt="" class="p-sym"><div><span class="eyebrow">Planerare · Din vecka</span><h1>${range}</h1></div></div>
+      <div class="p-ctl">
+        <div class="seg sm" role="tablist" aria-label="Vy"><button role="tab" aria-selected="${pView==='day'}" class="${pView==='day'?'on':''}" data-v="day">Dag</button><button role="tab" aria-selected="${pView==='week'}" class="${pView==='week'?'on':''}" data-v="week">Vecka</button></div>
+        <button class="iconbtn" data-w="-1" aria-label="Föregående vecka">${IC.l}</button><button class="btn btn-line btn-sm" data-w="0">Idag</button><button class="iconbtn" data-w="1" aria-label="Nästa vecka">${IC.r}</button>
+      </div>
+      <div class="p-act"><button class="btn btn-ai btn-sm" data-ai><img src="${LOGO}" alt="" class="sym-xs">Planera med AI</button><button class="btn btn-line btn-sm" data-imp>${IC.up} Importera</button><button class="btn btn-primary btn-sm" data-add>${IC.plus} Lägg till</button></div>
+    </header>
+    <div class="planner v-${pView}">
       <aside class="p-side">
         <div class="card mini" id="mini"></div>
+        <div class="card windows"><div class="eyebrow gold" style="margin-bottom:4px">${SYMI}Motion hittade</div>
+          ${wins.length?wins.map(w=>`<div class="win"><div class="d">${relDay(w.ds)} · ${toHM(w.sg.window[0])}–${toHM(w.sg.window[1])}</div><div class="r">${w.sg.family?'Family challenge':w.sg.duration+' min'} kl ${toHM(w.sg.start)}</div><p>${reasonFor(w.sg)}</p><button class="btn btn-line btn-sm" data-ga="${w.ds}|${toHM(w.sg.start)}|${w.sg.duration}|${w.sg.need}">Lägg till</button></div>`).join(''):'<p class="muted" style="font-size:.92rem">Inga fler luckor som passar den här veckan. Det är också okej.</p>'}
+        </div>
         ${tipCardHTML(pSel)}
         <div class="card filters"><div class="eyebrow" style="margin-bottom:6px">Visa</div>
           ${Object.entries(CAT).map(([k,v])=>`<label><input type="checkbox" data-f="${k}" ${pFilter.has(k)?'checked':''}>${v.sv}<span class="sw" style="background:${v.sw}"></span></label>`).join('')}
         </div>
-        <div class="card windows"><div class="eyebrow gold" style="margin-bottom:6px">Luckor den här veckan</div>
-          ${wins.length?wins.map(w=>`<div class="win"><div class="d">${relDay(w.ds)}</div><div class="r">${toHM(w.sg.window[0])}–${toHM(w.sg.window[1])}</div><button class="btn btn-line btn-sm" data-g="${w.ds}|${toHM(w.sg.start)}|${w.sg.duration}">${w.sg.duration} min kl ${toHM(w.sg.start)}</button></div>`).join(''):'<p class="muted" style="font-size:.92rem">Inga fler luckor som passar den här veckan. Det är också okej.</p>'}
-        </div>
       </aside>
       <section class="p-main">
-        <div class="p-bar">
-          <h2>${range}</h2>
-          <button class="iconbtn" data-w="-1" aria-label="Föregående vecka">${IC.l}</button>
-          <button class="btn btn-line btn-sm" data-w="0">Idag</button>
-          <button class="iconbtn" data-w="1" aria-label="Nästa vecka">${IC.r}</button>
-          <button class="btn btn-line btn-sm" id="impBtn">${IC.up} Importera schema</button><button class="btn btn-primary btn-sm" id="addBtn">${IC.plus} Lägg till</button>
-        </div>
+        ${empty}
         <div class="daystrip">${days.map((d,i)=>{const ds=ymd(d);return `<button class="${ds===pSel?'on':''}" data-sel="${ds}"><span class="dn">${DS[i]}</span><span class="dd">${d.getDate()}</span>${eventsOn(ds).some(e=>e.category==='motion')?'<i class="has"></i>':'<i></i>'}</button>`}).join('')}</div>
-        <div class="card week" style="--hh:${HH}px">
-          <div class="wk-head"><div></div>${days.map((d,i)=>`<div class="${ymd(d)===t?'is-today':''}"><div class="dn">${DS[i]}</div><div class="dd">${d.getDate()}</div></div>`).join('')}</div>
-          <div class="wk-body" id="wkb"><div class="hours">${hours}</div>${cols}</div>
-        </div>
+        ${pView==='day'?dayView():weekView()}
       </section>
     </div>`;
   miniCal($('#mini',el)); bindTips(el,pSel);
-  if(window.matchMedia('(max-width:1060px)').matches){ const wk=$('.week',el); const d=document.createElement('div'); d.style.marginTop='16px'; d.innerHTML=tipCardHTML(pSel); wk.after(d.firstElementChild); $('.p-side #tips',el)?.remove(); }
-  const wkb=$('#wkb',el); const target=Math.max(0,((ymd(new Date())===pSel?nowMin():15*60)-H0*60-90)/60*HH); wkb.scrollTop=target;
+  if(window.matchMedia('(max-width:1060px)').matches){ const host=$('.p-main',el); const d=document.createElement('div'); d.style.marginTop='16px'; d.innerHTML=tipCardHTML(pSel); host.appendChild(d.firstElementChild); $('.p-side #tips',el)?.remove(); }
+  const wkb=$('#wkb',el); if(wkb) wkb.scrollTop=Math.max(0,((ymd(new Date())===pSel?nowMin():15*60)-H0*60-90)/60*HH);
+  const dl=$('#dayline',el); if(dl){ let x0=null; dl.addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true}); dl.addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>60)shiftDay(dx<0?1:-1)}); }
   el.addEventListener('click',e=>{
-    const w=e.target.closest('[data-w]'); if(w){ const v=+w.dataset.w; pRef=v===0?new Date():addDays(pRef,7*v); if(v===0)pSel=todayStr(); return render(); }
-    const sel=e.target.closest('[data-sel]'); if(sel){ pSel=sel.dataset.sel; return render(); }
-    if(e.target.closest('#addBtn')) return addFlow({date:pSel});
-    if(e.target.closest('#impBtn')) return importFlow();
-    const g=e.target.closest('[data-g]'); if(g){ const [d,st,du]=g.dataset.g.split('|'); return motionFlow({date:d,start:st,duration:+du,step:2}); }
-    const s=e.target.closest('[data-s]'); if(s) return sessionSheet(S.sessions.find(x=>x.id===s.dataset.s));
-    const ev=e.target.closest('[data-e]'); if(ev) return eventSheet(S.events.find(x=>x.id===ev.dataset.e), ev.closest('[data-day]').dataset.day);
+    const v=e.target.closest('[data-v]'); if(v){ pView=v.dataset.v; return render(); }
+    const w=e.target.closest('[data-w]'); if(w){ const k=+w.dataset.w; pRef=k===0?new Date():addDays(pRef,7*k); pSel=k===0?todayStr():ymd(weekStart(pRef)); return render(); }
+    const dd=e.target.closest('[data-d]'); if(dd) return shiftDay(+dd.dataset.d);
+    const sl=e.target.closest('[data-sel]'); if(sl){ pSel=sl.dataset.sel; return render(); }
+    const op=e.target.closest('[data-open]'); if(op){ pSel=op.dataset.open; pView='day'; return render(); }
+    if(e.target.closest('[data-add]')) return addFlow({date:pSel});
+    if(e.target.closest('[data-imp]')) return importFlow();
+    if(e.target.closest('[data-ai]')){ window._pendingAI=weekEvents?'Gör veckan lite bättre':'Planera min vecka'; return go('ai'); }
+    const ga=e.target.closest('[data-ga]'); if(ga){ const [d,st,du,nd]=ga.dataset.ga.split('|'); const s2=createSession({date:d,start:st,duration:+du,need:nd}); done(s2); return render(); }
+    const g=e.target.closest('[data-g]'); if(g){ const [d,st,du]=g.dataset.g.split('|'); return suggestionSheet(d,st,+du); }
+    const ss=e.target.closest('[data-s]'); if(ss) return sessionSheet(S.sessions.find(x=>x.id===ss.dataset.s));
+    const ev=e.target.closest('[data-e]'); if(ev) return eventSheet(S.events.find(x=>x.id===ev.dataset.e), ev.closest('[data-day]')?.dataset.day||pSel);
   });
   el.addEventListener('change',e=>{const f=e.target.dataset.f; if(!f)return; e.target.checked?pFilter.add(f):pFilter.delete(f); render();});
+}
+function shiftDay(k){ const d=addDays(parseYmd(pSel),k); pSel=ymd(d); pRef=d; render(); }
+function suggestionSheet(date,start,duration){
+  const sg=suggestFor(date)||{date,start:toMin(start),duration,window:[toMin(start),toMin(start)+duration],need:goalNeed()};
+  openSheet(`<span class="eyebrow gold">${SYMI}${sg.family?'Family Motion':'Motion hittade en lucka'}</span>
+    <h3 style="margin-top:8px">${relDay(date)} ${start}–${toHM(toMin(start)+duration)}</h3>
+    <p class="muted">${reasonFor(sg)}</p>
+    <div class="no-think" style="margin-top:16px"><span>${duration} MIN</span><span>${sg.family?'FAMILJEKORT':'DRA '+cardsFor(duration)+' KORT'}</span><span>INGEN UTRUSTNING</span></div>
+    <div class="sheet-actions"><button class="btn btn-line" id="chg">Ändra</button><button class="btn btn-primary" id="ok">Lägg till</button></div>`,sh=>{
+    $('#ok',sh).onclick=()=>{ const s2=createSession({date,start,duration,need:sg.need}); closeSheet(); done(s2); render(); };
+    $('#chg',sh).onclick=()=>motionFlow({date,start,duration,step:1});
+  });
 }
 function miniCal(box){
   const m=pMonth; const first=new Date(m.getFullYear(),m.getMonth(),1); const start=addDays(first,-dow(first));
@@ -1006,7 +1241,7 @@ function motionFlow(pre={}){
       const m=e.target.closest('[data-m]'); if(m){st.duration=+m.dataset.m;step=1;return draw(sh)}
       const n=e.target.closest('[data-n]'); if(n){st.need=n.dataset.n;step=2;return draw(sh)}
       if(e.target.closest('#back')){step=st.duration&&step===2?1:0;return draw(sh)}
-      if(e.target.closest('#addp')){st.date=$('#m-d',sh).value;st.start=$('#m-s',sh).value;createSession(st);closeSheet();toast('Tillagt i planeraren');render()}
+      if(e.target.closest('#addp')){st.date=$('#m-d',sh).value;st.start=$('#m-s',sh).value;const s2=createSession(st);closeSheet();done(s2);render()}
     });
   });
 }
@@ -1140,15 +1375,18 @@ let apiOK=true;         // falls back to the local engine if /api/chat is unreac
 let aiBusy=false;
 
 function aiContext(){
-  const t=todayStr(), tm=ymd(addDays(new Date(),1)); const ws=weekStart(new Date());
+  const t=todayStr(); const ws=weekStart(new Date());
   const sched=ds=>eventsOn(ds).map(e=>({id:e.session?e.session.id:e.id,title:e.category==='motion'?'Motion':e.title,category:e.category,start:e.start,end:e.end,status:e.session?e.session.status:undefined}));
+  const next7=[...Array(7)].map((_,i)=>ymd(addDays(new Date(),i)));
   return {
-    current_time:`${ymd(new Date())} ${toHM(nowMin())} (${DN[dow(new Date())]})`,
-    user:{name:S.user.name,preferred_session_minutes:P().len||10,preferences:P()},
-    today:sched(t), tomorrow:sched(tm),
-    free_windows_today:freeWindows(t).map(w=>`${toHM(w.start)}-${toHM(w.end)}`),
-    this_week_motion_sessions:S.sessions.filter(s=>s.date>=ymd(ws)&&s.date<=ymd(addDays(ws,6))).map(s=>({id:s.id,date:s.date,start:s.start,duration:s.duration,need:s.need,status:s.status})),
-    recent_cards:S.completions.slice(-8).map(c=>({card:(cardById(c.card_id)||{}).name,date:c.date}))
+    date:`${t} (${DN[dow(new Date())]})`, time:toHM(nowMin()),
+    freeWindows:next7.map(ds=>({date:ds,windows:freeWindows(ds).map(w=>`${toHM(w.start)}-${toHM(w.end)}`)})).filter(x=>x.windows.length).slice(0,7),
+    upcomingEvents:next7.slice(0,3).map(ds=>({date:ds,events:sched(ds)})),
+    scheduledMotion:S.sessions.filter(s=>s.status==='planned'&&s.date>=t).map(s=>({id:s.id,date:s.date,start:s.start,duration:s.duration,cards:s.count})),
+    completedSessions:S.sessions.filter(s=>s.status==='completed'&&s.date>=ymd(addDays(ws,-7))).map(s=>({date:s.date,duration:s.duration})),
+    weekGoal:{target:P().perWeek||3,planned_or_done:weekSessionCount()},
+    preferences:{name:S.user.name,goal:P().goal,level:P().level,minutes:P().len||10,bestTime:P().time,deck:P().deck},
+    equipment:'ingen (kroppsvikt + Motion-korten)'
   };
 }
 const TOOLS=[
@@ -1162,10 +1400,12 @@ const TOOLS=[
   {name:'propose_change_event',description:'FÖRESLÅ ny tid för en befintlig kalenderhändelse (skola, tennis, middag osv). Ange event_id från schemat och datumet för tillfället. Användaren väljer själv om det gäller bara denna gång eller alla gånger.',input_schema:{type:'object',properties:{event_id:{type:'string'},date:{type:'string'},new_start:{type:'string'},new_end:{type:'string'}},required:['event_id','date','new_start','new_end']}},
   {name:'propose_week_plan',description:'FÖRESLÅ en veckoplan med flera Motion-pass. Användaren kan redigera innan bekräftelse.',input_schema:{type:'object',properties:{sessions:{type:'array',items:{type:'object',properties:{date:{type:'string'},start:{type:'string'},duration:{type:'integer'},need:{type:'string'}},required:['date','start','duration']}}},required:['sessions']}},
 ];
-const SYSTEM=()=>`Du är Motion AI i appen Motion UF (slogan: We Think. You Move.). Du hjälper ${S.user.name} att röra sig i vardagen med korta pass. Ett pass = användaren drar fysiska träningskort ur leken och skannar dem.
+const SYSTEM=()=>`Du är Motion AI, coachen i Motion UF (slogan: We Think. You Move.). Du hjälper ${S.user.name} att röra sig i vardagen med korta pass. Ett pass = användaren drar fysiska träningskort ur leken och skannar dem.
 Respektera användarens svar i quizet (preferences): mål, nivå, passlängd, bästa tid på dagen och antal pass per vecka.
 Du kan också ge korta, allmänna tips om stretch, rörlighet, sömn, återhämtning, stress och kost (max 3 tips). Kostråd ska vara allmänna och vänliga: inga kalorisiffror, inga dieter, inget om vikt. Vid smärta, skada eller sjukdom: hänvisa vänligt till vården. Vid stretchtips kan du föreslå ett kort rörlighetspass med propose_motion_session (need: mobility).
-Ton: lugn, kort, praktisk, mänsklig. Svenska. Max 3 korta meningar. Inga utropstecken, inga emojis, ingen peppig influencer-ton. Föreslå hellre mindre än mer. Fyll aldrig varje lucka med träning.
+Om användaren är sliten, har sovit dåligt, är sjuk eller tränade hårt igår: föreslå vila eller en kort promenad och erbjud att flytta passet. Motion handlar inte om att träna mer till varje pris.
+Föreslå konkreta tider som kort, inte långa listor. Pass görs med Motion-korten: "dra 4 kort".
+Ton: lugn, kort, praktisk, mänsklig, gärna lite torr humor ("Onsdag ser redan brutal ut. Vi lämnar den ifred."). Svenska. Max 3 korta meningar. Inga utropstecken, inga emojis, ingen peppig influencer-ton. Föreslå hellre mindre än mer. Fyll aldrig varje lucka med träning.
 Använd verktygen för att läsa schemat. Vill användaren ändra tiden för något i kalendern (t.ex. skola, tennis, middag) använder du propose_change_event. Ändringar görs ENDAST via propose_*-verktygen, som visar ett kort som användaren bekräftar. Säg aldrig att något är tillagt eller flyttat – säg att det väntar på bekräftelse eller låt kortet tala.
 Sammanhang (JSON): ${JSON.stringify(aiContext())}`;
 
@@ -1208,6 +1448,50 @@ async function askAPI(text){
 /* ---------- local engine (works offline / without API key) ---------- */
 function localAI(raw){
   const q=raw.toLowerCase(); const t=todayStr(), tm=ymd(addDays(new Date(),1));
+  const nowSlot=()=>toHM(Math.ceil((nowMin()+5)/5)*5);
+  // rest first: bad sleep, sick, sore, trained hard
+  if(/sov (\d|två|tre|fyra|fem|dåligt|lite)|sjuk|feber|ont i|skadad|tränade (hårt )?igår|förkyld/.test(q)){
+    const s=S.sessions.find(x=>x.date===t&&x.status==='planned'); const sg=suggestFor(tm);
+    return {text:`Jag hade inte pressat in ett pass idag.\nTa en kort promenad om du vill röra på dig${s?', så flyttar vi passet till imorgon':''}. ${/sjuk|feber|förkyld/.test(q)?'Är du sjuk: vila helt tills du är frisk.':''}`.trim(),
+      actions:s?[{type:'move',id:s.id,from:s.start,fromDate:s.date,date:tm,start:sg?toHM(sg.start):s.start}]:[],chips:['Ge mig fem minuter lugn rörlighet']};
+  }
+  if(/helt slut|är slut|utmattad|orkar verkligen inte/.test(q)){
+    return {text:'Då gör vi det lätt för dig.\nAntingen fem minuter lugn rörlighet nu, eller så vilar du och vi tar det imorgon. Båda är okej.',
+      actions:[{type:'add',date:t,start:nowSlot(),duration:5,need:'mobility',startNow:true}],chips:['Flytta dagens pass till imorgon']};
+  }
+  if(/flytta dagens pass till imorgon/.test(q)){ const s=S.sessions.find(x=>x.date===t&&x.status==='planned'); if(!s) return {text:'Du har inget pass idag. Vila gott.',actions:[]}; const sg=suggestFor(tm); return {text:'Imorgon då.',actions:[{type:'move',id:s.id,from:s.start,fromDate:s.date,date:tm,start:sg?toHM(sg.start):s.start}]}; }
+  if(/fem minuter lugn|5 min lugn/.test(q)) return {text:'Fem minuter, lugnt tempo. Två kort.',actions:[{type:'add',date:t,start:nowSlot(),duration:5,need:'mobility',startNow:true}]};
+  if(/något snabbt|snabbt pass|kort pass nu/.test(q)) return {text:'Tio minuter. Dra fyra kort och kör.',actions:[{type:'add',date:t,start:nowSlot(),duration:10,need:goalNeed(),startNow:true}]};
+  if(/nästa (tränings)?lucka|hitta (en )?lucka/.test(q)){
+    const opts=[...Array(7)].map((_,i)=>ymd(addDays(new Date(),i))).map(ds=>suggestFor(ds)).filter(Boolean).slice(0,2);
+    if(!opts.length) return {text:'Veckan är full. Jag hade inte tvingat in något. Fem minuter efter middagen räknas också.',actions:[]};
+    return {text:opts.length>1?'Jag ser två bra alternativ.':'Jag ser ett bra alternativ.',actions:[{type:'options',opts:opts.map(o=>({date:o.date,start:toHM(o.start),duration:o.duration,need:o.need,why:reasonFor(o)}))}]};
+  }
+  // "I have N minutes tomorrow/today"
+  const mmin=q.match(/(\d{1,2})\s*(min|minuter)/);
+  if(mmin&&/har|have/.test(q)&&/imorgon|tomorrow/.test(q)){
+    const want=+mmin[1]; const w=freeWindows(tm).filter(x=>x.end-x.start>=want); const sg=suggestFor(tm);
+    const pick=sg&&sg.window[1]-sg.start>=want?sg.start:(w[0]?Math.ceil((w[0].start+10)/5)*5:null);
+    if(pick===null) return {text:`Imorgon ser tight ut för ${want} minuter. Ska vi ta tio i stället?`,actions:[],chips:['Hitta nästa träningslucka']};
+    const d=[5,10,15,20].reduce((a,b)=>Math.abs(b-want)<Math.abs(a-want)?b:a);
+    return {text:`Du har faktiskt en bra lucka imorgon.`,actions:[{type:'add',date:tm,start:toHM(pick),duration:d,need:goalNeed(),why:reasonFor({date:tm,start:pick,duration:d,window:[pick,pick+d]})}]};
+  }
+  // "three times this week, but Wednesday is chaos"
+  const cnt=(q.match(/(\d|två|tre|fyra|fem) (gånger|pass)/)||[])[1];
+  if(cnt&&/vecka/.test(q)){
+    const n={två:2,tre:3,fyra:4,fem:5}[cnt]||+cnt; const ex=new Set();
+    for(const [k,v] of Object.entries(WD)) if(new RegExp(k+'(en|ar)?\\b[^.,]*?(kaos|full|stressig|upptagen|omöjlig|går inte|brutal)').test(q)||new RegExp('(inte|ej) (på )?'+k).test(q)) ex.add(v);
+    const p=planWeek(new Date(),{count:Math.max(n,weekSessionCount()+1),exclude:ex}).slice(0,Math.max(0,n-weekSessionCount()));
+    const skipTxt=[...ex].map(i=>DN[i].toLowerCase()).join(' och ');
+    if(!p.length) return {text:`Du har redan ${weekSessionCount()} pass den här veckan. Det räcker.`,actions:[]};
+    return {text:`${skipTxt?`Jag lägger inget på ${skipTxt}.\n`:''}Här är ett förslag.`,actions:[{type:'week',sessions:p.map(x=>({...x,on:true}))}]};
+  }
+  if(/gör veckan (lite )?bättre|hur ligger jag till/.test(q)){
+    const have=weekSessionCount(), goal=P().perWeek||3;
+    if(have>=goal) return {text:`Du har ${have} pass den här veckan och målet är ${goal}. Veckan ser bra ut som den är.`,actions:[]};
+    const p=planWeek(); if(!p.length) return {text:'Resten av veckan är full. Jag skulle låta den vara.',actions:[]};
+    return {text:`Du har ${have} av ${goal} pass. ${p.length===1?'Ett till räcker.':'Jag har hittat '+p.length+' luckor som faktiskt passar.'}`,actions:[{type:'week',sessions:p.map(x=>({...x,on:true}))}]};
+  }
   const times=[...raw.matchAll(/(\d{1,2})[:.](\d{2})/g)].map(m=>`${pad(+m[1])}:${m[2]}`);
   const day=/imorgon|morgondag|tomorrow/.test(q)?tm:t;
   // change a calendar event ("flytta tennis på torsdag till 17:30", "skolan slutar 14:00 imorgon")
@@ -1220,13 +1504,13 @@ function localAI(raw){
     return {text:'Så här blir det.',actions:[{type:'move',id:s.id,from:s.start,fromDate:s.date,date:s.date,start:times[times.length-1]}]};
   }
   // no motivation
-  if(/orkar inte|inte lust|ingen lust|don.?t feel|pallar inte|trött/.test(q)) return {text:'Då gör vi det mindre.\nGe mig fem minuter. Jag bygger något enkelt.',actions:[{type:'add',date:t,start:toHM(Math.ceil((nowMin()+5)/5)*5),duration:5,need:'reset',startNow:true}]};
+  if(/orkar inte|inte lust|ingen lust|don.?t feel|pallar inte|trött/.test(q)) return {text:'Då gör vi det mindre.\nFem minuter. Två kort. Sedan är du klar.',actions:[{type:'add',date:t,start:toHM(Math.ceil((nowMin()+5)/5)*5),duration:5,need:'reset',startNow:true}]};
   // I have N minutes
   const mm=q.match(/(\d{1,2})\s*(min|minuter|minutes)/);
-  if(mm&&/har|have|got/.test(q)){ const d=[5,10,15,20].reduce((a,b)=>Math.abs(b-+mm[1])<Math.abs(a-+mm[1])?b:a); return {text:`${d} minuter räcker. ${cardsFor(d)} kort, sedan är du klar.`,actions:[{type:'add',date:t,start:toHM(Math.ceil((nowMin()+5)/5)*5),duration:d,need:'surprise',startNow:true}]}; }
+  if(mm&&/har|have|got/.test(q)&&!/vecka/.test(q)){ const d=[5,10,15,20].reduce((a,b)=>Math.abs(b-+mm[1])<Math.abs(a-+mm[1])?b:a); return {text:`${d} minuter räcker. Dra ${cardsFor(d)} kort och kör.`,actions:[{type:'add',date:t,start:toHM(Math.ceil((nowMin()+5)/5)*5),duration:d,need:'surprise',startNow:true}]}; }
   // plan week
   if(/vecka|week/.test(q)){ const p=planWeek(); if(!p.length) return {text:`Du har redan ${weekSessionCount()} pass den här veckan, och ditt mål är ${P().perWeek||3}. Jag skulle låta den vara.`,actions:[]};
-    return {text:`${p.length===1?'Ett pass till':p.length+' korta pass'} så når du ditt mål på ${P().perWeek||3} i veckan.`,actions:[{type:'week',sessions:p.map(x=>({...x,on:true}))}]}; }
+    return {text:`${p.length===1?'Ett pass till':p.length+' korta pass'} så når du ditt mål på ${P().perWeek||3} i veckan. Inga maraton, bara luckor som faktiskt passar.`,actions:[{type:'week',sessions:p.map(x=>({...x,on:true}))}]}; }
   // user tells their day: "skola till 15:30 och middag 18:00"
   if(times.length>=2&&!/flytta/.test(q)){ const a=toMin(times[0]),b=toMin(times[times.length-1]); if(b-a>=40){ const st=Math.ceil((a+45)/15)*15; return {text:`Du har en bra lucka mellan dem.\nJag skulle lägga ett pass på 10 minuter kl ${toHM(st)}.`,actions:[{type:'add',date:day,start:toHM(st),duration:10,need:'reset'}]}; } }
   // change today's session
@@ -1241,24 +1525,27 @@ function localAI(raw){
   if(/när|when|planera min dag|plan my day|dag/.test(q)){
     const sg=suggestFor(day); const has=S.sessions.find(x=>x.date===day&&x.status==='planned');
     if(has) return {text:`Du har redan ett pass ${day===t?'idag':'imorgon'} kl ${has.start}. Det räcker.`,actions:[]};
+    const sgx=suggestFor(day); if(sgx) return {text:`${eventsOn(day).length>=3?(day===t?'Dagen':'Imorgon')+' ser ganska full ut, men det finns plats.\n':''}${reasonFor(sgx)}`,actions:[{type:'add',date:day,start:toHM(sgx.start),duration:sgx.duration,need:sgx.need}]};
     if(!sg) return {text:`${day===t?'Idag':'Imorgon'} ser fullt ut. Jag skulle hoppa över, eller ta fem minuter efter middagen.`,actions:[]};
     const full=eventsOn(day).length>=3;
     return {text:`${full?(day===t?'Dagen':'Imorgon')+' ser ganska full ut.\n':''}Du har en tydlig lucka ${toHM(sg.window[0])}–${toHM(sg.window[1])}.\nJag skulle använda ${sg.duration} minuter där.`,actions:[{type:'add',date:day,start:toHM(sg.start),duration:sg.duration,need:'reset'}]};
   }
-  return {text:'Jag kan planera din dag eller vecka, hitta en lucka, flytta ett pass eller bygga något kort just nu.',actions:[],chips:['Planera min dag','Jag har 10 minuter','Planera min vecka']};
+  return {text:'Jag kan planera din vecka, hitta nästa lucka, flytta ett pass eller bygga något kort just nu.',actions:[],chips:['Planera min vecka','Hitta nästa träningslucka','Ge mig något snabbt']};
 }
 
 /* ---------- action cards ---------- */
 function actionHTML(a,idx){
   const lbl=n=>NEED[n]||'Motion';
+  if(a.type==='options') return `<div class="opts-row" data-a="${idx}">${a.opts.map((o,k)=>`<div class="act opt-card ${o.state==='done'?'done':''}" data-o="${k}"><div class="eyebrow">Alternativ ${k+1}</div><div class="oc-d">${DS[dow(parseYmd(o.date))]} ${o.start}</div><div class="no-think sm"><span>${o.duration} MIN</span><span>${o.need==='family'?'FAMILJEKORT':'DRA '+cardsFor(o.duration)+' KORT'}</span></div><p class="sub">${esc(o.why)}</p><div class="btns"><button class="btn btn-primary btn-sm" data-opt="${k}">Lägg till</button></div><div class="ok"><img src="${LOGO}" alt="">Klart. ${relDay(o.date)} ${o.start}.</div></div>`).join('')}</div>`;
+  if(a.type==='add'&&!a.startNow) return `<div class="act" data-a="${idx}"><div class="eyebrow gold">${relDay(a.date)}</div><div class="oc-d">${a.start}–${toHM(toMin(a.start)+a.duration)}</div><div class="no-think sm"><span>${a.duration} MIN</span><span>${a.need==='family'?'FAMILJEKORT':'DRA '+cardsFor(a.duration)+' KORT'}</span><span>INGEN UTRUSTNING</span></div>${a.why?`<p class="sub">${esc(a.why)}</p>`:''}<div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Lägg till i planeraren</button><button class="btn btn-ghost btn-sm" data-do="no">Inte nu</button></div><div class="ok"><img src="${LOGO}" alt="">Klart. ${relDay(a.date)} ${a.start}.</div></div>`;
   if(a.type==='add') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">${a.startNow?'Nytt pass':'Föreslaget pass'}</div><div class="main">${a.duration} min ${lbl(a.need).toLowerCase()} · ${a.start}</div><div class="sub">${relDay(a.date)} · ${cardsFor(a.duration)} kort</div><div class="btns">${a.startNow?`<button class="btn btn-primary btn-sm" data-do="startnow">Skapa ${a.duration} min-pass</button>`:`<button class="btn btn-primary btn-sm" data-do="ok">Lägg till i planeraren</button>`}<button class="btn btn-ghost btn-sm" data-do="no">Inte nu</button></div><div class="ok">Tillagt.</div></div>`;
-  if(a.type==='move') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Flytta pass</div><div class="sub">${relDay(a.date)}</div><div class="mv">${a.from}<span>→</span>${a.start}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Bekräfta ändringen</button><button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok">Flyttat.</div></div>`;
+  if(a.type==='move') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Flytta pass</div><div class="sub">${relDay(a.date)}</div><div class="mv">${a.from}<span>→</span>${a.start}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Bekräfta ändringen</button><button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok"><img src="${LOGO}" alt="">Klart. ${relDay(a.date)} ${a.start}.</div></div>`;
   if(a.type==='resize') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Ändra längd</div><div class="main">${a.duration} min · ${a.start}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Bekräfta</button><button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok">Ändrat.</div></div>`;
   if(a.type==='delete') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Ta bort pass</div><div class="main">${relDay(a.date)} · ${a.start}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Ta bort</button><button class="btn btn-ghost btn-sm" data-do="no">Behåll</button></div><div class="ok">Borttaget.</div></div>`;
   if(a.type==='event') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Ny händelse</div><div class="main">${esc(a.title)}</div><div class="sub">${relDay(a.date)} · ${a.start}–${a.end}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Lägg till</button><button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok">Tillagt.</div></div>`;
   if(a.type==='editEvent') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Ändra tid · ${esc(a.title)}</div><div class="sub">${relDay(a.date)}</div><div class="mv">${a.from[0]}–${a.from[1]}<span>→</span>${a.to[0]}–${a.to[1]}</div><div class="btns">${a.repeating?'<button class="btn btn-primary btn-sm" data-do="ok">Bara denna gång</button><button class="btn btn-line btn-sm" data-do="okall">Alla gånger</button>':'<button class="btn btn-primary btn-sm" data-do="ok">Bekräfta ändringen</button>'}<button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok">Ändrat i planeraren.</div></div>`;
   if(a.type==='import'){ const n=a.items.filter(i=>i.on).length; return `<div class="act" data-a="${idx}" style="max-width:520px"><div class="eyebrow gold">Importera schema</div>${importListHTML(a.items,'data-ic')}${a.hasSchool?`<label class="toggle"><input type="checkbox" data-merge ${a.merge?'checked':''}>Slå ihop lektioner till ett skolblock per dag</label>`:''}<div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Lägg till ${n} i planeraren</button><button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok">Schemat är inlagt. Säg till om någon tid ska ändras.</div></div>`; }
-  if(a.type==='week') return `<div class="act" data-a="${idx}" style="max-width:480px"><div class="eyebrow gold">Din Motion-vecka</div><ul class="wk-prop">${a.sessions.map((s,i)=>`<li class="${s.on?'':'off'}"><div><div class="d">${DN[dow(parseYmd(s.date))].toUpperCase()}</div><div class="s">${s.duration} min ${lbl(s.need).toLowerCase()}</div></div><input type="time" value="${s.start}" data-wt="${i}" step="300" aria-label="Tid"><button class="rm" data-wr="${i}" aria-label="${s.on?'Ta bort':'Ta med'}">${s.on?IC.x:IC.plus}</button></li>`).join('')}</ul><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Lägg till alla</button><button class="btn btn-ghost btn-sm" data-do="no">Inte nu</button></div><div class="ok">Veckan är planerad.</div></div>`;
+  if(a.type==='week') return `<div class="act" data-a="${idx}" style="max-width:480px"><div class="eyebrow gold">Din Motion-vecka</div><ul class="wk-prop">${a.sessions.map((s,i)=>`<li class="${s.on?'':'off'}"><div><div class="d">${DN[dow(parseYmd(s.date))].toUpperCase()}</div><div class="s">${s.duration} min ${lbl(s.need).toLowerCase()}</div></div><input type="time" value="${s.start}" data-wt="${i}" step="300" aria-label="Tid"><button class="rm" data-wr="${i}" aria-label="${s.on?'Ta bort':'Ta med'}">${s.on?IC.x:IC.plus}</button></li>`).join('')}</ul><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Lägg till alla</button><button class="btn btn-ghost btn-sm" data-do="no">Inte nu</button></div><div class="ok"><img src="${LOGO}" alt="">Klart. Veckan är planerad.</div></div>`;
   return '';
 }
 function applyAction(a){
@@ -1273,14 +1560,16 @@ function applyAction(a){
 }
 
 function vAI(el){
-  el.innerHTML=`<div class="ai">
-    <div class="ai-head"><img src="${LOGO}" alt=""><h1>MOTION AI</h1><p>Mindre tänkande. Mer rörelse.</p></div>
+  el.innerHTML=`<div class="ai ${chat.length?'has':''}">
+    <div class="ai-head"><img src="${LOGO}" alt=""><h1>MOTION AI</h1></div>
     <div class="thread" id="thread" aria-live="polite"></div>
-    <div class="composer"><form id="cf"><label class="sr" for="ci">Skriv till Motion AI</label><input id="ci" autocomplete="off" placeholder="Skriv något, t.ex. ”flytta tennis på torsdag till 17:30”"><input type="file" id="cfile" accept="image/*,.pdf,.ics,text/calendar" hidden><button type="button" class="clip" id="clip" aria-label="Bifoga schema (bild, PDF eller kalenderfil)" title="Bifoga schema">${IC.clip}</button><button type="submit" aria-label="Skicka">${IC.send}</button></form></div>
+    <div class="composer"><form id="cf"><label class="sr" for="ci">Skriv till Motion AI</label><input id="ci" autocomplete="off" placeholder="Vad behöver du hjälp med?"><input type="file" id="cfile" accept="image/*,.pdf,.ics,text/calendar" hidden><button type="button" class="clip" id="clip" aria-label="Bifoga schema (bild, PDF eller kalenderfil)" title="Bifoga schema">${IC.clip}</button><button type="submit" aria-label="Skicka">${IC.send}</button></form></div>
   </div>`;
   drawThread();
   if(window._pendingAI){ const q=window._pendingAI; window._pendingAI=null; setTimeout(()=>sendAI(q),150); }
   $('#cf',el).onsubmit=e=>{e.preventDefault();const v=$('#ci').value.trim();if(v){$('#ci').value='';sendAI(v)}};
+  const PH=['Vad behöver du hjälp med?','Jag har 20 minuter innan middagen…','Jag vill träna tre gånger den här veckan…','Jag orkar verkligen inte idag…','Flytta tennis på torsdag till 17:30…'];
+  clearInterval(vAI._ph); let phi=0; vAI._ph=setInterval(()=>{const ci=$('#ci'); if(!ci){clearInterval(vAI._ph);return} if(document.activeElement!==ci&&!ci.value){phi=(phi+1)%PH.length;ci.placeholder=PH[phi]}},4000);
   $('#clip',el).onclick=()=>$('#cfile').click();
   $('#cfile',el).onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)aiImport(f)};
   $('#thread',el).addEventListener('click',e=>{
@@ -1288,6 +1577,7 @@ function vAI(el){
     if(e.target.closest('[data-upload]')) return $('#cfile').click();
     const ic=e.target.closest('[data-ic]'); if(ic){ const card=ic.closest('[data-a]'); const [mi,ai]=card.dataset.a.split('.').map(Number); const a=chat[mi].actions[ai]; a.items[+ic.dataset.ic].on=ic.checked; ic.closest('li').classList.toggle('off',!ic.checked); const n=a.items.filter(i=>i.on).length; $('[data-do="ok"]',card).textContent=`Lägg till ${n} i planeraren`; return; }
     const mg=e.target.closest('[data-merge]'); if(mg){ const card=mg.closest('[data-a]'); const [mi,ai]=card.dataset.a.split('.').map(Number); const a=chat[mi].actions[ai]; a.merge=mg.checked; a.items=prepImport(a.raw,a.merge); card.outerHTML=actionHTML(a,`${mi}.${ai}`); return; }
+    const ob=e.target.closest('[data-opt]'); if(ob){ const wrap=ob.closest('[data-a]'); const [mi,ai]=wrap.dataset.a.split('.').map(Number); const o=chat[mi].actions[ai].opts[+ob.dataset.opt]; createSession(o); o.state='done'; ob.closest('.opt-card').classList.add('done'); return; }
     const b=e.target.closest('[data-do]'); if(!b) return;
     const card=b.closest('[data-a]'); const [mi,ai]=card.dataset.a.split('.').map(Number); const a=chat[mi].actions[ai];
     if(b.dataset.do==='no'){ a.state='no'; card.remove(); return; }
@@ -1301,25 +1591,29 @@ function vAI(el){
 function drawThread(){
   const th=$('#thread'); if(!th) return;
   if(!chat.length){
-    th.innerHTML=`<div class="hello"><h2>${greeting()}, ${esc(S.user.name)}.</h2><p>Vad behöver du hjälp med?</p>
-      <div class="sugg">${['Planera min dag','Jag har 10 minuter','Planera min vecka','Ändra dagens pass','Jag orkar inte träna idag','Tips om stretch, hälsa och kost'].map(s=>`<button class="chip" data-chip="${s}">${s}</button>`).join('')}<button class="chip" data-upload>Ladda upp mitt schema</button></div></div>`;
+    th.innerHTML=`<div class="hello"><img src="${LOGO}" alt="" class="wmk" aria-hidden="true"><img src="${LOGO}" alt="" class="hs"><span class="eyebrow gold">Motion AI</span><h2>Din vecka.<br>Lite smartare.</h2><p>Jag hjälper dig hitta realistiska tillfällen att röra dig, utan att bygga om hela livet.</p>
+      <div class="hello-q">Hur ser dagen ut?</div>
+      <div class="sugg">${['Jag har 15 minuter','Jag är helt slut','Planera min vecka','Ge mig något snabbt','Hitta nästa träningslucka'].map(s=>`<button class="chip" data-chip="${s}">${s}</button>`).join('')}</div>
+      <div class="sugg minor"><button class="chip ghosty" data-chip="Tips om stretch, hälsa och kost">Tips om stretch, hälsa och kost</button><button class="chip ghosty" data-upload>Ladda upp mitt schema</button></div></div>`;
     return;
   }
   th.innerHTML=chat.map((m,mi)=>m.role==='user'?`<div class="msg me">${esc(m.text)}</div>`:
-    `<div class="msg bot"><img src="${LOGO}" alt=""><div class="body">${m.typing?'<div class="typing"><span></span><span></span><span></span></div>':m.text.split('\n').filter(Boolean).map(p=>`<p>${esc(p)}</p>`).join('')}
+    `<div class="msg bot"><img src="${LOGO}" alt="" class="${m.typing?'think-sym':''}"><div class="body">${m.typing?`<div class="thinking"><span>${m.think||'Ser över din vecka…'}</span></div>`:m.text.split('\n').filter(Boolean).map(p=>`<p>${esc(p)}</p>`).join('')}
       ${(m.actions||[]).map((a,ai)=>a.state==='no'?'':a.state==='done'?actionHTML(a,mi+'.'+ai).replace('class="act"','class="act done"'):actionHTML(a,mi+'.'+ai)).join('')}
       ${m.chips?`<div class="sugg" style="justify-content:flex-start;margin-top:12px">${m.chips.map(c=>`<button class="chip" data-chip="${c}">${c}</button>`).join('')}</div>`:''}</div></div>`).join('');
   const last=th.lastElementChild; last&&last.scrollIntoView({block:'end',behavior:'smooth'});
 }
 async function sendAI(text){
   if(aiBusy) return; aiBusy=true;
-  chat.push({role:'user',text}); const bot={role:'bot',text:'',typing:true}; chat.push(bot); drawThread();
+  chat.push({role:'user',text}); const lq=text.toLowerCase();
+  const think=/vecka/.test(lq)?'Ser över din vecka…':/lucka|när|imorgon/.test(lq)?'Hittar en lucka…':/min|snabbt|slut|orkar/.test(lq)?'Bygger ett pass…':/tips|stretch|kost|hälsa/.test(lq)?'Tänker…':'Ser över din vecka…';
+  const bot={role:'bot',text:'',typing:true,think}; chat.push(bot); $('.ai')?.classList.add('has'); drawThread();
   let out=null;
   if(apiOK&&location.protocol.startsWith('http')){
     try{ out=await Promise.race([askAPI(text),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),20000))]); if(!out.text&&!out.actions.length) throw new Error('empty'); }
     catch(e){ apiOK=false; apiMsgs=[]; out=null; }
   }
-  if(!out){ await new Promise(r=>setTimeout(r,550)); out=localAI(text); }
+  if(!out){ await new Promise(r=>setTimeout(r,900)); out=localAI(text); }
   Object.assign(bot,{typing:false,text:out.text||'Här är mitt förslag.',actions:out.actions||[],chips:out.chips});
   aiBusy=false; drawThread();
 }
@@ -1485,7 +1779,22 @@ async function aiImport(file){
    ========================================================= */
 let ACTIVE=null; // {sessionId}
 function activeSession(){return ACTIVE&&S.sessions.find(s=>s.id===ACTIVE.sessionId)}
-function startSession(id){ ACTIVE={sessionId:id}; go('scan'); }
+function startSession(id){
+  const s=S.sessions.find(x=>x.id===id); if(!s) return;
+  ACTIVE={sessionId:id};
+  const o=document.createElement('div'); o.className='focus'; o.setAttribute('role','dialog'); o.setAttribute('aria-modal','true'); o.setAttribute('aria-label','Starta pass');
+  const fam=s.need==='family';
+  o.innerHTML=`<button class="btn btn-ghost focus-x" data-x>Avbryt</button><div class="focus-in"><img src="${LOGO}" alt="" class="focus-sym"><span class="eyebrow">MOTION</span><div class="focus-t">${pad(s.duration)}:00</div><div class="focus-d">${fam?'DRA ETT FAMILJEKORT':'DRA '+s.count+' KORT'}</div><p class="muted">${fam?'Alla är med. Vinnaren väljer nästa kort.':'Inget att välja, ingen utrustning. Korten bestämmer.'}</p>
+    <div class="focus-a"><button class="btn btn-primary" data-scan>Jag har korten, skanna</button><button class="btn btn-line" data-dig>Kör digitalt</button></div></div>`;
+  document.body.appendChild(o); document.body.style.overflow='hidden'; setTimeout(()=>$('[data-scan]',o).focus(),50);
+  const close=()=>{o.remove();document.body.style.overflow=''};
+  o.addEventListener('click',e=>{
+    if(e.target.closest('[data-x]')){ACTIVE=null;close();return}
+    if(e.target.closest('[data-scan]')){close();go('scan');return}
+    if(e.target.closest('[data-dig]')){close();const pool=CARDS.filter(c=>c.deck===(fam?'family':'individual'));found(pool[Math.floor(Math.random()*pool.length)].id)}
+  });
+  o.addEventListener('keydown',e=>{if(e.key==='Escape'){ACTIVE=null;close()}});
+}
 function dotsHTML(s){const n=s.cards.filter(c=>c.completed).length;return `<span class="dots" aria-label="${n} av ${s.count} klara">${[...Array(s.count)].map((_,i)=>`<i class="${i<n?'on':''}"></i>`).join('')}</span>`}
 
 /* =========================================================

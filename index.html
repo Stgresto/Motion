@@ -21,6 +21,11 @@
 <meta name="description" content="En fysisk träningskortlek med QR-koder och en AI-planerare som hittar tid för korta pass i din vardag. Dra. Skanna. Gör.">
 <link rel="canonical" href="https://motionplanner.se/">
 <meta name="theme-color" content="#11110F">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/images/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MOTION UF">
 <meta property="og:url" content="https://motionplanner.se/">
@@ -30,15 +35,12 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="/images/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <link rel="preload" as="image" href="/images/m/hero-m-1003.webp" imagesrcset="/images/m/hero-m-640.webp 640w, /images/m/hero-m-1003.webp 1003w" imagesizes="100vw" media="(max-width: 760px)" type="image/webp">
 <link rel="preload" as="image" href="/images/m/hero-d-1254.webp" imagesrcset="/images/m/hero-d-960.webp 960w, /images/m/hero-d-1254.webp 1254w" imagesizes="100vw" media="(min-width: 761px)" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"MOTION UF","url":"https://motionplanner.se/","logo":"https://motionplanner.se/images/apple-touch-icon.png","slogan":"We think. You move."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"MOTION UF","url":"https://motionplanner.se/","logo":"https://motionplanner.se/images/icon-512.png","slogan":"We think. You move."}</script>
 <style>
 /* =========================================================
    MOTION — tokens
@@ -91,6 +93,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* wordmark */
 .logo{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
 .logo .wm{height:15px;width:auto}
+.logo .lsym{width:22px;height:22px;margin-right:-2px}
 .logo .uf{font-size:10px;letter-spacing:.22em;font-weight:600;padding-left:12px;border-left:1px solid currentColor;line-height:12px;opacity:.7}
 
 /* buttons — one system */
@@ -400,7 +403,7 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
 
 <header id="nav">
   <div class="wrap">
-    <a href="/" class="logo" aria-label="MOTION UF, till startsidan"><svg class="wm" viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span class="uf" aria-hidden="true">UF</span></a>
+    <a href="/" class="logo" aria-label="MOTION UF, till startsidan"><img src="/images/motion-symbol-gold.svg" alt="" width="22" height="22" class="lsym"><svg class="wm" viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span class="uf" aria-hidden="true">UF</span></a>
     <nav class="links" aria-label="Huvudmeny">
       <a href="#how">Så funkar det</a>
       <a href="#deck">Kortleken</a>
@@ -413,7 +416,7 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
 </header>
 
 <div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Meny">
-  <div class="mmenu-top"><a href="/" class="logo" aria-label="MOTION UF, till startsidan"><svg class="wm" viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span class="uf" aria-hidden="true">UF</span></a><button class="mclose" id="mclose" aria-label="Stäng meny"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5l14 14M19 5 5 19"/></svg></button></div>
+  <div class="mmenu-top"><a href="/" class="logo" aria-label="MOTION UF, till startsidan"><img src="/images/motion-symbol-gold.svg" alt="" width="22" height="22" class="lsym"><svg class="wm" viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span class="uf" aria-hidden="true">UF</span></a><button class="mclose" id="mclose" aria-label="Stäng meny"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5l14 14M19 5 5 19"/></svg></button></div>
   <nav aria-label="Mobilmeny">
     <a href="#how">Så funkar det</a>
     <a href="#deck">Kortleken</a>
