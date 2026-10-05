@@ -2,6 +2,7 @@
 <html lang="sv">
 <head>
 <script>
+
   // Skicka besökare till motionplanner.se om de hamnar på en annan adress
   // (t.ex. en vercel.app-länk). Undantag: lokal utveckling/förhandsvisning.
   (function(){
@@ -13,394 +14,489 @@
     }
   })();
 </script>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MOTION UF — Träningskortleken som gör det enkelt att börja</title>
-<meta name="description" content="En fysisk träningskortlek med QR-koder och en AI-planerare som hittar tid för korta pass i din vardag. Ingen app, inget gym.">
-<link rel="icon" href="images/logo_mark_v2.png">
+<meta name="description" content="En fysisk träningskortlek med QR-koder och en AI-planerare som hittar tid för korta pass i din vardag. Dra. Skanna. Gör.">
+<link rel="canonical" href="https://motionplanner.se/">
+<meta name="theme-color" content="#11110F">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MOTION UF">
+<meta property="og:url" content="https://motionplanner.se/">
+<meta property="og:title" content="MOTION — Gör det enkelt att börja">
+<meta property="og:description" content="En träningskortlek med QR-koder och en AI-planerare som hittar tiden i din dag.">
+<meta property="og:image" content="https://motionplanner.se/images/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/images/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="preload" as="image" href="/images/m/hero-m-1003.webp" imagesrcset="/images/m/hero-m-640.webp 640w, /images/m/hero-m-1003.webp 1003w" imagesizes="100vw" media="(max-width: 760px)" type="image/webp">
+<link rel="preload" as="image" href="/images/m/hero-d-1254.webp" imagesrcset="/images/m/hero-d-960.webp 960w, /images/m/hero-d-1254.webp 1254w" imagesizes="100vw" media="(min-width: 761px)" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Hanken+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"MOTION UF","url":"https://motionplanner.se/","logo":"https://motionplanner.se/images/apple-touch-icon.png","slogan":"We think. You move."}</script>
 <style>
+/* =========================================================
+   MOTION — tokens
+   ========================================================= */
 :root{
-  --paper:#F6F1E9;
-  --sand:#EAE0D0;
-  --umber:#2A1F16;
-  --umber-2:#3A2C20;
-  --bronze:#94672F;
-  --sun:#E2B577;
-  --stone:#6E6253;
-  --line:rgba(42,31,22,.22);
-  --serif:'Cormorant Garamond', 'Cormorant', Georgia, 'Times New Roman', serif;
-  --sans:'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif;
-  --gutter:clamp(20px,5vw,72px);
-  --ease:cubic-bezier(.2,.7,.1,1);
+  --black:#11110F; --charcoal:#1B1B18; --charcoal-2:#24231F;
+  --cream:#F3EFE7; --warm-white:#FAF8F3; --stone:#B9B1A4; --sand:#D8CBB9;
+  --ink:#11110F; --ink-2:#5C564D;               /* body on light (6.5:1 on cream) */
+  --on-dark:#FAF8F3; --on-dark-2:rgba(250,248,243,.70);
+  --gold:#B8925A;                                /* used sparingly */
+  --line-l:rgba(17,17,15,.12); --line-d:rgba(255,255,255,.12);
+
+  --font-display:'Cormorant Garamond','Cormorant',Georgia,'Times New Roman',serif;
+  --font-body:'Hanken Grotesk','Helvetica Neue',Arial,sans-serif;
+  --font-size-xs:.8125rem;  /* 13 */
+  --font-size-sm:.875rem;   /* 14 */
+  --font-size-base:1.0625rem; /* 17 */
+  --font-size-lg:1.1875rem; /* 19 */
+  --font-size-xl:clamp(1.5rem,2.2vw,1.875rem);
+  --font-size-h2:clamp(2.4rem,4.6vw,4.8rem);
+  --font-size-display:clamp(3.4rem,7.6vw,7.6rem);
+
+  --space-xs:8px; --space-sm:16px; --space-md:24px; --space-lg:40px; --space-xl:64px; --space-2xl:104px;
+  --section-space:clamp(88px,11vw,168px);
+  --gutter:clamp(20px,5vw,80px); --maxw:1360px;
+  --r-sm:8px; --r-md:12px; --r-btn:10px;
+  --shadow-ui:0 10px 30px rgba(0,0,0,.08);
+  --ease:cubic-bezier(.22,.7,.12,1); --t:220ms;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
-body{background:var(--paper);color:var(--umber);font-family:var(--sans);font-size:17px;line-height:1.6;font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-img{display:block;max-width:100%}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:84px}
+body{background:var(--cream);color:var(--ink);font-family:var(--font-body);font-size:var(--font-size-base);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,picture,svg{display:block;max-width:100%}
 a{color:inherit}
-:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
-.wrap{padding-inline:var(--gutter);max-width:1440px;margin-inline:auto}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding-inline:var(--gutter)}
+.section{padding-block:var(--section-space)}
 
-/* type scale (perfect fourth-ish) */
-.display{font-family:var(--serif);font-weight:300;line-height:.92;letter-spacing:-.02em}
-h2.title{font-family:var(--serif);font-weight:300;font-size:clamp(2.4rem,5.6vw,4.6rem);line-height:1;letter-spacing:-.015em}
-h3{font-family:var(--serif);font-weight:400;font-size:1.65rem;line-height:1.15}
-.kicker{font-size:.9rem;color:var(--stone);margin-bottom:22px;display:block}
-.lede{font-size:clamp(1.05rem,1.4vw,1.2rem);max-width:34em;color:var(--stone)}
+/* type */
+.kicker{display:block;font-size:var(--font-size-xs);letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:var(--ink-2);margin-bottom:var(--space-md)}
+.dark .kicker{color:var(--on-dark-2)}
+.h2{font-family:var(--font-display);font-weight:300;font-size:var(--font-size-h2);line-height:1;letter-spacing:-.015em}
+.h3{font-family:var(--font-display);font-weight:400;font-size:var(--font-size-xl);line-height:1.1}
+.lede{font-size:var(--font-size-lg);line-height:1.6;color:var(--ink-2);max-width:32em}
+.dark .lede{color:var(--on-dark-2)}
+.dark{background:var(--black);color:var(--on-dark)}
 
-/* buttons */
-.btn{display:inline-flex;align-items:center;gap:10px;font:500 .95rem/1 var(--sans);padding:17px 26px;border-radius:999px;border:1px solid transparent;cursor:pointer;text-decoration:none;transition:background .25s,color .25s,border-color .25s}
-.btn-sun{background:var(--sun);color:var(--umber)}
-.btn-sun:hover{background:#ecc78f}
-.btn-ghost{border-color:rgba(255,255,255,.55);color:#fff;background:transparent}
-.btn-ghost:hover{background:rgba(255,255,255,.12)}
-.btn-dark{background:var(--umber);color:var(--paper)}
-.btn-dark:hover{background:var(--umber-2)}
+/* wordmark */
+.logo{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.logo .wm{height:15px;width:auto}
+.logo .uf{font-size:10px;letter-spacing:.22em;font-weight:600;padding-left:12px;border-left:1px solid currentColor;line-height:12px;opacity:.7}
+
+/* buttons — one system */
+.btn{--h:52px;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:var(--h);padding:0 26px;border-radius:var(--r-btn);font:500 .95rem/1 var(--font-body);letter-spacing:.01em;text-decoration:none;border:1px solid transparent;cursor:pointer;white-space:nowrap;transition:transform var(--t) var(--ease),background var(--t),color var(--t),border-color var(--t)}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:scale(.98)}
+.btn .arr{transition:transform var(--t) var(--ease)}
+.btn:hover .arr,.tlink:hover .arr{transform:translateX(3px)}
+.btn-dark{background:var(--black);color:var(--on-dark)}
+.btn-dark:hover{background:var(--charcoal-2)}
+.btn-light{background:var(--on-dark);color:var(--black)}
+.btn-light:hover{background:#fff}
+.btn-outline{border-color:rgba(17,17,15,.28);color:var(--ink)}
+.btn-outline:hover{border-color:var(--ink)}
+.dark .btn-outline,.on-photo .btn-outline{border-color:rgba(255,255,255,.4);color:var(--on-dark)}
+.dark .btn-outline:hover,.on-photo .btn-outline:hover{border-color:#fff}
+.btn-sm{--h:42px;padding:0 18px;font-size:.88rem}
+.tlink{display:inline-flex;align-items:center;gap:8px;font-weight:500;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
+.arr{width:14px;height:14px;flex-shrink:0}
 
 /* nav */
-#nav{position:fixed;inset:0 0 auto 0;z-index:50;color:#fff;transition:background .35s,color .35s,box-shadow .35s}
-#nav .wrap{display:flex;align-items:center;justify-content:space-between;height:78px;gap:24px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.08em;font-size:.95rem;text-decoration:none}
-.logo img{height:26px;width:auto}
-.navlinks{display:flex;gap:34px;font-size:.93rem}
-.navlinks a{text-decoration:none;opacity:.85}
-.navlinks a:hover{opacity:1;text-decoration:underline;text-underline-offset:6px}
-#nav .btn{padding:12px 20px;font-size:.88rem}
-#nav.scrolled{background:rgba(246,241,233,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--umber);box-shadow:0 1px 0 var(--line)}
-#nav.scrolled .btn-sun{background:var(--umber);color:var(--paper)}
-.nav-burger{display:none;background:none;border:0;width:44px;height:44px;cursor:pointer;color:inherit;position:relative}
-.nav-burger span{position:absolute;left:11px;right:11px;height:1.5px;background:currentColor;transition:transform .3s,opacity .3s}
-.nav-burger span:nth-child(1){top:16px}.nav-burger span:nth-child(2){top:22px}.nav-burger span:nth-child(3){top:28px}
-.nav-burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-.nav-burger.open span:nth-child(2){opacity:0}
-.nav-burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-.mobile-menu{display:none}
+#nav{position:fixed;inset:0 0 auto 0;z-index:60;color:var(--on-dark);padding-top:env(safe-area-inset-top,0px);transition:background .35s var(--ease),box-shadow .35s}
+#nav .wrap{display:flex;align-items:center;height:76px;gap:var(--space-lg)}
+#nav .links{display:flex;gap:34px;margin-left:auto;font-size:var(--font-size-sm)}
+#nav .links a{text-decoration:none;opacity:.82;transition:opacity var(--t)}
+#nav .links a:hover{opacity:1}
+#nav.scrolled{background:rgba(17,17,15,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 1px 0 var(--line-d)}
+.burger{display:none;margin-left:auto;width:44px;height:44px;position:relative;color:inherit}
+.burger span{position:absolute;left:11px;right:11px;height:1.5px;background:currentColor;transition:transform .3s var(--ease),opacity .2s}
+.burger span:nth-child(1){top:17px}.burger span:nth-child(2){top:26px}
+.mmenu{position:fixed;inset:0;z-index:70;background:var(--black);color:var(--on-dark);display:flex;flex-direction:column;padding:calc(18px + env(safe-area-inset-top,0px)) var(--gutter) calc(28px + env(safe-area-inset-bottom,0px));opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .3s var(--ease),transform .3s var(--ease),visibility 0s .3s}
+.mmenu.open{opacity:1;visibility:visible;transform:none;transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.mmenu-top{display:flex;align-items:center;justify-content:space-between;height:44px}
+.mmenu nav{display:flex;flex-direction:column;margin-top:auto;margin-bottom:var(--space-lg)}
+.mmenu nav a{font-family:var(--font-display);font-weight:300;font-size:clamp(2.4rem,11vw,3.4rem);line-height:1.15;text-decoration:none;padding:6px 0;border-bottom:1px solid var(--line-d)}
+.mmenu .btn{width:100%}
+.mclose{width:44px;height:44px;display:grid;place-items:center;color:inherit}
 
-/* HERO */
-.hero{position:relative;height:100svh;min-height:620px;overflow:hidden;color:#fff;background:var(--umber)}
-.hero-media{position:absolute;inset:0;will-change:transform}
-.hero-media img{width:100%;height:100%;object-fit:cover;object-position:62% 40%}
-.hero-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,20,12,.35) 0%,rgba(30,20,12,0) 30%,rgba(30,20,12,.1) 55%,rgba(30,20,12,.72) 100%)}
-.hero-inner{position:absolute;inset:auto 0 0 0;padding-bottom:clamp(36px,7vh,80px);will-change:transform}
-.hero h1{font-size:clamp(3.6rem,11vw,10.5rem);max-width:9ch}
-.hero h1 .line{display:block;overflow:hidden}
-.hero h1 .line>span{display:block}
-.hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-top:clamp(24px,4vh,40px);flex-wrap:wrap}
-.hero-foot p{max-width:30em;font-size:1.05rem;color:rgba(255,255,255,.86)}
+/* hero */
+.hero{position:relative;height:100svh;min-height:640px;max-height:1100px;overflow:hidden;background:var(--black);color:var(--on-dark)}
+.hero picture,.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero img{object-position:60% 30%;will-change:transform}
+.hero::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(90deg,rgba(17,17,15,.72) 0%,rgba(17,17,15,.38) 42%,rgba(17,17,15,0) 70%),
+  linear-gradient(0deg,rgba(17,17,15,.78) 0%,rgba(17,17,15,0) 46%),
+  linear-gradient(180deg,rgba(17,17,15,.45) 0%,rgba(17,17,15,0) 18%)}
+.hero-in{position:absolute;inset:auto 0 0 0;z-index:2;padding-bottom:clamp(40px,8vh,96px)}
+.hero .eyebrow{font-size:var(--font-size-xs);letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-2);margin-bottom:var(--space-md)}
+.hero h1{font-family:var(--font-display);font-weight:300;font-size:var(--font-size-display);line-height:.94;letter-spacing:-.025em;max-width:9.5em}
+.hero h1 .l{display:block}
+.hero-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-lg);margin-top:var(--space-lg);flex-wrap:wrap}
+.hero-foot p{font-size:var(--font-size-lg);color:var(--on-dark-2);max-width:27em;line-height:1.55}
 .hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
-.scroll-cue{position:absolute;right:var(--gutter);top:50%;writing-mode:vertical-rl;font-size:.8rem;letter-spacing:.12em;color:rgba(255,255,255,.7)}
 
-/* load sequence — the one orchestrated moment */
-.js .hero h1 .line>span{transform:translateY(105%)}
-.js .hero-foot,.js .scroll-cue{opacity:0}
-.js .hero-media img{transform:scale(1.12)}
-.loaded .hero h1 .line>span{transform:none;transition:transform 1.3s var(--ease)}
-.loaded .hero h1 .line:nth-child(2)>span{transition-delay:.12s}
-.loaded .hero h1 .line:nth-child(3)>span{transition-delay:.24s}
-.loaded .hero-foot,.loaded .scroll-cue{opacity:1;transition:opacity 1s .7s}
-.loaded .hero-media img{transform:scale(1);transition:transform 2.4s var(--ease)}
+/* reveal */
+.js [data-reveal]{opacity:0;transform:translateY(20px);transition:opacity .65s var(--ease),transform .65s var(--ease);transition-delay:calc(var(--d,0) * 70ms)}
+.js [data-reveal].in{opacity:1;transform:none}
+.js .media[data-reveal] img{transform:scale(1.03);transition:transform 1.1s var(--ease)}
+.js .media[data-reveal].in img{transform:none}
+.js .hero h1 .l,.js .hero .eyebrow,.js .hero-foot{opacity:0;transform:translateY(20px)}
+.loaded .hero h1 .l,.loaded .hero .eyebrow,.loaded .hero-foot{opacity:1;transform:none;transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.loaded .hero h1 .l:nth-child(2){transition-delay:.08s}
+.loaded .hero-foot{transition-delay:.2s}
+.js .hero img{transform:scale(1.03)}
+.loaded .hero img{transform:scale(1);transition:transform 1.6s var(--ease)}
 
-/* INTRO */
-.intro{padding:clamp(96px,14vw,190px) 0 clamp(80px,10vw,140px)}
-.intro-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.2fr);gap:clamp(32px,6vw,96px)}
-.intro-statement{font-family:var(--serif);font-weight:300;font-size:clamp(1.9rem,3.6vw,3.2rem);line-height:1.12;letter-spacing:-.01em;max-width:22ch}
-.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:clamp(56px,7vw,96px);border-top:1px solid var(--line);padding-top:28px}
-.fact strong{display:block;font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,4.4vw,3.8rem);line-height:1;margin-bottom:10px}
-.fact span{color:var(--stone);font-size:.95rem;max-width:18em;display:block}
+/* media */
+.media{position:relative;overflow:hidden;background:var(--sand)}
+.media img{width:100%;height:100%;object-fit:cover}
+.r45{aspect-ratio:4/5}.r169{aspect-ratio:16/9}.r43{aspect-ratio:4/3}
 
-/* parallax frames */
-.frame{position:relative;overflow:hidden;background:var(--sand)}
-.frame img{position:absolute;left:0;top:-12%;width:100%;height:124%;object-fit:cover;will-change:transform}
+/* WHY */
+.why-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:clamp(40px,7vw,120px);align-items:end}
+.statement{font-family:var(--font-display);font-weight:300;font-size:clamp(2rem,3.7vw,3.5rem);line-height:1.1;letter-spacing:-.01em;max-width:17em}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:var(--space-2xl);border-top:1px solid var(--line-l)}
+.stat{padding:var(--space-lg) var(--space-lg) 0 0}
+.stat+.stat{padding-left:var(--space-lg);border-left:1px solid var(--line-l)}
+.stat .n{font-family:var(--font-display);font-weight:300;font-size:clamp(3.6rem,7vw,6.4rem);line-height:.9;letter-spacing:-.03em}
+.stat .lab{display:block;margin-top:var(--space-md);font-size:var(--font-size-xs);letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+.stat p{margin-top:var(--space-xs);color:var(--ink-2);font-size:var(--font-size-sm);max-width:20em;line-height:1.55}
 
 /* HOW */
-.how{display:grid;grid-template-columns:1fr 1fr;align-items:start;background:var(--sand)}
-.how-media{position:sticky;top:0;height:100svh}
-.how-media .frame{height:100%}
-.how-copy{padding:clamp(80px,10vw,150px) var(--gutter) clamp(80px,10vw,150px) clamp(32px,6vw,96px)}
-.steps{list-style:none;margin-top:clamp(48px,6vw,80px)}
-.steps li{display:grid;grid-template-columns:3.2rem 1fr;gap:12px;padding:30px 0;border-top:1px solid var(--line)}
-.steps li:last-child{border-bottom:1px solid var(--line)}
-.steps .n{font-family:var(--serif);font-size:1.5rem;color:var(--bronze);line-height:1.1}
-.steps h3{margin-bottom:6px}
-.steps p{color:var(--stone);max-width:30em}
+.how{background:var(--warm-white)}
+.head-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-xl);align-items:end;margin-bottom:var(--space-2xl)}
+.seq{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--space-md);list-style:none}
+.seq-line{position:absolute;left:0;right:0;top:46px;height:1px;background:var(--line-l)}
+.seq-line i{position:absolute;inset:0;background:var(--ink);transform-origin:left;transform:scaleX(0);transition:transform .2s linear}
+.seq li{position:relative;padding-top:0}
+.seq .no{display:block;font-size:var(--font-size-xs);letter-spacing:.14em;color:var(--ink-2);font-variant-numeric:tabular-nums;height:28px}
+.seq .node{display:block;width:9px;height:9px;border-radius:50%;background:var(--warm-white);border:1px solid var(--ink);margin:14px 0 var(--space-lg) -4px;position:relative;z-index:1;transition:background .3s}
+.seq li.on .node{background:var(--ink)}
+.seq h3{font-size:var(--font-size-xs);letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:var(--space-xs)}
+.seq p{color:var(--ink-2);font-size:var(--font-size-sm);line-height:1.6;max-width:16em}
 
-/* DECK */
-.deck{padding:clamp(100px,12vw,180px) 0}
-.deck-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(40px,7vw,120px);align-items:center}
-.deck .frame{aspect-ratio:4/5;border-radius:2px}
-.decks{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin:44px 0 40px}
-.decks div{border-top:1px solid var(--umber);padding-top:18px}
-.decks p{color:var(--stone);font-size:.98rem;margin-top:8px}
-.qr-note{display:flex;gap:16px;align-items:flex-start;padding:22px 24px;background:var(--sand);max-width:32em}
-.qr-note svg{flex-shrink:0;margin-top:3px;color:var(--bronze)}
-.qr-note p{font-size:.98rem}
-
-
-/* CARD STAGE (pinned, scroll-driven) */
-.cards{position:relative;height:420vh;background:var(--umber);color:var(--paper)}
-.cards-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:center;gap:clamp(24px,4vw,64px);padding-inline:var(--gutter)}
-.cards-glow{position:absolute;inset:0;pointer-events:none;background:
-  radial-gradient(42% 50% at 66% 50%,rgba(226,181,119,.26),rgba(226,181,119,0) 70%)}
+/* CARDS (pinned, dark) */
+.cards{position:relative;height:420vh;background:var(--black);color:var(--on-dark)}
+.cards-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:center;gap:clamp(24px,4vw,64px);padding-inline:var(--gutter);max-width:1600px;margin:0 auto}
+.cards-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(40% 46% at 66% 52%,rgba(184,146,90,.14),rgba(184,146,90,0) 70%)}
 .cards-copy{position:relative;height:min(380px,46svh);z-index:2}
-.cc{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;opacity:0;filter:blur(12px);transform:translateY(24px);will-change:opacity,filter,transform}
-.cc .step{font-size:.9rem;color:rgba(246,241,233,.55);margin-bottom:18px;display:block}
-.cc h2{font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,5.4vw,5rem);line-height:.98;letter-spacing:-.015em;margin-bottom:20px}
-.cc p{color:rgba(246,241,233,.72);max-width:25em;font-size:1.05rem}
+.cc{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;opacity:0;transform:translateY(20px);will-change:opacity,transform}
+.cc .step{font-size:var(--font-size-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-2);margin-bottom:var(--space-md);display:block}
+.cc h2{font-family:var(--font-display);font-weight:300;font-size:clamp(2.8rem,5.6vw,5.4rem);line-height:.96;letter-spacing:-.02em;margin-bottom:var(--space-md)}
+.cc p{color:var(--on-dark-2);max-width:25em;font-size:var(--font-size-lg)}
 .cards-progress{position:absolute;left:var(--gutter);bottom:clamp(24px,5vh,48px);display:flex;gap:8px;z-index:2}
-.cards-progress i{display:block;width:34px;height:2px;background:rgba(246,241,233,.2);position:relative;overflow:hidden}
-.cards-progress i b{position:absolute;inset:0;background:var(--sun);transform-origin:left;transform:scaleX(0)}
-.stage3d{position:relative;height:100%;perspective:1600px;display:flex;align-items:center;justify-content:center}
-.pcard{--gold:#B08A3E;--green:#1E3B2C;position:absolute;width:clamp(180px,18vw,260px);aspect-ratio:5/7;transform-style:preserve-3d;will-change:transform;container-type:inline-size}
-.pcard .face{position:absolute;inset:0;border-radius:6.5cqw;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;background:linear-gradient(165deg,#FBF8F1 0%,#F1EBDF 100%);color:var(--umber);box-shadow:0 36px 60px -22px rgba(0,0,0,.6),0 8px 16px -8px rgba(0,0,0,.4)}
-.pcard .face::after{content:"";position:absolute;inset:5cqw;border:1px solid var(--gold);border-radius:4cqw;opacity:.85;pointer-events:none}
-.pcard .front{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7cqw}
-.pcard .front img{width:52%;height:auto}
-.pcard .wm{font-family:var(--sans);font-weight:400;font-size:9.5cqw;letter-spacing:.06em;color:var(--green);line-height:1}
-.pcard .wm b{font-weight:400;color:var(--gold)}
+.cards-progress i{display:block;width:40px;height:1px;background:var(--line-d);position:relative;overflow:hidden}
+.cards-progress i b{position:absolute;inset:0;background:var(--on-dark);transform-origin:left;transform:scaleX(0)}
+.stage3d{position:relative;height:100%;perspective:1700px;display:flex;align-items:center;justify-content:center}
+.pcard{--ink-c:#1D3A2E;--gold-c:#A88246;position:absolute;width:clamp(190px,18vw,262px);aspect-ratio:63/88;transform-style:preserve-3d;will-change:transform;container-type:inline-size;cursor:default}
+.pcard .face{position:absolute;inset:0;border-radius:4.6cqw;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;color:#171A18;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .24 0 0 0 .07 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),linear-gradient(170deg,#FBF9F4 0%,#F2EDE3 100%);
+  box-shadow:0 1px 0 #DCD3C3,0 2px 0 #CEC4B2,0 3px 4px rgba(0,0,0,.28),0 22px 34px -14px rgba(0,0,0,.55),0 54px 70px -44px rgba(0,0,0,.6)}
+.pcard .face::after{content:"";position:absolute;inset:5.2cqw;border:1px solid var(--gold-c);border-radius:3cqw;opacity:.75;pointer-events:none}
+.pcard .front{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9cqw}
+.pcard .front img{width:40%;height:auto}
+.pcard .front .cwm{display:flex;align-items:center;gap:3.4cqw;color:var(--ink-c)}
+.pcard .front .cwm svg{height:6.4cqw;width:auto}
+.pcard .front .cwm span{font-size:4.2cqw;letter-spacing:.2em;font-weight:600;color:var(--gold-c);padding-left:3.4cqw;border-left:1px solid rgba(168,130,70,.6);line-height:1}
 .pcard .back{transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;text-align:center;padding:13cqw 10cqw 11cqw}
-.pcard .back .cat{font-size:5.2cqw;letter-spacing:.32em;color:var(--gold);font-weight:500;padding-left:.32em}
-.pcard .back .rule{width:22%;height:1px;background:var(--gold);opacity:.8;margin:5cqw 0 7cqw}
+.pcard .back .cat{font-size:4.6cqw;letter-spacing:.32em;color:var(--gold-c);font-weight:600;padding-left:.32em}
+.pcard .back .rule{width:20%;height:1px;background:var(--gold-c);opacity:.7;margin:5cqw 0 7cqw}
 .pcard .back .qr{width:40%;aspect-ratio:1}
-.pcard .back .qr svg{width:100%;height:100%;display:block}
-.pcard .back .ex{font-family:var(--serif);font-style:italic;font-weight:400;font-size:10cqw;line-height:1.05;margin-top:7cqw}
-.pcard .back .dose{font-size:4.2cqw;letter-spacing:.2em;color:var(--stone);margin-top:3cqw}
-.pcard .back .rule2{width:22%;height:1px;background:var(--gold);opacity:.8;margin:6cqw 0 auto}
+.pcard .back .qr svg{width:100%;height:100%}
+.pcard .back .ex{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:10.5cqw;line-height:1.05;margin-top:7cqw;color:#171A18}
+.pcard .back .dose{font-size:4cqw;letter-spacing:.2em;color:#5C564D;margin-top:3cqw}
+.pcard .back .rule2{width:20%;height:1px;background:var(--gold-c);opacity:.7;margin:6cqw 0 auto}
 .pcard .back .meta{display:grid;grid-template-columns:repeat(3,1fr);width:100%;gap:2cqw;margin-top:6cqw}
-.pcard .back .meta span{display:flex;flex-direction:column;align-items:center;gap:2cqw;font-size:3.9cqw;letter-spacing:.12em;color:var(--gold);font-weight:500}
+.pcard .back .meta span{display:flex;flex-direction:column;align-items:center;gap:2cqw;font-size:3.7cqw;letter-spacing:.12em;color:var(--gold-c);font-weight:600}
 .pcard .back .meta svg{width:8cqw;height:8cqw}
-.pcard .face::before{content:"";position:absolute;inset:0;background:rgba(60,44,26,var(--dim,0));z-index:5;pointer-events:none;transition:background .3s}
-.pcard .sheen{position:absolute;inset:0;border-radius:6.5cqw;background:linear-gradient(115deg,rgba(255,255,255,0) 35%,rgba(255,255,255,.6) 50%,rgba(255,255,255,0) 65%);mix-blend-mode:soft-light;pointer-events:none;opacity:0}
+.pcard .face::before{content:"";position:absolute;inset:0;background:rgba(17,17,15,var(--dim,0));z-index:5;pointer-events:none;transition:background .3s}
+.pcard .sheen{position:absolute;inset:0;border-radius:4.6cqw;background:linear-gradient(115deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.4) 50%,rgba(255,255,255,0) 62%);mix-blend-mode:soft-light;pointer-events:none;opacity:0}
 
-/* DECKS row */
-.decks-row{padding:clamp(90px,11vw,160px) 0}
-.decks-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(40px,7vw,120px);align-items:center}
-.decks-grid .frame{aspect-ratio:4/5}
+/* DECKS split */
+.decks-split{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm);margin-top:var(--space-xl)}
+.panel{position:relative;display:block;text-decoration:none;color:var(--on-dark);overflow:hidden;aspect-ratio:4/5;background:var(--charcoal)}
+.panel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+.panel:hover img{transform:scale(1.02)}
+.panel::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(17,17,15,.82) 0%,rgba(17,17,15,.15) 48%,rgba(17,17,15,0) 70%)}
+.panel .pc{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:clamp(24px,3.4vw,48px)}
+.panel .tag{font-size:var(--font-size-xs);letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-2);display:block;margin-bottom:var(--space-sm)}
+.panel h3{font-family:var(--font-display);font-weight:300;font-size:clamp(2.2rem,3.6vw,3.4rem);line-height:1;margin-bottom:var(--space-sm)}
+.panel p{color:var(--on-dark-2);max-width:24em}
+.decks-cta{display:flex;justify-content:space-between;align-items:center;gap:var(--space-md);margin-top:var(--space-lg);flex-wrap:wrap}
+.decks-cta p{color:var(--ink-2);font-size:var(--font-size-sm)}
 
-/* blur-fade frames */
-.frame img{transition:none}
-.hero-media img,.hero-media video{filter:blur(0)}
-.js .hero-media img,.js .hero-media video{filter:blur(18px)}
-.loaded .hero-media img,.loaded .hero-media video{filter:blur(0);transition:transform 2.4s var(--ease),filter 1.6s var(--ease)}
-.hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 40%;opacity:0;transition:opacity 1.2s}
-.hero-media video.ready{opacity:1}
-
-@media(max-width:980px){
-  .cards{height:460vh}
-  .cards-pin{grid-template-columns:1fr;grid-template-rows:1fr auto;align-content:center;padding-top:90px;padding-bottom:70px;gap:12px}
-  .stage3d{order:1;height:52svh}
-  .cards-copy{order:2;height:30svh}
-  .cc h2{font-size:clamp(2.1rem,8vw,3rem);margin-bottom:12px}
-  .cc p{font-size:.98rem}
-  .cc .step{margin-bottom:10px}
-  .pcard{width:clamp(140px,36vw,200px)}
-  .decks-grid{grid-template-columns:1fr}
-}
-
-/* BAND (full-bleed parallax) */
-.band{position:relative;height:clamp(560px,110vh,1100px);overflow:hidden;color:var(--umber)}
-.band .frame{position:absolute;inset:0}
-.band .frame img{top:-15%;height:130%;object-position:50% 40%}
-.band-panel{position:absolute;left:var(--gutter);bottom:clamp(28px,6vw,72px);background:var(--paper);padding:clamp(28px,4vw,52px);max-width:min(560px,calc(100% - 2*var(--gutter)))}
-.band-panel h2{margin-bottom:20px}
-.band-panel p{color:var(--stone)}
-.band-panel .tags{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:.92rem}
-.band-panel .tags span{border-bottom:1px solid var(--line);padding-bottom:3px}
+/* FAMILY band */
+.band{position:relative;min-height:min(110vh,980px);display:flex;align-items:flex-end;overflow:hidden;color:var(--on-dark);background:var(--charcoal)}
+.band picture,.band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.band img{object-position:50% 40%}
+.band::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(17,17,15,.86) 0%,rgba(17,17,15,.35) 40%,rgba(17,17,15,0) 64%)}
+.band .wrap{position:relative;z-index:2;padding-bottom:clamp(48px,8vw,104px)}
+.band h2{font-size:clamp(3rem,7vw,6.8rem);max-width:10em;line-height:.95}
+.band p{margin-top:var(--space-md);color:var(--on-dark-2);max-width:30em;font-size:var(--font-size-lg)}
+.places{display:flex;flex-wrap:wrap;gap:6px 0;margin-top:var(--space-lg);font-size:var(--font-size-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-2);list-style:none}
+.places li+li::before{content:"·";margin:0 14px;opacity:.6}
 
 /* SURPRISE */
-.surprise{padding:clamp(110px,14vw,200px) 0}
-.surprise .display{font-size:clamp(3rem,8.5vw,8rem);max-width:12ch}
-.surprise-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,96px);margin-top:clamp(40px,5vw,64px)}
-.surprise-row p{color:var(--stone);font-size:1.08rem;max-width:32em}
-.surprise-row p:first-child{color:var(--umber)}
+.surprise-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,7vw,120px);align-items:center}
+.surprise .h2{font-size:clamp(2.8rem,6vw,6rem)}
+.surprise p{color:var(--ink-2);margin-top:var(--space-md);max-width:30em}
+.surprise p.first{color:var(--ink);margin-top:var(--space-lg)}
 
-/* SCIENCE (dark) */
-.science{background:var(--umber);color:var(--paper);padding:clamp(100px,12vw,180px) 0}
-.science .kicker{color:rgba(246,241,233,.6)}
-.sci-head{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:end;margin-bottom:clamp(56px,7vw,96px)}
-.sci-head p{color:rgba(246,241,233,.68);max-width:28em}
-.sci-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid rgba(246,241,233,.2)}
-.sci{padding:32px 28px 8px 0}
-.sci+.sci{padding-left:28px;border-left:1px solid rgba(246,241,233,.2)}
-.sci strong{display:block;font-family:var(--serif);font-weight:300;font-size:clamp(2.8rem,4.6vw,4.4rem);line-height:1;color:var(--sun);margin-bottom:18px}
-.sci h3{font-size:1.3rem;margin-bottom:10px}
-.sci p{color:rgba(246,241,233,.68);font-size:.95rem}
-.sci small{display:block;margin-top:14px;color:rgba(246,241,233,.45);font-size:.8rem}
+/* RESEARCH */
+.research{background:var(--warm-white)}
+.res-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink)}
+.res{padding:var(--space-lg) var(--space-lg) 0 0;display:flex;flex-direction:column}
+.res+.res{padding-left:var(--space-lg);border-left:1px solid var(--line-l)}
+.res .n{font-family:var(--font-display);font-weight:300;font-size:clamp(3.2rem,5.4vw,5.4rem);line-height:.9;letter-spacing:-.03em}
+.res .lab{display:block;margin-top:var(--space-sm);font-size:var(--font-size-xs);letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+.res p{margin-top:var(--space-sm);color:var(--ink-2);font-size:var(--font-size-sm);line-height:1.6}
+.res .src{margin-top:auto;padding-top:var(--space-md);font-size:var(--font-size-xs);letter-spacing:.06em}
+.res .src a{display:inline-flex;gap:6px;align-items:center;text-decoration:none;border-bottom:1px solid var(--line-l);padding-bottom:2px;color:var(--ink-2);transition:color var(--t),border-color var(--t)}
+.res .src a:hover{color:var(--ink);border-color:var(--ink)}
+
+/* CINEMATIC transition */
+.cine{position:relative;overflow:hidden;background:var(--black)}
+.cine .media{aspect-ratio:21/9;background:var(--black)}
 
 /* AI */
-.ai{padding:clamp(100px,12vw,180px) 0}
-.ai-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(40px,7vw,120px);align-items:center}
-.ai-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ai-pair .frame{aspect-ratio:3/4}
-.ai-pair .frame:nth-child(2){margin-top:18%}
-.ai-list{list-style:none;margin:40px 0 44px;display:grid;grid-template-columns:1fr 1fr;gap:28px 36px}
-.ai-list li{border-top:1px solid var(--line);padding-top:16px}
-.ai-list strong{display:block;font-weight:500;margin-bottom:4px}
-.ai-list span{color:var(--stone);font-size:.96rem}
+.ai-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(48px,7vw,120px);align-items:center}
+.feat{list-style:none;margin:var(--space-xl) 0 var(--space-lg);border-top:1px solid var(--line-d)}
+.feat li{display:grid;grid-template-columns:minmax(0,13em) minmax(0,1fr);gap:var(--space-md);padding:18px 0;border-bottom:1px solid var(--line-d)}
+.feat strong{font-weight:500}
+.feat span{color:var(--on-dark-2);font-size:var(--font-size-sm)}
+.browser{border-radius:var(--r-md);background:#FAF8F3;color:var(--ink);overflow:hidden;box-shadow:0 30px 70px -30px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.08)}
+.br-bar{display:flex;align-items:center;gap:7px;height:38px;padding:0 14px;background:#EFEAE1;border-bottom:1px solid var(--line-l)}
+.br-bar i{width:9px;height:9px;border-radius:50%;background:#D3CBBE}
+.br-bar span{margin-left:14px;font-size:12px;color:#7C766C;background:#F8F5EF;padding:4px 12px;border-radius:6px}
+.br-body{display:grid;grid-template-columns:150px 1fr;min-height:340px}
+.br-side{border-right:1px solid var(--line-l);padding:18px 14px;display:flex;flex-direction:column;gap:4px;font-size:12px;color:#7C766C}
+.br-side b{font-weight:500;color:var(--ink);background:#F1ECE3;padding:7px 10px;border-left:2px solid var(--gold)}
+.br-side em{font-style:normal;padding:7px 10px}
+.br-main{padding:22px 24px;display:flex;flex-direction:column;gap:14px}
+.br-days{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;font-size:11px;letter-spacing:.1em;color:#7C766C;text-align:center}
+.br-days div{padding:8px 0;border:1px solid var(--line-l)}
+.br-days .on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.br-slot{display:grid;grid-template-columns:58px 1fr auto;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--line-l);background:#fff}
+.br-slot .t{font-variant-numeric:tabular-nums;font-weight:600;font-size:14px}
+.br-slot .w{font-size:13px}
+.br-slot .w small{display:block;color:#7C766C;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.br-slot .st{font-size:11px;letter-spacing:.08em;padding:5px 10px;border:1px solid #1D3A2E;color:#1D3A2E;border-radius:6px}
+.br-slot.mute{opacity:.55}
+.br-ai{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:13px;line-height:1.5;color:#3C3832;margin-top:4px;padding-top:14px;border-top:1px solid var(--line-l)}
+.br-ai img{width:20px;height:20px}
 
 /* FINAL */
-.final{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;color:#fff}
-.final .frame{position:absolute;inset:0;background:var(--umber)}
-.final .frame img{object-position:50% 30%}
-.final::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,20,12,.1) 30%,rgba(30,20,12,.78))}
-.final-inner{position:relative;z-index:2;padding-bottom:clamp(48px,9vh,110px);width:100%}
-.final .display{font-size:clamp(3rem,8vw,7.6rem);max-width:11ch;margin-bottom:28px}
-.final p{max-width:30em;color:rgba(255,255,255,.85);margin-bottom:32px;font-size:1.08rem}
+.final{position:relative;min-height:100svh;max-height:1100px;display:flex;align-items:flex-end;overflow:hidden;color:var(--on-dark);background:var(--black)}
+.final picture,.final img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.final img{object-position:50% 30%}
+.final::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(17,17,15,.8) 0%,rgba(17,17,15,.35) 55%,rgba(17,17,15,.15) 100%),linear-gradient(0deg,rgba(17,17,15,.7) 0%,rgba(17,17,15,0) 50%)}
+.final .wrap{position:relative;z-index:2;padding-bottom:clamp(56px,10vh,120px)}
+.final h2{font-size:clamp(3.2rem,7.4vw,7.2rem);max-width:9.5em;line-height:.95}
+.final p{margin:var(--space-md) 0 var(--space-lg);color:var(--on-dark-2);max-width:28em;font-size:var(--font-size-lg)}
 
 /* FOOTER */
-footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
-.foot-row{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding-bottom:36px;border-bottom:1px solid var(--line)}
-.foot-links{display:flex;gap:26px;flex-wrap:wrap}
-.foot-links a{text-decoration:none;color:var(--stone)}
-.foot-links a:hover{color:var(--umber)}
-.foot-bottom{display:flex;justify-content:space-between;gap:16px;padding-top:24px;color:var(--stone);flex-wrap:wrap}
+footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 var(--space-lg)}
+.f-mark{color:var(--on-dark);width:100%;height:auto;opacity:.96}
+.f-row{display:grid;grid-template-columns:minmax(0,1.2fr) repeat(2,minmax(0,1fr));gap:var(--space-lg);margin-top:var(--space-xl);padding-top:var(--space-lg);border-top:1px solid var(--line-d)}
+.f-tag{font-family:var(--font-display);font-weight:300;font-size:var(--font-size-xl)}
+.f-col{display:flex;flex-direction:column;gap:10px;font-size:var(--font-size-sm)}
+.f-col b{font-size:var(--font-size-xs);letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:var(--on-dark-2);margin-bottom:4px}
+.f-col a{text-decoration:none;opacity:.86}
+.f-col a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+.f-bot{display:flex;justify-content:space-between;gap:var(--space-md);margin-top:var(--space-xl);font-size:var(--font-size-xs);color:var(--on-dark-2);letter-spacing:.06em;flex-wrap:wrap}
 
 /* WAITLIST */
-.wl-overlay{position:fixed;inset:0;z-index:100;background:rgba(30,20,12,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity .3s}
-.wl-overlay.show{display:flex}.wl-overlay.in{opacity:1}
-.wl-modal{background:var(--paper);max-width:460px;width:100%;padding:48px 40px 40px;position:relative}
-.wl-close{position:absolute;top:12px;right:14px;background:none;border:0;font-size:1.8rem;line-height:1;cursor:pointer;color:var(--stone);width:40px;height:40px}
-.wl-modal h3{font-size:2.3rem;font-weight:300;margin-bottom:12px}
-.wl-modal>p{color:var(--stone);margin-bottom:26px}
-#wlForm{display:flex;flex-direction:column;gap:12px}
-#wlForm label{font-size:.9rem}
-#wlForm input{font:inherit;padding:16px 18px;border:1px solid var(--line);background:#fff;border-radius:2px}
-#wlForm .btn{justify-content:center}
-.wl-success{display:none}.wl-success.show{display:block}
-.wl-success p{color:var(--stone)}
+.wl{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(17,17,15,.55);opacity:0;visibility:hidden;transition:opacity .3s var(--ease),visibility 0s .3s}
+.wl.open{opacity:1;visibility:visible;transition:opacity .3s var(--ease)}
+.wl-box{position:relative;width:100%;max-width:480px;background:var(--warm-white);border-radius:var(--r-md);padding:48px 40px 36px;box-shadow:0 30px 80px -20px rgba(0,0,0,.45);transform:translateY(12px);transition:transform .35s var(--ease)}
+.wl.open .wl-box{transform:none}
+.wl-x{position:absolute;top:12px;right:12px;width:44px;height:44px;display:grid;place-items:center;color:var(--ink-2)}
+.wl-x:hover{color:var(--ink)}
+.wl h3{font-family:var(--font-display);font-weight:300;font-size:2.4rem;line-height:1.05;margin-bottom:var(--space-sm)}
+.wl p{color:var(--ink-2)}
+.wl form{display:flex;flex-direction:column;gap:10px;margin-top:var(--space-md)}
+.wl label{font-size:var(--font-size-sm);font-weight:500}
+.wl input{height:52px;border:1px solid rgba(17,17,15,.2);border-radius:var(--r-sm);padding:0 16px;font:inherit;background:#fff;color:var(--ink)}
+.wl input:focus{outline:none;border-color:var(--ink)}
+.wl .micro{font-size:var(--font-size-xs);color:var(--ink-2);margin-top:4px}
+.wl-ok{display:none;text-align:center}
+.wl-ok .chk{width:56px;height:56px;border-radius:50%;border:1px solid var(--ink);display:grid;place-items:center;margin:0 auto var(--space-md)}
+.wl.done form,.wl.done .wl-intro{display:none}
+.wl.done .wl-ok{display:block}
 
 /* responsive */
+@media(max-width:1080px){
+  #nav .links,#nav .nav-cta{display:none}
+  .burger{display:block}
+  .seq{grid-template-columns:1fr;gap:0;padding-left:28px}
+  .seq-line{left:4px;right:auto;top:6px;bottom:6px;width:1px;height:auto}
+  .seq-line i{transform-origin:top;transform:scaleY(0)}
+  .seq li{padding-bottom:var(--space-lg)}
+  .seq .no{height:auto;margin-bottom:6px}
+  .seq .node{position:absolute;left:-28px;top:4px;margin:0}
+  .res-grid{grid-template-columns:1fr 1fr}
+  .res:nth-child(3){padding-left:0;border-left:0}
+  .res:nth-child(n+3){border-top:1px solid var(--line-l);margin-top:var(--space-lg)}
+  .ai-grid{grid-template-columns:1fr}
+  .f-row{grid-template-columns:1fr 1fr}
+  .f-row .f-tag{grid-column:1/-1}
+}
 @media(max-width:980px){
-  .navlinks,.nav-cta-desktop{display:none}
-  .nav-burger{display:block}
-  .mobile-menu{display:flex;flex-direction:column;gap:6px;position:fixed;inset:78px 0 auto 0;background:var(--paper);color:var(--umber);padding:16px var(--gutter) 28px;box-shadow:0 12px 30px rgba(30,20,12,.12);transform:translateY(-8px);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
-  .mobile-menu.open{opacity:1;transform:none;pointer-events:auto}
-  .mobile-menu a{padding:12px 0;text-decoration:none;border-bottom:1px solid var(--line);font-size:1.05rem}
-  .mobile-menu .btn{margin-top:14px;justify-content:center}
-  #nav.menu-open{background:var(--paper);color:var(--umber)}
-  .intro-grid,.deck-grid,.ai-grid,.sci-head,.surprise-row{grid-template-columns:1fr}
-  .how{grid-template-columns:1fr}
-  .how-media{position:relative;height:70vh}
-  .sci-grid{grid-template-columns:1fr 1fr}
-  .sci:nth-child(3){padding-left:0;border-left:0}
-  .sci:nth-child(n+3){border-top:1px solid rgba(246,241,233,.2)}
-  .scroll-cue{display:none}
+  .cards{height:460vh}
+  .cards-pin{grid-template-columns:1fr;grid-template-rows:1fr auto;align-content:center;padding-top:96px;padding-bottom:72px;gap:12px}
+  .stage3d{height:50svh}
+  .cards-copy{height:32svh}
+  .cc h2{font-size:clamp(2.3rem,9vw,3.2rem);margin-bottom:12px}
+  .cc p{font-size:var(--font-size-base)}
+  .pcard{width:clamp(138px,35vw,196px)}
 }
-@media(max-width:600px){
-  body{font-size:16px}
-  .facts{grid-template-columns:1fr;gap:28px}
-  .decks,.ai-list{grid-template-columns:1fr}
-  .sci-grid{grid-template-columns:1fr}
-  .sci,.sci+.sci{padding:28px 0 12px;border-left:0}
-  .sci+.sci{border-top:1px solid rgba(246,241,233,.2)}
-  .band-panel{left:12px;right:12px;bottom:12px;max-width:none}
-  .hero-foot{flex-direction:column;align-items:flex-start}
+@media(max-width:760px){
+  :root{--font-size-base:1rem}
+  .why-grid,.head-row,.surprise-grid{grid-template-columns:1fr;gap:var(--space-lg)}
+  .head-row{margin-bottom:var(--space-xl)}
+  .stats{grid-template-columns:1fr;margin-top:var(--space-xl)}
+  .stat,.stat+.stat{padding:var(--space-md) 0;border-left:0}
+  .stat+.stat{border-top:1px solid var(--line-l)}
+  .stat .n{font-size:4.2rem}
+  .decks-split{grid-template-columns:1fr}
+  .panel{aspect-ratio:4/4.6}
+  .res-grid{grid-template-columns:1fr}
+  .res,.res+.res{padding:var(--space-lg) 0 0;border-left:0}
+  .res+.res{border-top:1px solid var(--line-l);margin-top:var(--space-lg)}
+  .feat li{grid-template-columns:1fr;gap:2px}
+  .br-body{grid-template-columns:1fr}
+  .br-side{display:none}
+  .cine .media{aspect-ratio:4/5}
+  .hero h1{font-size:clamp(3.1rem,14.5vw,4.6rem)}
+  .hero-ctas{width:100%}
+  .hero-ctas .btn{flex:1}
+  .hero::after{background:linear-gradient(0deg,rgba(17,17,15,.88) 0%,rgba(17,17,15,.45) 45%,rgba(17,17,15,.1) 70%),linear-gradient(180deg,rgba(17,17,15,.5) 0%,rgba(17,17,15,0) 20%)}
+  .f-row{grid-template-columns:1fr}
+  .wl{align-items:flex-end;padding:0}
+  .wl-box{max-width:none;border-radius:16px 16px 0 0;padding:40px 22px calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(100%)}
 }
+@media(hover:hover) and (pointer:fine){ .pcard{cursor:pointer} }
 @media(prefers-reduced-motion:reduce){
-  .js .hero h1 .line>span,.js .hero-media img{transform:none!important;transition:none!important}
-  .js .hero-foot,.js .scroll-cue{opacity:1!important;transition:none!important}
-  .frame img,.hero-media,.hero-inner{transform:none!important}
+  .js [data-reveal],.js .hero h1 .l,.js .hero .eyebrow,.js .hero-foot{opacity:1!important;transform:none!important;transition:none!important}
+  .js .media img,.js .hero img{transform:none!important}
+  *{scroll-behavior:auto!important}
 }
 </style>
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="wm" viewBox="0 0 138.1 24"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="miter"><path d="M1.3 22.7V2.6l8.9 13.2 8.9-13.2v20.1"/><circle cx="37.2" cy="12.65" r="10.05"/><path d="M55.3 2.6h18.2M64.4 2.6v20.1M82 2.6v20.1"/><circle cx="101.6" cy="12.65" r="10.05"/><path d="M121.2 22.7V2.6l15.6 20.1V2.6"/></g></symbol></svg>
+<a href="#main" class="sr" style="position:fixed;top:8px;left:8px;z-index:200" onfocus="this.classList.remove('sr')" onblur="this.classList.add('sr')">Hoppa till innehållet</a>
 
-<nav id="nav" aria-label="Huvudmeny">
+<header id="nav">
   <div class="wrap">
-    <a href="index.html" class="logo"><img src="images/logo_mark_v2.png" alt="">MOTION UF</a>
-    <div class="navlinks">
+    <a href="/" class="logo" aria-label="MOTION UF, till startsidan"><svg class="wm" viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span class="uf" aria-hidden="true">UF</span></a>
+    <nav class="links" aria-label="Huvudmeny">
       <a href="#how">Så funkar det</a>
       <a href="#deck">Kortleken</a>
       <a href="#science">Forskningen</a>
-      <a href="app.html">Appen</a>
-    </div>
-    <button class="btn btn-sun nav-cta-desktop" onclick="openWaitlist()">Skaffa kortleken</button>
-    <button class="nav-burger" id="navBurger" aria-label="Öppna meny" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+      <a href="/app.html">Appen</a>
+    </nav>
+    <button class="btn btn-light btn-sm nav-cta" data-wl>Skaffa kortleken</button>
+    <button class="burger" id="burger" aria-label="Öppna meny" aria-expanded="false" aria-controls="mmenu"><span></span><span></span></button>
   </div>
-  <div class="mobile-menu" id="mobileMenu">
+</header>
+
+<div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Meny">
+  <div class="mmenu-top"><a href="/" class="logo" aria-label="MOTION UF, till startsidan"><svg class="wm" viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span class="uf" aria-hidden="true">UF</span></a><button class="mclose" id="mclose" aria-label="Stäng meny"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5l14 14M19 5 5 19"/></svg></button></div>
+  <nav aria-label="Mobilmeny">
     <a href="#how">Så funkar det</a>
     <a href="#deck">Kortleken</a>
     <a href="#science">Forskningen</a>
-    <a href="app.html">Appen</a>
-    <button class="btn btn-dark" onclick="openWaitlist()">Skaffa kortleken</button>
-  </div>
-</nav>
+    <a href="/app.html">Appen</a>
+  </nav>
+  <button class="btn btn-light" data-wl>Skaffa kortleken</button>
+</div>
 
-<header class="hero">
-  <div class="hero-media" id="heroMedia"><img src="images/hero-pushup.jpg" alt="Kvinna gör armhävningar i kvällssol på ett betonggolv"><video id="heroVideo" muted playsinline loop preload="none" aria-hidden="true"></video></div>
-  <div class="hero-scrim"></div>
-  <div class="hero-inner" id="heroInner">
+<main id="main">
+<section class="hero" aria-label="MOTION">
+  <picture><source media="(max-width: 760px)" type="image/webp" srcset="/images/m/hero-m-640.webp 640w, /images/m/hero-m-1003.webp 1003w" sizes="100vw"><source type="image/webp" srcset="/images/m/hero-d-960.webp 960w, /images/m/hero-d-1254.webp 1254w" sizes="100vw"><img src="/images/m/hero-d.jpg" alt="Kvinna gör armhävningar i kvällsljus på ett betonggolv" width="1254" height="705" fetchpriority="high" decoding="async"></picture>
+  <div class="hero-in">
     <div class="wrap">
-      <h1 class="display"><span class="line"><span>Gör det</span></span><span class="line"><span>enkelt att</span></span><span class="line"><span>börja.</span></span></h1>
+      <p class="eyebrow">Träningskortlek · AI-planerare</p>
+      <h1><span class="l">Gör det enkelt</span> <span class="l">att börja.</span></h1>
       <div class="hero-foot">
-        <p>En träningskortlek med QR-koder och en AI-planerare som hittar tiden i din dag. Du drar ett kort, skannar och rör dig.</p>
-        <div class="hero-ctas">
-          <button class="btn btn-sun" onclick="openWaitlist()">Skaffa kortleken</button>
-          <a href="app.html" class="btn btn-ghost">Öppna appen</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="scroll-cue" aria-hidden="true">Scrolla</div>
-</header>
-
-<main>
-<section class="intro">
-  <div class="wrap">
-    <div class="intro-grid">
-      <span class="kicker">Varför Motion</span>
-      <div>
-        <p class="intro-statement">Det svåraste med träning är inte passet. Det är att veta vad du ska göra, och när. Det beslutet tar vi bort.</p>
-        <div class="facts">
-          <div class="fact"><strong>104</strong><span>övningar, 52 för dig själv och 52 att göra tillsammans</span></div>
-          <div class="fact"><strong>5–20</strong><span>minuter per pass, anpassat efter hur din dag ser ut</span></div>
-          <div class="fact"><strong>0</strong><span>appar att ladda ner. Allt fungerar i mobilens webbläsare</span></div>
+        <p>Dra ett kort, skanna och rör dig. Planeraren hittar tiden i din dag.</p>
+        <div class="hero-ctas on-photo">
+          <button class="btn btn-light" data-wl>Skaffa kortleken</button>
+          <a href="/app.html" class="btn btn-outline">Öppna appen <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="how" id="how">
-  <div class="how-media"><div class="frame"><img data-speed="0.12" src="images/family_living.jpg" alt="Person knyter skorna inför ett pass hemma"></div></div>
-  <div class="how-copy">
-    <span class="kicker">Så funkar det</span>
-    <h2 class="title">Från notis till rörelse på under en minut.</h2>
-    <ol class="steps">
-      <li><span class="n">1</span><div><h3>Planera</h3><p>Planeraren hittar en lucka i din dag som faktiskt passar.</p></div></li>
-      <li><span class="n">2</span><div><h3>Påminn</h3><p>Du får en notis när det är dags. Ingen mer förhandling med dig själv.</p></div></li>
-      <li><span class="n">3</span><div><h3>Dra</h3><p>Dra så många kort som planen säger. Du vet inte i förväg vilka det blir.</p></div></li>
-      <li><span class="n">4</span><div><h3>Skanna</h3><p>Rikta kameran mot QR-koden. Instruktionsvideon öppnas direkt.</p></div></li>
-      <li><span class="n">5</span><div><h3>Rör dig</h3><p>Följ videon. Inget att planera, inget att tänka på.</p></div></li>
+<section class="section why" aria-labelledby="whyT">
+  <div class="wrap">
+    <div class="why-grid">
+      <div>
+        <span class="kicker" data-reveal>Varför Motion</span>
+        <h2 id="whyT" class="statement" data-reveal style="--d:1">Det svåraste med träning är inte passet. Det är att veta vad du ska göra, och när. Det beslutet tar vi bort.</h2>
+      </div>
+      <figure class="media r45" data-reveal style="--d:2"><picture><source type="image/webp" srcset="/images/m/lacing-640.webp 640w, /images/m/lacing-1003.webp 1003w" sizes="(max-width:760px) 100vw, 34vw"><img src="/images/m/lacing.jpg" alt="Någon knyter träningsskorna i morgonljus" width="1003" height="1254" loading="lazy" decoding="async"></picture></figure>
+    </div>
+    <div class="stats">
+      <div class="stat" data-reveal><div class="n">104</div><span class="lab">Övningar</span><p>52 för dig själv och 52 att göra tillsammans.</p></div>
+      <div class="stat" data-reveal style="--d:1"><div class="n">5–20</div><span class="lab">Minuter</span><p>Per pass, anpassat efter hur din dag ser ut.</p></div>
+      <div class="stat" data-reveal style="--d:2"><div class="n">0</div><span class="lab">Appar att ladda ner</span><p>Allt fungerar i mobilens webbläsare.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section how" id="how" aria-labelledby="howT">
+  <div class="wrap">
+    <div class="head-row">
+      <div><span class="kicker" data-reveal>Så funkar det</span><h2 id="howT" class="h2" data-reveal style="--d:1">Från notis till rörelse på under en minut.</h2></div>
+      <p class="lede" data-reveal style="--d:2">Fem steg, och tre av dem tar mindre än tio sekunder.</p>
+    </div>
+    <ol class="seq" id="seq">
+      <span class="seq-line" aria-hidden="true"><i></i></span>
+      <li data-reveal><span class="no">01</span><span class="node"></span><h3>Planera</h3><p>Planeraren hittar en lucka i din dag som faktiskt passar.</p></li>
+      <li data-reveal style="--d:1"><span class="no">02</span><span class="node"></span><h3>Påminn</h3><p>Du får en notis när det är dags. Ingen förhandling med dig själv.</p></li>
+      <li data-reveal style="--d:2"><span class="no">03</span><span class="node"></span><h3>Dra</h3><p>Dra så många kort som planen säger. Du vet inte i förväg vilka det blir.</p></li>
+      <li data-reveal style="--d:3"><span class="no">04</span><span class="node"></span><h3>Skanna</h3><p>Rikta kameran mot QR-koden. Instruktionen öppnas direkt.</p></li>
+      <li data-reveal style="--d:4"><span class="no">05</span><span class="node"></span><h3>Rör dig</h3><p>Följ instruktionen. Inget att planera, inget att tänka på.</p></li>
     </ol>
   </div>
 </section>
 
-<section class="cards" id="deck" aria-label="Så fungerar korten">
+<section class="cards dark" id="deck" aria-label="Så fungerar korten">
   <div class="cards-pin">
     <div class="cards-glow" aria-hidden="true"></div>
     <div class="cards-copy">
-      <div class="cc" data-k="0"><span class="step">Så fungerar korten</span><h2>Dra. Skanna. Gör.</h2><p>Motion UF tar bort frågan ”Vad ska jag träna idag?”. Varje kort är en övning eller en träningsutmaning.</p></div>
-      <div class="cc" data-k="1"><span class="step">Dra</span><h2>Dra ett kort.</h2><p>Du ser direkt vad du ska göra och kan sätta igång. Inget att planera, inget att välja.</p></div>
-      <div class="cc" data-k="2"><span class="step">Skanna</span><h2>Skanna koden.</h2><p>QR-koden på kortet leder till en tydlig instruktion för hur övningen utförs.</p></div>
-      <div class="cc" data-k="3"><span class="step">Gör</span><h2>Gör.</h2><p>Svårighetsgrad, ungefärlig tid och typ av träning står på kortet, så att du vet vad som väntar innan du börjar.</p></div>
+      <div class="cc" data-k="0"><span class="step">Kortleken</span><h2>Dra. Skanna. Gör.</h2><p>Motion UF tar bort frågan ”Vad ska jag träna idag?”. Varje kort är en övning eller en träningsutmaning.</p></div>
+      <div class="cc" data-k="1"><span class="step">01 · Dra</span><h2>Dra ett kort.</h2><p>Du ser direkt vad du ska göra och kan sätta igång.</p></div>
+      <div class="cc" data-k="2"><span class="step">02 · Skanna</span><h2>Skanna koden.</h2><p>QR-koden leder till en tydlig instruktion för hur övningen utförs.</p></div>
+      <div class="cc" data-k="3"><span class="step">03 · Gör</span><h2>Gör.</h2><p>Svårighetsgrad, tid och typ av träning står på kortet, så du vet vad som väntar.</p></div>
     </div>
     <div class="stage3d" aria-hidden="true">
       <div class="pcard" data-i="0">
-        <div class="face front"><img src="images/logo_mark_v2.png" alt=""><div class="wm">MOTION <b>UF</b></div></div>
+        <div class="face front"><img src="/images/logo_mark_c.png" alt="" width="256" height="256"><div class="cwm"><svg viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span>UF</span></div></div>
         <div class="face back"><span class="cat">STYRKA</span><span class="rule"></span><div class="qr" data-seed="3"></div><div class="ex">Armhävningar</div><div class="dose">3 × 10 REPS</div><span class="rule2"></span><div class="meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19v-3M10 19v-6M15 19v-9M20 19V6"/></svg>MEDIUM</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M10 3h4M12 3v2.5"/></svg>10 MIN</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M5.5 8.5v7M8 7v10M16 7v10M18.5 8.5v7"/></svg>HELKROPP</span></div></div>
         <div class="sheen"></div>
       </div>
       <div class="pcard" data-i="1">
-        <div class="face front"><img src="images/logo_mark_v2.png" alt=""><div class="wm">MOTION <b>UF</b></div></div>
+        <div class="face front"><img src="/images/logo_mark_c.png" alt="" width="256" height="256"><div class="cwm"><svg viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span>UF</span></div></div>
         <div class="face back"><span class="cat">KONDITION</span><span class="rule"></span><div class="qr" data-seed="4"></div><div class="ex">Burpees</div><div class="dose">40 SEK × 4</div><span class="rule2"></span><div class="meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19v-3M10 19v-6M15 19v-9M20 19V6"/></svg>SVÅR</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M10 3h4M12 3v2.5"/></svg>5 MIN</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M5.5 8.5v7M8 7v10M16 7v10M18.5 8.5v7"/></svg>HELKROPP</span></div></div>
         <div class="sheen"></div>
       </div>
       <div class="pcard" data-i="2">
-        <div class="face front"><img src="images/logo_mark_v2.png" alt=""><div class="wm">MOTION <b>UF</b></div></div>
+        <div class="face front"><img src="/images/logo_mark_c.png" alt="" width="256" height="256"><div class="cwm"><svg viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span>UF</span></div></div>
         <div class="face back"><span class="cat">TILLSAMMANS</span><span class="rule"></span><div class="qr" data-seed="5"></div><div class="ex">Plankduell</div><div class="dose">SIST KVAR VINNER</div><span class="rule2"></span><div class="meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19v-3M10 19v-6M15 19v-9M20 19V6"/></svg>LÄTT</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M10 3h4M12 3v2.5"/></svg>3 MIN</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M5.5 8.5v7M8 7v10M16 7v10M18.5 8.5v7"/></svg>BÅL</span></div></div>
         <div class="sheen"></div>
       </div>
@@ -409,267 +505,238 @@ footer{background:var(--paper);padding:56px 0 40px;font-size:.92rem}
   </div>
 </section>
 
-<section class="decks-row">
+<section class="section decks" aria-labelledby="decksT">
   <div class="wrap">
-    <div class="decks-grid">
-      <div class="frame"><img data-speed="0.1" src="images/card_context.jpg" alt="Två MOTION UF-kort på ett betonggolv bredvid en tennisboll"></div>
+    <div class="head-row" style="margin-bottom:0">
+      <div><span class="kicker" data-reveal>Två lekar</span><h2 id="decksT" class="h2" data-reveal style="--d:1">En för dig. En för alla hemma.</h2></div>
+      <p class="lede" data-reveal style="--d:2">Samma idé, två sätt att röra sig. Varje kort visar svårighetsgrad, tid och typ av träning.</p>
+    </div>
+    <div class="decks-split">
+      <div class="panel" data-reveal><picture><source type="image/webp" srcset="/images/m/solo-640.webp 640w, /images/m/solo-1003.webp 1003w" sizes="(max-width:760px) 100vw, 50vw"><img src="/images/m/solo.jpg" alt="Man i gyllene ljus efter ett pass" width="1003" height="1254" loading="lazy" decoding="async"></picture><div class="pc"><span class="tag">Lek 01</span><h3>Individuell</h3><p>Kort för korta träningspass och övningar du gör själv.</p></div></div>
+      <div class="panel" data-reveal style="--d:1"><picture><source type="image/webp" srcset="/images/m/family-640.webp 640w, /images/m/family-1003.webp 1003w" sizes="(max-width:760px) 100vw, 50vw"><img src="/images/m/family.jpg" alt="Vänner i olika åldrar gör armhävningar tillsammans och skrattar" width="1003" height="1254" loading="lazy" decoding="async"></picture><div class="pc"><span class="tag">Lek 02</span><h3>Familj &amp; vänner</h3><p>Lekfulla utmaningar där ni tävlar, samarbetar och rör er tillsammans.</p></div></div>
+    </div>
+    <div class="decks-cta" data-reveal><p>Kortleken är i produktion. Skriv upp dig så hör vi av oss.</p><button class="btn btn-dark" data-wl>Skaffa kortleken <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></button></div>
+  </div>
+</section>
+
+<section class="band" aria-labelledby="bandT">
+  <picture><source media="(max-width: 760px)" type="image/webp" srcset="/images/m/friends-m-640.webp 640w, /images/m/friends-m-1003.webp 1003w" sizes="100vw"><source type="image/webp" srcset="/images/m/friends-960.webp 960w, /images/m/friends-1254.webp 1254w" sizes="100vw"><img src="/images/m/friends.jpg" alt="Fyra personer i olika åldrar gör armhävningar tillsammans i kvällssol" width="1254" height="705" loading="lazy" decoding="async"></picture>
+  <div class="wrap">
+    <span class="kicker" style="color:var(--on-dark-2)" data-reveal>Tillsammans</span>
+    <h2 id="bandT" class="h2" data-reveal style="--d:1">En lek. Alla generationer.</h2>
+    <p data-reveal style="--d:2">Alla drar ett kort och alla är med, oavsett ålder eller nivå.</p>
+    <ul class="places" data-reveal style="--d:3"><li>Vardagsrummet</li><li>Trädgården</li><li>Stugan</li><li>Hotellrummet</li></ul>
+  </div>
+</section>
+
+<section class="section surprise" aria-labelledby="surT">
+  <div class="wrap">
+    <div class="surprise-grid">
       <div>
-        <span class="kicker">Två lekar</span>
-        <h2 class="title">En för dig. En för alla hemma.</h2>
-        <div class="decks">
-          <div><h3>Individuell</h3><p>Kort för korta träningspass och övningar du gör själv.</p></div>
-          <div><h3>Familj och vänner</h3><p>Mer lekfulla utmaningar där ni tävlar, samarbetar och rör på er tillsammans.</p></div>
-        </div>
-        <button class="btn btn-dark" onclick="openWaitlist()">Skaffa kortleken</button>
+        <h2 id="surT" class="h2" data-reveal>Du vet aldrig vad som väntar.</h2>
+        <p class="first" data-reveal style="--d:1">Varje pass är en överraskning. Det tar bort beslutströttheten och gör att det fortfarande känns roligt vecka åtta.</p>
+        <p data-reveal style="--d:2">Du behöver bara dyka upp, dra ett kort och skanna. Resten är redan bestämt.</p>
       </div>
+      <figure class="media r43" data-reveal style="--d:1"><picture><source type="image/webp" srcset="/images/m/product-800.webp 800w, /images/m/product-1365.webp 1365w" sizes="(max-width:760px) 100vw, 46vw"><img src="/images/m/product.jpg" alt="Två MOTION UF-kort på en stenyta, framsida och baksida med QR-kod" width="1365" height="1024" loading="lazy" decoding="async"></picture></figure>
     </div>
   </div>
 </section>
 
-<section class="band" aria-labelledby="bandTitle">
-  <div class="frame"><img data-speed="0.18" src="images/friends-sunset.jpg" alt="Fyra personer i olika åldrar gör armhävningar tillsammans i kvällssol"></div>
-  <div class="band-panel">
-    <span class="kicker">Tillsammans</span>
-    <h2 class="title" id="bandTitle">En lek. Alla generationer.</h2>
-    <p>Alla drar ett kort och alla är med, oavsett ålder eller nivå. Kort utspridda på mattan och en tävling om vem som blir klar först.</p>
-    <div class="tags"><span>Vardagsrummet</span><span>Trädgården</span><span>Stugan</span><span>Hotellrummet</span></div>
-  </div>
-</section>
-
-<section class="surprise">
+<section class="section research" id="science" aria-labelledby="resT">
   <div class="wrap">
-    <p class="display">Du vet aldrig vad som väntar.</p>
-    <div class="surprise-row">
-      <p>Varje pass är en överraskning. Det tar bort beslutströttheten och gör att det fortfarande känns roligt vecka åtta.</p>
-      <p>Du behöver bara dyka upp, dra ett kort och skanna. Resten är redan bestämt, av planeraren och av slumpen.</p>
+    <div class="head-row">
+      <div><span class="kicker" data-reveal>Forskningen</span><h2 id="resT" class="h2" data-reveal style="--d:1">Varför korta pass räcker långt.</h2></div>
+      <p class="lede" data-reveal style="--d:2">Det här säger Världshälsoorganisationen om rörelse, och därför är Motion byggt kring korta pass.</p>
+    </div>
+    <div class="res-grid">
+      <div class="res" data-reveal><div class="n">150–300</div><span class="lab">Minuter i veckan</span><p>Så mycket måttlig aktivitet rekommenderar WHO för vuxna. Tonåringar behöver i snitt en timme om dagen.</p><span class="src"><a href="https://www.ncbi.nlm.nih.gov/books/NBK566048/" target="_blank" rel="noopener">WHO:s riktlinjer, 2020 <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 2h6v6M10 2 2 10"/></svg></a></span></div>
+      <div class="res" data-reveal style="--d:1"><div class="n">Allt</div><span class="lab">Räknas</span><p>Rörelse av alla slag och i alla längder gör nytta. Det viktiga är summan över veckan.</p><span class="src"><a href="https://www.who.int/news/item/25-11-2020-every-move-counts-towards-better-health-says-who" target="_blank" rel="noopener">WHO <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 2h6v6M10 2 2 10"/></svg></a></span></div>
+      <div class="res" data-reveal style="--d:2"><div class="n">1 av 4</div><span class="lab">Vuxna rör sig för lite</span><p>Bland tonåringar är det fyra av fem. Den som sitter mycket i skolan eller på jobbet behöver röra sig mer.</p><span class="src"><a href="https://www.who.int/news/item/25-11-2020-every-move-counts-towards-better-health-says-who" target="_blank" rel="noopener">WHO <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 2h6v6M10 2 2 10"/></svg></a></span></div>
+      <div class="res" data-reveal style="--d:3"><div class="n">5 milj.</div><span class="lab">Dödsfall per år</span><p>Upp till så många skulle kunna undvikas om fler människor var mer fysiskt aktiva.</p><span class="src"><a href="https://www.who.int/news/item/25-11-2020-every-move-counts-towards-better-health-says-who" target="_blank" rel="noopener">WHO <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 2h6v6M10 2 2 10"/></svg></a></span></div>
     </div>
   </div>
 </section>
 
-<section class="science" id="science">
-  <div class="wrap">
-    <div class="sci-head">
-      <div><span class="kicker">Forskningen</span><h2 class="title">Varför korta pass räcker långt.</h2></div>
-      <p>Det här är vad forskningen säger om rörelse och hälsa, och varför Motion är byggt kring korta pass.</p>
-    </div>
-    <div class="sci-grid">
-      <div class="sci"><strong>150</strong><h3>minuter i veckan</h3><p>Måttlig rörelse i den mängden sänker risken att dö i hjärt-kärlsjukdom med 22–31 %.</p><small>Källa: WHO</small></div>
-      <div class="sci"><strong>Allt</strong><h3>räknas</h3><p>Rörelsen behöver inte komma i ett långt pass. Korta stunder över dagen ger samma effekt.</p><small>Källa: WHO</small></div>
-      <div class="sci"><strong>7 h</strong><h3>stillasittande om dagen</h3><p>Är kopplat till en risk i nivå med rökning och fetma.</p><small>Källa: Harvard Health</small></div>
-      <div class="sci"><strong>5 milj.</strong><h3>dödsfall per år</h3><p>Skulle kunna undvikas om fler människor rörde på sig mer.</p><small>Källa: WHO</small></div>
-    </div>
-  </div>
-</section>
-
-<section class="ai" id="planner">
+<section class="section dark" id="planner" aria-labelledby="aiT">
   <div class="wrap">
     <div class="ai-grid">
-      <div class="ai-pair">
-        <div class="frame"><img data-speed="0.08" src="images/motion-focus.jpg" alt="Närbild på ett fokuserat öga i gyllene ljus"></div>
-        <div class="frame"><img data-speed="0.14" src="images/motion-small-steps.jpg" alt="Svettig axel efter ett pass"></div>
-      </div>
       <div>
-        <span class="kicker">AI-coachen</span>
-        <h2 class="title">En coach som lär sig din vecka.</h2>
-        <ul class="ai-list">
+        <span class="kicker" data-reveal>AI-coachen</span>
+        <h2 id="aiT" class="h2" data-reveal style="--d:1">En coach som lär sig din vecka.</h2>
+        <ul class="feat" data-reveal style="--d:2">
           <li><strong>Bygger din vecka</strong><span>Ett schema utifrån dina mål, din nivå och din tid.</span></li>
           <li><strong>Anpassar sig</strong><span>Säg hur passet kändes, så justeras nästa.</span></li>
-          <li><strong>Svarar på frågor</strong><span>Kost, stretch, sömn och återhämtning, dygnet runt.</span></li>
+          <li><strong>Svarar på frågor</strong><span>Stretch, sömn, kost och återhämtning.</span></li>
           <li><strong>Behåller överraskningen</strong><span>Dagens övningar avslöjas först när du skannar.</span></li>
         </ul>
-        <a href="app.html" class="btn btn-dark">Öppna appen</a>
+        <a href="/app.html" class="btn btn-light" data-reveal style="--d:3">Öppna appen <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+      </div>
+      <div class="browser" data-reveal style="--d:2" role="img" aria-label="Förhandsvisning av Motion-planeraren: ett pass på 15 minuter måndag 17:20, och coachen som förklarar varför.">
+        <div class="br-bar"><i></i><i></i><i></i><span>motionplanner.se/app</span></div>
+        <div class="br-body">
+          <div class="br-side"><b>Idag</b><em>Planerare</em><em>Motion AI</em><em>Skanna</em><em>Framsteg</em></div>
+          <div class="br-main">
+            <div class="br-days"><div class="on">MÅN</div><div>TIS</div><div>ONS</div><div>TOR</div><div>FRE</div></div>
+            <div class="br-slot mute"><span class="t">08:30</span><span class="w"><small>Jobb</small>Till 16:45</span><span></span></div>
+            <div class="br-slot"><span class="t">17:20</span><span class="w"><small>Motion</small>15 min rörelse · 4 kort</span><span class="st">Planerat</span></div>
+            <div class="br-slot mute"><span class="t">18:30</span><span class="w"><small>Middag</small>Hemma</span><span></span></div>
+            <div class="br-ai"><img src="/images/logo_mark_c.png" alt="" width="20" height="20"><span>Du har en lucka efter jobbet. Jag lägger passet där.</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="final" id="get">
-  <div class="frame"><img data-speed="0.15" src="images/focus-light.jpg" alt="Man i gyllene ljus efter ett träningspass"></div>
-  <div class="final-inner">
-    <div class="wrap">
-      <h2 class="display">En bättre rutin börjar med ett kort.</h2>
-      <p>Skriv upp dig på väntelistan så hör vi av oss när kortleken går att beställa.</p>
-      <button class="btn btn-sun" onclick="openWaitlist()">Skaffa kortleken</button>
-    </div>
+<section class="final" id="get" aria-labelledby="finT">
+  <picture><source media="(max-width: 760px)" type="image/webp" srcset="/images/m/closeup-m-640.webp 640w, /images/m/closeup-m-1003.webp 1003w" sizes="100vw"><source type="image/webp" srcset="/images/m/closeup-960.webp 960w, /images/m/closeup-1254.webp 1254w" sizes="100vw"><img src="/images/m/closeup.jpg" alt="" width="1254" height="705" loading="lazy" decoding="async"></picture>
+  <div class="wrap">
+    <h2 id="finT" class="h2" data-reveal>En bättre rutin börjar med ett kort.</h2>
+    <p data-reveal style="--d:1">Skriv upp dig på väntelistan så hör vi av oss när kortleken går att beställa.</p>
+    <button class="btn btn-light" data-wl data-reveal style="--d:2">Skaffa kortleken <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></button>
   </div>
 </section>
 </main>
 
 <footer>
   <div class="wrap">
-    <div class="foot-row">
-      <a href="index.html" class="logo"><img src="images/logo_mark_v2.png" alt="">MOTION UF</a>
-      <div class="foot-links">
-        <a href="app.html">Appen</a>
-        <a href="#">Om oss</a>
-        <a href="#">Kontakt</a>
-        <a href="#">Integritet</a>
-        <a href="#">Instagram</a>
-      </div>
+    <svg class="f-mark" viewBox="0 0 138.1 24" role="img" aria-label="MOTION"><use href="#wm"/></svg>
+    <div class="f-row">
+      <p class="f-tag">We think. You move.</p>
+      <div class="f-col"><b>Utforska</b><a href="#how">Så funkar det</a><a href="#deck">Kortleken</a><a href="#science">Forskningen</a><a href="/app.html">Appen</a></div>
+      <div class="f-col"><b>Kontakt</b><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a><a href="mailto:hej@motionplanner.se">Kontakt</a><a href="#">Integritet</a></div>
     </div>
-    <div class="foot-bottom">
-      <span>© 2026 MOTION UF</span>
-      <span>We think. You move.</span>
-    </div>
+    <div class="f-bot"><span>MOTION UF · Ett UF-företag</span><span>© 2026</span></div>
   </div>
 </footer>
 
-<div class="wl-overlay" id="wlOverlay" role="dialog" aria-modal="true" aria-labelledby="wlTitle">
-  <div class="wl-modal">
-    <button class="wl-close" onclick="closeWaitlist()" aria-label="Stäng">&times;</button>
-    <h3 id="wlTitle">Vanan börjar med ett kort.</h3>
-    <p>Lämna din mejladress så hör vi av oss när kortleken finns att beställa.</p>
-    <form id="wlForm" onsubmit="return submitWaitlist(event)">
+<div class="wl" id="wl" role="dialog" aria-modal="true" aria-labelledby="wlT" aria-hidden="true">
+  <div class="wl-box">
+    <button class="wl-x" data-wlclose aria-label="Stäng"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
+    <div class="wl-intro"><h3 id="wlT">Vanan börjar med ett kort.</h3><p>Lämna din mejladress så hör vi av oss när kortleken finns att beställa.</p></div>
+    <form id="wlForm" novalidate>
       <label for="wlEmail">Mejladress</label>
       <input type="email" id="wlEmail" name="email" placeholder="namn@mejl.se" required autocomplete="email">
       <button type="submit" class="btn btn-dark">Gå med i väntelistan</button>
+      <p class="micro" id="wlMsg" role="status">Ett mejl när det är dags. Inget annat.</p>
     </form>
-    <div class="wl-success" id="wlSuccess" role="status">
-      <h3>Du är med.</h3>
-      <p>Vi mejlar dig så fort kortleken går att beställa.</p>
+    <div class="wl-ok" role="status">
+      <div class="chk"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h3>Du är med.</h3><p>Vi mejlar dig så fort kortleken går att beställa.</p>
     </div>
   </div>
 </div>
-
 <script>
 (function(){
-  const nav=document.getElementById('nav');
-  const burger=document.getElementById('navBurger');
-  const menu=document.getElementById('mobileMenu');
-  function setMenu(open){
-    burger.classList.toggle('open',open);menu.classList.toggle('open',open);
-    nav.classList.toggle('menu-open',open);burger.setAttribute('aria-expanded',open);
-    burger.setAttribute('aria-label',open?'Stäng meny':'Öppna meny');
+  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nav=$('#nav');
+
+  /* focus trap helper */
+  function trap(container,e){
+    if(e.key!=='Tab') return;
+    const f=$$('a[href],button:not([disabled]),input,[tabindex]:not([tabindex="-1"])',container).filter(el=>el.offsetParent!==null);
+    if(!f.length) return; const first=f[0], last=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
   }
-  burger.addEventListener('click',()=>setMenu(!menu.classList.contains('open')));
-  menu.querySelectorAll('a,button').forEach(el=>el.addEventListener('click',()=>setMenu(false)));
 
-  // page-load sequence
-  const img=document.querySelector('.hero-media img');
-  const go=()=>requestAnimationFrame(()=>document.documentElement.classList.add('loaded'));
-  if(img.complete) go(); else { img.addEventListener('load',go); setTimeout(go,1500); }
+  /* mobile menu */
+  const mm=$('#mmenu'), burger=$('#burger'); let mmPrev=null;
+  function menu(open){
+    mm.classList.toggle('open',open); burger.setAttribute('aria-expanded',open);
+    document.body.style.overflow=open?'hidden':'';
+    if(open){mmPrev=document.activeElement;setTimeout(()=>$('#mclose').focus(),60)} else if(mmPrev) mmPrev.focus();
+  }
+  burger.addEventListener('click',()=>menu(true));
+  $('#mclose').addEventListener('click',()=>menu(false));
+  $$('a,button[data-wl]',mm).forEach(a=>a.addEventListener('click',()=>menu(false)));
+  mm.addEventListener('keydown',e=>{ if(e.key==='Escape') menu(false); trap(mm,e); });
 
-  // scroll-driven parallax
-  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const heroMedia=document.getElementById('heroMedia');
-  const heroInner=document.getElementById('heroInner');
-  const layers=[...document.querySelectorAll('img[data-speed]')];
+  /* load sequence */
+  const heroImg=$('.hero img');
+  const loaded=()=>requestAnimationFrame(()=>document.documentElement.classList.add('loaded'));
+  if(heroImg.complete) loaded(); else { heroImg.addEventListener('load',loaded,{once:true}); setTimeout(loaded,1200); }
 
-  // blur-fade on frames is handled inside update()
-  // ---- card stage ----
-  const cardsSec=document.querySelector('.cards');
-  const pcs=[...document.querySelectorAll('.pcard')];
-  const ccs=[...document.querySelectorAll('.cc')];
-  const bars=[...document.querySelectorAll('.cards-progress b')];
-  const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
-  const seg=(p,a,b)=>clamp((p-a)/(b-a));
+  /* reveals */
+  if('IntersectionObserver' in window && !reduce){
+    const io=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }),{rootMargin:'0px 0px -8% 0px',threshold:.12});
+    $$('[data-reveal]').forEach(el=>io.observe(el));
+  } else $$('[data-reveal]').forEach(el=>el.classList.add('in'));
+
+  /* "Så funkar det" — the line fills quietly as you read */
+  const seq=$('#seq'), seqLine=$('.seq-line i'), seqItems=$$('#seq li');
+
+  /* card stage */
+  const cardsSec=$('.cards'), pcs=$$('.pcard'), ccs=$$('.cc'), bars=$$('.cards-progress b');
+  const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)), seg=(p,a,b)=>clamp((p-a)/(b-a));
   const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-  // decorative QR codes
-  document.querySelectorAll('.qr').forEach(q=>{
+  $$('.qr').forEach(q=>{
     let seed=+q.dataset.seed*9301+49297; const rnd=()=>((seed=(seed*9301+49297)%233280)/233280);
-    const n=21; let r='';
-    const finder=(x,y)=>`<rect x="${x}" y="${y}" width="7" height="7" fill="#1b1a17"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="#F7F3EA"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#1b1a17"/>`;
-    for(let y=0;y<n;y++)for(let x=0;x<n;x++){
-      const inF=(x<8&&y<8)||(x>12&&y<8)||(x<8&&y>12); if(inF) continue;
-      if(rnd()>.52) r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="#1b1a17"/>`;
-    }
+    let r=''; const ink='#171A18', paper='#F6F2EA';
+    const finder=(x,y)=>`<rect x="${x}" y="${y}" width="7" height="7" fill="${ink}"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="${paper}"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="${ink}"/>`;
+    for(let y=0;y<21;y++)for(let x=0;x<21;x++){ if((x<8&&y<8)||(x>12&&y<8)||(x<8&&y>12)) continue; if(rnd()>.52) r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="${ink}"/>`; }
     q.innerHTML=`<svg viewBox="0 0 21 21" shape-rendering="crispEdges">${finder(0,0)+finder(14,0)+finder(0,14)+r}</svg>`;
   });
+  let hoverI=-1, lastP=0;
+  const canHover=matchMedia('(hover:hover) and (pointer:fine)').matches;
+  pcs.forEach((c,i)=>{ if(!canHover) return; c.addEventListener('mouseenter',()=>{hoverI=i;updateCards(innerHeight)}); c.addEventListener('mouseleave',()=>{hoverI=-1;updateCards(innerHeight)}); });
   function updateCards(vh){
-    const r=cardsSec.getBoundingClientRect();
-    const total=r.height-vh; const p=clamp(-r.top/total);
-    const mobile=window.innerWidth<=980;
+    const r=cardsSec.getBoundingClientRect(); const p=clamp(-r.top/(r.height-vh)); lastP=p;
+    const mobile=innerWidth<=980;
     const spread=ease(seg(p,.06,.24));
     const flips=[ease(seg(p,.28,.42)),ease(seg(p,.50,.64)),ease(seg(p,.72,.86))];
-    const active=p<.28?-1:p<.50?0:p<.72?1:2;
-    const gap=mobile?Math.min(window.innerWidth*0.19,90):Math.min(window.innerWidth*0.14,230);
+    const active=p<.28?-1:p<.50?0:p<.72?1:p<.9?2:-1;
+    const gap=mobile?Math.min(innerWidth*.2,92):Math.min(innerWidth*.14,236);
     pcs.forEach((c,i)=>{
-      const o=i-1;
-      const x=o*gap*spread, rz=o*(10-8*spread)*(1-spread)+o*4*spread;
-      const y=(1-spread)*(i*-6)+Math.abs(o)*14*spread;
-      const isA=i===active;
-      const lift=isA?1:0;
-      const z=lift*(mobile?50:120) - Math.abs(o)*20;
-      const ry=flips[i]*180 + (1-spread)*(-8);
-      const s=1+lift*0.06;
-      c.style.transform=`translate3d(${x}px,${y - lift*16}px,${z}px) rotateZ(${rz}deg) rotateY(${ry}deg) scale(${s})`;
-      c.style.zIndex=isA?10:3-Math.abs(o);
-      c.style.setProperty('--dim',(active>=0&&!isA&&p<.9)?'.35':'0');
-      const sh=c.querySelector('.sheen'); sh.style.opacity=Math.sin(flips[i]*Math.PI)*0.9;
+      const o=i-1, isA=i===active, hov=i===hoverI&&p>.86;
+      const x=o*gap*spread;
+      const rz=o*(9-5*spread)*(1-spread)+o*4*spread*(hov?.25:1);   // settles at -4°, 0°, +4°
+      const y=(1-spread)*(i*-5)+Math.abs(o)*12*spread - (isA?14:0) - (hov?6:0);
+      const z=(isA?(mobile?44:100):0)-Math.abs(o)*18;
+      const ry=flips[i]*180+(1-spread)*-6;
+      c.style.transform=`translate3d(${x}px,${y}px,${z}px) rotateZ(${rz}deg) rotateY(${ry}deg) scale(${isA?1.05:1})`;
+      c.style.zIndex=isA||hov?10:3-Math.abs(o);
+      c.style.setProperty('--dim',(active>=0&&!isA)?'.32':'0');
+      c.querySelector('.sheen').style.opacity=(Math.sin(flips[i]*Math.PI)*.7).toFixed(3);
     });
-    const windows=[[0,.28],[.28,.50],[.50,.72],[.72,1.01]];
-    ccs.forEach((el,k)=>{
-      const [a,b]=windows[k];
-      const fin=clamp((p-a)/0.05), fout=k===3?1:clamp((b-p)/0.05);
-      const v=Math.min(fin,fout); const vv=k===0&&p<.01?1:v;
-      el.style.opacity=vv; el.style.filter=`blur(${(1-vv)*12}px)`; el.style.transform=`translateY(${(1-vv)*(p<a+.05?24:-24)}px)`;
-    });
+    const win=[[0,.28],[.28,.5],[.5,.72],[.72,1.01]];
+    ccs.forEach((el,k)=>{ const [a,b]=win[k]; const v=k===0&&p<.01?1:Math.min(clamp((p-a)/.05),k===3?1:clamp((b-p)/.05));
+      el.style.opacity=v; el.style.transform=`translateY(${((1-v)*(p<a+.05?20:-20)).toFixed(1)}px)`; el.setAttribute('aria-hidden',v<.5); });
     bars.forEach((b,i)=>b.style.transform=`scaleX(${flips[i]})`);
   }
 
+  /* scroll loop */
   let ticking=false;
-  function update(){
-    ticking=false;
-    const y=window.scrollY, vh=window.innerHeight;
-    nav.classList.toggle('scrolled',y>vh*0.8);
-    if(reduce){ if(cardsSec) updateCards(vh); return; }
-    if(y<vh*1.2){
-      heroMedia.style.transform=`translate3d(0,${y*0.35}px,0)`;
-      heroInner.style.transform=`translate3d(0,${y*0.15}px,0)`;
-      heroInner.style.opacity=Math.max(0,1-y/(vh*0.75));
-    }
-    for(const el of layers){
-      const r=el.parentElement.getBoundingClientRect();
-      if(r.bottom<-100||r.top>vh+100) continue;
-      const p=(r.top+r.height/2-vh/2)/(vh/2+r.height/2); // -1..1
-      const a=Math.min(1,Math.abs(p)); const e=Math.max(0,(a-0.25)/0.75);
-      el.style.transform=`translate3d(0,${(-p*parseFloat(el.dataset.speed)*r.height).toFixed(1)}px,0) scale(${(1+e*0.06).toFixed(3)})`;
-      el.style.filter=`blur(${(e*e*16).toFixed(1)}px)`;
-      el.style.opacity=(1-e*e*0.75).toFixed(3);
-    }
+  function onScroll(){
+    ticking=false; const y=scrollY, vh=innerHeight;
+    nav.classList.toggle('scrolled',y>40);
+    if(!reduce&&y<vh) heroImg.style.transform=`translate3d(0,${(y*.12).toFixed(1)}px,0)`;
+    if(seq){ const r=seq.getBoundingClientRect(); const p=clamp((vh*.75-r.top)/(r.height+vh*.25)); const vert=innerWidth<=1080;
+      seqLine.style.transform=vert?`scaleY(${p})`:`scaleX(${p})`; seqItems.forEach((li,i)=>li.classList.toggle('on',p>=i/(seqItems.length-1)-.02)); }
     if(cardsSec) updateCards(vh);
   }
+  addEventListener('scroll',()=>{ if(!ticking){ticking=true;requestAnimationFrame(onScroll)} },{passive:true});
+  addEventListener('resize',onScroll); onScroll();
 
-  // optional hero loop: drop images/hero-loop.mp4 in the repo and it fades in over the photo
-  const hv=document.getElementById('heroVideo');
-  if(hv && !reduce){
-    hv.src='images/hero-loop.mp4';
-    hv.addEventListener('canplay',()=>{hv.classList.add('ready');hv.play().catch(()=>{})},{once:true});
-    hv.addEventListener('error',()=>hv.remove(),{once:true});
-    hv.load();
-  }
-  window.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(update)}},{passive:true});
-  window.addEventListener('resize',update);
-  update();
+  /* waitlist */
+  const wl=$('#wl'), box=$('.wl-box',wl), form=$('#wlForm'), email=$('#wlEmail'), msg=$('#wlMsg'); let wlPrev=null;
+  function openWL(){ wlPrev=document.activeElement; wl.classList.add('open'); wl.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>(wl.classList.contains('done')?$('.wl-x',wl):email).focus(),80); }
+  function closeWL(){ wl.classList.remove('open'); wl.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(wlPrev) wlPrev.focus(); }
+  $$('[data-wl]').forEach(b=>b.addEventListener('click',openWL));
+  $$('[data-wlclose]',wl).forEach(b=>b.addEventListener('click',closeWL));
+  wl.addEventListener('click',e=>{ if(e.target===wl) closeWL(); });
+  wl.addEventListener('keydown',e=>{ if(e.key==='Escape') closeWL(); trap(box,e); });
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    if(!email.value||!email.checkValidity()){ msg.textContent='Skriv en giltig mejladress.'; email.setAttribute('aria-invalid','true'); email.focus(); return; }
+    email.removeAttribute('aria-invalid');
+    const btn=$('button[type="submit"]',form); btn.disabled=true; btn.textContent='Skickar…';
+    fetch('https://formspree.io/f/mjykbdey',{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify({email:email.value,källa:'Motion UF väntelista'})})
+      .then(r=>{ if(!r.ok) throw 0; wl.classList.add('done'); $('.wl-x',wl).focus(); })
+      .catch(()=>{ btn.disabled=false; btn.textContent='Gå med i väntelistan'; msg.textContent='Det gick inte att skicka. Kontrollera uppkopplingen och försök igen.'; });
+  });
 })();
-
-// waitlist
-let lastFocus=null;
-function openWaitlist(){
-  lastFocus=document.activeElement;
-  const ov=document.getElementById('wlOverlay');
-  ov.classList.add('show');requestAnimationFrame(()=>ov.classList.add('in'));
-  document.body.style.overflow='hidden';
-  setTimeout(()=>document.getElementById('wlEmail').focus(),50);
-}
-function closeWaitlist(){
-  const ov=document.getElementById('wlOverlay');
-  ov.classList.remove('in');document.body.style.overflow='';
-  setTimeout(()=>ov.classList.remove('show'),300);
-  if(lastFocus) lastFocus.focus();
-}
-document.getElementById('wlOverlay').addEventListener('click',e=>{if(e.target.id==='wlOverlay')closeWaitlist()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('wlOverlay').classList.contains('show'))closeWaitlist()});
-function submitWaitlist(e){
-  e.preventDefault();
-  const email=document.getElementById('wlEmail').value;
-  const btn=document.querySelector('#wlForm button[type="submit"]');
-  btn.disabled=true;btn.textContent='Skickar…';
-  fetch('https://formspree.io/f/mjykbdey',{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify({email:email,källa:'Motion UF väntelista'})})
-  .then(res=>{if(!res.ok)throw new Error();document.getElementById('wlForm').style.display='none';document.getElementById('wlSuccess').classList.add('show')})
-  .catch(()=>{btn.disabled=false;btn.textContent='Gå med i väntelistan';alert('Det gick inte att skicka. Kontrollera din uppkoppling och försök igen.')});
-  return false;
-}
 </script>
 </body>
 </html>
