@@ -1,0 +1,31 @@
+:root{ --bg:#faf9f7; --beige:#f4f1ec; --ink:#161614; --ink-soft:#4d4b45; --line:#e0dacd; --brass:#7a5c2b; --gold:#b8935a; }
+*{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif; line-height:1.7; font-size:1.0625rem; }
+.skip{ position:absolute; left:-999px; top:8px; background:var(--ink); color:#fff; padding:10px 16px; border-radius:4px; z-index:99; }
+.skip:focus{ left:8px; }
+a{ color:var(--brass); text-underline-offset:3px; }
+a:hover{ color:var(--ink); }
+:focus-visible{ outline:3px solid var(--ink); outline-offset:3px; border-radius:2px; }
+.lg-head{ border-bottom:1px solid var(--line); background:var(--bg); }
+.lg-head .in{ max-width:820px; margin:0 auto; padding:18px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.lg-logo{ display:flex; align-items:center; gap:10px; color:var(--ink); text-decoration:none; font-family:'Cormorant Garamond',serif; font-weight:600; font-size:1.35rem; letter-spacing:0.04em; }
+.lg-logo img{ height:24px; width:auto; }
+.lg-back{ font-size:0.95rem; }
+main{ max-width:820px; margin:0 auto; padding:44px 20px 80px; }
+h1{ font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(2.3rem,6vw,3.3rem); line-height:1.08; margin:0 0 8px; }
+.meta{ color:var(--ink-soft); font-size:0.92rem; margin:0 0 28px; }
+h2{ font-size:1.25rem; margin:38px 0 8px; letter-spacing:0.005em; }
+h3{ font-size:1.05rem; margin:22px 0 4px; }
+p,li{ color:#2a2926; }
+ul{ padding-left:1.2em; } li{ margin:4px 0; }
+.box{ background:var(--beige); border:1px solid var(--line); border-radius:6px; padding:16px 18px; margin:20px 0; }
+.todo{ background:#fff3c4; color:#5a4300; padding:0 5px; border-radius:3px; font-weight:600; }
+table{ border-collapse:collapse; width:100%; font-size:0.95rem; margin:12px 0; }
+th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+th{ background:var(--beige); }
+.table-wrap{ overflow-x:auto; }
+footer.lg-foot{ border-top:1px solid var(--line); background:var(--beige); }
+footer.lg-foot .in{ max-width:820px; margin:0 auto; padding:26px 20px; display:flex; flex-wrap:wrap; gap:8px 22px; font-size:0.95rem; }
+footer.lg-foot .co{ width:100%; color:var(--ink-soft); font-size:0.88rem; }
+@media (prefers-reduced-motion:reduce){ *{ animation:none !important; transition:none !important; } }

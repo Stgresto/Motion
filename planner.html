@@ -1,1 +1,863 @@
-<!DOCTYPE html><html lang="sv"><head><meta charset="UTF-8"><title>Motion UF</title><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=/app.html#planner"><link rel="canonical" href="https://motionplanner.se/app.html"></head><body><p>Planeraren har flyttat. <a href="/app.html#planner">Öppna Motion</a>.</p><script>location.replace('/app.html#planner')</script></body></html>
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motion — Planner</title>
+<style>
+  :root{
+    --bg:#F7F6F2;
+    --surface:#FFFFFF;
+    --surface-2:#F0EFEA;
+    --text:#171717;
+    --text-dim:#5C5953;
+    --text-muted:#6A6760;
+    --line:rgba(23,23,23,0.08);
+    --line-strong:rgba(23,23,23,0.14);
+    --dark:#1B1B1A;
+    --dark-text:#FFFFFF;
+    --accent:#7A5C2B;
+    --sb-w:230px;
+    --ai-w:368px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; }
+  img{ max-width:100%; display:block; }
+  button{ font-family:inherit; cursor:pointer; }
+  input, textarea{ font-family:inherit; }
+
+  /* ---------- APP SHELL ---------- */
+  #appShell{ display:flex; min-height:100vh; }
+
+  /* ---------- SIDEBAR ---------- */
+  #sidebar{ width:var(--sb-w); flex-shrink:0; background:var(--bg); border-right:1px solid var(--line); display:flex; flex-direction:column; padding:28px 18px; position:sticky; top:0; height:100vh; }
+  .sb-brand{ padding:0 10px 28px; }
+  .sb-brand .wordmark{ font-size:1.1rem; font-weight:700; letter-spacing:0.02em; }
+  .sb-brand .tagline{ font-size:0.68rem; color:var(--text-muted); letter-spacing:0.06em; margin-top:3px; }
+  .sb-nav{ display:flex; flex-direction:column; gap:2px; }
+  .sb-link{ display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:10px; color:var(--text-dim); font-size:0.88rem; font-weight:500; background:none; border:none; text-align:left; width:100%; transition:background .15s ease, color .15s ease; }
+  .sb-link:hover{ background:var(--surface-2); color:var(--text); }
+  .sb-link.active{ background:var(--surface-2); color:var(--text); font-weight:600; }
+  .sb-link svg{ flex-shrink:0; opacity:0.75; }
+  .sb-link.active svg{ opacity:1; }
+  .sb-divider{ height:1px; background:var(--line); margin:18px 10px; }
+  .sb-spacer{ flex:1; }
+  .sb-user{ display:flex; align-items:center; gap:10px; padding:10px; border-radius:10px; }
+  .sb-user-avatar{ width:32px; height:32px; border-radius:50%; background:var(--dark); color:#fff; display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:600; flex-shrink:0; }
+  .sb-user-name{ font-size:0.85rem; font-weight:500; }
+
+  /* ---------- PLANNER (CENTER) ---------- */
+  #plannerMain{ flex:1; min-width:0; padding:40px 44px; overflow-y:auto; height:100vh; }
+  .planner-header{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:32px; flex-wrap:wrap; gap:16px; }
+  .planner-header h1{ font-size:2.1rem; font-weight:700; letter-spacing:-0.01em; }
+  .planner-header .daterange{ font-size:0.9rem; color:var(--text-dim); margin-top:4px; }
+  .ph-actions{ display:flex; align-items:center; gap:8px; }
+  .ph-btn{ background:var(--surface); border:1px solid var(--line-strong); color:var(--text); font-size:0.82rem; font-weight:500; padding:9px 16px; border-radius:10px; transition:border-color .15s ease; }
+  .ph-btn:hover{ border-color:var(--text-muted); }
+  .ph-arrow{ background:var(--surface); border:1px solid var(--line-strong); width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--text-dim); }
+  .ph-arrow:hover{ border-color:var(--text-muted); color:var(--text); }
+  .ph-add{ background:var(--dark); color:var(--dark-text); font-size:0.82rem; font-weight:600; padding:9px 18px; border-radius:10px; border:none; }
+  .ph-add:hover{ opacity:0.92; }
+
+  /* ---------- WEEK CALENDAR ---------- */
+  .week-cal{ background:var(--surface); border:1px solid var(--line); border-radius:18px; overflow:hidden; }
+  .wc-header{ display:grid; grid-template-columns:52px repeat(7,1fr); border-bottom:1px solid var(--line); }
+  .wc-col-head{ padding:14px 6px; text-align:center; border-left:1px solid var(--line); }
+  .wc-col-head:first-child{ border-left:none; }
+  .wc-col-head .dow{ font-size:0.68rem; font-weight:600; color:var(--text-muted); letter-spacing:0.05em; }
+  .wc-col-head .dnum{ font-size:1.05rem; font-weight:600; margin-top:3px; color:var(--text); }
+  .wc-col-head.is-today{ background:var(--surface-2); }
+  .wc-col-head.is-today .dnum{ color:var(--accent); }
+  .wc-body{ position:relative; display:grid; grid-template-columns:52px repeat(7,1fr); }
+  .wc-time-axis{ position:relative; }
+  .wc-hour-label{ position:absolute; right:8px; transform:translateY(-50%); font-size:0.68rem; color:var(--text-muted); }
+  .wc-gridlines{ position:absolute; left:52px; right:0; top:0; bottom:0; pointer-events:none; }
+  .wc-gridline{ position:absolute; left:0; right:0; border-top:1px solid var(--line); }
+  .wc-columns{ display:contents; }
+  .wc-day-col{ position:relative; border-left:1px solid var(--line); cursor:pointer; }
+  .wc-day-col.is-today{ background:rgba(184,147,90,0.035); }
+
+  .cal-event{ position:absolute; left:3px; right:3px; border-radius:9px; padding:6px 9px; overflow:hidden; font-size:0.72rem; line-height:1.3; background:var(--surface); border:1px solid var(--line-strong); color:var(--text); transition:transform .15s ease, box-shadow .15s ease; cursor:pointer; }
+  .cal-event:hover{ transform:translateY(-2px); box-shadow:0 4px 14px rgba(23,23,23,0.08); z-index:3; }
+  .cal-event .ce-title{ font-weight:600; text-transform:uppercase; letter-spacing:0.03em; font-size:0.66rem; }
+  .cal-event .ce-time{ color:var(--text-dim); margin-top:2px; }
+
+  .cal-event.motion{ background:var(--dark); color:#fff; border-color:var(--dark); }
+  .cal-event.motion .ce-time, .cal-event.motion .ce-meta{ color:rgba(255,255,255,0.65); }
+  .cal-event.motion .ce-meta{ margin-top:2px; }
+  .cal-event.motion .ce-start{ display:inline-block; margin-top:5px; font-size:0.66rem; font-weight:600; border-bottom:1px solid rgba(255,255,255,0.5); }
+
+  .cal-event.suggestion{ background:rgba(184,147,90,0.07); border:1.5px dashed rgba(184,147,90,0.55); color:var(--text); z-index:2; }
+  .cal-event.suggestion .ce-badge{ display:inline-flex; align-items:center; gap:4px; font-size:0.6rem; font-weight:700; letter-spacing:0.04em; color:var(--accent); text-transform:uppercase; margin-bottom:3px; }
+  .cal-event.suggestion .ce-actions{ display:flex; gap:6px; margin-top:6px; }
+  .ce-mini-btn{ font-size:0.62rem; font-weight:600; padding:3px 8px; border-radius:6px; border:none; }
+  .ce-mini-btn.add{ background:var(--dark); color:#fff; }
+  .ce-mini-btn.dismiss{ background:none; color:var(--text-dim); border:1px solid var(--line-strong); }
+
+  /* ---------- AI PANEL (RIGHT) ---------- */
+  #aiPanel{ width:var(--ai-w); flex-shrink:0; background:var(--surface); border-left:1px solid var(--line); display:flex; flex-direction:column; height:100vh; position:sticky; top:0; }
+  .ai-panel-head{ padding:26px 24px 18px; border-bottom:1px solid var(--line); }
+  .ai-brand-row{ display:flex; align-items:center; gap:9px; }
+  .ai-avatar{ width:26px; height:26px; border-radius:50%; background:linear-gradient(145deg,#2a2a28,#1B1B1A); position:relative; flex-shrink:0; }
+  .ai-avatar::after{ content:''; position:absolute; inset:7px; border-radius:50%; background:var(--accent); opacity:0.85; }
+  .ai-brand-label{ font-size:0.78rem; font-weight:700; letter-spacing:0.04em; }
+  .ai-sub{ font-size:0.78rem; color:var(--text-dim); margin-top:3px; margin-left:35px; }
+
+  .ai-context-card{ margin:18px 24px; padding:16px; background:var(--surface-2); border-radius:14px; }
+  .ai-context-card p{ font-size:0.84rem; line-height:1.55; color:var(--text); }
+  .ai-context-suggestion{ margin-top:12px; padding-top:12px; border-top:1px solid var(--line-strong); }
+  .acs-title{ font-size:0.82rem; font-weight:600; }
+  .acs-time{ font-size:0.74rem; color:var(--text-dim); margin-top:2px; }
+  .acs-actions{ display:flex; gap:8px; margin-top:10px; }
+  .acs-btn{ font-size:0.76rem; font-weight:600; padding:7px 14px; border-radius:8px; border:none; }
+  .acs-btn.primary{ background:var(--dark); color:#fff; }
+  .acs-btn.secondary{ background:none; border:1px solid var(--line-strong); color:var(--text-dim); }
+
+  .ai-thread{ flex:1; overflow-y:auto; padding:8px 24px; display:flex; flex-direction:column; gap:14px; }
+  .ai-msg{ max-width:88%; font-size:0.85rem; line-height:1.5; }
+  .ai-msg.user{ align-self:flex-end; background:var(--dark); color:#fff; padding:9px 13px; border-radius:12px; border-bottom-right-radius:4px; }
+  .ai-msg.assistant{ align-self:flex-start; color:var(--text); }
+  .ai-msg.assistant .am-inner{ background:var(--surface-2); padding:9px 13px; border-radius:12px; border-bottom-left-radius:4px; }
+
+  .ai-composer{ padding:16px 20px 20px; border-top:1px solid var(--line); }
+  .ai-composer-row{ display:flex; align-items:center; gap:8px; background:var(--surface-2); border-radius:14px; padding:6px 8px 6px 14px; }
+  .ai-composer-row input{ flex:1; border:none; background:none; outline:none; font-size:0.85rem; padding:8px 0; color:var(--text); }
+  .ai-composer-row input::placeholder{ color:var(--text-muted); }
+  .ai-send{ width:32px; height:32px; border-radius:50%; background:var(--dark); color:#fff; border:none; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+  .plan-week-btn{ margin:0 24px 18px; background:var(--dark); color:#fff; border:none; padding:11px; border-radius:12px; font-size:0.82rem; font-weight:600; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .plan-week-btn:hover{ opacity:0.92; }
+
+  /* ---------- QUICK PLAN RESULT ---------- */
+  #quickPlanOverlay{ position:fixed; inset:0; background:rgba(23,23,23,0.35); display:none; align-items:center; justify-content:center; z-index:100; }
+  #quickPlanOverlay.show{ display:flex; }
+  .qp-sheet{ background:var(--surface); border-radius:24px; width:420px; max-width:92vw; padding:32px; }
+  .qp-loading{ text-align:center; padding:20px 0; }
+  .qp-loading .qp-dot{ width:36px; height:36px; border-radius:50%; background:var(--dark); margin:0 auto 20px; position:relative; }
+  .qp-loading .qp-dot::after{ content:''; position:absolute; inset:9px; border-radius:50%; background:var(--accent); animation:qpPulse 1.4s ease-in-out infinite; }
+  @keyframes qpPulse{ 0%,100%{ opacity:0.5; transform:scale(0.8);} 50%{ opacity:1; transform:scale(1);} }
+  .qp-loading p{ font-size:0.86rem; color:var(--text-dim); transition:opacity .3s ease; }
+  .qp-result h3{ font-size:0.68rem; font-weight:700; letter-spacing:0.06em; color:var(--text-muted); margin-bottom:16px; }
+  .qp-day{ padding:12px 0; border-bottom:1px solid var(--line); }
+  .qp-day:last-of-type{ border-bottom:none; }
+  .qp-day .qpd-name{ font-size:0.72rem; font-weight:700; letter-spacing:0.04em; color:var(--text-muted); }
+  .qp-day .qpd-content{ font-size:0.88rem; font-weight:600; margin-top:4px; }
+  .qp-day .qpd-sub{ font-size:0.78rem; color:var(--text-dim); margin-top:2px; }
+  .qp-total{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line-strong); font-size:0.82rem; color:var(--text-dim); }
+  .qp-total strong{ color:var(--text); }
+  .qp-actions{ display:flex; gap:10px; margin-top:22px; }
+  .qp-actions button{ flex:1; padding:11px; border-radius:12px; font-size:0.84rem; font-weight:600; border:none; }
+  .qp-actions .qp-confirm{ background:var(--dark); color:#fff; }
+  .qp-actions .qp-adjust{ background:var(--surface-2); color:var(--text); }
+
+  /* ---------- ADD EVENT MODAL ---------- */
+  #addEventOverlay{ position:fixed; inset:0; background:rgba(23,23,23,0.35); display:none; align-items:center; justify-content:center; z-index:100; }
+  #addEventOverlay.show{ display:flex; }
+  .ae-sheet{ background:var(--surface); border-radius:24px; width:380px; max-width:92vw; padding:28px; }
+  .ae-sheet h3{ font-size:1.05rem; font-weight:700; margin-bottom:18px; }
+  .ae-field{ margin-bottom:14px; }
+  .ae-field label{ display:block; font-size:0.72rem; font-weight:600; color:var(--text-dim); margin-bottom:6px; letter-spacing:0.02em; }
+  .ae-field input, .ae-field select{ width:100%; padding:10px 12px; border:1px solid var(--line-strong); border-radius:10px; font-size:0.86rem; background:var(--surface); color:var(--text); }
+  .ae-row{ display:flex; gap:10px; }
+  .ae-row .ae-field{ flex:1; }
+  .ae-submit{ width:100%; margin-top:6px; background:var(--dark); color:#fff; border:none; padding:12px; border-radius:12px; font-size:0.86rem; font-weight:600; }
+
+  /* ---------- TODAY VIEW ---------- */
+  #todayView{ display:none; }
+  #todayView.show{ display:block; }
+  .today-date{ font-size:0.85rem; color:var(--text-dim); margin-bottom:28px; }
+  .today-timeline{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:8px 24px; }
+  .tt-row{ display:flex; gap:18px; padding:14px 0; border-bottom:1px solid var(--line); align-items:baseline; }
+  .tt-row:last-child{ border-bottom:none; }
+  .tt-time{ font-size:0.8rem; color:var(--text-muted); width:48px; flex-shrink:0; }
+  .tt-title{ font-size:0.92rem; font-weight:600; }
+  .tt-row.motion .tt-title{ color:var(--accent); }
+  .next-up{ margin-top:24px; background:var(--dark); color:#fff; border-radius:18px; padding:22px 24px; }
+  .next-up .nu-label{ font-size:0.66rem; font-weight:700; letter-spacing:0.08em; color:rgba(255,255,255,0.55); }
+  .next-up .nu-title{ font-size:1.15rem; font-weight:700; margin-top:8px; }
+  .next-up .nu-sub{ font-size:0.8rem; color:rgba(255,255,255,0.6); margin-top:3px; }
+  .nu-actions{ display:flex; gap:10px; margin-top:16px; }
+  .nu-actions button{ padding:10px 18px; border-radius:10px; font-size:0.82rem; font-weight:600; border:none; }
+  .nu-actions .nu-start{ background:#fff; color:var(--dark); }
+  .nu-actions .nu-secondary{ background:rgba(255,255,255,0.12); color:#fff; }
+
+  @media(max-width:1279px){
+    #aiPanel{ position:fixed; right:0; top:0; z-index:50; transform:translateX(100%); transition:transform .25s ease; box-shadow:-8px 0 30px rgba(0,0,0,0.12); }
+    #aiPanel.open{ transform:translateX(0); }
+    #sidebar{ width:72px; padding:24px 10px; }
+    .sb-brand .tagline, .sb-link span, .sb-user-name{ display:none; }
+    .sb-link{ justify-content:center; }
+    .sb-user{ justify-content:center; }
+  }
+
+  /* 3D companion viewer */
+  .m3d{ position:relative; margin:16px 24px 0; height:210px; border-radius:14px; overflow:hidden; background:radial-gradient(110% 90% at 80% 10%,#3a342b 0%,#1d1c1a 58%,#131312 100%); cursor:grab; touch-action:pan-y; user-select:none; -webkit-user-select:none; }
+  .m3d.drag{ cursor:grabbing; }
+  .m3d-ring{ position:absolute; left:50%; bottom:-70px; width:240px; height:240px; margin-left:-120px; border-radius:50%; border:1px solid rgba(217,190,140,0.3); box-shadow:0 0 0 22px rgba(217,190,140,0.05), 0 0 80px rgba(217,190,140,0.15) inset; }
+  #m3dImg{ position:absolute; left:50%; bottom:-6px; height:196px; width:auto; transform:translateX(-50%); pointer-events:none; filter:drop-shadow(0 14px 14px rgba(0,0,0,0.5)); }
+  .m3d-copy{ position:absolute; left:16px; top:14px; display:flex; flex-direction:column; gap:3px; }
+  .m3d-copy span{ font-size:0.66rem; font-weight:700; letter-spacing:0.16em; color:#D9BE8C; }
+  .m3d-copy em{ font-style:normal; font-size:0.7rem; color:rgba(255,255,255,0.5); transition:opacity .4s; }
+  .m3d.touched .m3d-copy em{ opacity:0; }
+  @media (max-width:760px){ .m3d{ margin:14px 16px 0; } }
+
+  :focus-visible{ outline:3px solid #161615; outline-offset:2px; }
+  .ai-brand-label, .ce-badge{ color:#7A5C2B; }
+  @media (prefers-reduced-motion:reduce){ *,*::before,*::after{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<div id="appShell">
+  <nav id="sidebar">
+    <div class="sb-brand">
+      <div class="wordmark">MOTION</div>
+      <div class="tagline">WE THINK. YOU MOVE.</div>
+    </div>
+    <div class="sb-nav">
+      <button class="sb-link" data-view="today"><svg width="17" height="17" viewBox="0 0 17 17" fill="none"><rect x="2" y="3" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M2 7h13" stroke="currentColor" stroke-width="1.3"/></svg><span>Today</span></button>
+      <button class="sb-link active" data-view="planner"><svg width="17" height="17" viewBox="0 0 17 17" fill="none"><rect x="2" y="2" width="13" height="13" rx="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 6.5h13M6 2v2.5M11 2v2.5" stroke="currentColor" stroke-width="1.3"/></svg><span>Planner</span></button>
+      <button class="sb-link" data-view="ai" id="sbAiLink"><svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="8.5" cy="8.5" r="6.3" stroke="currentColor" stroke-width="1.3"/><circle cx="8.5" cy="8.5" r="2" fill="currentColor"/></svg><span>AI Coach</span></button>
+      <button class="sb-link" data-view="progress"><svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M2.5 14.5v-5M8.5 14.5v-9M14.5 14.5V7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span>Progress</span></button>
+    </div>
+    <div class="sb-divider"></div>
+    <div class="sb-nav">
+      <button class="sb-link" data-view="family"><svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="6" cy="6" r="2.3" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="6" r="2.3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14c0-2.4 1.8-4 4-4s4 1.6 4 4M9 14c0-2.4 1.8-4 4-4s4 1.6 4 4" stroke="currentColor" stroke-width="1.3"/></svg><span>Family</span></button>
+      <button class="sb-link" data-view="settings"><svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="8.5" cy="8.5" r="2.6" stroke="currentColor" stroke-width="1.3"/><path d="M8.5 2.5v2M8.5 12v2M2.5 8.5h2M12 8.5h2M4.3 4.3l1.4 1.4M11 11l1.4 1.4M4.3 12.7l1.4-1.4M11 6l1.4-1.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span>Settings</span></button>
+    </div>
+    <div class="sb-spacer"></div>
+    <div class="sb-user">
+      <div class="sb-user-avatar" id="sbUserInitials">ES</div>
+      <div class="sb-user-name" id="sbUserName">Estelle</div>
+    </div>
+  </nav>
+
+  <main id="plannerMain">
+    <div id="plannerView">
+      <div class="planner-header">
+        <div>
+          <h1>Your week</h1>
+          <div class="daterange" id="weekRange">—</div>
+        </div>
+        <div class="ph-actions">
+          <button class="ph-btn" id="btnToday">Today</button>
+          <button class="ph-arrow" id="btnPrevWeek">‹</button>
+          <button class="ph-arrow" id="btnNextWeek">›</button>
+          <button class="ph-add" id="btnAddEvent">+ Add event</button>
+        </div>
+      </div>
+      <div class="week-cal">
+        <div class="wc-header" id="wcHeader"></div>
+        <div class="wc-body" id="wcBody" style="height:640px;">
+          <div class="wc-gridlines" id="wcGridlines"></div>
+          <div class="wc-time-axis" id="wcTimeAxis"></div>
+          <div class="wc-columns" id="wcColumns"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="todayView">
+      <h1 id="todayHeading">Today</h1>
+      <div class="today-date" id="todayDateLabel"></div>
+      <div class="today-timeline" id="todayTimeline"></div>
+      <div class="next-up" id="nextUpCard" style="display:none;">
+        <div class="nu-label">NEXT UP</div>
+        <div class="nu-title" id="nuTitle"></div>
+        <div class="nu-sub" id="nuSub"></div>
+        <div class="nu-actions">
+          <button class="nu-start">Start</button>
+          <button class="nu-secondary">Move</button>
+          <button class="nu-secondary">Skip</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <aside id="aiPanel">
+    <div class="ai-panel-head">
+      <div class="ai-brand-row">
+        <div class="ai-avatar"></div>
+        <div class="ai-brand-label">MOTION AI</div>
+      </div>
+      <div class="ai-sub">Planning with you</div>
+    </div>
+
+    
+    <div class="m3d" id="m3d" aria-label="Motion AI 3D companion. Drag to rotate.">
+      <div class="m3d-ring"></div>
+      <img id="m3dImg" src="images/turn/f00.webp" alt="" draggable="false">
+      <div class="m3d-copy"><span>MOTION AI</span><em>Drag to rotate</em></div>
+    </div>
+
+    <button class="plan-week-btn" id="btnPlanWeek" style="margin-top:16px;">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4.5L13 7l-4.5 1.5L7 13l-1.5-4.5L1 7l4.5-1.5z" fill="currentColor"/></svg>
+      Plan my week
+    </button>
+
+    <div class="ai-context-card" id="aiContextCard"></div>
+
+    <div class="ai-thread" id="aiThread"></div>
+
+    <div class="ai-composer">
+      <div class="ai-composer-row">
+        <input type="text" id="aiInput" placeholder="Ask Motion..." aria-label="Ask Motion AI" autocomplete="off">
+        <button class="ai-send" id="aiSend" type="button" aria-label="Send message"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<div id="addEventOverlay">
+  <div class="ae-sheet">
+    <h3>Add event</h3>
+    <form id="addEventForm">
+      <div class="ae-field"><label>Title</label><input type="text" id="aeTitle" aria-label="Event title" placeholder="e.g. Tennis" required></div>
+      <div class="ae-field"><label>Type</label>
+        <select id="aeType" aria-label="Event type">
+          <option value="school">School</option>
+          <option value="work">Work</option>
+          <option value="sport">Sport</option>
+          <option value="meal">Meal</option>
+          <option value="social">Social</option>
+          <option value="personal">Personal</option>
+        </select>
+      </div>
+      <div class="ae-field"><label>Day</label>
+        <select id="aeDay" aria-label="Day">
+          <option value="0">Monday</option><option value="1">Tuesday</option><option value="2">Wednesday</option>
+          <option value="3">Thursday</option><option value="4">Friday</option><option value="5">Saturday</option><option value="6">Sunday</option>
+        </select>
+      </div>
+      <div class="ae-row">
+        <div class="ae-field"><label>Start</label><input type="time" id="aeStart" aria-label="Start time" required></div>
+        <div class="ae-field"><label>End</label><input type="time" id="aeEnd" aria-label="End time" required></div>
+      </div>
+      <button type="submit" class="ae-submit">Add to week</button>
+    </form>
+  </div>
+</div>
+
+<div id="quickPlanOverlay">
+  <div class="qp-sheet" id="qpSheet"></div>
+</div>
+
+<script>
+/* =========================================================
+   MOTION PLANNER — core data model + availability engine
+   ========================================================= */
+
+const DOW = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
+const DOW_FULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const DAY_START = 6*60, DAY_END = 22*60;
+const PX_PER_MIN = 640 / (DAY_END - DAY_START);
+const TRANSITION_BUFFER = 20; // minutes either side of a fixed event we won't suggest into
+
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function timeToMin(t){ const [h,m] = t.split(':').map(Number); return h*60+m; }
+function minToTime(m){ const h = Math.floor(m/60), mm = m%60; return String(h).padStart(2,'0')+':'+String(mm).padStart(2,'0'); }
+
+/* --- CalendarEvent shape ---
+{ id, title, type, startTime, endTime, date (YYYY-MM-DD), flexibility, energyDemand, location, fixed, source } */
+
+function loadEvents(){
+  try{ return JSON.parse(localStorage.getItem('motion_planner_events') || '[]'); }catch(e){ return []; }
+}
+function saveEvents(events){ localStorage.setItem('motion_planner_events', JSON.stringify(events)); }
+
+let events = loadEvents();
+if (events.length === 0){
+  // Seed with a believable example week so the planner demonstrates its value immediately
+  const today = new Date();
+  const monday = new Date(today); monday.setDate(today.getDate() - ((today.getDay()+6)%7));
+  function d(offset){ const dt = new Date(monday); dt.setDate(monday.getDate()+offset); return dt.toISOString().slice(0,10); }
+  events = [
+    { id:uid(), title:'School', type:'school', startTime:'08:00', endTime:'15:30', date:d(0), fixed:true, source:'user' },
+    { id:uid(), title:'School', type:'school', startTime:'08:00', endTime:'15:30', date:d(1), fixed:true, source:'user' },
+    { id:uid(), title:'School', type:'school', startTime:'08:00', endTime:'15:30', date:d(2), fixed:true, source:'user' },
+    { id:uid(), title:'School', type:'school', startTime:'08:00', endTime:'15:30', date:d(3), fixed:true, source:'user' },
+    { id:uid(), title:'School', type:'school', startTime:'08:00', endTime:'15:30', date:d(4), fixed:true, source:'user' },
+    { id:uid(), title:'Tennis', type:'sport', startTime:'18:00', endTime:'19:30', date:d(1), fixed:true, source:'user' },
+    { id:uid(), title:'Tennis', type:'sport', startTime:'18:00', endTime:'19:30', date:d(3), fixed:true, source:'user' },
+    { id:uid(), title:'Dinner', type:'meal', startTime:'19:00', endTime:'19:30', date:d(0), fixed:true, source:'user' },
+    { id:uid(), title:'Dinner', type:'meal', startTime:'19:00', endTime:'19:30', date:d(2), fixed:true, source:'user' },
+    { id:uid(), title:'Dinner', type:'meal', startTime:'19:00', endTime:'19:30', date:d(4), fixed:true, source:'user' },
+  ];
+  saveEvents(events);
+}
+
+let weekOffset = 0; // 0 = this week
+
+function getWeekStart(){
+  const today = new Date();
+  const monday = new Date(today); monday.setDate(today.getDate() - ((today.getDay()+6)%7) + weekOffset*7);
+  monday.setHours(0,0,0,0);
+  return monday;
+}
+function dateStr(d){ return d.toISOString().slice(0,10); }
+function weekDates(){
+  const start = getWeekStart();
+  return Array.from({length:7}, (_,i) => { const dt = new Date(start); dt.setDate(start.getDate()+i); return dt; });
+}
+function isSameDate(a,b){ return dateStr(a) === dateStr(b); }
+
+/* ---------- AVAILABILITY ENGINE ----------
+   Deterministic: finds free windows on a given date, honoring a transition
+   buffer around fixed events. The AI reasons over these windows — it never
+   computes conflicts itself. */
+function getFreeWindows(date, minDuration){
+  const dayEvents = events
+    .filter(e => e.date === date && e.fixed)
+    .map(e => ({ s: timeToMin(e.startTime), e: timeToMin(e.endTime) }))
+    .sort((a,b) => a.s - b.s);
+
+  const windows = [];
+  let cursor = DAY_START;
+  dayEvents.forEach(ev => {
+    const bufferedStart = ev.s - TRANSITION_BUFFER;
+    if (bufferedStart - cursor >= (minDuration || 10)){
+      windows.push({ start: cursor, end: bufferedStart });
+    }
+    cursor = Math.max(cursor, ev.e + TRANSITION_BUFFER);
+  });
+  if (DAY_END - cursor >= (minDuration || 10)){
+    windows.push({ start: cursor, end: DAY_END });
+  }
+  return windows;
+}
+
+/* ---------- SLOT EVALUATION (deterministic reasoning, no LLM) ---------- */
+function reasonForWindow(win, dayEvents){
+  const durationMin = win.end - win.start;
+  const suggestedDuration = durationMin >= 40 ? 18 : (durationMin >= 25 ? 12 : 10);
+  const nextEvent = dayEvents.find(e => timeToMin(e.startTime) >= win.end);
+  let reason = 'A quiet gap with nothing scheduled around it.';
+  if (nextEvent){
+    reason = `Short enough to fit before ${nextEvent.title.toLowerCase()} without turning the rest of the day into another full workout.`;
+  }
+  return { suggestedDuration, reason };
+}
+
+/* Build one AI suggestion per day that has a usable gap and no Motion session yet,
+   but Motion deliberately skips days that are already full or already have a workout —
+   it should not try to maximise every day. */
+function buildSuggestionsForWeek(){
+  const suggestions = {};
+  weekDates().forEach(dt => {
+    const ds = dateStr(dt);
+    const dayEvents = events.filter(e => e.date === ds);
+    const alreadyHasMotion = dayEvents.some(e => e.type === 'motion_workout');
+    if (alreadyHasMotion) return;
+    const windows = getFreeWindows(ds, 10);
+    if (windows.length === 0) return;
+    // Prefer windows that start at a sensible time of day (not before 7am if a later
+    // option exists) and are a believable size — not a two-minute sliver, not "the
+    // whole afternoon is free" with no real anchor. 60 minutes is the sweet spot.
+    const EARLIEST_SENSIBLE = 7*60;
+    const reasonable = windows.filter(w => w.start >= EARLIEST_SENSIBLE);
+    const pool = reasonable.length ? reasonable : windows;
+    const win = pool.slice().sort((a,b) => {
+      const durA = Math.min(a.end-a.start, 180), durB = Math.min(b.end-b.start, 180);
+      return Math.abs(durA-60) - Math.abs(durB-60);
+    })[0];
+    const { suggestedDuration, reason } = reasonForWindow(win, dayEvents.filter(e=>e.fixed));
+    // A very open day (e.g. a free weekend with nothing fixed on it) shouldn't anchor
+    // to the literal start of the day — default to a sensible late-morning time instead.
+    let suggestedStart = win.start;
+    const LATE_MORNING = 9*60;
+    if ((win.end - win.start) > 180 && LATE_MORNING >= win.start && LATE_MORNING + suggestedDuration <= win.end){
+      suggestedStart = LATE_MORNING;
+    }
+    suggestions[ds] = { start: suggestedStart, duration: suggestedDuration, reason };
+  });
+  return suggestions;
+}
+
+let currentSuggestions = {};
+
+/* =========================================================
+   RENDERING
+   ========================================================= */
+function renderWeekHeader(){
+  const dates = weekDates();
+  const today = new Date(); today.setHours(0,0,0,0);
+  document.getElementById('weekRange').textContent =
+    dates[0].toLocaleDateString('en-US',{month:'long',day:'numeric'}) + ' – ' + dates[6].toLocaleDateString('en-US',{day:'numeric'});
+
+  const head = document.getElementById('wcHeader');
+  head.innerHTML = '<div></div>' + dates.map((dt,i) => `
+    <div class="wc-col-head ${isSameDate(dt,today)?'is-today':''}">
+      <div class="dow">${DOW[i]}</div>
+      <div class="dnum">${dt.getDate()}</div>
+    </div>`).join('');
+}
+
+function renderGridlines(){
+  let lines = '', labels = '';
+  for (let t = DAY_START; t <= DAY_END; t += 60){
+    const y = (t - DAY_START) * PX_PER_MIN;
+    lines += `<div class="wc-gridline" style="top:${y}px;"></div>`;
+    labels += `<div class="wc-hour-label" style="top:${y}px;">${String(Math.floor(t/60)).padStart(2,'0')}</div>`;
+  }
+  document.getElementById('wcGridlines').innerHTML = lines;
+  document.getElementById('wcTimeAxis').innerHTML = labels;
+}
+
+function eventBlockHtml(ev){
+  const top = Math.max(0,(timeToMin(ev.startTime) - DAY_START) * PX_PER_MIN);
+  const height = Math.max(22, (timeToMin(ev.endTime) - timeToMin(ev.startTime)) * PX_PER_MIN);
+  if (ev.type === 'motion_workout'){
+    return `<div class="cal-event motion" style="top:${top}px;height:${height}px;" data-id="${ev.id}">
+      <div class="ce-title">MOTION</div>
+      <div class="ce-meta">${ev.title}</div>
+      <div class="ce-time">${ev.startTime} – ${ev.endTime}</div>
+      <div class="ce-start">Start</div>
+    </div>`;
+  }
+  return `<div class="cal-event" style="top:${top}px;height:${height}px;" data-id="${ev.id}">
+    <div class="ce-title">${ev.title}</div>
+    <div class="ce-time">${ev.startTime} – ${ev.endTime}</div>
+  </div>`;
+}
+
+function suggestionBlockHtml(ds, sug){
+  const top = Math.max(0,(sug.start - DAY_START) * PX_PER_MIN);
+  const height = Math.max(34, sug.duration * PX_PER_MIN);
+  return `<div class="cal-event suggestion" style="top:${top}px;height:${height}px;" data-sugg-date="${ds}">
+    <div class="ce-badge">Motion suggestion</div>
+    <div class="ce-title" style="text-transform:none;font-size:0.72rem;">${sug.duration} min reset</div>
+    <div class="ce-time">${minToTime(sug.start)}</div>
+    <div class="ce-actions">
+      <button class="ce-mini-btn add" data-accept="${ds}">Add</button>
+      <button class="ce-mini-btn dismiss" data-dismiss="${ds}">Not now</button>
+    </div>
+  </div>`;
+}
+
+function renderWeekColumns(){
+  const dates = weekDates();
+  const today = new Date(); today.setHours(0,0,0,0);
+  currentSuggestions = buildSuggestionsForWeek();
+
+  const cols = dates.map(dt => {
+    const ds = dateStr(dt);
+    const dayEvents = events.filter(e => e.date === ds);
+    let html = dayEvents.map(eventBlockHtml).join('');
+    if (currentSuggestions[ds]) html += suggestionBlockHtml(ds, currentSuggestions[ds]);
+    return `<div class="wc-day-col ${isSameDate(dt,today)?'is-today':''}" data-date="${ds}">${html}</div>`;
+  }).join('');
+  document.getElementById('wcColumns').innerHTML = cols;
+
+  document.querySelectorAll('[data-accept]').forEach(btn => {
+    btn.addEventListener('click', (e) => { e.stopPropagation(); acceptSuggestion(btn.dataset.accept); });
+  });
+  document.querySelectorAll('[data-dismiss]').forEach(btn => {
+    btn.addEventListener('click', (e) => { e.stopPropagation(); dismissSuggestion(btn.dataset.dismiss); });
+  });
+
+  renderAIContext();
+}
+
+function acceptSuggestion(ds){
+  const sug = currentSuggestions[ds];
+  if (!sug) return;
+  events.push({
+    id: uid(), title: `${sug.duration} min reset`, type:'motion_workout',
+    startTime: minToTime(sug.start), endTime: minToTime(sug.start + sug.duration),
+    date: ds, fixed:true, source:'ai', duration: sug.duration, category:'full_body', equipment:'none'
+  });
+  saveEvents(events);
+  delete currentSuggestions[ds];
+  renderWeekColumns();
+  renderTodayView();
+}
+function dismissSuggestion(ds){
+  delete currentSuggestions[ds];
+  renderWeekColumns();
+}
+
+/* ---------- AI CONTEXT CARD (first thing the user sees in the panel) ---------- */
+function renderAIContext(){
+  const card = document.getElementById('aiContextCard');
+  const dsKeys = Object.keys(currentSuggestions);
+  if (dsKeys.length === 0){
+    card.innerHTML = `<p>Your week looks reasonably balanced right now. I don't have a strong suggestion to add — sometimes the right call is no workout at all.</p>`;
+    return;
+  }
+  const ds = dsKeys[0];
+  const sug = currentSuggestions[ds];
+  const dt = new Date(ds);
+  const dayName = DOW_FULL[(dt.getDay()+6)%7];
+  card.innerHTML = `
+    <p>${dayName} has a realistic gap at ${minToTime(sug.start)}. ${sug.reason}</p>
+    <div class="ai-context-suggestion">
+      <div class="acs-title">${sug.duration} min reset</div>
+      <div class="acs-time">${minToTime(sug.start)}</div>
+      <div class="acs-actions">
+        <button class="acs-btn primary" data-accept="${ds}">Add</button>
+        <button class="acs-btn secondary" data-dismiss="${ds}">Change</button>
+      </div>
+    </div>`;
+  card.querySelector('[data-accept]').addEventListener('click', () => acceptSuggestion(ds));
+  card.querySelector('[data-dismiss]').addEventListener('click', () => dismissSuggestion(ds));
+}
+
+/* ---------- TODAY VIEW ---------- */
+function renderTodayView(){
+  const today = new Date();
+  const ds = dateStr(today);
+  document.getElementById('todayHeading').textContent = DOW_FULL[(today.getDay()+6)%7];
+  document.getElementById('todayDateLabel').textContent = today.toLocaleDateString('en-US',{month:'long',day:'numeric'});
+
+  const dayEvents = events.filter(e => e.date === ds).sort((a,b) => timeToMin(a.startTime)-timeToMin(b.startTime));
+  document.getElementById('todayTimeline').innerHTML = dayEvents.map(e => `
+    <div class="tt-row ${e.type==='motion_workout'?'motion':''}">
+      <div class="tt-time">${e.startTime}</div>
+      <div><div class="tt-title">${e.type==='motion_workout' ? 'Motion · '+e.title : e.title}</div></div>
+    </div>`).join('') || '<div class="tt-row"><div class="tt-time"></div><div class="tt-title" style="color:var(--text-dim);font-weight:400;">Nothing scheduled yet.</div></div>';
+
+  const nowMin = today.getHours()*60 + today.getMinutes();
+  const next = dayEvents.find(e => timeToMin(e.startTime) > nowMin && e.type === 'motion_workout');
+  const nextUp = document.getElementById('nextUpCard');
+  if (next){
+    nextUp.style.display = 'block';
+    document.getElementById('nuTitle').textContent = next.title;
+    const mins = timeToMin(next.startTime) - nowMin;
+    document.getElementById('nuSub').textContent = mins > 0 ? `Starts in ${mins} min` : 'Starting now';
+  } else {
+    nextUp.style.display = 'none';
+  }
+}
+
+/* =========================================================
+   AI CHAT (wired to the real backend; short, planner-aware tone)
+   ========================================================= */
+let chatLog = [];
+
+function buildPlannerSystemPrompt(){
+  const ds = dateStr(new Date());
+  const weekSummary = weekDates().map(dt => {
+    const dds = dateStr(dt);
+    const dayEvents = events.filter(e => e.date === dds).map(e => `${e.title} ${e.startTime}-${e.endTime}`).join(', ');
+    return `${DOW[(dt.getDay()+6)%7]} ${dds}: ${dayEvents || 'nothing scheduled'}`;
+  }).join('\n');
+
+  return `You are Motion AI, the planning companion inside the Motion UF app. Philosophy: "We think. You move." You help the user find realistic movement in their actual week — you do not try to maximise workouts, and you sometimes correctly recommend nothing.
+
+Keep every reply SHORT — 1-3 sentences, never a long paragraph. No markdown headers, no bullet essays. Talk like a sharp, calm assistant, not a chatbot.
+
+Today's date: ${ds}
+The user's current week:
+${weekSummary}
+
+When the user asks to change the plan (move a workout, make a day lighter, find time for N workouts), propose a specific concrete change and ask for confirmation rather than silently acting. Keep suggestions realistic and respect existing fixed commitments — never suggest scheduling over something that's already there.
+
+Respond in English, matching the user's own language if they write in Swedish.`;
+}
+
+async function askMotionAI(userMessage){
+  const history = chatLog.slice(-10).map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text }));
+  history.push({ role:'user', content:userMessage });
+  try{
+    const r = await fetch('/api/chat', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:400, system: buildPlannerSystemPrompt(), messages: history })
+    });
+    if (!r.ok) throw new Error('bad response');
+    const data = await r.json();
+    const text = (data.content || []).filter(b => b.type==='text').map(b=>b.text).join('\n').trim();
+    return text || "I couldn't quite work that out — try rephrasing?";
+  } catch(e){
+    return offlineReply(userMessage);
+  }
+}
+
+function offlineReply(msg){
+  const lower = msg.toLowerCase();
+  if (lower.includes('tired') || lower.includes('trött')){
+    return "Got it — I'll keep today light. No pressure to train if you're not up for it.";
+  }
+  if (lower.includes('light') || lower.includes('easier') || lower.includes('lättare')){
+    return "I'll ease off this week — shorter sessions, more rest between them.";
+  }
+  return "I can't reach the live planning model right now, but I've noted that. Try again once the API key is connected on the server.";
+}
+
+function renderChatLog(){
+  const thread = document.getElementById('aiThread');
+  thread.innerHTML = chatLog.map(m => m.role === 'user'
+    ? `<div class="ai-msg user">${escapeHtml(m.text)}</div>`
+    : `<div class="ai-msg assistant"><div class="am-inner">${escapeHtml(m.text)}</div></div>`
+  ).join('');
+  thread.scrollTop = thread.scrollHeight;
+}
+function escapeHtml(s){ const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+async function sendAIMessage(){
+  const input = document.getElementById('aiInput');
+  const text = input.value.trim();
+  if (!text) return;
+  chatLog.push({ role:'user', text });
+  input.value = '';
+  renderChatLog();
+  const reply = await askMotionAI(text);
+  chatLog.push({ role:'assistant', text: reply });
+  renderChatLog();
+}
+
+/* =========================================================
+   PLAN MY WEEK — loading sequence + results
+   ========================================================= */
+function openQuickPlan(){
+  const overlay = document.getElementById('quickPlanOverlay');
+  const sheet = document.getElementById('qpSheet');
+  overlay.classList.add('show');
+
+  const steps = ['Looking at your week...', 'Finding realistic gaps...', 'Balancing movement and recovery...'];
+  let i = 0;
+  sheet.innerHTML = `<div class="qp-loading"><div class="qp-dot"></div><p id="qpStepText">${steps[0]}</p></div>`;
+  const interval = setInterval(() => {
+    i++;
+    if (i < steps.length){
+      document.getElementById('qpStepText').textContent = steps[i];
+    } else {
+      clearInterval(interval);
+      renderQuickPlanResult();
+    }
+  }, 750);
+}
+
+function renderQuickPlanResult(){
+  const sheet = document.getElementById('qpSheet');
+  const suggestions = buildSuggestionsForWeek();
+  const dsKeys = Object.keys(suggestions);
+  let totalMin = 0;
+
+  const rows = weekDates().map(dt => {
+    const ds = dateStr(dt);
+    const dayName = DOW_FULL[(dt.getDay()+6)%7];
+    const sug = suggestions[ds];
+    const hasMotion = events.some(e => e.date===ds && e.type==='motion_workout');
+    const hasSport = events.some(e => e.date===ds && e.type==='sport');
+    if (sug){
+      totalMin += sug.duration;
+      return `<div class="qp-day"><div class="qpd-name">${dayName.toUpperCase()}</div><div class="qpd-content">${sug.duration} min reset</div><div class="qpd-sub">${minToTime(sug.start)}</div></div>`;
+    }
+    if (hasMotion || hasSport){
+      return `<div class="qp-day"><div class="qpd-name">${dayName.toUpperCase()}</div><div class="qpd-content" style="color:var(--text-dim);font-weight:500;">No additional workout</div><div class="qpd-sub">${hasSport?'Sport already scheduled':'Motion session already scheduled'}</div></div>`;
+    }
+    return '';
+  }).join('');
+
+  sheet.innerHTML = `
+    <div class="qp-result">
+      <h3>YOUR MOTION WEEK</h3>
+      ${rows}
+      <div class="qp-total">Total additional movement: <strong>${totalMin} minutes</strong></div>
+      <div class="qp-actions">
+        <button class="qp-confirm" id="qpConfirm">Add plan</button>
+        <button class="qp-adjust" id="qpClose">Adjust</button>
+      </div>
+    </div>`;
+
+  document.getElementById('qpConfirm').addEventListener('click', () => {
+    Object.keys(suggestions).forEach(ds => acceptSuggestion(ds));
+    document.getElementById('quickPlanOverlay').classList.remove('show');
+  });
+  document.getElementById('qpClose').addEventListener('click', () => {
+    document.getElementById('quickPlanOverlay').classList.remove('show');
+  });
+}
+
+/* =========================================================
+   NAV / VIEW SWITCHING
+   ========================================================= */
+function setView(view){
+  document.querySelectorAll('.sb-link').forEach(l => l.classList.toggle('active', l.dataset.view === view));
+  if (view === 'ai'){
+    document.getElementById('aiPanel').classList.add('open');
+    return;
+  }
+  document.getElementById('aiPanel').classList.remove('open');
+  document.getElementById('plannerView').style.display = view === 'planner' ? 'block' : 'none';
+  document.getElementById('todayView').classList.toggle('show', view === 'today');
+  if (view === 'today') renderTodayView();
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+function init(){
+  renderGridlines();
+  renderWeekHeader();
+  renderWeekColumns();
+  renderTodayView();
+  chatLog.push({ role:'assistant', text:"Hi — I'm Motion AI. I can see your week and I'll flag realistic opportunities to move, without filling every gap." });
+  renderChatLog();
+
+  document.querySelectorAll('.sb-link').forEach(l => l.addEventListener('click', () => setView(l.dataset.view)));
+  document.getElementById('btnToday').addEventListener('click', () => { weekOffset = 0; renderWeekHeader(); renderWeekColumns(); });
+  document.getElementById('btnPrevWeek').addEventListener('click', () => { weekOffset--; renderWeekHeader(); renderWeekColumns(); });
+  document.getElementById('btnNextWeek').addEventListener('click', () => { weekOffset++; renderWeekHeader(); renderWeekColumns(); });
+
+  document.getElementById('btnPlanWeek').addEventListener('click', openQuickPlan);
+
+  document.getElementById('aiSend').addEventListener('click', sendAIMessage);
+  document.getElementById('aiInput').addEventListener('keydown', (e) => { if (e.key==='Enter') sendAIMessage(); });
+
+  document.getElementById('btnAddEvent').addEventListener('click', () => {
+    document.getElementById('addEventOverlay').classList.add('show');
+  });
+  document.getElementById('addEventOverlay').addEventListener('click', (e) => {
+    if (e.target.id === 'addEventOverlay') e.target.classList.remove('show');
+  });
+  document.getElementById('addEventForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const dayIdx = +document.getElementById('aeDay').value;
+    const ds = dateStr(weekDates()[dayIdx]);
+    events.push({
+      id: uid(),
+      title: document.getElementById('aeTitle').value.trim(),
+      type: document.getElementById('aeType').value,
+      startTime: document.getElementById('aeStart').value,
+      endTime: document.getElementById('aeEnd').value,
+      date: ds, fixed:true, source:'user'
+    });
+    saveEvents(events);
+    document.getElementById('addEventOverlay').classList.remove('show');
+    e.target.reset();
+    renderWeekColumns();
+    renderTodayView();
+  });
+  document.getElementById('quickPlanOverlay').addEventListener('click', (e) => {
+    if (e.target.id === 'quickPlanOverlay') e.target.classList.remove('show');
+  });
+}
+
+init();
+</script>
+
+<script>
+(function(){
+  var N=36, el=document.getElementById('m3d'), img=document.getElementById('m3dImg');
+  if(!el||!img) return;
+  var frames=[]; for(var i=0;i<N;i++){ var im=new Image(); im.src='images/turn/f'+(i<10?'0':'')+i+'.webp'; frames.push(im); }
+  var pos=0, vel=0, dragging=false, lastX=0, lastT=0, idleSince=performance.now(), reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function show(){ var k=((Math.round(pos)%N)+N)%N; var src=frames[k].src; if(img.src!==src) img.src=src; }
+  el.addEventListener('pointerdown',function(e){ dragging=true; lastX=e.clientX; vel=0; el.classList.add('drag','touched'); el.setPointerCapture(e.pointerId); });
+  el.addEventListener('pointermove',function(e){ if(!dragging) return; var dx=e.clientX-lastX; lastX=e.clientX; pos-=dx/9; vel=-dx/9; show(); });
+  function up(){ dragging=false; el.classList.remove('drag'); idleSince=performance.now(); }
+  el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up);
+  function tick(t){
+    if(!dragging){
+      if(Math.abs(vel)>0.02){ pos+=vel; vel*=0.93; }
+      else if(!reduce && t-idleSince>2500){ pos+=0.12; }
+      show();
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
