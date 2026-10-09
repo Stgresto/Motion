@@ -190,69 +190,23 @@
     .sb-user{ justify-content:center; }
   }
 
-  /* ---------- POLISH PASS ---------- */
-  :root{ --ink:#161615; --gold-soft:#D9BE8C; }
-  body{ background:var(--bg); }
-  #plannerMain{ padding:44px 48px; }
-  .planner-header h1{ font-family:'Cormorant Garamond',serif; font-weight:500; font-size:3.1rem; letter-spacing:-0.01em; line-height:1; }
-  .planner-header .daterange{ margin-top:10px; letter-spacing:0.08em; text-transform:uppercase; font-size:0.7rem; color:var(--text-muted); }
-  .ph-add{ background:var(--ink); transition:transform .15s ease, box-shadow .15s ease; }
-  .ph-add:hover{ transform:translateY(-1px); box-shadow:0 8px 20px rgba(22,22,21,0.22); }
-  .week-cal, #weekCal{ border-radius:6px !important; box-shadow:0 1px 0 rgba(0,0,0,0.02), 0 18px 50px -24px rgba(22,22,21,0.18); }
-  .cal-event{ border-radius:4px; border:none; background:#fff; box-shadow:inset 3px 0 0 #B9B4A8, 0 1px 2px rgba(22,22,21,0.06); }
-  .cal-event.t-school, .cal-event.t-work{ background:#F1F1EE; box-shadow:inset 3px 0 0 #6E7480, 0 1px 2px rgba(22,22,21,0.05); }
-  .cal-event.t-sport{ background:#FBF4E6; box-shadow:inset 3px 0 0 var(--accent), 0 1px 2px rgba(22,22,21,0.05); }
-  .cal-event.t-meal{ background:#F6F2EA; box-shadow:inset 3px 0 0 #CDBFA3; }
-  .cal-event.t-social{ background:#F3EFF0; box-shadow:inset 3px 0 0 #A58A94; }
-  .cal-event.motion{ background:linear-gradient(160deg,#2B2B29,#161615); box-shadow:inset 3px 0 0 var(--gold-soft), 0 10px 24px -10px rgba(22,22,21,0.5); }
-  .cal-event.suggestion{ border-radius:4px; background:repeating-linear-gradient(135deg,rgba(184,147,90,0.07) 0 8px,rgba(184,147,90,0.03) 8px 16px); animation:suggIn .5s ease both; }
-  @keyframes suggIn{ from{ opacity:0; transform:scale(.96); } to{ opacity:1; transform:none; } }
-  .cal-event:hover{ transform:translateY(-1px); box-shadow:0 10px 24px -10px rgba(22,22,21,0.3); }
-  .sb-link{ position:relative; transition:background .15s ease, color .15s ease; }
-  .sb-link.active{ background:var(--ink); color:#fff; }
-  .sb-link.active svg{ color:var(--gold-soft); }
-  .sb-brand{ font-family:'Cormorant Garamond',serif; }
-  .sb-user{ background:var(--surface); border:1px solid var(--line); }
-
-  /* AI panel: charcoal hero with 3D companion */
-  #aiPanel{ background:var(--surface); }
-  .ai-panel-head{ padding:0; border:none; }
-  .ai-hero{ position:relative; height:190px; overflow:hidden; background:radial-gradient(120% 90% at 85% 15%, #3a342b 0%, #1d1c1a 55%, #131312 100%); color:#fff; }
-  .ai-hero::before{ content:''; position:absolute; right:-60px; top:-60px; width:260px; height:260px; border-radius:50%; border:1px solid rgba(217,190,140,0.28); }
-  .ai-hero::after{ content:''; position:absolute; right:-20px; top:-20px; width:180px; height:180px; border-radius:50%; border:1px solid rgba(217,190,140,0.18); }
-  .ai-3d{ position:absolute; right:18px; bottom:-48px; height:228px; width:auto; filter:drop-shadow(0 18px 24px rgba(0,0,0,0.45)); animation:floaty 5.5s ease-in-out infinite; z-index:1; }
-  @keyframes floaty{ 0%,100%{ transform:translateY(0) rotate(-1deg); } 50%{ transform:translateY(-7px) rotate(1deg); } }
-  .ai-hero-copy{ position:absolute; left:24px; bottom:22px; z-index:2; }
-  .ai-hero .ai-brand-label{ font-size:0.72rem; letter-spacing:0.16em; color:var(--gold-soft); }
-  .ai-hero .ai-sub{ margin:6px 0 0; font-family:'Cormorant Garamond',serif; font-size:1.7rem; line-height:1.05; color:#fff; max-width:130px; }
-  .ai-status{ margin-top:12px; display:flex; align-items:center; gap:7px; font-size:0.68rem; color:rgba(255,255,255,0.6); }
-  .ai-status span{ width:6px; height:6px; border-radius:50%; background:#8FCB9B; box-shadow:0 0 0 0 rgba(143,203,155,.6); animation:pulse 2.2s infinite; }
-  @keyframes pulse{ 70%{ box-shadow:0 0 0 7px rgba(143,203,155,0); } 100%{ box-shadow:0 0 0 0 rgba(143,203,155,0); } }
-  #btnPlanWeek{ margin:16px 24px 0 !important; width:calc(100% - 48px); background:linear-gradient(180deg,#2a2a28,#161615); border:1px solid #000; }
-  .ai-context-card{ border-radius:6px; background:#fff; border:1px solid var(--line); box-shadow:0 12px 30px -20px rgba(22,22,21,0.3); }
-  .ai-msg.assistant .am-inner{ border-radius:4px; background:#F3F1EC; }
-  .ai-msg.user{ border-radius:4px; }
-  .ai-composer-row{ border-radius:6px; border:1px solid var(--line); }
-  @media (prefers-reduced-motion:reduce){ .ai-3d,.ai-status span,.cal-event.suggestion{ animation:none; } }
-  @media (max-width:900px){ #plannerMain{ padding:24px 16px; } .planner-header h1{ font-size:2.3rem; } }
-
+  /* small refinements */
+  .ai-avatar-3d{ width:34px; height:34px; object-fit:cover; object-position:50% 6%; border-radius:50%; background:#1B1B1A; flex-shrink:0; }
+  .cal-event.t-sport{ border-left:3px solid var(--accent); }
+  .cal-event.t-school, .cal-event.t-work{ border-left:3px solid #6E7480; }
+  .cal-event.t-meal{ border-left:3px solid #CDBFA3; }
+  .planner-header h1{ font-family:'Cormorant Garamond',serif; font-weight:500; font-size:2.6rem; }
   @media (max-width:760px){
     #appShell{ display:block; }
-    #sidebar{ position:fixed; left:0; right:0; bottom:0; top:auto; width:100% !important; height:64px; padding:6px 10px calc(6px + env(safe-area-inset-bottom)) !important; flex-direction:row; align-items:center; justify-content:space-around; background:rgba(255,255,255,0.92); backdrop-filter:blur(14px); border-top:1px solid var(--line); border-right:none; z-index:40; overflow:hidden; }
+    #sidebar{ position:fixed; left:0; right:0; bottom:0; top:auto; width:100% !important; height:64px; padding:6px 10px !important; flex-direction:row; justify-content:space-around; align-items:center; background:rgba(255,255,255,0.94); border-top:1px solid var(--line); z-index:40; }
     #sidebar .sb-brand, #sidebar .sb-divider, #sidebar .sb-spacer, #sidebar .sb-user{ display:none; }
     #sidebar .sb-nav{ display:contents; }
-    #sidebar .sb-link{ width:48px; height:48px; padding:0; border-radius:10px; margin:0; }
     #sidebar [data-view="family"], #sidebar [data-view="settings"]{ display:none; }
     #plannerMain{ height:auto; overflow:visible; padding:22px 14px 90px; }
-    .planner-header{ flex-direction:column; align-items:flex-start; gap:14px; }
-    .week-cal{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .week-cal{ overflow-x:auto; }
     .wc-header, .wc-body{ min-width:600px; }
-    .cal-event .ce-time{ display:none; }
-    #aiPanel{ width:100%; }
-    .ai-hero{ height:170px; }
   }
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -323,14 +277,11 @@
 
   <aside id="aiPanel">
     <div class="ai-panel-head">
-      <div class="ai-hero">
-        <img class="ai-3d" src="images/motion-companion.png" alt="" width="222" height="490">
-        <div class="ai-hero-copy">
-          <div class="ai-brand-label">MOTION AI</div>
-          <div class="ai-sub">Planning with you</div>
-          <div class="ai-status"><span></span>Watching your week</div>
-        </div>
+      <div class="ai-brand-row">
+        <img class="ai-avatar-3d" src="images/motion-companion.png" alt="">
+        <div class="ai-brand-label">MOTION AI</div>
       </div>
+      <div class="ai-sub">Planning with you</div>
     </div>
 
     <button class="plan-week-btn" id="btnPlanWeek" style="margin-top:16px;">
