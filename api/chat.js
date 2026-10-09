@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { model, max_tokens, system, messages } = req.body || {};
+  const { model, max_tokens, system, messages, tools, tool_choice } = req.body || {};
 
   if (!Array.isArray(messages) || messages.length === 0) {
     res.status(400).json({ error: 'messages array is required' });
@@ -45,6 +45,10 @@ export default async function handler(req, res) {
         max_tokens: max_tokens || 1200,
         system: system || undefined,
         messages,
+        // Motion AI (app.html) sends tools so the model can read the planner
+        // and propose changes. Older pages simply don't send them.
+        ...(Array.isArray(tools) && tools.length ? { tools } : {}),
+        ...(tool_choice ? { tool_choice } : {}),
       }),
     });
 

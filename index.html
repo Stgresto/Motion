@@ -2,6 +2,7 @@
 <html lang="sv">
 <head>
 <script>
+
   // Skicka besökare till motionplanner.se om de hamnar på en annan adress
   // (t.ex. en vercel.app-länk). Undantag: lokal utveckling/förhandsvisning.
   (function(){
@@ -13,742 +14,732 @@
     }
   })();
 </script>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MOTION UF — Rör dig mer. Tänk mindre.</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MOTION UF — Träningskortleken som gör det enkelt att börja</title>
+<meta name="description" content="En fysisk träningskortlek med QR-koder och en AI-planerare som hittar tid för korta pass i din vardag. Dra. Skanna. Gör.">
+<link rel="canonical" href="https://motionplanner.se/">
+<meta name="theme-color" content="#11110F">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/images/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MOTION UF">
+<meta property="og:url" content="https://motionplanner.se/">
+<meta property="og:title" content="MOTION — Gör det enkelt att börja">
+<meta property="og:description" content="En träningskortlek med QR-koder och en AI-planerare som hittar tiden i din dag.">
+<meta property="og:image" content="https://motionplanner.se/images/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" as="image" href="/images/m/hero-m-1003.webp" imagesrcset="/images/m/hero-m-640.webp 640w, /images/m/hero-m-1003.webp 1003w" imagesizes="100vw" media="(max-width: 760px)" type="image/webp">
+<link rel="preload" as="image" href="/images/m/hero-d-1254.webp" imagesrcset="/images/m/hero-d-960.webp 960w, /images/m/hero-d-1254.webp 1254w" imagesizes="100vw" media="(min-width: 761px)" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"MOTION UF","url":"https://motionplanner.se/","logo":"https://motionplanner.se/images/icon-512.png","slogan":"We think. You move."}</script>
 <style>
-  :root{
-    --white:#faf9f7;
-    --beige:#f4f1ec;
-    --charcoal:#111111;
-    --charcoal-soft:#1c1c1a;
-    --olive:#4f5d4b;
-    --olive-deep:#394437;
-    --brass:#b8935a;
-    --brass-soft:#d0b48a;
-    --line:#e6e1d6;
-    --ink-soft:#6b6a63;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--white); color:var(--charcoal);
-    font-family:'Inter', sans-serif; font-weight:300; font-size:16px; line-height:1.65;
-    overflow-x:hidden;
-  }
-  h1,h2,h3{ font-family:'Cormorant Garamond', serif; font-weight:300; letter-spacing:0.005em; color:var(--charcoal); }
-  a{ color:inherit; text-decoration:none; }
-  img{ display:block; max-width:100%; }
-  .wrap{ max-width:1240px; margin:0 auto; padding:0 48px; }
-  .mono{ font-family:'JetBrains Mono', monospace; font-size:0.7rem; letter-spacing:0.09em; text-transform:uppercase; }
-  .glass{ background:rgba(250,249,247,0.6); border:1px solid rgba(17,17,17,0.08); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); }
+/* =========================================================
+   MOTION — tokens
+   ========================================================= */
+:root{
+  --black:#11110F; --charcoal:#1B1B18; --charcoal-2:#24231F;
+  --cream:#F3EFE7; --warm-white:#FAF8F3; --stone:#B9B1A4; --sand:#D8CBB9;
+  --ink:#11110F; --ink-2:#5C564D;               /* body on light (6.5:1 on cream) */
+  --on-dark:#FAF8F3; --on-dark-2:rgba(250,248,243,.70);
+  --gold:#B8925A;                                /* used sparingly */
+  --line-l:rgba(17,17,15,.12); --line-d:rgba(255,255,255,.12);
 
-  .reveal{ opacity:0; transform:translateY(26px); transition:opacity .9s ease, transform .9s ease; }
-  .reveal.in{ opacity:1; transform:translateY(0); }
+  --font-display:'Cormorant Garamond','Cormorant',Georgia,'Times New Roman',serif;
+  --font-body:'Hanken Grotesk','Helvetica Neue',Arial,sans-serif;
+  --font-size-xs:.8125rem;  /* 13 */
+  --font-size-sm:.875rem;   /* 14 */
+  --font-size-base:1.0625rem; /* 17 */
+  --font-size-lg:1.1875rem; /* 19 */
+  --font-size-xl:clamp(1.5rem,2.2vw,1.875rem);
+  --font-size-h2:clamp(2.4rem,4.6vw,4.8rem);
+  --font-size-display:clamp(3.4rem,7.6vw,7.6rem);
 
-  .btn{ display:inline-flex; align-items:center; gap:9px; padding:17px 32px; border-radius:100px; font-size:0.9rem; font-weight:500; transition:all .35s ease; }
-  .btn-dark{ background:var(--charcoal); color:var(--white); }
-  .btn-dark:hover{ background:var(--olive); transform:translateY(-2px); }
-  .btn-outline{ border:1.5px solid rgba(17,17,17,0.22); color:var(--charcoal); }
-  .btn-outline:hover{ border-color:var(--charcoal); background:rgba(17,17,17,0.04); }
-  .btn-light{ background:var(--white); color:var(--charcoal); }
-  .btn-light:hover{ transform:translateY(-2px); }
+  --space-xs:8px; --space-sm:16px; --space-md:24px; --space-lg:40px; --space-xl:64px; --space-2xl:104px;
+  --section-space:clamp(88px,11vw,168px);
+  --gutter:clamp(20px,5vw,80px); --maxw:1360px;
+  --r-sm:8px; --r-md:12px; --r-btn:10px;
+  --shadow-ui:0 10px 30px rgba(0,0,0,.08);
+  --ease:cubic-bezier(.22,.7,.12,1); --t:220ms;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:84px}
+body{background:var(--cream);color:var(--ink);font-family:var(--font-body);font-size:var(--font-size-base);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,picture,svg{display:block;max-width:100%}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding-inline:var(--gutter)}
+.section{padding-block:var(--section-space)}
 
-  /* NAV */
-  nav{ position:fixed; top:0; left:0; right:0; z-index:150; padding:24px 0; transition:all .4s ease; }
-  nav.scrolled{ background:rgba(250,249,247,0.85); backdrop-filter:blur(14px); border-bottom:1px solid var(--line); padding:16px 0; }
-  nav .wrap{ display:flex; justify-content:space-between; align-items:center; }
-  .logo{ font-family:'Cormorant Garamond', serif; font-size:1.2rem; letter-spacing:0.02em; color:var(--white); transition:color .4s ease; display:flex; align-items:center; gap:10px; }
-  nav.scrolled .logo{ color:var(--charcoal); }
-  .logo-mark{ height:28px; width:auto; display:block; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15)); }
-  .navlinks{ display:flex; gap:36px; }
-  .navlinks a{ font-size:0.86rem; color:rgba(250,249,247,0.75); transition:color .3s ease; }
-  nav.scrolled .navlinks a{ color:var(--ink-soft); }
-  .navlinks a:hover{ color:var(--white); }
-  nav.scrolled .navlinks a:hover{ color:var(--charcoal); }
-  .nav .btn{ padding:11px 22px; font-size:0.82rem; }
+/* type */
+.kicker{display:block;font-size:var(--font-size-xs);letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:var(--ink-2);margin-bottom:var(--space-md)}
+.dark .kicker{color:var(--on-dark-2)}
+.h2{font-family:var(--font-display);font-weight:300;font-size:var(--font-size-h2);line-height:1;letter-spacing:-.015em}
+.h3{font-family:var(--font-display);font-weight:400;font-size:var(--font-size-xl);line-height:1.1}
+.lede{font-size:var(--font-size-lg);line-height:1.6;color:var(--ink-2);max-width:32em}
+.dark .lede{color:var(--on-dark-2)}
+.dark{background:var(--black);color:var(--on-dark)}
 
-  /* HERO */
-  .hero{ position:relative; min-height:100vh; display:flex; align-items:flex-end; overflow:hidden; padding-top:120px; box-sizing:border-box; }
-  .hero-media{ position:absolute; inset:0; overflow:hidden; }
-  .hero-media img{ width:100%; height:100%; object-fit:cover; object-position:center 12%; animation:kenburns 24s ease-in-out infinite alternate; filter:saturate(0.92) brightness(0.96); }
-  @keyframes kenburns{ from{ transform:scale(1.0); } to{ transform:scale(1.09); } }
-  .hero-scrim{ position:absolute; inset:0; background:linear-gradient(0deg, rgba(17,17,17,0.62) 0%, rgba(17,17,17,0.28) 40%, rgba(17,17,17,0.08) 65%, rgba(17,17,17,0.18) 100%); }
-  .particle{ position:absolute; width:4px; height:4px; border-radius:50%; background:rgba(250,249,247,0.55); animation:drift linear infinite; }
-  @keyframes drift{ from{ transform:translateY(0); opacity:0; } 10%{ opacity:0.8; } 90%{ opacity:0.4; } to{ transform:translateY(-90vh); opacity:0; } }
-  .hero-content{ position:relative; z-index:3; padding:0 0 90px; max-width:720px; }
-  .hero .wrap{ display:flex; flex-direction:column; }
-  .hero h1{ color:var(--white); font-size:clamp(3rem, 7vw, 5.6rem); line-height:0.98; font-weight:300; }
-  .hero p.lead{ color:rgba(250,249,247,0.82); font-size:1.1rem; margin-top:24px; max-width:30em; }
-  .hero .cta-row{ margin-top:38px; display:flex; gap:16px; flex-wrap:wrap; }
+/* wordmark */
+.logo{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.logo .wm{height:15px;width:auto}
+.logo .lsym{width:22px;height:22px;margin-right:-2px}
+.logo .uf{font-size:10px;letter-spacing:.22em;font-weight:600;padding-left:12px;border-left:1px solid currentColor;line-height:12px;opacity:.7}
 
-  /* SECTION SHARED */
-  section{ position:relative; padding:100px 0; }
-  .section-head{ max-width:680px; margin-bottom:52px; }
-  .section-head.center{ margin:0 auto 52px; text-align:center; }
-  .section-head h2{ font-size:clamp(2rem, 3.6vw, 2.9rem); line-height:1.2; font-weight:300; }
-  .section-head p{ color:var(--ink-soft); font-size:1.03rem; margin-top:20px; }
+/* buttons — one system */
+.btn{--h:52px;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:var(--h);padding:0 26px;border-radius:var(--r-btn);font:500 .95rem/1 var(--font-body);letter-spacing:.01em;text-decoration:none;border:1px solid transparent;cursor:pointer;white-space:nowrap;transition:transform var(--t) var(--ease),background var(--t),color var(--t),border-color var(--t)}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:scale(.98)}
+.btn .arr{transition:transform var(--t) var(--ease)}
+.btn:hover .arr,.tlink:hover .arr{transform:translateX(3px)}
+.btn-dark{background:var(--black);color:var(--on-dark)}
+.btn-dark:hover{background:var(--charcoal-2)}
+.btn-light{background:var(--on-dark);color:var(--black)}
+.btn-light:hover{background:#fff}
+.btn-outline{border-color:rgba(17,17,15,.28);color:var(--ink)}
+.btn-outline:hover{border-color:var(--ink)}
+.dark .btn-outline,.on-photo .btn-outline{border-color:rgba(255,255,255,.4);color:var(--on-dark)}
+.dark .btn-outline:hover,.on-photo .btn-outline:hover{border-color:#fff}
+.btn-sm{--h:42px;padding:0 18px;font-size:.88rem}
+.tlink{display:inline-flex;align-items:center;gap:8px;font-weight:500;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
+.arr{width:14px;height:14px;flex-shrink:0}
 
-  /* STATS STRIP */
-  .stats-strip{ background:var(--beige); padding:56px 0; border-bottom:1px solid var(--line); }
-  .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:30px; text-align:center; }
-  .stat-block .num{ font-family:'Cormorant Garamond', serif; font-size:2.3rem; color:var(--olive); line-height:1; }
-  .stat-block .lbl{ font-size:0.95rem; font-weight:500; margin-top:10px; }
-  .stat-block .sub{ font-size:0.8rem; color:var(--ink-soft); margin-top:6px; }
+/* nav */
+#nav{position:fixed;inset:0 0 auto 0;z-index:60;color:var(--on-dark);padding-top:env(safe-area-inset-top,0px);transition:background .35s var(--ease),box-shadow .35s}
+#nav .wrap{display:flex;align-items:center;height:76px;gap:var(--space-lg)}
+#nav .links{display:flex;gap:34px;margin-left:auto;font-size:var(--font-size-sm)}
+#nav .links a{text-decoration:none;opacity:.82;transition:opacity var(--t)}
+#nav .links a:hover{opacity:1}
+#nav.scrolled{background:rgba(17,17,15,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 1px 0 var(--line-d)}
+.burger{display:none;margin-left:auto;width:44px;height:44px;position:relative;color:inherit}
+.burger span{position:absolute;left:11px;right:11px;height:1.5px;background:currentColor;transition:transform .3s var(--ease),opacity .2s}
+.burger span:nth-child(1){top:17px}.burger span:nth-child(2){top:26px}
+.mmenu{position:fixed;inset:0;z-index:70;background:var(--black);color:var(--on-dark);display:flex;flex-direction:column;padding:calc(18px + env(safe-area-inset-top,0px)) var(--gutter) calc(28px + env(safe-area-inset-bottom,0px));opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .3s var(--ease),transform .3s var(--ease),visibility 0s .3s}
+.mmenu.open{opacity:1;visibility:visible;transform:none;transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.mmenu-top{display:flex;align-items:center;justify-content:space-between;height:44px}
+.mmenu nav{display:flex;flex-direction:column;margin-top:auto;margin-bottom:var(--space-lg)}
+.mmenu nav a{font-family:var(--font-display);font-weight:300;font-size:clamp(2.4rem,11vw,3.4rem);line-height:1.15;text-decoration:none;padding:6px 0;border-bottom:1px solid var(--line-d)}
+.mmenu .btn{width:100%}
+.mclose{width:44px;height:44px;display:grid;place-items:center;color:inherit}
 
-  /* PROBLEM */
-  .problem{ background:var(--beige); text-align:center; }
-  .problem-head{ max-width:700px; margin:0 auto 80px; }
-  .problem-head h2{ font-size:clamp(2rem,3.6vw,2.8rem); }
-  .qcards{ display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-bottom:50px; }
-  .qcard{
-    background:var(--white); border:1px solid var(--line); border-radius:24px; padding:40px 32px; width:280px;
-    transition:transform .5s cubic-bezier(.2,.8,.2,1), opacity .5s ease;
-  }
-  .qcard .mono{ color:var(--brass); margin-bottom:18px; display:block; }
-  .qcard h3{ font-size:1.25rem; font-weight:300; }
-  .solves{ font-size:clamp(1.4rem,2.6vw,1.9rem); font-family:'Cormorant Garamond', serif; font-style:italic; color:var(--olive); }
+/* hero */
+.hero{position:relative;height:100svh;min-height:640px;max-height:1100px;overflow:hidden;background:var(--black);color:var(--on-dark)}
+.hero picture,.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero img{object-position:60% 30%;will-change:transform}
+.hero::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(90deg,rgba(17,17,15,.72) 0%,rgba(17,17,15,.38) 42%,rgba(17,17,15,0) 70%),
+  linear-gradient(0deg,rgba(17,17,15,.78) 0%,rgba(17,17,15,0) 46%),
+  linear-gradient(180deg,rgba(17,17,15,.45) 0%,rgba(17,17,15,0) 18%)}
+.hero-in{position:absolute;inset:auto 0 0 0;z-index:2;padding-bottom:clamp(40px,8vh,96px)}
+.hero .eyebrow{font-size:var(--font-size-xs);letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-2);margin-bottom:var(--space-md)}
+.hero h1{font-family:var(--font-display);font-weight:300;font-size:var(--font-size-display);line-height:.94;letter-spacing:-.025em;max-width:9.5em}
+.hero h1 .l{display:block}
+.hero-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-lg);margin-top:var(--space-lg);flex-wrap:wrap}
+.hero-foot p{font-size:var(--font-size-lg);color:var(--on-dark-2);max-width:27em;line-height:1.55}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
 
-  /* HOW IT WORKS */
-  .how{ position:relative; overflow:hidden; }
-  .how-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.12); filter:blur(7px) saturate(0.7) brightness(1.15) contrast(0.88); }
-  .how-whitewash{ position:absolute; inset:0; background:rgba(250,249,247,0.72); }
-  .how .wrap{ position:relative; z-index:2; }
-  .steps5{ display:grid; grid-template-columns:repeat(5,1fr); gap:0; position:relative; }
-  .steps5::before{ content:''; position:absolute; top:26px; left:0; right:0; height:1px; background:repeating-linear-gradient(to right, var(--line) 0, var(--line) 6px, transparent 6px, transparent 12px); }
-  .step5{ text-align:center; padding:0 14px; }
-  .step5 .icowrap{ width:52px; height:52px; border-radius:50%; background:var(--beige); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; position:relative; z-index:2; }
-  .step5 .mono{ color:var(--brass); display:block; margin-bottom:10px; }
-  .step5 h3{ font-size:1.05rem; font-weight:500; font-family:'Inter',sans-serif; margin-bottom:8px; }
-  .step5 p{ font-size:0.85rem; color:var(--ink-soft); }
+/* reveal */
+.js [data-reveal]{opacity:0;transform:translateY(20px);transition:opacity .65s var(--ease),transform .65s var(--ease);transition-delay:calc(var(--d,0) * 70ms)}
+.js [data-reveal].in{opacity:1;transform:none}
+.js .media[data-reveal] img{transform:scale(1.03);transition:transform 1.1s var(--ease)}
+.js .media[data-reveal].in img{transform:none}
+.js .hero h1 .l,.js .hero .eyebrow,.js .hero-foot{opacity:0;transform:translateY(20px)}
+.loaded .hero h1 .l,.loaded .hero .eyebrow,.loaded .hero-foot{opacity:1;transform:none;transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.loaded .hero h1 .l:nth-child(2){transition-delay:.08s}
+.loaded .hero-foot{transition-delay:.2s}
+.js .hero img{transform:scale(1.03)}
+.loaded .hero img{transform:scale(1);transition:transform 1.6s var(--ease)}
 
-  /* DECK SECTION */
-  .deck{ background:
-      radial-gradient(ellipse 900px 500px at 85% 8%, rgba(184,147,90,0.07), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 8% 95%, rgba(184,147,90,0.05), transparent 55%),
-      var(--white);
-    color:var(--charcoal); overflow:hidden; position:relative; }
-  .deck h2{ color:var(--charcoal); }
-  .deck-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
-  .deck-photo{ position:relative; overflow:visible; aspect-ratio:3/4; }
-  .deck-photo img{ width:100%; height:100%; object-fit:cover; display:block; filter:blur(7px) saturate(0.92) brightness(1.04); -webkit-mask-image:radial-gradient(ellipse 85% 88% at 50% 50%, black 55%, transparent 98%); mask-image:radial-gradient(ellipse 85% 88% at 50% 50%, black 55%, transparent 98%); }
-  .deck-cards{ display:flex; gap:26px; justify-content:center; padding:14px 0 6px; }
-  .flipcard3d{ width:150px; height:210px; perspective:1000px; }
-  .flipcard3d .inner{ position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.2,.8,.2,1); }
-  .flipcard3d:hover .inner{ transform:rotateY(180deg); }
-  .flipface{ position:absolute; inset:0; border-radius:16px; backface-visibility:hidden; border:1px solid rgba(17,17,17,0.12); box-shadow:0 14px 30px -16px rgba(17,17,17,0.25); }
-  .flipface.back{ transform:rotateY(180deg); }
-  .flipface.clean{ background:var(--white); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px; text-align:center; box-shadow:inset 0 0 0 1px rgba(184,147,90,0.35); }
-  .flipface.clean::before{ content:''; position:absolute; inset:8px; border:1px solid rgba(184,147,90,0.45); border-radius:10px; pointer-events:none; }
-  .clean-logo{ width:44px; height:44px; object-fit:contain; margin-bottom:10px; }
-  .clean-word{ font-family:'Cormorant Garamond', serif; font-size:0.98rem; letter-spacing:0.02em; color:var(--charcoal); font-weight:500; }
-  .clean-word span{ color:var(--brass); font-weight:400; }
-  .clean-quote{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:0.92rem; color:var(--charcoal); line-height:1.3; }
-  .clean-author{ font-family:'JetBrains Mono', monospace; font-size:0.6rem; letter-spacing:0.06em; color:var(--ink-soft); text-transform:uppercase; margin-top:6px; }
-  .clean-qr{ width:38px; height:38px; margin:14px 0 8px; background-image:linear-gradient(90deg, var(--charcoal) 2px, transparent 2px), linear-gradient(0deg, var(--charcoal) 2px, transparent 2px); background-size:7px 7px; opacity:0.85; border:1px solid var(--line); padding:4px; }
-  .clean-scan{ font-family:'JetBrains Mono', monospace; font-size:0.56rem; letter-spacing:0.05em; color:var(--brass); text-transform:uppercase; line-height:1.4; }
-  .deck-caps{ display:flex; justify-content:space-around; margin-top:26px; }
-  .deck-caps span{ font-size:0.82rem; color:rgba(17,17,17,0.5); }
-  .deck-caps strong.accent{ color:var(--brass); font-weight:600; font-style:normal; }
-  .deck-variants{ display:flex; flex-direction:column; gap:12px; }
-  .dv-item{ display:flex; align-items:center; gap:14px; padding:14px 18px; border-radius:12px; background:rgba(17,17,17,0.03); border:1px solid rgba(17,17,17,0.1); cursor:pointer; transition:border-color .25s ease, background .25s ease, box-shadow .25s ease, transform .25s ease; }
-  .dv-item:hover{ transform:translateX(3px); border-color:rgba(184,147,90,0.55); background:rgba(184,147,90,0.07); }
-  .dv-item.active{ border-color:var(--brass); background:rgba(184,147,90,0.1); box-shadow:0 0 0 1px rgba(184,147,90,0.25), 0 10px 26px -14px rgba(184,147,90,0.55); }
-  .dv-icon{ flex-shrink:0; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:rgba(17,17,17,0.45); background:rgba(17,17,17,0.05); transition:color .25s ease, background .25s ease; }
-  .dv-icon svg{ width:19px; height:19px; }
-  .dv-item.active .dv-icon, .dv-item:hover .dv-icon{ color:var(--brass); background:rgba(184,147,90,0.15); }
-  .dv-text{ display:flex; flex-direction:column; }
-  .dv-item strong{ display:block; font-family:'Cormorant Garamond', serif; font-size:1rem; color:var(--charcoal); margin-bottom:2px; transition:color .25s ease; }
-  .dv-item.active strong{ color:var(--brass-soft); }
-  .dv-item span:not(.dv-icon){ font-size:0.85rem; color:rgba(17,17,17,0.55); }
-  .qr-callout{ display:flex; align-items:flex-start; gap:16px; background:rgba(184,147,90,0.07); border:1px solid rgba(184,147,90,0.28); border-radius:12px; padding:18px 20px; margin:22px 0 28px; }
-  .qr-callout p{ color:rgba(17,17,17,0.65); font-size:0.92rem; line-height:1.6; max-width:26em; margin:0; }
-  .qr-callout-icon{ position:relative; flex-shrink:0; width:36px; height:36px; display:flex; align-items:center; justify-content:center; color:var(--brass); margin-top:2px; }
-  .qr-callout-icon svg{ width:22px; height:22px; position:relative; z-index:2; }
-  .pulse-ring{ position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--brass); animation:pulseRing 2.2s ease-out infinite; }
-  @keyframes pulseRing{ 0%{ transform:scale(0.55); opacity:0.9; } 100%{ transform:scale(1.7); opacity:0; } }
-  .accent-text{ color:var(--brass-soft); font-weight:500; }
-  .badge-pill{ display:inline-block; background:rgba(184,147,90,0.18); color:var(--brass-soft); padding:2px 12px; border-radius:20px; font-weight:500; font-size:0.85em; border:1px solid rgba(184,147,90,0.4); white-space:nowrap; }
+/* media */
+.media{position:relative;overflow:hidden;background:var(--sand)}
+.media img{width:100%;height:100%;object-fit:cover}
+.r45{aspect-ratio:4/5}.r169{aspect-ratio:16/9}.r43{aspect-ratio:4/3}
 
-  /* SURPRISE */
-  .surprise{ background:var(--beige); text-align:center; padding:64px 0; }
-  .surprise .shuffle-stage{ margin-bottom:8px; }
-  .surprise h2{ margin-bottom:14px; }
-  .surprise p{ max-width:36em; margin:0 auto; }
-  .shuffle-stage{ position:relative; width:140px; height:190px; margin:0 auto 60px; }
-  .shuffle-card{ position:absolute; inset:0; border-radius:14px; background:var(--white); box-shadow:0 20px 40px -16px rgba(17,17,17,0.3); animation:shuffle 3.6s ease-in-out infinite; border:1px solid rgba(184,147,90,0.4); display:flex; flex-direction:column; align-items:center; justify-content:center; }
-  .shuffle-card::before{ content:''; position:absolute; inset:7px; border:1px solid rgba(184,147,90,0.35); border-radius:9px; pointer-events:none; }
-  .shuffle-card .clean-logo{ width:34px; height:34px; margin-bottom:8px; }
-  .shuffle-card .clean-word{ font-size:0.72rem; }
-  .shuffle-card:nth-child(1){ animation-delay:0s; z-index:3; }
-  .shuffle-card:nth-child(2){ animation-delay:0.15s; z-index:2; }
-  .shuffle-card:nth-child(3){ animation-delay:0.3s; z-index:1; }
-  @keyframes shuffle{
-    0%,100%{ transform:translate(0,0) rotate(0deg); z-index:1; }
-    25%{ transform:translate(-26px,-10px) rotate(-8deg); z-index:2; }
-    50%{ transform:translate(0,-16px) rotate(0deg); z-index:3; }
-    75%{ transform:translate(26px,-10px) rotate(8deg); z-index:2; }
-  }
-  .surprise h2{ font-size:clamp(2rem,4vw,2.9rem); max-width:14em; margin:0 auto; }
-  .surprise p{ color:var(--ink-soft); margin:20px auto 0; max-width:30em; }
+/* WHY */
+.why-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:clamp(40px,7vw,120px);align-items:end}
+.statement{font-family:var(--font-display);font-weight:300;font-size:clamp(2rem,3.7vw,3.5rem);line-height:1.1;letter-spacing:-.01em;max-width:17em}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:var(--space-2xl);border-top:1px solid var(--line-l)}
+.stat{padding:var(--space-lg) var(--space-lg) 0 0}
+.stat+.stat{padding-left:var(--space-lg);border-left:1px solid var(--line-l)}
+.stat .n{font-family:var(--font-display);font-weight:300;font-size:clamp(3.6rem,7vw,6.4rem);line-height:.9;letter-spacing:-.03em}
+.stat .lab{display:block;margin-top:var(--space-md);font-size:var(--font-size-xs);letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+.stat p{margin-top:var(--space-xs);color:var(--ink-2);font-size:var(--font-size-sm);max-width:20em;line-height:1.55}
 
-  /* TRAIN ANYWHERE */
-  .anywhere{ background:var(--beige); padding:90px 0; }
-  .anywhere-stage{ position:relative; overflow:hidden; width:100vw; margin-left:calc(50% - 50vw); }
-  .anywhere-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0; height:680px; }
-  .aw-item{ position:relative; overflow:hidden; }
-  .aw-item img{ width:100%; height:100%; object-fit:cover; filter:blur(5px) contrast(0.92) saturate(0.85) brightness(1.08); transform:scale(1.08); }
-  .anywhere-stage::before{ content:''; position:absolute; inset:0; background:rgba(250,249,247,0.5); z-index:1; }
-  .anywhere-stage::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(250,249,247,0.85) 0%, rgba(250,249,247,0.35) 34%, rgba(250,249,247,0.55) 70%, rgba(250,249,247,0.85) 100%); z-index:1; }
-  .aw-overlay{ position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:60px; }
-  .aw-overlay h2{ color:var(--charcoal); font-weight:300; font-size:clamp(1.9rem,3.4vw,2.7rem); max-width:16em; }
-  .aw-overlay .aw-sub{ color:var(--brass); margin-top:40px; }
-  .aw-overlay .aw-float{ color:rgba(17,17,17,0.7); max-width:46em; margin:20px auto 0; font-size:1.2rem; line-height:1.8; font-weight:300; }
-  .aw-cap-line{ font-family:'Inter', sans-serif; font-style:normal; font-weight:400; font-size:1.15rem; color:var(--charcoal); max-width:34em; margin:0 auto; line-height:1.65; }
-  .aw-cap-line + .aw-cap-line{ margin-top:16px; }
-  .aw-cap-line .mono{ display:block; font-family:'JetBrains Mono', monospace; font-style:normal; color:var(--brass); font-size:0.68rem; margin-bottom:20px; }
-  .aw-cap-line:first-of-type{ margin-top:40px; }
+/* HOW */
+.how{background:var(--warm-white)}
+.head-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-xl);align-items:end;margin-bottom:var(--space-2xl)}
+.seq{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--space-md);list-style:none}
+.seq-line{position:absolute;left:0;right:0;top:46px;height:1px;background:var(--line-l)}
+.seq-line i{position:absolute;inset:0;background:var(--ink);transform-origin:left;transform:scaleX(0);transition:transform .2s linear}
+.seq li{position:relative;padding-top:0}
+.seq .no{display:block;font-size:var(--font-size-xs);letter-spacing:.14em;color:var(--ink-2);font-variant-numeric:tabular-nums;height:28px}
+.seq .node{display:block;width:9px;height:9px;border-radius:50%;background:var(--warm-white);border:1px solid var(--ink);margin:14px 0 var(--space-lg) -4px;position:relative;z-index:1;transition:background .3s}
+.seq li.on .node{background:var(--ink)}
+.seq h3{font-size:var(--font-size-xs);letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:var(--space-xs)}
+.seq p{color:var(--ink-2);font-size:var(--font-size-sm);line-height:1.6;max-width:16em}
 
-  /* SCIENCE */
-  .science{ background:var(--olive); color:var(--white); text-align:center; padding:70px 0; }
-  .science .section-head h2{ color:var(--white); }
-  .science .section-head p{ color:rgba(250,249,247,0.7); }
-  .science .section-head{ margin-bottom:36px; }
-  .science-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:26px; max-width:1100px; margin:0 auto; }
-  .sci-card{ padding:10px; }
-  .sci-card .icowrap{ width:56px; height:56px; border-radius:50%; background:rgba(250,249,247,0.12); display:flex; align-items:center; justify-content:center; margin:0 auto 22px; }
-  .sci-card h3{ color:var(--white); font-size:1.15rem; font-weight:300; }
-  .sci-card p{ color:rgba(250,249,247,0.65); font-size:0.9rem; margin-top:10px; }
+/* CARDS (pinned, dark) */
+.cards{position:relative;height:420vh;background:var(--black);color:var(--on-dark)}
+.cards-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:center;gap:clamp(24px,4vw,64px);padding-inline:var(--gutter);max-width:1600px;margin:0 auto}
+.cards-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(40% 46% at 66% 52%,rgba(184,146,90,.14),rgba(184,146,90,0) 70%)}
+.cards-copy{position:relative;height:min(380px,46svh);z-index:2}
+.cc{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;opacity:0;transform:translateY(20px);will-change:opacity,transform}
+.cc .step{font-size:var(--font-size-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-2);margin-bottom:var(--space-md);display:block}
+.cc h2{font-family:var(--font-display);font-weight:300;font-size:clamp(2.8rem,5.6vw,5.4rem);line-height:.96;letter-spacing:-.02em;margin-bottom:var(--space-md)}
+.cc p{color:var(--on-dark-2);max-width:25em;font-size:var(--font-size-lg)}
+.cards-progress{position:absolute;left:var(--gutter);bottom:clamp(24px,5vh,48px);display:flex;gap:8px;z-index:2}
+.cards-progress i{display:block;width:40px;height:1px;background:var(--line-d);position:relative;overflow:hidden}
+.cards-progress i b{position:absolute;inset:0;background:var(--on-dark);transform-origin:left;transform:scaleX(0)}
+.stage3d{position:relative;height:100%;perspective:1700px;display:flex;align-items:center;justify-content:center}
+.pcard{--ink-c:#1D3A2E;--gold-c:#A88246;position:absolute;width:clamp(190px,18vw,262px);aspect-ratio:63/88;transform-style:preserve-3d;will-change:transform;container-type:inline-size;cursor:default}
+.pcard .face{position:absolute;inset:0;border-radius:4.6cqw;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;color:#171A18;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .24 0 0 0 .07 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),linear-gradient(170deg,#FBF9F4 0%,#F2EDE3 100%);
+  box-shadow:0 1px 0 #DCD3C3,0 2px 0 #CEC4B2,0 3px 4px rgba(0,0,0,.28),0 22px 34px -14px rgba(0,0,0,.55),0 54px 70px -44px rgba(0,0,0,.6)}
+.pcard .face::after{content:"";position:absolute;inset:5.2cqw;border:1px solid var(--gold-c);border-radius:3cqw;opacity:.75;pointer-events:none}
+.pcard .front{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9cqw}
+.pcard .front img{width:40%;height:auto}
+.pcard .front .cwm{display:flex;align-items:center;gap:3.4cqw;color:var(--ink-c)}
+.pcard .front .cwm svg{height:6.4cqw;width:auto}
+.pcard .front .cwm span{font-size:4.2cqw;letter-spacing:.2em;font-weight:600;color:var(--gold-c);padding-left:3.4cqw;border-left:1px solid rgba(168,130,70,.6);line-height:1}
+.pcard .back{transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;text-align:center;padding:13cqw 10cqw 11cqw}
+.pcard .back .cat{font-size:4.6cqw;letter-spacing:.32em;color:var(--gold-c);font-weight:600;padding-left:.32em}
+.pcard .back .rule{width:20%;height:1px;background:var(--gold-c);opacity:.7;margin:5cqw 0 7cqw}
+.pcard .back .qr{width:40%;aspect-ratio:1}
+.pcard .back .qr svg{width:100%;height:100%}
+.pcard .back .ex{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:10.5cqw;line-height:1.05;margin-top:7cqw;color:#171A18}
+.pcard .back .dose{font-size:4cqw;letter-spacing:.2em;color:#5C564D;margin-top:3cqw}
+.pcard .back .rule2{width:20%;height:1px;background:var(--gold-c);opacity:.7;margin:6cqw 0 auto}
+.pcard .back .meta{display:grid;grid-template-columns:repeat(3,1fr);width:100%;gap:2cqw;margin-top:6cqw}
+.pcard .back .meta span{display:flex;flex-direction:column;align-items:center;gap:2cqw;font-size:3.7cqw;letter-spacing:.12em;color:var(--gold-c);font-weight:600}
+.pcard .back .meta svg{width:8cqw;height:8cqw}
+.pcard .face::before{content:"";position:absolute;inset:0;background:rgba(17,17,15,var(--dim,0));z-index:5;pointer-events:none;transition:background .3s}
+.pcard .sheen{position:absolute;inset:0;border-radius:4.6cqw;background:linear-gradient(115deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.4) 50%,rgba(255,255,255,0) 62%);mix-blend-mode:soft-light;pointer-events:none;opacity:0}
 
-  /* MOBILE */
-  .mobile{ background:var(--beige); }
-  .mobile-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
-  .phones{ display:flex; justify-content:center; }
-  .phones img{ border-radius:26px; box-shadow:0 26px 50px -26px rgba(17,17,17,0.22); width:220px; }
-  .mobile-features{ display:flex; flex-direction:column; gap:22px; margin-top:30px; }
-  .mobile-features .mf{ display:flex; gap:14px; align-items:flex-start; }
-  .mobile-features .dot{ width:6px; height:6px; border-radius:50%; background:var(--brass); margin-top:9px; flex-shrink:0; }
-  .mobile-features p{ font-size:0.95rem; color:var(--ink-soft); }
-  .mobile-features strong{ color:var(--charcoal); font-weight:500; }
+/* DECKS split */
+.decks-split{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm);margin-top:var(--space-xl)}
+.panel{position:relative;display:block;text-decoration:none;color:var(--on-dark);overflow:hidden;aspect-ratio:4/5;background:var(--charcoal)}
+.panel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+.panel:hover img{transform:scale(1.02)}
+.panel::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(17,17,15,.82) 0%,rgba(17,17,15,.15) 48%,rgba(17,17,15,0) 70%)}
+.panel .pc{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:clamp(24px,3.4vw,48px)}
+.panel .tag{font-size:var(--font-size-xs);letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-2);display:block;margin-bottom:var(--space-sm)}
+.panel h3{font-family:var(--font-display);font-weight:300;font-size:clamp(2.2rem,3.6vw,3.4rem);line-height:1;margin-bottom:var(--space-sm)}
+.panel p{color:var(--on-dark-2);max-width:24em}
+.decks-cta{display:flex;justify-content:space-between;align-items:center;gap:var(--space-md);margin-top:var(--space-lg);flex-wrap:wrap}
+.decks-cta p{color:var(--ink-2);font-size:var(--font-size-sm)}
 
-  /* AI PLANNER */
-  .ai-planner{ background:var(--white); }
-  .ai-photo-pair{ display:grid; grid-template-columns:1fr 1fr; gap:2px; max-width:1140px; margin:0 auto 64px; height:340px; }
-  .ai-photo{ overflow:hidden; }
-  .ai-photo img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease; }
-  .ai-photo:hover img{ transform:scale(1.04); }
-  @media(max-width:760px){ .ai-photo-pair{ height:220px; margin-bottom:40px; } }
-  .ai-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:34px; max-width:960px; margin:0 auto; }
-  .ai-grid-4{ grid-template-columns:repeat(4,1fr); max-width:1140px; }
-  .ai-card{ text-align:center; padding:36px 24px; border-radius:20px; background:var(--beige); }
-  .ai-card .icowrap{ width:52px; height:52px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; box-shadow:0 8px 20px -10px rgba(17,17,17,0.15); }
-  .ai-card h3{ font-size:1.1rem; font-weight:500; font-family:'Inter',sans-serif; margin-bottom:10px; }
-  .ai-card p{ font-size:0.9rem; color:var(--ink-soft); }
+/* FAMILY band */
+.band{position:relative;min-height:min(110vh,980px);display:flex;align-items:flex-end;overflow:hidden;color:var(--on-dark);background:var(--charcoal)}
+.band picture,.band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.band img{object-position:50% 40%}
+.band::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(17,17,15,.86) 0%,rgba(17,17,15,.35) 40%,rgba(17,17,15,0) 64%)}
+.band .wrap{position:relative;z-index:2;padding-bottom:clamp(48px,8vw,104px)}
+.band h2{font-size:clamp(3rem,7vw,6.8rem);max-width:10em;line-height:.95}
+.band p{margin-top:var(--space-md);color:var(--on-dark-2);max-width:30em;font-size:var(--font-size-lg)}
+.places{display:flex;flex-wrap:wrap;gap:6px 0;margin-top:var(--space-lg);font-size:var(--font-size-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-2);list-style:none}
+.places li+li::before{content:"·";margin:0 14px;opacity:.6}
 
-  /* EDITORIAL + FINAL CTA — merged into one flowing section */
-  .editorial-final{ position:relative; overflow:hidden; text-align:center; padding:100px 0 120px; }
-  .editorial-final img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.12); filter:blur(7px) saturate(0.7) brightness(1.1) contrast(0.88); }
-  .ef-scrim{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(250,249,247,0.6) 0%, rgba(17,17,17,0.55) 42%, rgba(17,17,17,0.9) 100%); }
-  .ef-content{ position:relative; z-index:2; padding:0 40px; }
-  .ef-content blockquote{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:clamp(1.8rem,3.6vw,2.6rem); font-weight:300; max-width:14em; margin:0 auto; color:var(--charcoal); }
-  .ef-content .mono{ color:var(--brass); margin-top:20px; display:block; }
-  .ef-content .ef-body{ color:rgba(17,17,17,0.7); max-width:32em; margin:20px auto 0; font-size:0.95rem; }
-  .ef-content h2{ color:var(--white); font-size:clamp(2rem,4.2vw,3.4rem); font-weight:300; max-width:15em; margin:0 auto; line-height:1.15; }
-  .ef-content p{ color:rgba(250,249,247,0.68); margin:20px auto 0; max-width:26em; }
-  .ef-content .btn{ margin-top:36px; }
+/* SURPRISE */
+.surprise-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,7vw,120px);align-items:center}
+.surprise .h2{font-size:clamp(2.8rem,6vw,6rem)}
+.surprise p{color:var(--ink-2);margin-top:var(--space-md);max-width:30em}
+.surprise p.first{color:var(--ink);margin-top:var(--space-lg)}
 
-  /* FOOTER */
-  footer{ background:var(--white); padding:44px 0 26px; border-top:1px solid var(--line); }
-  .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px; padding-bottom:30px; border-bottom:1px solid var(--line); }
-  .foot-links{ display:flex; gap:30px; }
-  .foot-links a{ font-size:0.86rem; color:var(--ink-soft); }
-  .foot-links a:hover{ color:var(--charcoal); }
-  .foot-bottom{ display:flex; justify-content:space-between; padding-top:22px; font-size:0.78rem; color:var(--ink-soft); flex-wrap:wrap; gap:10px; }
+/* RESEARCH */
+.research{background:var(--warm-white)}
+.res-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink)}
+.res{padding:var(--space-lg) var(--space-lg) 0 0;display:flex;flex-direction:column}
+.res+.res{padding-left:var(--space-lg);border-left:1px solid var(--line-l)}
+.res .n{font-family:var(--font-display);font-weight:300;font-size:clamp(3.2rem,5.4vw,5.4rem);line-height:.9;letter-spacing:-.03em}
+.res .lab{display:block;margin-top:var(--space-sm);font-size:var(--font-size-xs);letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+.res p{margin-top:var(--space-sm);color:var(--ink-2);font-size:var(--font-size-sm);line-height:1.6}
+.res .src{margin-top:auto;padding-top:var(--space-md);font-size:var(--font-size-xs);letter-spacing:.06em}
+.res .src a{display:inline-flex;gap:6px;align-items:center;text-decoration:none;border-bottom:1px solid var(--line-l);padding-bottom:2px;color:var(--ink-2);transition:color var(--t),border-color var(--t)}
+.res .src a:hover{color:var(--ink);border-color:var(--ink)}
 
-  @media (max-width:960px){
-    .science-grid{ grid-template-columns:1fr 1fr; }
-    .wrap{ padding:0 24px; }
-    .navlinks{ display:none; }
-    .steps5{ grid-template-columns:1fr 1fr; row-gap:36px; }
-    .steps5::before{ display:none; }
-    .deck-grid, .mobile-grid{ grid-template-columns:1fr; gap:44px; }
-    .deck-cards{ flex-wrap:wrap; }
-    .anywhere-grid{ grid-template-columns:1fr 1fr; height:840px; }
-    .aw-overlay{ padding:30px 24px; }
-    .aw-overlay .aw-float{ font-size:1.02rem; }
-    .aw-cap-line{ font-size:1.05rem; }
-    .science-grid{ grid-template-columns:1fr; }
-    .ai-grid{ grid-template-columns:1fr; }
-    .ai-grid-4{ grid-template-columns:1fr 1fr; }
-    .stats-grid{ grid-template-columns:1fr 1fr; row-gap:36px; }
-  }
-  /* WAITLIST MODAL */
-  .wl-overlay{ position:fixed; inset:0; z-index:900; background:rgba(17,17,17,0.55); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; padding:24px; opacity:0; transition:opacity .3s ease; }
-  .wl-overlay.show{ display:flex; }
-  .wl-overlay.in{ opacity:1; }
-  .wl-modal{ background:var(--white); border-radius:6px; max-width:440px; width:100%; padding:44px 40px; position:relative; text-align:center; transform:translateY(14px); transition:transform .35s cubic-bezier(.2,.8,.2,1); }
-  .wl-overlay.in .wl-modal{ transform:translateY(0); }
-  .wl-close{ position:absolute; top:16px; right:18px; background:none; border:none; font-size:1.6rem; line-height:1; color:var(--ink-soft); cursor:pointer; padding:4px 8px; }
-  .wl-close:hover{ color:var(--charcoal); }
-  .wl-eyebrow{ font-family:'JetBrains Mono', monospace; font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--brass); margin-bottom:16px; }
-  .wl-modal h3{ font-size:1.9rem; line-height:1.15; margin-bottom:28px; }
-  .wl-body{ color:var(--ink-soft); font-size:0.95rem; line-height:1.6; margin-bottom:28px; }
-  #wlForm{ display:flex; flex-direction:column; gap:12px; }
-  #wlForm input{ padding:14px 16px; border:1.5px solid var(--line); border-radius:4px; font-family:'Inter',sans-serif; font-size:0.95rem; background:var(--beige); color:var(--charcoal); }
-  #wlForm input:focus{ outline:none; border-color:var(--brass); }
-  #wlForm button{ border:none; cursor:pointer; padding:14px; border-radius:4px; font-family:'Inter',sans-serif; font-size:0.95rem; }
-  .wl-success{ display:none; padding:10px 0 0; }
-  .wl-success.show{ display:block; }
-  .wl-success-icon{ width:44px; height:44px; border-radius:50%; background:var(--olive); color:var(--white); display:flex; align-items:center; justify-content:center; font-size:1.3rem; margin:0 auto 16px; }
-  .wl-success p{ color:var(--ink-soft); font-size:0.95rem; line-height:1.6; }
+/* CINEMATIC transition */
+.cine{position:relative;overflow:hidden;background:var(--black)}
+.cine .media{aspect-ratio:21/9;background:var(--black)}
 
-  /* MOBILE NAV (hamburger) */
-  .nav-burger{ display:none; flex-direction:column; justify-content:center; gap:5px; width:36px; height:36px; background:none; border:none; cursor:pointer; padding:0; }
-  .nav-burger span{ display:block; width:22px; height:1.5px; background:var(--white); transition:all .25s ease; }
-  nav.scrolled .nav-burger span{ background:var(--charcoal); }
-  .nav-burger.open span:nth-child(1){ transform:translateY(6.5px) rotate(45deg); }
-  .nav-burger.open span:nth-child(2){ opacity:0; }
-  .nav-burger.open span:nth-child(3){ transform:translateY(-6.5px) rotate(-45deg); }
-  .mobile-menu{ display:none; flex-direction:column; gap:2px; background:var(--white); border-top:1px solid var(--line); overflow:hidden; max-height:0; transition:max-height .35s ease; }
-  .mobile-menu.open{ max-height:500px; }
-  .mobile-menu a{ padding:16px 24px; color:var(--charcoal); text-decoration:none; border-bottom:1px solid var(--line); font-size:0.95rem; }
-  .mobile-menu .btn{ margin:16px 24px; text-align:center; }
+/* AI */
+.ai-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(48px,7vw,120px);align-items:center}
+.feat{list-style:none;margin:var(--space-xl) 0 var(--space-lg);border-top:1px solid var(--line-d)}
+.feat li{display:grid;grid-template-columns:minmax(0,13em) minmax(0,1fr);gap:var(--space-md);padding:18px 0;border-bottom:1px solid var(--line-d)}
+.feat strong{font-weight:500}
+.feat span{color:var(--on-dark-2);font-size:var(--font-size-sm)}
+.browser{border-radius:var(--r-md);background:#FAF8F3;color:var(--ink);overflow:hidden;box-shadow:0 30px 70px -30px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.08)}
+.br-bar{display:flex;align-items:center;gap:7px;height:38px;padding:0 14px;background:#EFEAE1;border-bottom:1px solid var(--line-l)}
+.br-bar i{width:9px;height:9px;border-radius:50%;background:#D3CBBE}
+.br-bar span{margin-left:14px;font-size:12px;color:#7C766C;background:#F8F5EF;padding:4px 12px;border-radius:6px}
+.br-body{display:grid;grid-template-columns:150px 1fr;min-height:340px}
+.br-side{border-right:1px solid var(--line-l);padding:18px 14px;display:flex;flex-direction:column;gap:4px;font-size:12px;color:#7C766C}
+.br-side b{font-weight:500;color:var(--ink);background:#F1ECE3;padding:7px 10px;border-left:2px solid var(--gold)}
+.br-side em{font-style:normal;padding:7px 10px}
+.br-main{padding:22px 24px;display:flex;flex-direction:column;gap:14px}
+.br-days{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;font-size:11px;letter-spacing:.1em;color:#7C766C;text-align:center}
+.br-days div{padding:8px 0;border:1px solid var(--line-l)}
+.br-days .on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.br-slot{display:grid;grid-template-columns:58px 1fr auto;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--line-l);background:#fff}
+.br-slot .t{font-variant-numeric:tabular-nums;font-weight:600;font-size:14px}
+.br-slot .w{font-size:13px}
+.br-slot .w small{display:block;color:#7C766C;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.br-slot .st{font-size:11px;letter-spacing:.08em;padding:5px 10px;border:1px solid #1D3A2E;color:#1D3A2E;border-radius:6px}
+.br-slot.mute{opacity:.55}
+.br-ai{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:13px;line-height:1.5;color:#3C3832;margin-top:4px;padding-top:14px;border-top:1px solid var(--line-l)}
+.br-ai img{width:20px;height:20px}
 
-  /* MOBILE LAYOUT TIGHTENING */
-  @media (max-width:640px){
-    .nav-cta-desktop{ display:none; }
-    .nav-burger{ display:flex; }
-    .mobile-menu{ display:flex; }
+/* FINAL */
+.final{position:relative;min-height:100svh;max-height:1100px;display:flex;align-items:flex-end;overflow:hidden;color:var(--on-dark);background:var(--black)}
+.final picture,.final img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.final img{object-position:50% 30%}
+.final::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(17,17,15,.8) 0%,rgba(17,17,15,.35) 55%,rgba(17,17,15,.15) 100%),linear-gradient(0deg,rgba(17,17,15,.7) 0%,rgba(17,17,15,0) 50%)}
+.final .wrap{position:relative;z-index:2;padding-bottom:clamp(56px,10vh,120px)}
+.final h2{font-size:clamp(3.2rem,7.4vw,7.2rem);max-width:9.5em;line-height:.95}
+.final p{margin:var(--space-md) 0 var(--space-lg);color:var(--on-dark-2);max-width:28em;font-size:var(--font-size-lg)}
 
-    .hero{ min-height:88vh; padding-top:96px; align-items:flex-end; }
-    .hero h1{ font-size:clamp(2.4rem, 9vw, 3rem); }
-    .hero .lead{ font-size:0.95rem; }
-    .hero-content{ padding-bottom:28px; }
+/* FOOTER */
+footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 var(--space-lg)}
+.f-mark{color:var(--on-dark);width:100%;height:auto;opacity:.96}
+.f-row{display:grid;grid-template-columns:minmax(0,1.2fr) repeat(2,minmax(0,1fr));gap:var(--space-lg);margin-top:var(--space-xl);padding-top:var(--space-lg);border-top:1px solid var(--line-d)}
+.f-tag{font-family:var(--font-display);font-weight:300;font-size:var(--font-size-xl)}
+.f-col{display:flex;flex-direction:column;gap:10px;font-size:var(--font-size-sm)}
+.f-col b{font-size:var(--font-size-xs);letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:var(--on-dark-2);margin-bottom:4px}
+.f-col a{text-decoration:none;opacity:.86}
+.f-col a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+.f-bot{display:flex;justify-content:space-between;gap:var(--space-md);margin-top:var(--space-xl);font-size:var(--font-size-xs);color:var(--on-dark-2);letter-spacing:.06em;flex-wrap:wrap}
 
-    section{ padding:56px 0; }
-    .section-head{ margin-bottom:32px; }
-    .stats-strip{ padding:36px 0; }
-    .anywhere{ padding:56px 0; }
-    .science{ padding:48px 0; }
-    .science .section-head{ margin-bottom:24px; }
-    .editorial-final{ padding:64px 0 72px; }
-    .surprise{ padding:44px 0; }
+/* WAITLIST */
+.wl{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(17,17,15,.55);opacity:0;visibility:hidden;transition:opacity .3s var(--ease),visibility 0s .3s}
+.wl.open{opacity:1;visibility:visible;transition:opacity .3s var(--ease)}
+.wl-box{position:relative;width:100%;max-width:480px;background:var(--warm-white);border-radius:var(--r-md);padding:48px 40px 36px;box-shadow:0 30px 80px -20px rgba(0,0,0,.45);transform:translateY(12px);transition:transform .35s var(--ease)}
+.wl.open .wl-box{transform:none}
+.wl-x{position:absolute;top:12px;right:12px;width:44px;height:44px;display:grid;place-items:center;color:var(--ink-2)}
+.wl-x:hover{color:var(--ink)}
+.wl h3{font-family:var(--font-display);font-weight:300;font-size:2.4rem;line-height:1.05;margin-bottom:var(--space-sm)}
+.wl p{color:var(--ink-2)}
+.wl form{display:flex;flex-direction:column;gap:10px;margin-top:var(--space-md)}
+.wl label{font-size:var(--font-size-sm);font-weight:500}
+.wl input{height:52px;border:1px solid rgba(17,17,15,.2);border-radius:var(--r-sm);padding:0 16px;font:inherit;background:#fff;color:var(--ink)}
+.wl input:focus{outline:none;border-color:var(--ink)}
+.wl .micro{font-size:var(--font-size-xs);color:var(--ink-2);margin-top:4px}
+.wl-ok{display:none;text-align:center}
+.wl-ok .chk{width:56px;height:56px;border-radius:50%;border:1px solid var(--ink);display:grid;place-items:center;margin:0 auto var(--space-md)}
+.wl.done form,.wl.done .wl-intro{display:none}
+.wl.done .wl-ok{display:block}
 
-    h2{ font-size:clamp(1.6rem, 7vw, 2rem) !important; }
-    .qcards{ margin-bottom:32px; }
-    .deck-grid{ gap:32px; }
-    .ai-grid-4{ grid-template-columns:1fr; }
-    .steps5{ grid-template-columns:1fr; }
-    .stats-grid{ grid-template-columns:1fr 1fr; }
-  }
+/* responsive */
+@media(max-width:1080px){
+  #nav .links,#nav .nav-cta{display:none}
+  .burger{display:block}
+  .seq{grid-template-columns:1fr;gap:0;padding-left:28px}
+  .seq-line{left:4px;right:auto;top:6px;bottom:6px;width:1px;height:auto}
+  .seq-line i{transform-origin:top;transform:scaleY(0)}
+  .seq li{padding-bottom:var(--space-lg)}
+  .seq .no{height:auto;margin-bottom:6px}
+  .seq .node{position:absolute;left:-28px;top:4px;margin:0}
+  .res-grid{grid-template-columns:1fr 1fr}
+  .res:nth-child(3){padding-left:0;border-left:0}
+  .res:nth-child(n+3){border-top:1px solid var(--line-l);margin-top:var(--space-lg)}
+  .ai-grid{grid-template-columns:1fr}
+  .f-row{grid-template-columns:1fr 1fr}
+  .f-row .f-tag{grid-column:1/-1}
+}
+@media(max-width:980px){
+  .cards{height:460vh}
+  .cards-pin{grid-template-columns:1fr;grid-template-rows:1fr auto;align-content:center;padding-top:96px;padding-bottom:72px;gap:12px}
+  .stage3d{height:50svh}
+  .cards-copy{height:32svh}
+  .cc h2{font-size:clamp(2.3rem,9vw,3.2rem);margin-bottom:12px}
+  .cc p{font-size:var(--font-size-base)}
+  .pcard{width:clamp(138px,35vw,196px)}
+}
+@media(max-width:760px){
+  :root{--font-size-base:1rem}
+  .why-grid,.head-row,.surprise-grid{grid-template-columns:1fr;gap:var(--space-lg)}
+  .head-row{margin-bottom:var(--space-xl)}
+  .stats{grid-template-columns:1fr;margin-top:var(--space-xl)}
+  .stat,.stat+.stat{padding:var(--space-md) 0;border-left:0}
+  .stat+.stat{border-top:1px solid var(--line-l)}
+  .stat .n{font-size:4.2rem}
+  .decks-split{grid-template-columns:1fr}
+  .panel{aspect-ratio:4/4.6}
+  .res-grid{grid-template-columns:1fr}
+  .res,.res+.res{padding:var(--space-lg) 0 0;border-left:0}
+  .res+.res{border-top:1px solid var(--line-l);margin-top:var(--space-lg)}
+  .feat li{grid-template-columns:1fr;gap:2px}
+  .br-body{grid-template-columns:1fr}
+  .br-side{display:none}
+  .cine .media{aspect-ratio:4/5}
+  .hero h1{font-size:clamp(3.1rem,14.5vw,4.6rem)}
+  .hero-ctas{width:100%}
+  .hero-ctas .btn{flex:1}
+  .hero::after{background:linear-gradient(0deg,rgba(17,17,15,.88) 0%,rgba(17,17,15,.45) 45%,rgba(17,17,15,.1) 70%),linear-gradient(180deg,rgba(17,17,15,.5) 0%,rgba(17,17,15,0) 20%)}
+  .f-row{grid-template-columns:1fr}
+  .wl{align-items:flex-end;padding:0}
+  .wl-box{max-width:none;border-radius:16px 16px 0 0;padding:40px 22px calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(100%)}
+}
+@media(hover:hover) and (pointer:fine){ .pcard{cursor:pointer} }
+@media(prefers-reduced-motion:reduce){
+  .js [data-reveal],.js .hero h1 .l,.js .hero .eyebrow,.js .hero-foot{opacity:1!important;transform:none!important;transition:none!important}
+  .js .media img,.js .hero img{transform:none!important}
+  *{scroll-behavior:auto!important}
+}
 </style>
+<script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="wm" viewBox="0 0 138.1 24"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="miter"><path d="M1.3 22.7V2.6l8.9 13.2 8.9-13.2v20.1"/><circle cx="37.2" cy="12.65" r="10.05"/><path d="M55.3 2.6h18.2M64.4 2.6v20.1M82 2.6v20.1"/><circle cx="101.6" cy="12.65" r="10.05"/><path d="M121.2 22.7V2.6l15.6 20.1V2.6"/></g></symbol></svg>
+<a href="#main" class="sr" style="position:fixed;top:8px;left:8px;z-index:200" onfocus="this.classList.remove('sr')" onblur="this.classList.add('sr')">Hoppa till innehållet</a>
 
-<nav id="nav">
+<header id="nav">
   <div class="wrap">
-    <div class="logo"><img class="logo-mark" src="images/logo_mark_v2.png" alt="MOTION UF">MOTION UF</div>
-    <div class="navlinks">
+    <a href="/" class="logo" aria-label="MOTION UF, till startsidan"><img src="/images/motion-symbol-gold.svg" alt="" width="22" height="22" class="lsym"><svg class="wm" viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span class="uf" aria-hidden="true">UF</span></a>
+    <nav class="links" aria-label="Huvudmeny">
       <a href="#how">Så funkar det</a>
       <a href="#deck">Kortleken</a>
-      <a href="#anywhere">Träna var som helst</a>
-      <a href="#science">Vetenskapen</a>
-      <a href="motion-ai-coach.html">AI-coach</a>
-    </div>
-    <button onclick="openWaitlist()" class="btn btn-dark nav-cta-desktop">Skaffa din kortlek</button>
-    <button class="nav-burger" id="navBurger" aria-label="Meny" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+      <a href="#science">Forskningen</a>
+      <a href="/app.html">Appen</a>
+    </nav>
+    <button class="btn btn-light btn-sm nav-cta" data-wl>Skaffa kortleken</button>
+    <button class="burger" id="burger" aria-label="Öppna meny" aria-expanded="false" aria-controls="mmenu"><span></span><span></span></button>
   </div>
-  <div class="mobile-menu" id="mobileMenu">
+</header>
+
+<div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Meny">
+  <div class="mmenu-top"><a href="/" class="logo" aria-label="MOTION UF, till startsidan"><img src="/images/motion-symbol-gold.svg" alt="" width="22" height="22" class="lsym"><svg class="wm" viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span class="uf" aria-hidden="true">UF</span></a><button class="mclose" id="mclose" aria-label="Stäng meny"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5l14 14M19 5 5 19"/></svg></button></div>
+  <nav aria-label="Mobilmeny">
     <a href="#how">Så funkar det</a>
     <a href="#deck">Kortleken</a>
-    <a href="#anywhere">Träna var som helst</a>
-    <a href="#science">Vetenskapen</a>
-    <a href="motion-ai-coach.html">AI-coach</a>
-    <button onclick="openWaitlist()" class="btn btn-dark">Skaffa din kortlek</button>
-  </div>
-</nav>
+    <a href="#science">Forskningen</a>
+    <a href="/app.html">Appen</a>
+  </nav>
+  <button class="btn btn-light" data-wl>Skaffa kortleken</button>
+</div>
 
-<section class="hero">
-  <div class="hero-media"><img src="images/hero.jpg" alt="MOTION UF — Bättre vanor. Större drömmar."></div>
-  <div class="hero-scrim"></div>
-  <div id="particles"></div>
-  <div class="wrap">
-    <div class="hero-content">
-      <h1>Motion UF —<br>Gör det enkelt<br>att börja.</h1>
-      <p class="lead">En fysisk träningskortlek kombinerad med en AI-driven planerare som tar bort det svåraste steget i träning: att veta vad du ska göra.</p>
-      <div class="cta-row">
-        <a href="motion-ai-coach.html" class="btn btn-light">Möt din AI-coach</a>
+<main id="main">
+<section class="hero" aria-label="MOTION">
+  <picture><source media="(max-width: 760px)" type="image/webp" srcset="/images/m/hero-m-640.webp 640w, /images/m/hero-m-1003.webp 1003w" sizes="100vw"><source type="image/webp" srcset="/images/m/hero-d-960.webp 960w, /images/m/hero-d-1254.webp 1254w" sizes="100vw"><img src="/images/m/hero-d.jpg" alt="Kvinna gör armhävningar i kvällsljus på ett betonggolv" width="1254" height="705" fetchpriority="high" decoding="async"></picture>
+  <div class="hero-in">
+    <div class="wrap">
+      <p class="eyebrow">Träningskortlek · AI-planerare</p>
+      <h1><span class="l">Gör det enkelt</span> <span class="l">att börja.</span></h1>
+      <div class="hero-foot">
+        <p>Dra ett kort, skanna och rör dig. Planeraren hittar tiden i din dag.</p>
+        <div class="hero-ctas on-photo">
+          <button class="btn btn-light" data-wl>Skaffa kortleken</button>
+          <a href="/app.html" class="btn btn-outline">Öppna appen <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="stats-strip">
+<section class="section why" aria-labelledby="whyT">
   <div class="wrap">
-    <div class="stats-grid">
-      <div class="stat-block reveal">
-        <div class="num">104</div>
-        <div class="lbl">Övningar totalt</div>
-        <div class="sub">52 individuella + 52 familj &amp; vänner</div>
-      </div>
-      <div class="stat-block reveal">
-        <div class="num">5–20</div>
-        <div class="lbl">Minuter</div>
-        <div class="sub">Pass som anpassas efter ditt schema</div>
-      </div>
-      <div class="stat-block reveal">
-        <div class="num">✓</div>
-        <div class="lbl">Expertdesignat</div>
-        <div class="sub">Utvecklat med professionella tränare</div>
-      </div>
-      <div class="stat-block reveal">
-        <div class="num">0</div>
-        <div class="lbl">Appar krävs</div>
-        <div class="sub">Fungerar direkt i din mobila webbläsare</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="how" id="how" style="background:var(--beige);">
-  <div class="wrap">
-    <div class="section-head center reveal">
-      <div class="mono" style="color:var(--brass); justify-content:center; display:flex; margin-bottom:18px;">Så funkar det</div>
-      <h2>Från notis till rörelse på under en minut.</h2>
-    </div>
-    <div class="steps5">
-      <div class="step5 reveal">
-        <div class="icowrap"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="15" rx="2" stroke="#111" stroke-width="1.3"/><path d="M3 8h16M7 2v4M15 2v4" stroke="#111" stroke-width="1.3"/></svg></div>
-        <span class="mono">1. Planera</span>
-        <h3>Planeraren hittar en tid som passar din dag.</h3>
-      </div>
-      <div class="step5 reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a5 5 0 00-5 5v3l-2 4h14l-2-4V7a5 5 0 00-5-5z" stroke="#111" stroke-width="1.3"/><path d="M8 17a2 2 0 004 0" stroke="#111" stroke-width="1.3"/></svg></div>
-        <span class="mono">2. Påminn</span>
-        <h3>Du får en notis: "Pass schemalagt."</h3>
-      </div>
-      <div class="step5 reveal">
-        <div class="icowrap"><svg width="22" height="18" viewBox="0 0 22 18" fill="none"><rect x="1" y="2" width="12" height="16" rx="2" transform="rotate(-8 1 2)" stroke="#111" stroke-width="1.2"/><rect x="9" y="1" width="12" height="16" rx="2" transform="rotate(8 9 1)" stroke="#111" stroke-width="1.2"/></svg></div>
-        <span class="mono">3. Dra</span>
-        <h3>Dra dina kort. Leken viks ut naturligt.</h3>
-      </div>
-      <div class="step5 reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="3" stroke="#111" stroke-width="1.3"/><path d="M8 7l5 3-5 3V7z" fill="#111"/></svg></div>
-        <span class="mono">4. Skanna</span>
-        <h3>Skanna QR-koden. Videon visas.</h3>
-      </div>
-      <div class="step5 reveal">
-        <div class="icowrap"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><circle cx="9" cy="3" r="2.4" fill="#111"/><path d="M9 6v6M9 8l-5 3M9 8l5 3M9 12l-4 7M9 12l4 7" stroke="#111" stroke-width="1.4" stroke-linecap="round"/></svg></div>
-        <span class="mono">5. Rör dig</span>
-        <h3>Inget tänkande krävs.</h3>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="deck" id="deck">
-  <div class="wrap">
-    <div class="deck-grid">
-      <div class="deck-photo reveal"><img src="images/card_context.jpg" alt="MOTION UF träningskort"></div>
+    <div class="why-grid">
       <div>
-        <div class="mono" style="color:var(--brass-soft);">Kortleken</div>
-        <h2 style="margin:16px 0 18px; font-size:clamp(1.9rem,3.2vw,2.6rem);">Två lekar. Alla nivåer.</h2>
-        <p style="color:rgba(17,17,17,0.6); max-width:26em; margin-bottom:24px;">Korta pass som ger dig allt — byggda runt din dag, och det enda passet du inte kan hoppa över.</p>
-        <div class="deck-variants">
-          <div class="dv-item active reveal" onclick="selectDeckVariant(this)">
-            <span class="dv-icon">
-              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7.5" r="3.4" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 20c0-4.1 3.36-6.5 7.5-6.5s7.5 2.4 7.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </span>
-            <span class="dv-text"><strong>Individuell lek</strong><span>Solopass för personlig utveckling och snabba pass hemma.</span></span>
-          </div>
-          <div class="dv-item reveal" onclick="selectDeckVariant(this)">
-            <span class="dv-icon">
-              <svg viewBox="0 0 24 24" fill="none"><circle cx="8" cy="8" r="2.7" stroke="currentColor" stroke-width="1.6"/><circle cx="16.5" cy="8" r="2.7" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 19.5c0-3.3 2.6-5.3 5.5-5.3s5.5 2 5.5 5.3M12.5 19.5c0-2.9 2.2-4.8 4.5-4.8s4.5 1.9 4.5 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </span>
-            <span class="dv-text"><strong>Familj &amp; vänner-lek</strong><span>Övningar byggda för flera personer att träna tillsammans.</span></span>
+        <span class="kicker" data-reveal>Varför Motion</span>
+        <h2 id="whyT" class="statement" data-reveal style="--d:1">Det svåraste med träning är inte passet. Det är att veta vad du ska göra, och när. Det beslutet tar vi bort.</h2>
+      </div>
+      <figure class="media r45" data-reveal style="--d:2"><picture><source type="image/webp" srcset="/images/m/lacing-640.webp 640w, /images/m/lacing-1003.webp 1003w" sizes="(max-width:760px) 100vw, 34vw"><img src="/images/m/lacing.jpg" alt="Någon knyter träningsskorna i morgonljus" width="1003" height="1254" loading="lazy" decoding="async"></picture></figure>
+    </div>
+    <div class="stats">
+      <div class="stat" data-reveal><div class="n">104</div><span class="lab">Övningar</span><p>52 för dig själv och 52 att göra tillsammans.</p></div>
+      <div class="stat" data-reveal style="--d:1"><div class="n">5–20</div><span class="lab">Minuter</span><p>Per pass, anpassat efter hur din dag ser ut.</p></div>
+      <div class="stat" data-reveal style="--d:2"><div class="n">0</div><span class="lab">Appar att ladda ner</span><p>Allt fungerar i mobilens webbläsare.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section how" id="how" aria-labelledby="howT">
+  <div class="wrap">
+    <div class="head-row">
+      <div><span class="kicker" data-reveal>Så funkar det</span><h2 id="howT" class="h2" data-reveal style="--d:1">Från notis till rörelse på under en minut.</h2></div>
+      <p class="lede" data-reveal style="--d:2">Fem steg, och tre av dem tar mindre än tio sekunder.</p>
+    </div>
+    <ol class="seq" id="seq">
+      <span class="seq-line" aria-hidden="true"><i></i></span>
+      <li data-reveal><span class="no">01</span><span class="node"></span><h3>Planera</h3><p>Planeraren hittar en lucka i din dag som faktiskt passar.</p></li>
+      <li data-reveal style="--d:1"><span class="no">02</span><span class="node"></span><h3>Påminn</h3><p>Du får en notis när det är dags. Ingen förhandling med dig själv.</p></li>
+      <li data-reveal style="--d:2"><span class="no">03</span><span class="node"></span><h3>Dra</h3><p>Dra så många kort som planen säger. Du vet inte i förväg vilka det blir.</p></li>
+      <li data-reveal style="--d:3"><span class="no">04</span><span class="node"></span><h3>Skanna</h3><p>Rikta kameran mot QR-koden. Instruktionen öppnas direkt.</p></li>
+      <li data-reveal style="--d:4"><span class="no">05</span><span class="node"></span><h3>Rör dig</h3><p>Följ instruktionen. Inget att planera, inget att tänka på.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="cards dark" id="deck" aria-label="Så fungerar korten">
+  <div class="cards-pin">
+    <div class="cards-glow" aria-hidden="true"></div>
+    <div class="cards-copy">
+      <div class="cc" data-k="0"><span class="step">Kortleken</span><h2>Dra. Skanna. Gör.</h2><p>Motion UF tar bort frågan ”Vad ska jag träna idag?”. Varje kort är en övning eller en träningsutmaning.</p></div>
+      <div class="cc" data-k="1"><span class="step">01 · Dra</span><h2>Dra ett kort.</h2><p>Du ser direkt vad du ska göra och kan sätta igång.</p></div>
+      <div class="cc" data-k="2"><span class="step">02 · Skanna</span><h2>Skanna koden.</h2><p>QR-koden leder till en tydlig instruktion för hur övningen utförs.</p></div>
+      <div class="cc" data-k="3"><span class="step">03 · Gör</span><h2>Gör.</h2><p>Svårighetsgrad, tid och typ av träning står på kortet, så du vet vad som väntar.</p></div>
+    </div>
+    <div class="stage3d" aria-hidden="true">
+      <div class="pcard" data-i="0">
+        <div class="face front"><img src="/images/motion-symbol-gold.svg" alt="" width="256" height="256"><div class="cwm"><svg viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span>UF</span></div></div>
+        <div class="face back"><span class="cat">STYRKA</span><span class="rule"></span><div class="qr" data-seed="3"></div><div class="ex">Armhävningar</div><div class="dose">3 × 10 REPS</div><span class="rule2"></span><div class="meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19v-3M10 19v-6M15 19v-9M20 19V6"/></svg>MEDIUM</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M10 3h4M12 3v2.5"/></svg>10 MIN</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M5.5 8.5v7M8 7v10M16 7v10M18.5 8.5v7"/></svg>HELKROPP</span></div></div>
+        <div class="sheen"></div>
+      </div>
+      <div class="pcard" data-i="1">
+        <div class="face front"><img src="/images/motion-symbol-gold.svg" alt="" width="256" height="256"><div class="cwm"><svg viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span>UF</span></div></div>
+        <div class="face back"><span class="cat">KONDITION</span><span class="rule"></span><div class="qr" data-seed="4"></div><div class="ex">Burpees</div><div class="dose">40 SEK × 4</div><span class="rule2"></span><div class="meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19v-3M10 19v-6M15 19v-9M20 19V6"/></svg>SVÅR</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M10 3h4M12 3v2.5"/></svg>5 MIN</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M5.5 8.5v7M8 7v10M16 7v10M18.5 8.5v7"/></svg>HELKROPP</span></div></div>
+        <div class="sheen"></div>
+      </div>
+      <div class="pcard" data-i="2">
+        <div class="face front"><img src="/images/motion-symbol-gold.svg" alt="" width="256" height="256"><div class="cwm"><svg viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span>UF</span></div></div>
+        <div class="face back"><span class="cat">TILLSAMMANS</span><span class="rule"></span><div class="qr" data-seed="5"></div><div class="ex">Plankduell</div><div class="dose">SIST KVAR VINNER</div><span class="rule2"></span><div class="meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19v-3M10 19v-6M15 19v-9M20 19V6"/></svg>LÄTT</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M10 3h4M12 3v2.5"/></svg>3 MIN</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M5.5 8.5v7M8 7v10M16 7v10M18.5 8.5v7"/></svg>BÅL</span></div></div>
+        <div class="sheen"></div>
+      </div>
+    </div>
+    <div class="cards-progress" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i></div>
+  </div>
+</section>
+
+<section class="section decks" aria-labelledby="decksT">
+  <div class="wrap">
+    <div class="head-row" style="margin-bottom:0">
+      <div><span class="kicker" data-reveal>Två lekar</span><h2 id="decksT" class="h2" data-reveal style="--d:1">En för dig. En för alla hemma.</h2></div>
+      <p class="lede" data-reveal style="--d:2">Samma idé, två sätt att röra sig. Varje kort visar svårighetsgrad, tid och typ av träning.</p>
+    </div>
+    <div class="decks-split">
+      <div class="panel" data-reveal><picture><source type="image/webp" srcset="/images/m/solo-640.webp 640w, /images/m/solo-1003.webp 1003w" sizes="(max-width:760px) 100vw, 50vw"><img src="/images/m/solo.jpg" alt="Man i gyllene ljus efter ett pass" width="1003" height="1254" loading="lazy" decoding="async"></picture><div class="pc"><span class="tag">Lek 01</span><h3>Individuell</h3><p>Kort för korta träningspass och övningar du gör själv.</p></div></div>
+      <div class="panel" data-reveal style="--d:1"><picture><source type="image/webp" srcset="/images/m/family-640.webp 640w, /images/m/family-1003.webp 1003w" sizes="(max-width:760px) 100vw, 50vw"><img src="/images/m/family.jpg" alt="Vänner i olika åldrar gör armhävningar tillsammans och skrattar" width="1003" height="1254" loading="lazy" decoding="async"></picture><div class="pc"><span class="tag">Lek 02</span><h3>Familj &amp; vänner</h3><p>Lekfulla utmaningar där ni tävlar, samarbetar och rör er tillsammans.</p></div></div>
+    </div>
+    <div class="decks-cta" data-reveal><p>Kortleken är i produktion. Skriv upp dig så hör vi av oss.</p><button class="btn btn-dark" data-wl>Skaffa kortleken <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></button></div>
+  </div>
+</section>
+
+<section class="band" aria-labelledby="bandT">
+  <picture><source media="(max-width: 760px)" type="image/webp" srcset="/images/m/friends-m-640.webp 640w, /images/m/friends-m-1003.webp 1003w" sizes="100vw"><source type="image/webp" srcset="/images/m/friends-960.webp 960w, /images/m/friends-1254.webp 1254w" sizes="100vw"><img src="/images/m/friends.jpg" alt="Fyra personer i olika åldrar gör armhävningar tillsammans i kvällssol" width="1254" height="705" loading="lazy" decoding="async"></picture>
+  <div class="wrap">
+    <span class="kicker" style="color:var(--on-dark-2)" data-reveal>Tillsammans</span>
+    <h2 id="bandT" class="h2" data-reveal style="--d:1">En lek. Alla generationer.</h2>
+    <p data-reveal style="--d:2">Alla drar ett kort och alla är med, oavsett ålder eller nivå.</p>
+    <ul class="places" data-reveal style="--d:3"><li>Vardagsrummet</li><li>Trädgården</li><li>Stugan</li><li>Hotellrummet</li></ul>
+  </div>
+</section>
+
+<section class="section surprise" aria-labelledby="surT">
+  <div class="wrap">
+    <div class="surprise-grid">
+      <div>
+        <h2 id="surT" class="h2" data-reveal>Du vet aldrig vad som väntar.</h2>
+        <p class="first" data-reveal style="--d:1">Varje pass är en överraskning. Det tar bort beslutströttheten och gör att det fortfarande känns roligt vecka åtta.</p>
+        <p data-reveal style="--d:2">Du behöver bara dyka upp, dra ett kort och skanna. Resten är redan bestämt.</p>
+      </div>
+      <figure class="media r43" data-reveal style="--d:1"><picture><source type="image/webp" srcset="/images/m/product-800.webp 800w, /images/m/product-1365.webp 1365w" sizes="(max-width:760px) 100vw, 46vw"><img src="/images/m/product.jpg" alt="Två MOTION UF-kort på en stenyta, framsida och baksida med QR-kod" width="1365" height="1024" loading="lazy" decoding="async"></picture></figure>
+    </div>
+  </div>
+</section>
+
+<section class="section research" id="science" aria-labelledby="resT">
+  <div class="wrap">
+    <div class="head-row">
+      <div><span class="kicker" data-reveal>Forskningen</span><h2 id="resT" class="h2" data-reveal style="--d:1">Varför korta pass räcker långt.</h2></div>
+      <p class="lede" data-reveal style="--d:2">Det här säger Världshälsoorganisationen om rörelse, och därför är Motion byggt kring korta pass.</p>
+    </div>
+    <div class="res-grid">
+      <div class="res" data-reveal><div class="n">150–300</div><span class="lab">Minuter i veckan</span><p>Så mycket måttlig aktivitet rekommenderar WHO för vuxna. Tonåringar behöver i snitt en timme om dagen.</p><span class="src"><a href="https://www.ncbi.nlm.nih.gov/books/NBK566048/" target="_blank" rel="noopener">WHO:s riktlinjer, 2020 <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 2h6v6M10 2 2 10"/></svg></a></span></div>
+      <div class="res" data-reveal style="--d:1"><div class="n">Allt</div><span class="lab">Räknas</span><p>Rörelse av alla slag och i alla längder gör nytta. Det viktiga är summan över veckan.</p><span class="src"><a href="https://www.who.int/news/item/25-11-2020-every-move-counts-towards-better-health-says-who" target="_blank" rel="noopener">WHO <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 2h6v6M10 2 2 10"/></svg></a></span></div>
+      <div class="res" data-reveal style="--d:2"><div class="n">1 av 4</div><span class="lab">Vuxna rör sig för lite</span><p>Bland tonåringar är det fyra av fem. Den som sitter mycket i skolan eller på jobbet behöver röra sig mer.</p><span class="src"><a href="https://www.who.int/news/item/25-11-2020-every-move-counts-towards-better-health-says-who" target="_blank" rel="noopener">WHO <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 2h6v6M10 2 2 10"/></svg></a></span></div>
+      <div class="res" data-reveal style="--d:3"><div class="n">5 milj.</div><span class="lab">Dödsfall per år</span><p>Upp till så många skulle kunna undvikas om fler människor var mer fysiskt aktiva.</p><span class="src"><a href="https://www.who.int/news/item/25-11-2020-every-move-counts-towards-better-health-says-who" target="_blank" rel="noopener">WHO <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 2h6v6M10 2 2 10"/></svg></a></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section dark" id="planner" aria-labelledby="aiT">
+  <div class="wrap">
+    <div class="ai-grid">
+      <div>
+        <span class="kicker" data-reveal>AI-coachen</span>
+        <h2 id="aiT" class="h2" data-reveal style="--d:1">En coach som lär sig din vecka.</h2>
+        <ul class="feat" data-reveal style="--d:2">
+          <li><strong>Bygger din vecka</strong><span>Ett schema utifrån dina mål, din nivå och din tid.</span></li>
+          <li><strong>Anpassar sig</strong><span>Säg hur passet kändes, så justeras nästa.</span></li>
+          <li><strong>Svarar på frågor</strong><span>Stretch, sömn, kost och återhämtning.</span></li>
+          <li><strong>Behåller överraskningen</strong><span>Dagens övningar avslöjas först när du skannar.</span></li>
+        </ul>
+        <a href="/app.html" class="btn btn-light" data-reveal style="--d:3">Öppna appen <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+      </div>
+      <div class="browser" data-reveal style="--d:2" role="img" aria-label="Förhandsvisning av Motion-planeraren: ett pass på 15 minuter måndag 17:20, och coachen som förklarar varför.">
+        <div class="br-bar"><i></i><i></i><i></i><span>motionplanner.se/app</span></div>
+        <div class="br-body">
+          <div class="br-side"><b>Idag</b><em>Planerare</em><em>Motion AI</em><em>Skanna</em><em>Framsteg</em></div>
+          <div class="br-main">
+            <div class="br-days"><div class="on">MÅN</div><div>TIS</div><div>ONS</div><div>TOR</div><div>FRE</div></div>
+            <div class="br-slot mute"><span class="t">08:30</span><span class="w"><small>Jobb</small>Till 16:45</span><span></span></div>
+            <div class="br-slot"><span class="t">17:20</span><span class="w"><small>Motion</small>15 min rörelse · 4 kort</span><span class="st">Planerat</span></div>
+            <div class="br-slot mute"><span class="t">18:30</span><span class="w"><small>Middag</small>Hemma</span><span></span></div>
+            <div class="br-ai"><img src="/images/motion-symbol-gold.svg" alt="" width="20" height="20"><span>Du har en lucka efter jobbet. Jag lägger passet där.</span></div>
           </div>
         </div>
-        <div class="qr-callout reveal">
-          <div class="qr-callout-icon">
-            <span class="pulse-ring"></span>
-            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.6"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          </div>
-          <p>Varje kort har en unik <span class="accent-text">QR-kod</span> — skanna den med kameran för att direkt få tydliga instruktioner, teknikguider och videotips. <span class="badge-pill">Ingen app krävs</span></p>
-        </div>
-        <div class="deck-cards reveal">
-          <div class="flipcard3d">
-            <div class="inner">
-              <div class="flipface front clean">
-                <img class="clean-logo" src="images/logo_mark_v2.png" alt="">
-                <div class="clean-word">MOTION <span>UF</span></div>
-              </div>
-              <div class="flipface back clean">
-                <div class="clean-quote">&ldquo;Disciplin bygger frihet.&rdquo;</div>
-                <div class="clean-author">— Rafael Nadal</div>
-                <div class="clean-qr"></div>
-                <div class="clean-scan">Skanna för ditt<br>nästa pass</div>
-              </div>
-            </div>
-          </div>
-          <div class="flipcard3d">
-            <div class="inner">
-              <div class="flipface front clean">
-                <img class="clean-logo" src="images/logo_mark_v2.png" alt="">
-                <div class="clean-word">MOTION <span>UF</span></div>
-              </div>
-              <div class="flipface back clean">
-                <div class="clean-quote">&ldquo;Disciplin bygger frihet.&rdquo;</div>
-                <div class="clean-author">— Rafael Nadal</div>
-                <div class="clean-qr"></div>
-                <div class="clean-scan">Skanna för ditt<br>nästa pass</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="deck-caps"><span><strong class="accent">104</strong> övningar totalt</span><span><strong class="accent">5–20</strong> min pass</span><span>Byggt med tränare</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="surprise">
+<section class="final" id="get" aria-labelledby="finT">
+  <picture><source media="(max-width: 760px)" type="image/webp" srcset="/images/m/closeup-m-640.webp 640w, /images/m/closeup-m-1003.webp 1003w" sizes="100vw"><source type="image/webp" srcset="/images/m/closeup-960.webp 960w, /images/m/closeup-1254.webp 1254w" sizes="100vw"><img src="/images/m/closeup.jpg" alt="" width="1254" height="705" loading="lazy" decoding="async"></picture>
   <div class="wrap">
-    <div class="shuffle-stage reveal">
-      <div class="shuffle-card"><img class="clean-logo" src="images/logo_mark_v2.png" alt=""><div class="clean-word">MOTION <span>UF</span></div></div>
-      <div class="shuffle-card"><img class="clean-logo" src="images/logo_mark_v2.png" alt=""><div class="clean-word">MOTION <span>UF</span></div></div>
-      <div class="shuffle-card"><img class="clean-logo" src="images/logo_mark_v2.png" alt=""><div class="clean-word">MOTION <span>UF</span></div></div>
-    </div>
-    <h2 class="reveal">Du vet aldrig vad som väntar.</h2>
-    <p class="reveal">Säg hejdå till beslutströtthet och rutinmässig uttråkning. Överraskningsmomentet gör varje tillfälle spännande och håller motivationen uppe över tid. Du slipper fundera på vad du ska göra — du behöver bara dyka upp, dra ett kort och låta träningen hända.</p>
+    <h2 id="finT" class="h2" data-reveal>En bättre rutin börjar med ett kort.</h2>
+    <p data-reveal style="--d:1">Skriv upp dig på väntelistan så hör vi av oss när kortleken går att beställa.</p>
+    <button class="btn btn-light" data-wl data-reveal style="--d:2">Skaffa kortleken <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></button>
   </div>
 </section>
-
-<section class="anywhere" id="anywhere">
-  <div class="wrap">
-    <div class="anywhere-stage">
-      <div class="anywhere-grid">
-        <div class="aw-item aw1 reveal"><img src="images/family_living.jpg" alt="Familj tränar tillsammans i ett ljust vardagsrum"></div>
-        <div class="aw-item aw2 reveal"><img src="images/family_pushups.jpg" alt="Familj tränar tillsammans med MOTION UF-kort" style="object-position:70% 30%;"></div>
-      </div>
-      <div class="aw-overlay">
-        <h2>En lek. Alla generationer. Alla med.</h2>
-        <div class="mono aw-sub">Gjord för gemenskap</div>
-        <p class="aw-float">MOTION UF är inte bara ett träningspass — det är en ursäkt att vara i samma rum, i rörelse samtidigt. Morföräldrar, föräldrar, barn, vem som än är hemma: alla drar ett kort, alla är med. Här finns inget "för gammal" eller "för ung" — bara delade skratt, lite vänskaplig tävling, och den sortens gemenskap som uppstår när en hel familj gör något fånigt och svettigt samtidigt.</p>
-        <p class="aw-cap-line"><span class="mono">Vilket utrymme som helst</span>Kort utspridda på mattan, alla kapplöper om att bli klara först — så här ser familjens spelkväll ut nu.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="science" id="science">
-  <div class="wrap">
-    <div class="section-head center reveal">
-      <div class="mono" style="color:var(--brass-soft); justify-content:center; display:flex; margin-bottom:18px;">Vetenskapen</div>
-      <h2>Varför du måste röra på dig.</h2>
-      <p>Inte åsikter — bara vad forskningen faktiskt visar om rörelse och hälsa.</p>
-    </div>
-    <div class="science-grid">
-      <div class="sci-card reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 17s-7-4.35-7-9.5C3 4.5 5.5 2 8.3 2c1.5 0 2.9.8 3.7 2 .8-1.2 2.2-2 3.7-2C18.5 2 17 4.5 17 7.5 17 12.65 10 17 10 17z" stroke="#faf9f7" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
-        <h3>150 minuter räcker</h3><p>Enligt WHO minskar redan 150 minuters måttlig rörelse i veckan risken att dö av hjärt-kärlsjukdom med 22–31 %.</p>
-      </div>
-      <div class="sci-card reveal">
-        <div class="icowrap"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="12" r="8" stroke="#faf9f7" stroke-width="1.3"/><path d="M11 7v5l4 2" stroke="#faf9f7" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-        <h3>Allt räknas</h3><p>WHO är tydliga: rörelse behöver inte ske i ett långt pass. Uppdelat i korta stunder ger det samma effekt.</p>
-      </div>
-      <div class="sci-card reveal">
-        <div class="icowrap"><svg width="20" height="22" viewBox="0 0 20 22" fill="none"><path d="M4 20V10M10 20V4M16 20v-7" stroke="#faf9f7" stroke-width="1.4" stroke-linecap="round"/></svg></div>
-        <h3>Stillasittande är en riskfaktor</h3><p>Att sitta still över 7 timmar om dagen är kopplat till en dödsrisk i klass med rökning eller fetma (Harvard Health).</p>
-      </div>
-      <div class="sci-card reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2v4M10 14v4M2 10h4M14 10h4M4.9 4.9l2.8 2.8M12.3 12.3l2.8 2.8M4.9 15.1l2.8-2.8M12.3 7.7l2.8-2.8" stroke="#faf9f7" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-        <h3>Global skala</h3><p>WHO uppskattar att upp till 5 miljoner dödsfall per år skulle kunna undvikas om fler människor rörde på sig mer.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="ai-planner" id="planner">
-  <div class="wrap">
-    <div class="ai-photo-pair reveal">
-      <div class="ai-photo"><img src="images/ai-focus-eye.jpg" alt="Fokus under ett träningspass"></div>
-      <div class="ai-photo"><img src="images/ai-small-steps.jpg" alt="Små steg, varje dag"></div>
-    </div>
-    <div class="section-head center reveal">
-      <div class="mono" style="color:var(--brass); justify-content:center; display:flex; margin-bottom:18px;">Drivs av AI</div>
-      <h2>Din coach, byggd runt dig.</h2>
-      <p>Planeraren lär sig ditt schema, dina mål och hur varje pass faktiskt kändes — och justerar sedan tyst morgondagens kort.</p>
-    </div>
-    <div class="ai-grid ai-grid-4">
-      <div class="ai-card reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="14" rx="2" stroke="#111" stroke-width="1.3"/><path d="M2 8h16M6 3v14" stroke="#111" stroke-width="1.2"/></svg></div>
-        <h3>Bygger din vecka</h3><p>Skapar ett personligt veckoschema utifrån dina mål, din nivå och tillgänglig tid.</p>
-      </div>
-      <div class="ai-card reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 15l5-5 4 4 7-8" stroke="#111" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Anpassar sig kontinuerligt</h3><p>Betygsätt hur ett pass kändes så justeras svårighetsgraden automatiskt till nästa gång.</p>
-      </div>
-      <div class="ai-card reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 4h16v9H8l-4 4v-4H2V4z" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
-        <h3>Svarar på allt</h3><p>En AI-chattcoach dygnet runt för kost, stretching, återhämtning och motivation.</p>
-      </div>
-      <div class="ai-card reveal">
-        <div class="icowrap"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.4 5.8L18 10l-5.6 2.2L10 18l-2.4-5.8L2 10l5.6-2.2z" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
-        <h3>Överraskningsmoment</h3><p>Skanna ditt kort för att avslöja dagens övningar — fräscht och engagerande, varje gång.</p>
-      </div>
-    </div>
-    <div style="text-align:center; margin-top:56px;">
-      <a href="motion-ai-coach.html" class="btn btn-dark">Möt din AI-coach</a>
-    </div>
-  </div>
-</section>
-
-<section class="editorial-final" id="get">
-  <img src="images/sweaty-blur.jpg" alt="Efter ett genomfört träningspass">
-  <div class="ef-scrim"></div>
-  <div class="wrap ef-content">
-    <h2>En bättre rutin börjar med ett kort.</h2>
-    <p>Skaffa din kortlek. Låt planeraren sköta resten.</p>
-    <a href="motion-ai-coach.html" class="btn btn-light">Börja röra dig</a>
-  </div>
-</section>
+</main>
 
 <footer>
   <div class="wrap">
-    <div class="foot-row">
-      <div class="logo" style="color:var(--charcoal);"><img class="logo-mark" src="images/logo_mark_v2.png" alt="MOTION UF" style="height:22px;">MOTION UF</div>
-      <div class="foot-links">
-        <a href="#">Om oss</a>
-        <a href="#">Kontakt</a>
-        <a href="#">Integritet</a>
-        <a href="#">Villkor</a>
-        <a href="#">Instagram</a>
-      </div>
+    <svg class="f-mark" viewBox="0 0 138.1 24" role="img" aria-label="MOTION"><use href="#wm"/></svg>
+    <div class="f-row">
+      <p class="f-tag">We think. You move.</p>
+      <div class="f-col"><b>Utforska</b><a href="#how">Så funkar det</a><a href="#deck">Kortleken</a><a href="#science">Forskningen</a><a href="/app.html">Appen</a></div>
+      <div class="f-col"><b>Kontakt</b><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a><a href="mailto:hej@motionplanner.se">Kontakt</a><a href="#">Integritet</a></div>
     </div>
-    <div class="foot-bottom">
-      <span>© 2026 MOTION UF</span>
-      <span>Mer rörelse. Mindre tänk.</span>
-    </div>
+    <div class="f-bot"><span>MOTION UF · Ett UF-företag</span><span>© 2026</span></div>
   </div>
 </footer>
 
-<script>
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 30));
-
-  // mobile hamburger menu
-  const navBurger = document.getElementById('navBurger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  navBurger.addEventListener('click', () => {
-    const open = navBurger.classList.toggle('open');
-    mobileMenu.classList.toggle('open', open);
-    navBurger.setAttribute('aria-expanded', open);
-  });
-  mobileMenu.querySelectorAll('a, button').forEach(el => el.addEventListener('click', () => {
-    navBurger.classList.remove('open');
-    mobileMenu.classList.remove('open');
-    navBurger.setAttribute('aria-expanded', false);
-  }));
-
-
-  // scroll reveal
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(en => { if(en.isIntersecting) en.target.classList.add('in'); });
-  }, { threshold:0.15 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-  // floating particles in hero
-  const pWrap = document.getElementById('particles');
-  for(let i=0;i<16;i++){
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = Math.random()*100 + '%';
-    p.style.bottom = (Math.random()*30) + '%';
-    p.style.animationDuration = (8 + Math.random()*10) + 's';
-    p.style.animationDelay = (Math.random()*10) + 's';
-    pWrap.appendChild(p);
-  }
-  pWrap.style.position='absolute'; pWrap.style.inset='0'; pWrap.style.zIndex='2'; pWrap.style.pointerEvents='none';
-
-  // subtle mouse-follow parallax on hero content
-  const heroContent = document.querySelector('.hero-content');
-  document.querySelector('.hero').addEventListener('mousemove', (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 14;
-    const y = (e.clientY / window.innerHeight - 0.5) * 10;
-    heroContent.style.transform = `translate(${x}px, ${y}px)`;
-  });
-
-  // deck hero card: auto-flip every few seconds to reveal the quote + QR
-  const heroCardInner = document.getElementById('heroCardInner');
-  if (heroCardInner){
-    setInterval(() => heroCardInner.classList.toggle('flipped'), 3200);
-  }
-
-  function selectDeckVariant(el){
-    document.querySelectorAll('.dv-item').forEach(item => item.classList.remove('active'));
-    el.classList.add('active');
-  }
-
-  // waitlist modal
-  function openWaitlist(){
-    const ov = document.getElementById('wlOverlay');
-    ov.classList.add('show');
-    requestAnimationFrame(() => ov.classList.add('in'));
-    document.body.style.overflow = 'hidden';
-  }
-  function closeWaitlist(){
-    const ov = document.getElementById('wlOverlay');
-    ov.classList.remove('in');
-    document.body.style.overflow = '';
-    setTimeout(() => ov.classList.remove('show'), 300);
-  }
-  document.getElementById('wlOverlay').addEventListener('click', (e) => {
-    if (e.target.id === 'wlOverlay') closeWaitlist();
-  });
-  function submitWaitlist(e){
-    e.preventDefault();
-    const email = document.getElementById('wlEmail').value;
-    const submitBtn = document.querySelector('#wlForm button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Skickar...';
-
-    fetch('https://formspree.io/f/mjykbdey', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, källa: 'Motion UF väntelista' })
-    })
-    .then(res => {
-      document.getElementById('wlForm').style.display = 'none';
-      document.getElementById('wlSuccess').classList.add('show');
-    })
-    .catch(() => {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Gå med i väntelistan';
-      alert('Något gick fel — testa igen om en liten stund.');
-    });
-    return false;
-  }
-</script>
-
-<div class="wl-overlay" id="wlOverlay">
-  <div class="wl-modal">
-    <button class="wl-close" onclick="closeWaitlist()" aria-label="Stäng">&times;</button>
-    <div class="wl-eyebrow">Kommer snart</div>
-    <h3>Vanan börjar<br>med ett kort.</h3>
-    <form id="wlForm" onsubmit="return submitWaitlist(event)">
-      <input type="email" id="wlEmail" name="email" placeholder="din@mejl.se" required>
+<div class="wl" id="wl" role="dialog" aria-modal="true" aria-labelledby="wlT" aria-hidden="true">
+  <div class="wl-box">
+    <button class="wl-x" data-wlclose aria-label="Stäng"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
+    <div class="wl-intro"><h3 id="wlT">Vanan börjar med ett kort.</h3><p>Lämna din mejladress så hör vi av oss när kortleken finns att beställa.</p></div>
+    <form id="wlForm" novalidate>
+      <label for="wlEmail">Mejladress</label>
+      <input type="email" id="wlEmail" name="email" placeholder="namn@mejl.se" required autocomplete="email">
       <button type="submit" class="btn btn-dark">Gå med i väntelistan</button>
+      <p class="micro" id="wlMsg" role="status">Ett mejl när det är dags. Inget annat.</p>
     </form>
-    <div class="wl-success" id="wlSuccess">
-      <div class="wl-success-icon">✓</div>
-      <p>Tack! Du är på listan — vi hör av oss så fort kortleken finns att beställa.</p>
+    <div class="wl-ok" role="status">
+      <div class="chk"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h3>Du är med.</h3><p>Vi mejlar dig så fort kortleken går att beställa.</p>
     </div>
   </div>
 </div>
+<script>
+(function(){
+  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nav=$('#nav');
 
+  /* focus trap helper */
+  function trap(container,e){
+    if(e.key!=='Tab') return;
+    const f=$$('a[href],button:not([disabled]),input,[tabindex]:not([tabindex="-1"])',container).filter(el=>el.offsetParent!==null);
+    if(!f.length) return; const first=f[0], last=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+  }
+
+  /* mobile menu */
+  const mm=$('#mmenu'), burger=$('#burger'); let mmPrev=null;
+  function menu(open){
+    mm.classList.toggle('open',open); burger.setAttribute('aria-expanded',open);
+    document.body.style.overflow=open?'hidden':'';
+    if(open){mmPrev=document.activeElement;setTimeout(()=>$('#mclose').focus(),60)} else if(mmPrev) mmPrev.focus();
+  }
+  burger.addEventListener('click',()=>menu(true));
+  $('#mclose').addEventListener('click',()=>menu(false));
+  $$('a,button[data-wl]',mm).forEach(a=>a.addEventListener('click',()=>menu(false)));
+  mm.addEventListener('keydown',e=>{ if(e.key==='Escape') menu(false); trap(mm,e); });
+
+  /* load sequence */
+  const heroImg=$('.hero img');
+  const loaded=()=>requestAnimationFrame(()=>document.documentElement.classList.add('loaded'));
+  if(heroImg.complete) loaded(); else { heroImg.addEventListener('load',loaded,{once:true}); setTimeout(loaded,1200); }
+
+  /* reveals */
+  if('IntersectionObserver' in window && !reduce){
+    const io=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }),{rootMargin:'0px 0px -8% 0px',threshold:.12});
+    $$('[data-reveal]').forEach(el=>io.observe(el));
+  } else $$('[data-reveal]').forEach(el=>el.classList.add('in'));
+
+  /* "Så funkar det" — the line fills quietly as you read */
+  const seq=$('#seq'), seqLine=$('.seq-line i'), seqItems=$$('#seq li');
+
+  /* card stage */
+  const cardsSec=$('.cards'), pcs=$$('.pcard'), ccs=$$('.cc'), bars=$$('.cards-progress b');
+  const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)), seg=(p,a,b)=>clamp((p-a)/(b-a));
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  $$('.qr').forEach(q=>{
+    let seed=+q.dataset.seed*9301+49297; const rnd=()=>((seed=(seed*9301+49297)%233280)/233280);
+    let r=''; const ink='#171A18', paper='#F6F2EA';
+    const finder=(x,y)=>`<rect x="${x}" y="${y}" width="7" height="7" fill="${ink}"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="${paper}"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="${ink}"/>`;
+    for(let y=0;y<21;y++)for(let x=0;x<21;x++){ if((x<8&&y<8)||(x>12&&y<8)||(x<8&&y>12)) continue; if(rnd()>.52) r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="${ink}"/>`; }
+    q.innerHTML=`<svg viewBox="0 0 21 21" shape-rendering="crispEdges">${finder(0,0)+finder(14,0)+finder(0,14)+r}</svg>`;
+  });
+  let hoverI=-1, lastP=0;
+  const canHover=matchMedia('(hover:hover) and (pointer:fine)').matches;
+  pcs.forEach((c,i)=>{ if(!canHover) return; c.addEventListener('mouseenter',()=>{hoverI=i;updateCards(innerHeight)}); c.addEventListener('mouseleave',()=>{hoverI=-1;updateCards(innerHeight)}); });
+  function updateCards(vh){
+    const r=cardsSec.getBoundingClientRect(); const p=clamp(-r.top/(r.height-vh)); lastP=p;
+    const mobile=innerWidth<=980;
+    const spread=ease(seg(p,.06,.24));
+    const flips=[ease(seg(p,.28,.42)),ease(seg(p,.50,.64)),ease(seg(p,.72,.86))];
+    const active=p<.28?-1:p<.50?0:p<.72?1:p<.9?2:-1;
+    const gap=mobile?Math.min(innerWidth*.2,92):Math.min(innerWidth*.14,236);
+    pcs.forEach((c,i)=>{
+      const o=i-1, isA=i===active, hov=i===hoverI&&p>.86;
+      const x=o*gap*spread;
+      const rz=o*(9-5*spread)*(1-spread)+o*4*spread*(hov?.25:1);   // settles at -4°, 0°, +4°
+      const y=(1-spread)*(i*-5)+Math.abs(o)*12*spread - (isA?14:0) - (hov?6:0);
+      const z=(isA?(mobile?44:100):0)-Math.abs(o)*18;
+      const ry=flips[i]*180+(1-spread)*-6;
+      c.style.transform=`translate3d(${x}px,${y}px,${z}px) rotateZ(${rz}deg) rotateY(${ry}deg) scale(${isA?1.05:1})`;
+      c.style.zIndex=isA||hov?10:3-Math.abs(o);
+      c.style.setProperty('--dim',(active>=0&&!isA)?'.32':'0');
+      c.querySelector('.sheen').style.opacity=(Math.sin(flips[i]*Math.PI)*.7).toFixed(3);
+    });
+    const win=[[0,.28],[.28,.5],[.5,.72],[.72,1.01]];
+    ccs.forEach((el,k)=>{ const [a,b]=win[k]; const v=k===0&&p<.01?1:Math.min(clamp((p-a)/.05),k===3?1:clamp((b-p)/.05));
+      el.style.opacity=v; el.style.transform=`translateY(${((1-v)*(p<a+.05?20:-20)).toFixed(1)}px)`; el.setAttribute('aria-hidden',v<.5); });
+    bars.forEach((b,i)=>b.style.transform=`scaleX(${flips[i]})`);
+  }
+
+  /* scroll loop */
+  let ticking=false;
+  function onScroll(){
+    ticking=false; const y=scrollY, vh=innerHeight;
+    nav.classList.toggle('scrolled',y>40);
+    if(!reduce&&y<vh) heroImg.style.transform=`translate3d(0,${(y*.12).toFixed(1)}px,0)`;
+    if(seq){ const r=seq.getBoundingClientRect(); const p=clamp((vh*.75-r.top)/(r.height+vh*.25)); const vert=innerWidth<=1080;
+      seqLine.style.transform=vert?`scaleY(${p})`:`scaleX(${p})`; seqItems.forEach((li,i)=>li.classList.toggle('on',p>=i/(seqItems.length-1)-.02)); }
+    if(cardsSec) updateCards(vh);
+  }
+  addEventListener('scroll',()=>{ if(!ticking){ticking=true;requestAnimationFrame(onScroll)} },{passive:true});
+  addEventListener('resize',onScroll); onScroll();
+
+  /* waitlist */
+  const wl=$('#wl'), box=$('.wl-box',wl), form=$('#wlForm'), email=$('#wlEmail'), msg=$('#wlMsg'); let wlPrev=null;
+  function openWL(){ wlPrev=document.activeElement; wl.classList.add('open'); wl.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>(wl.classList.contains('done')?$('.wl-x',wl):email).focus(),80); }
+  function closeWL(){ wl.classList.remove('open'); wl.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(wlPrev) wlPrev.focus(); }
+  $$('[data-wl]').forEach(b=>b.addEventListener('click',openWL));
+  $$('[data-wlclose]',wl).forEach(b=>b.addEventListener('click',closeWL));
+  wl.addEventListener('click',e=>{ if(e.target===wl) closeWL(); });
+  wl.addEventListener('keydown',e=>{ if(e.key==='Escape') closeWL(); trap(box,e); });
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    if(!email.value||!email.checkValidity()){ msg.textContent='Skriv en giltig mejladress.'; email.setAttribute('aria-invalid','true'); email.focus(); return; }
+    email.removeAttribute('aria-invalid');
+    const btn=$('button[type="submit"]',form); btn.disabled=true; btn.textContent='Skickar…';
+    fetch('https://formspree.io/f/mjykbdey',{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify({email:email.value,källa:'Motion UF väntelista'})})
+      .then(r=>{ if(!r.ok) throw 0; wl.classList.add('done'); $('.wl-x',wl).focus(); })
+      .catch(()=>{ btn.disabled=false; btn.textContent='Gå med i väntelistan'; msg.textContent='Det gick inte att skicka. Kontrollera uppkopplingen och försök igen.'; });
+  });
+})();
+</script>
 </body>
 </html>

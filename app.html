@@ -799,6 +799,210 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 .acct-m{grid-column:1/-1;font-size:.9rem}
 @media(max-width:520px){.acct-f{grid-template-columns:1fr}}
 
+
+/* =========================================================
+   v3 — calm, editorial, human. Less interface, more intention.
+   ========================================================= */
+:root{
+  --motion-bg:#F4F1EA; --motion-surface:#FAF9F6; --motion-surface-2:#EEEAE2; --motion-text:#171714; --motion-muted:#747169; --motion-border:#DDD8CE;
+  --hair:rgba(20,20,15,.07); --motion-gold:#B68E4E; --motion-gold-ink:#7A5C25;
+  --bg:var(--motion-bg); --white:var(--motion-surface); --warm:var(--motion-surface-2); --text:var(--motion-text); --muted:var(--motion-muted); --border:var(--motion-border);
+  --r-sm:8px; --r-md:12px; --r-lg:16px; --shadow:none; --motion-shadow:none; --t:160ms;
+}
+body{background:var(--bg);color:var(--text)}
+.eyebrow{font-weight:500;letter-spacing:.16em;font-size:.72rem;color:var(--muted)}
+.eyebrow.gold{color:var(--gold-ink)}
+.card{background:var(--white);border:1px solid var(--border);box-shadow:none}
+.btn{transition:background var(--t),border-color var(--t),color var(--t)}
+.btn:active{transform:none}
+.btn-primary{background:var(--text);color:#FAF9F6}.btn-primary:hover{background:#2A2925}
+.btn-line{background:transparent;border-color:var(--border)}.btn-line:hover{border-color:var(--text)}
+.btn-sm{min-height:38px;padding:0 14px;font-weight:500}
+.tlink{display:inline-flex;align-items:center;gap:6px;font-weight:500;color:var(--text);padding:6px 0;border-bottom:1px solid var(--border);transition:border-color var(--t),color var(--t)}
+.tlink:hover{border-color:var(--text)}
+.tlink svg{transition:transform var(--t)}.tlink:hover svg{transform:translateX(2px)}
+.tlink.sm{font-size:.86rem;color:var(--muted);border-color:transparent}.tlink.sm:hover{color:var(--text);border-color:var(--border)}
+.tlink.muted{color:var(--muted);border-color:transparent}
+.sym-xs{width:13px;height:13px}
+
+/* navigation: thin, a single gold line marks where you are */
+.sidenav{background:var(--bg);border-right:1px solid var(--hair)}
+.sn-top{border-bottom:0;margin-bottom:22px}
+.sn-link{height:42px;border-radius:0!important;border-left:0;font-weight:400;color:var(--muted);background:transparent!important}
+.sn-link:hover{color:var(--text)}
+.sn-link.on{color:var(--text);font-weight:500}
+.sn-link.on::after{left:0;top:12px;bottom:12px;width:1.5px;background:var(--gold)}
+.sn-link svg,.sn-link img{width:19px;height:19px}
+.sn-toggle{border-color:transparent}.sn-toggle:hover{border-color:var(--border)}
+.sn-profile{border-top:1px solid var(--hair)}
+@media(max-width:760px){.botnav{background:rgba(244,241,234,.96);border-top:1px solid var(--hair)}.botnav a.on::before{height:1.5px}.mtop{background:rgba(244,241,234,.94);border-bottom:1px solid var(--hair)}}
+
+/* ---------- PLANNER ---------- */
+.p-top{align-items:flex-end;margin-bottom:28px}
+.p-brand .eyebrow{display:flex;align-items:center}
+.p-brand h1{font-size:clamp(2rem,3.6vw,2.9rem);font-weight:500;letter-spacing:-.03em;margin-top:8px}
+.p-nav{gap:20px}
+.tt{display:flex;gap:16px}
+.tt button{padding:6px 0;color:var(--muted);font-weight:500;border-bottom:1.5px solid transparent;border-radius:0}
+.tt button.on{color:var(--text);border-color:var(--gold)}
+.p-range{border:0;background:transparent;padding:0;gap:2px}
+.p-range .ib{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;color:var(--muted)}
+.p-range .ib:hover{color:var(--text);background:var(--warm)}
+.tl-btn{padding:6px 10px;font-weight:500}
+.tl-btn:hover{text-decoration:underline;text-underline-offset:4px}
+.insight{background:transparent;border:0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);border-radius:0;padding:14px 0;gap:14px;margin-bottom:28px}
+.insight img{width:18px;height:18px}
+.insight p{font-weight:400;color:var(--text)}
+.insight p span{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-ink);font-weight:500;margin-right:12px}
+.banner{background:transparent;border:0;border-bottom:1px solid var(--hair);border-radius:0;padding:14px 0;grid-template-columns:20px 1fr auto}
+.banner img{width:18px;height:18px}
+.planner2{grid-template-columns:minmax(0,1fr) 248px;gap:48px}
+.week{border:0;background:transparent;border-radius:0}
+.wk-head{border-bottom:1px solid var(--hair)}
+.wk-head button{padding:6px 4px 14px}
+.wk-head .dn{font-size:.7rem;letter-spacing:.14em;color:var(--muted);font-weight:500}
+.wk-head .dd{font-size:1.45rem;font-weight:400;margin-top:2px;letter-spacing:-.02em}
+.wk-head .is-today .dd{color:var(--gold-ink);font-weight:500}
+.wk-head .is-today .dd::after{display:none}
+.wk-head .fullmark{font-size:.6rem;color:var(--muted)}
+.wk-body{max-height:calc(100vh - 250px)}
+.daycol{border-left:1px solid var(--hair);background-image:linear-gradient(var(--hair) 1px,transparent 1px)}
+.daycol.is-today{background-color:rgba(182,142,78,.035)}
+.daycol.is-full{background-color:transparent}
+.hours div{font-size:.68rem;color:#A9A59B}
+.ev{border-radius:6px!important;border:0;padding:6px 8px;box-shadow:none}
+.ev:hover{transform:none;box-shadow:none;filter:brightness(.98)}
+.ev .et{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.ev .eh{font-size:.74rem;opacity:.7;font-variant-numeric:tabular-nums}
+.ev.cat-school,.ev.cat-study,.ev.cat-other,.ev.cat-travel,.ev.cat-appointment,.ev.cat-social,.ev.cat-training{background:#ECE8E0;color:#3A3832}
+.ev.cat-work{background:#E2E1DC;color:#2A2925}
+.ev.cat-family{background:#EFE7DB;color:#4A3F33}
+.ev.cat-meal{background:transparent;border:1px solid var(--hair);color:var(--muted)}
+.ev.cat-motion{background:#FBF7EE;border:1px solid #EFE4CC;border-left:2px solid var(--gold);color:var(--text)}
+.ev.cat-motion .et{color:var(--gold-ink)}
+.ghost{border:1px dashed rgba(182,142,78,.45);background:transparent;border-radius:6px!important;color:var(--gold-ink);padding:5px 8px}
+.ghost:hover{background:rgba(182,142,78,.06)}
+.ghost .gk{font-size:.62rem;letter-spacing:.12em;font-weight:600}
+.ghost span:not(.gk){font-size:.7rem;color:var(--muted)}
+.nowline{height:1px;background:var(--gold)}
+.nowline::before{width:6px;height:6px;top:-2.5px;left:-3px}
+.nowline b{background:var(--bg);font-weight:500}
+/* right column — no boxes */
+.p-right{gap:0}
+.rs-block{padding:20px 0;border-top:1px solid var(--hair)}
+.rs-block:first-child{border-top:0;padding-top:4px}
+.rs-block h4,.tips h4{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:500;display:flex;align-items:center;margin-bottom:12px}
+.rs-nums{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rs-nums b{display:block;font-size:1.7rem;font-weight:500;letter-spacing:-.02em;line-height:1.1}
+.rs-nums span,.rs-sub{color:var(--muted);font-size:.86rem}
+.rs-big{font-size:1.25rem;font-weight:500;line-height:1.25}
+.rs-text{font-size:1rem;line-height:1.45}
+.rs-sub{margin:6px 0 10px;line-height:1.45}
+.mini{padding:0!important;border:0!important;background:transparent!important}
+.mini-g button{height:28px;font-size:.8rem}
+.mini-g button.inweek{background:rgba(20,20,15,.04)}
+.mini-g button.is-today{box-shadow:none;color:var(--gold-ink);font-weight:600}
+.tips{padding:0;border:0;background:transparent}
+.tips .seg{border:0;display:flex;gap:14px}
+.tips .seg button{min-height:auto;padding:2px 0;border:0;border-bottom:1.5px solid transparent;border-radius:0!important;background:transparent!important;color:var(--muted);font-weight:500}
+.tips .seg button.on{color:var(--text);border-color:var(--gold)}
+.tips .tip{min-height:0;margin-top:12px}
+.tips .tip b{font-weight:500}
+.tips .tip-act .btn{border:0;padding:0;min-height:30px;color:var(--muted);background:transparent}
+.tips .tip-act .btn:hover{color:var(--text)}
+.rs-links{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.rs-links details{width:100%;margin-bottom:6px}
+.rs-links summary{cursor:pointer;font-size:.86rem;color:var(--muted);padding:6px 0;list-style:none}
+.rs-links summary::-webkit-details-marker{display:none}
+.rs-links summary:hover{color:var(--text)}
+.filters{padding:0;border:0;background:transparent}
+/* day view */
+.dayhead{margin-bottom:18px}
+.dayhead b{font-weight:500;letter-spacing:.06em}
+.dayhead .iconbtn{border:0;background:transparent}
+.dayline{border:0;background:transparent;padding:0}
+.dayline li{border-bottom:1px solid var(--hair);padding:14px 0}
+.dayline .dt{font-weight:500;color:var(--muted)}
+.dsg{background:transparent;border:1px dashed rgba(182,142,78,.45);border-left:1px dashed rgba(182,142,78,.45);border-radius:8px!important}
+.dsg .gk{font-weight:500}
+.dsg-t{font-weight:500}
+.p-empty{background:transparent;border:0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);border-radius:0}
+.p-empty img{width:32px;height:32px}
+.p-empty h3{font-weight:500}
+@media(max-width:1180px){.planner2{grid-template-columns:1fr;gap:12px}.p-right{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));column-gap:32px}.rs-block:first-child{padding-top:20px;border-top:1px solid var(--hair)}}
+@media(max-width:760px){.p-top{margin-bottom:16px}.p-nav{gap:14px;justify-content:space-between}.p-nav .btn-primary{width:auto}.p-range{flex:0}.p-brand h1{font-size:1.9rem}}
+
+/* ---------- MOTION AI ---------- */
+.ai{max-width:720px}
+.hello{text-align:left;padding:10vh 0 0;max-width:560px}
+.hello .wmk{display:none}
+.hello .hs{width:22px;height:22px;margin:0 0 18px;animation:none}
+.hello .eyebrow{display:block}
+.hello h2{font-size:clamp(2rem,4.4vw,2.9rem);font-weight:500;letter-spacing:-.03em;line-height:1.12;margin-top:12px}
+.hero-in{display:flex;align-items:center;gap:8px;margin-top:32px;background:var(--white);border:1px solid var(--border);border-radius:14px;padding:6px 6px 6px 18px;transition:border-color var(--t)}
+.hero-in:focus-within{border-color:#B9B3A6}
+.hero-in input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:1.02rem;min-height:46px;color:var(--text)}
+.hero-in button,.composer button[type=submit]{width:40px;height:40px;border-radius:50%;background:var(--text);color:#FAF9F6;display:grid;place-items:center;flex-shrink:0}
+.hints{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:22px}
+.hints button{color:var(--text);font-size:.95rem;padding:4px 0;border-bottom:1px solid var(--border);transition:border-color var(--t)}
+.hints button:hover{border-color:var(--text)}
+.hints.minor{margin-top:14px}
+.hints.minor button{font-size:.84rem;color:var(--muted);border-color:transparent}
+.hints.minor button:hover{color:var(--text)}
+.ai:not(.has) .composer{display:none}
+.ai-head{justify-content:flex-start;padding:4px 0 8px;border-bottom:1px solid var(--hair)}
+.ai-head h1{font-size:.72rem;letter-spacing:.16em;font-weight:500;color:var(--muted)}
+.ai-head img{width:16px;height:16px}
+.thread{gap:26px;padding-top:28px}
+.msg.me{background:transparent;padding:0;border-radius:0;color:var(--muted);text-align:right;max-width:75%;font-size:1rem}
+.msg.bot{grid-template-columns:20px 1fr;gap:14px}
+.msg.bot>img{width:16px;height:16px;margin-top:5px}
+.msg.bot .body{font-size:1.05rem;line-height:1.6}
+.thinking{font-size:.95rem;animation:none}
+.think-sym{animation:sway 3.2s ease-in-out infinite}
+.act{border:0;border-top:1px solid var(--hair);border-radius:0!important;background:transparent;padding:16px 0 4px;max-width:none;margin-top:16px;box-shadow:none}
+.act .eyebrow{letter-spacing:.14em}
+.act .row-d{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.act .row-m{margin-top:6px}
+.act .row-m b{display:block;font-size:1.35rem;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.act .row-m span{display:block;color:var(--muted);font-size:.92rem;margin-top:2px}
+.act .row-m em{display:block;font-style:normal;color:var(--text);font-size:.92rem;margin-top:8px}
+.act .btns{gap:18px;margin-top:10px}
+.act .main{font-weight:500}
+.act .ok{color:var(--text);font-weight:500;font-size:.95rem;margin-top:10px}
+.act .ok img{width:14px;height:14px}
+.opts-row{display:block;max-width:none}
+.opts-row .act{margin-top:0}
+.opts-row .act+.act{margin-top:0}
+.act .mv{font-weight:500}
+.act .btn-primary{background:var(--text)}
+.wk-prop li{border-top:1px solid var(--hair)}
+.composer{padding:16px 0 20px;background:linear-gradient(transparent,var(--bg) 35%)}
+.composer form{border-radius:14px;box-shadow:none;border-color:var(--border);background:var(--white);padding:6px 6px 6px 18px}
+.composer .clip{width:36px;height:36px}
+.chip{border-radius:999px!important;font-weight:500;background:transparent}
+.sugg .chip{border-color:var(--border)}
+@media(max-width:760px){.hello{padding-top:5vh}.hello h2{font-size:1.9rem}.hints{gap:4px 18px}}
+
+/* ---------- shared quiet details ---------- */
+.toast.rich{background:var(--text);border-radius:12px;padding:12px 18px 12px 14px}
+.toast.rich img{width:16px;height:16px}
+.toast.rich b{font-weight:500}
+.sheet{border-radius:16px!important;box-shadow:0 8px 30px rgba(20,20,15,.06)}
+.opt{border-radius:10px!important}
+.next{border-radius:16px!important}
+.ai-nudge,.weeksum,.timeline{box-shadow:none}
+
+
+.p-brand{display:block}
+h1.big{font-weight:500;letter-spacing:-.03em}
+.next .time{font-weight:500}
+.no-think span{font-weight:500;letter-spacing:.1em;border-color:rgba(255,255,255,.22)}
+.next.empty .no-think span,.dsg .no-think span,.sheet .no-think span{border-color:var(--border)}
+.weeksum .n,.stat .n{font-weight:500}
+.tl .lbl{font-weight:500}
+.ai-nudge b{font-weight:500}
+.weeksum,.timeline,.ai-nudge{border-color:var(--border)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -810,9 +1014,9 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
     <button class="sn-toggle" id="snToggle" aria-label="Fäll in menyn" aria-expanded="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg></button>
   </div>
   <nav class="sn-nav">
-      <a href="#today" data-tab="today" class="sn-link" title="Hem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10.5 12 4l8 6.5V20h-5.5v-6h-5v6H4z"/></svg><span class="lbl">Hem</span></a>
+      <a href="#today" data-tab="today" class="sn-link" title="Översikt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10.5 12 4l8 6.5V20h-5.5v-6h-5v6H4z"/></svg><span class="lbl">Översikt</span></a>
       <a href="#planner" data-tab="planner" class="sn-link" title="Planerare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span class="lbl">Planerare</span></a>
-      <a href="#ai" data-tab="ai" class="sn-link" title="AI Coach"><img src="/images/motion-symbol-gold.svg" alt=""><span class="lbl">AI Coach</span></a>
+      <a href="#ai" data-tab="ai" class="sn-link" title="Motion AI"><img src="/images/motion-symbol-gold.svg" alt=""><span class="lbl">Motion AI</span></a>
       <a href="#scan" data-tab="scan" class="sn-link" title="Kort"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6.5" y="3.5" width="12" height="17" rx="2"/><path d="M4 7v11.5a2 2 0 0 0 2 2h8"/></svg><span class="lbl">Kort</span></a>
   </nav>
   <a href="/" class="sn-link sn-home" title="Till startsidan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 6l-6 6 6 6M4 12h16"/></svg><span class="lbl">Till startsidan</span></a>
@@ -826,7 +1030,7 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 <main id="app"></main>
 
 <nav class="botnav" aria-label="Meny">
-  <a href="#today" data-tab="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10.5 12 4l8 6.5V20h-5.5v-6h-5v6H4z"/></svg>Hem</a>
+  <a href="#today" data-tab="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10.5 12 4l8 6.5V20h-5.5v-6h-5v6H4z"/></svg>Översikt</a>
   <a href="#planner" data-tab="planner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Plan</a>
   <a href="#ai" data-tab="ai"><img src="/images/motion-symbol-gold.svg" alt="">AI</a>
   <a href="#scan" data-tab="scan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6.5" y="3.5" width="12" height="17" rx="2"/><path d="M4 7v11.5a2 2 0 0 0 2 2h8"/></svg>Kort</a>
@@ -1097,7 +1301,7 @@ function totals(){
 
 /* ---------- ui helpers ---------- */
 function toast(t,detail){const el=$('#toast');el.innerHTML=detail!==undefined?`<img src="${LOGO}" alt=""><span><b>${esc(t)}</b>${detail?`<br>${esc(detail)}`:''}</span>`:esc(t);el.classList.toggle('rich',detail!==undefined);el.classList.add('in');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('in'),detail!==undefined?3000:2200)}
-const done=(s)=>toast('Klart.',`${s.duration} minuter ${relDay(s.date).toLowerCase()} ${s.start}.`);
+const done=(s)=>toast('Inlagt.',`${relDay(s.date)} ${s.start} – ${toHM(toMin(s.start)+s.duration)}`);
 let lastFocus=null;
 function openSheet(html,onMount){
   closeSheet(true); lastFocus=document.activeElement;
@@ -1231,12 +1435,12 @@ const fine=()=>window.matchMedia('(hover:hover) and (pointer:fine)').matches;
 function blockHTML(e,style,occ){
   if(e.category==='motion'){
     const s=e.session, done=s.status==='completed';
-    return `<div class="ev cat-motion ${done?'done':''}" style="${style}" data-s="${s.id}" data-day="${occ||s.date}" tabindex="0" role="button" aria-label="Motion ${s.start}, ${s.duration} minuter"><span class="et">${SYMI}Motion · ${s.duration} min</span><span class="eh">${s.start} · ${s.need==='family'?'familjekort':'dra '+s.count+' kort'}</span>${done?'<span class="go">Klart</span>':''}${fine()&&!done?'<i class="rs" aria-hidden="true"></i>':''}</div>`;
+    return `<div class="ev cat-motion ${done?'done':''}" style="${style}" data-s="${s.id}" data-day="${occ||s.date}" tabindex="0" role="button" aria-label="Motion ${s.start}, ${s.duration} minuter"><span class="et">${SYMI}Motion</span><span class="eh">${s.start} · ${s.duration} min</span>${done?'<span class="go">Klart</span>':''}${fine()&&!done?'<i class="rs" aria-hidden="true"></i>':''}</div>`;
   }
   return `<div class="ev cat-${e.category}" style="${style}" data-e="${e.id}" data-day="${occ||e.date}" tabindex="0" role="button" aria-label="${esc(e.title)} ${e.start} till ${e.end}"><span class="et">${esc(e.title)}</span><span class="eh">${e.start}–${e.end||''}</span>${fine()?'<i class="rs" aria-hidden="true"></i>':''}</div>`;
 }
 function sgHTML(sg,style){
-  return `<button class="ghost ${sg.family?'fam':''}" style="${style}" data-g="${sg.date}|${toHM(sg.start)}|${sg.duration}"><span class="gk">${SYMI}${sg.family?'Family':'Lucka'} ${toHM(sg.start)}</span><span>${sg.duration} min · lägg till</span></button>`;
+  return `<button class="ghost ${sg.family?'fam':''}" style="${style}" data-g="${sg.date}|${toHM(sg.start)}|${sg.duration}"><span class="gk">${sg.family?'Familj':'Förslag'} · ${toHM(sg.start)}</span><span>${sg.duration} min ledigt · lägg till</span></button>`;
 }
 function bannersHTML(){
   let h='';
@@ -1270,7 +1474,7 @@ function vPlanner(el){
   const ghostDays=new Set(ranked.filter((x,k,arr)=>arr.findIndex(y=>y.date===x.date)===k).slice(0,Math.min(3,need)).map(x=>x.date));
   const dayView=()=>{
     const evs=eventsOn(pSel).filter(e=>pFilter.has(e.category)); const sg=pSel>=t&&pFilter.has('motion')?suggestFor(pSel):null;
-    const items=[...evs.map(e=>({m:toMin(e.start),h:blockHTML(e,'',pSel)})), ...(sg?[{m:sg.start,h:`<div class="dsg${sg.family?' fam':''}"><span class="gk">${SYMI}${sg.family?'Family Motion':'Motion-förslag'}</span><div class="dsg-t">${toHM(sg.start)}–${toHM(sg.start+sg.duration)}</div><div class="no-think sm"><span>${sg.duration} MIN</span><span>${sg.family?'FAMILJEKORT':'DRA '+cardsFor(sg.duration)+' KORT'}</span></div><p>${reasonFor(sg)}</p><div class="dsg-a"><button class="btn btn-primary btn-sm" data-ga="${sg.date}|${toHM(sg.start)}|${sg.duration}|${sg.need}">Lägg till</button><button class="btn btn-ghost btn-sm" data-g="${sg.date}|${toHM(sg.start)}|${sg.duration}">Ändra</button></div></div>`}]:[])].sort((a,b)=>a.m-b.m);
+    const items=[...evs.map(e=>({m:toMin(e.start),h:blockHTML(e,'',pSel)})), ...(sg?[{m:sg.start,h:`<div class="dsg${sg.family?' fam':''}"><span class="gk">${SYMI}${sg.family?'Familjeförslag':'Motion-förslag'}</span><div class="dsg-t">${toHM(sg.start)}–${toHM(sg.start+sg.duration)}</div><div class="no-think sm"><span>${sg.duration} MIN</span><span>${sg.family?'FAMILJEKORT':'DRA '+cardsFor(sg.duration)+' KORT'}</span></div><p>${reasonFor(sg)}</p><div class="dsg-a"><button class="btn btn-primary btn-sm" data-ga="${sg.date}|${toHM(sg.start)}|${sg.duration}|${sg.need}">Lägg till</button><button class="btn btn-ghost btn-sm" data-g="${sg.date}|${toHM(sg.start)}|${sg.duration}">Ändra</button></div></div>`}]:[])].sort((a,b)=>a.m-b.m);
     const full=dayLoad(pSel).full&&pSel>=t;
     return `<div class="dayhead"><button class="iconbtn" data-d="-1" aria-label="Föregående dag">${IC.l}</button><div><b>${DS[dow(sel)]} ${sel.getDate()} ${MN[sel.getMonth()].slice(0,3).toUpperCase()}</b><span>${relDay(pSel)}</span></div><button class="iconbtn" data-d="1" aria-label="Nästa dag">${IC.r}</button></div>
       ${full?`<p class="dnote">${SYMI}Dagen är full. Jag lämnar den ifred.</p>`:''}
@@ -1304,35 +1508,35 @@ function vPlanner(el){
   const empty=weekEvents===0?`<section class="p-empty"><img src="${LOGO}" alt=""><h3>Din vecka börjar här.</h3><p>Lägg in det som redan tar plats i livet. Motion hittar resten.</p><div class="p-empty-a"><button class="btn btn-primary btn-sm" data-add>${IC.plus} Lägg till aktivitet</button><button class="btn btn-line btn-sm" data-build>Bygg min vecka</button><button class="btn btn-ghost btn-sm" data-imp>${IC.up} Importera schema</button></div></section>`:'';
   el.innerHTML=`
     <header class="p-top">
-      <div class="p-brand"><img src="${LOGO}" alt="" class="p-sym"><div><span class="eyebrow">Planerare</span><h1>Din vecka, utan gissningar.</h1></div></div>
+      <div class="p-brand"><span class="eyebrow">${SYMI}Planerare</span><h1>${range.replace('–',' – ')}</h1></div>
       <div class="p-nav">
-        <div class="seg sm" role="tablist" aria-label="Vy"><button role="tab" aria-selected="${pView==='day'}" class="${pView==='day'?'on':''}" data-v="day">Dag</button><button role="tab" aria-selected="${pView==='week'}" class="${pView==='week'?'on':''}" data-v="week">Vecka</button></div>
-        <button class="btn btn-line btn-sm" data-w="0">Idag</button>
-        <div class="p-range"><button class="iconbtn" data-w="-1" aria-label="Föregående vecka">${IC.l}</button><span>${range}</span><button class="iconbtn" data-w="1" aria-label="Nästa vecka">${IC.r}</button></div>
+        <div class="tt" role="tablist" aria-label="Vy"><button role="tab" aria-selected="${pView==='day'}" class="${pView==='day'?'on':''}" data-v="day">Dag</button><button role="tab" aria-selected="${pView==='week'}" class="${pView==='week'?'on':''}" data-v="week">Vecka</button></div>
+        <div class="p-range"><button class="ib" data-w="-1" aria-label="Föregående vecka">${IC.l}</button><button class="tl-btn" data-w="0">Idag</button><button class="ib" data-w="1" aria-label="Nästa vecka">${IC.r}</button></div>
         <button class="btn btn-primary btn-sm" data-add>${IC.plus} Lägg till</button>
       </div>
     </header>
     ${bannersHTML()}
-    ${insight?`<div class="insight"><span class="eyebrow gold">${SYMI}Motion insight</span><p>${insight}</p><button class="btn btn-ai btn-sm" data-ai><img src="${LOGO}" alt="" class="sym-xs">Planera med AI</button></div>`:''}
+    ${insight?`<div class="insight"><img src="${LOGO}" alt=""><p><span>Motion</span>${insight}</p><button class="tlink" data-ai>Planera veckan <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></button></div>`:''}
     <div class="planner2">
       <section class="p-main">${empty}${pView==='day'?dayView():weekView()}</section>
       <aside class="p-right">
-        <div class="card r-sum"><span class="eyebrow">${SYMI}Den här veckan</span>
-          <div class="r-stats"><div><b>${wkSessions.length}</b><span>pass</span></div><div><b>${wkSessions.reduce((n,x)=>n+x.duration,0)}</b><span>min rörelse</span></div><div><b>${P().perWeek||3}</b><span>veckomål</span></div></div>
-          ${nextS?`<div class="r-next"><span>Nästa</span><b>${DS[dow(parseYmd(nextS.date))]} ${nextS.start}</b><em>${nextS.duration} min · dra ${nextS.count} kort</em></div>`:''}
-        </div>
-        <div class="card r-sug"><span class="eyebrow gold">Smart förslag</span>
-          ${!need&&best?`<p class="r-goal"><b>Veckomålet är nått.</b> Resten är bonus. Vila räknas också.</p>`:''}
-          ${best?`<div class="r-best"><small>Bäst</small><b>${DN[dow(parseYmd(best.date))]} ${toHM(best.start)} ser bra ut.</b><p>${reasonFor(best)}</p><button class="btn btn-primary btn-sm" data-ga="${best.date}|${toHM(best.start)}|${best.duration}|${best.need}">${IC.plus} Lägg till ${best.duration} min</button></div>
-          ${second?`<div class="r-2"><small>Alternativ</small><span>${DS[dow(parseYmd(second.date))]} ${toHM(second.start)} · ${second.duration} min</span><button class="btn btn-ghost btn-sm" data-ga="${second.date}|${toHM(second.start)}|${second.duration}|${second.need}">Lägg till</button></div>`:''}`
-          :`<p class="muted" style="font-size:.92rem;margin-top:8px">${weekEvents?'Inga fler realistiska luckor den här veckan. Vila räknas också.':'Lägg in din vecka så hittar jag luckorna.'}</p>`}
-        </div>
-        <div class="card mini" id="mini"></div>
-        ${tipCardHTML(pSel)}
-        <div class="card filters"><div class="f-h"><span class="eyebrow">Visa</span><button class="btn btn-ghost btn-sm" data-settings>Inställningar</button></div>
-          ${['work','school','study','meal','training','family','social','travel','appointment','other','motion'].map(k=>`<label><input type="checkbox" data-f="${k}" ${pFilter.has(k)?'checked':''}>${CAT[k].sv}<span class="sw" style="background:${CAT[k].sw}"></span></label>`).join('')}
-        </div>
-        <button class="btn btn-ghost btn-sm" data-imp style="justify-content:flex-start">${IC.up} Importera schema</button>
+        <section class="rs-block"><h4>Den här veckan</h4>
+          <div class="rs-nums"><div><b>${wkSessions.length}</b><span>planerade pass</span></div><div><b>${wkSessions.reduce((n,x)=>n+x.duration,0)} min</b><span>rörelse</span></div></div>
+        </section>
+        ${nextS?`<section class="rs-block"><h4>Nästa</h4><p class="rs-big">${DN[dow(parseYmd(nextS.date))]}<br>${nextS.start}</p><p class="rs-sub">${nextS.duration} min · dra ${nextS.count} kort</p></section>`:''}
+        <section class="rs-block"><h4><img src="${LOGO}" alt="" class="sym-xs">Motion</h4>
+          ${best?`<p class="rs-text">${!need?'Veckomålet är nått. Resten är bonus.<br>':''}${DN[dow(parseYmd(best.date))]} ${toHM(best.start)} ser bra ut.</p><p class="rs-sub">${reasonFor(best)}</p><button class="tlink" data-ga="${best.date}|${toHM(best.start)}|${best.duration}|${best.need}">Lägg till ${best.duration} min <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></button>`
+          :`<p class="rs-text">${weekEvents?'Inga fler realistiska luckor. Vila räknas också.':'Lägg in din vecka, så hittar jag luckorna.'}</p>`}
+        </section>
+        <section class="rs-block"><div id="mini" class="mini"></div></section>
+        <section class="rs-block">${tipCardHTML(pSel)}</section>
+        <section class="rs-block rs-links">
+          <details class="filters"><summary>Visa kategorier</summary>
+            ${['work','school','study','meal','training','family','social','travel','appointment','other','motion'].map(k=>`<label><input type="checkbox" data-f="${k}" ${pFilter.has(k)?'checked':''}>${CAT[k].sv}<span class="sw" style="background:${CAT[k].sw}"></span></label>`).join('')}
+          </details>
+          <button class="tlink sm" data-settings>Inställningar</button>
+          <button class="tlink sm" data-imp>Importera schema</button>
+        </section>
       </aside>
     </div>`;
   miniCal($('#mini',el)); bindTips(el,pSel); bindBanners(el);
@@ -1643,7 +1847,7 @@ function tipFor(cat,dateStr){
 }
 function tipCardHTML(dateStr){
   const tp=tipFor(tipCat,dateStr);
-  return `<div class="card tips" id="tips"><div class="eyebrow gold" style="margin-bottom:12px">Tips</div>
+  return `<div class="tips" id="tips"><h4>Tips</h4>
     <div class="seg" role="tablist">${Object.entries(TIPCAT).map(([k,v])=>`<button role="tab" aria-selected="${k===tipCat}" class="${k===tipCat?'on':''}" data-tc="${k}">${v}</button>`).join('')}</div>
     <div class="tip"><b>${esc(tp.t)}</b><p>${esc(tp.ctx)}${esc(tp.b)}</p></div>
     <div class="tip-act"><button class="btn btn-line btn-sm" data-tnext>Nytt tips</button><button class="btn btn-ghost btn-sm" data-task>Fråga Motion AI</button></div></div>`;
@@ -1806,7 +2010,7 @@ function localAI(raw){
     return {text:`Jag hade inte pressat in ett pass idag.\nTa en kort promenad om du vill röra på dig${s?', så flyttar vi passet till imorgon':''}. ${/sjuk|feber|förkyld/.test(q)?'Är du sjuk: vila helt tills du är frisk.':''}`.trim(),
       actions:s?[{type:'move',id:s.id,from:s.start,fromDate:s.date,date:tm,start:sg?toHM(sg.start):s.start}]:[],chips:['Ge mig fem minuter lugn rörlighet']};
   }
-  if(/helt slut|är slut|utmattad|orkar verkligen inte/.test(q)){
+  if(/helt slut|är slut|utmattad|orkar verkligen inte|trött idag|är trött/.test(q)){
     return {text:'Då gör vi det lätt för dig.\nAntingen fem minuter lugn rörlighet nu, eller så vilar du och vi tar det imorgon. Båda är okej.',
       actions:[{type:'add',date:t,start:nowSlot(),duration:5,need:'mobility',startNow:true}],chips:['Flytta dagens pass till imorgon']};
   }
@@ -1896,8 +2100,8 @@ function localAI(raw){
 /* ---------- action cards ---------- */
 function actionHTML(a,idx){
   const lbl=n=>NEED[n]||'Motion';
-  if(a.type==='options') return `<div class="opts-row" data-a="${idx}">${a.opts.map((o,k)=>`<div class="act opt-card ${o.state==='done'?'done':''}" data-o="${k}"><div class="eyebrow">Alternativ ${k+1}</div><div class="oc-d">${DS[dow(parseYmd(o.date))]} ${o.start}</div><div class="no-think sm"><span>${o.duration} MIN</span><span>${o.need==='family'?'FAMILJEKORT':'DRA '+cardsFor(o.duration)+' KORT'}</span></div><p class="sub">${esc(o.why)}</p><div class="btns"><button class="btn btn-primary btn-sm" data-opt="${k}">Lägg till</button></div><div class="ok"><img src="${LOGO}" alt="">Klart. ${relDay(o.date)} ${o.start}.</div></div>`).join('')}</div>`;
-  if(a.type==='add'&&!a.startNow) return `<div class="act" data-a="${idx}"><div class="eyebrow gold">${relDay(a.date)}</div><div class="oc-d">${a.start}–${toHM(toMin(a.start)+a.duration)}</div><div class="no-think sm"><span>${a.duration} MIN</span><span>${a.need==='family'?'FAMILJEKORT':'DRA '+cardsFor(a.duration)+' KORT'}</span><span>INGEN UTRUSTNING</span></div>${a.why?`<p class="sub">${esc(a.why)}</p>`:''}<div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Lägg till i planeraren</button><button class="btn btn-ghost btn-sm" data-do="no">Inte nu</button></div><div class="ok"><img src="${LOGO}" alt="">Klart. ${relDay(a.date)} ${a.start}.</div></div>`;
+  if(a.type==='options') return `<div class="opts-row" data-a="${idx}">${a.opts.map((o,k)=>`<div class="act opt-card ${o.state==='done'?'done':''}" data-o="${k}"><div class="row-d">${DN[dow(parseYmd(o.date))]}</div><div class="row-m"><b>${o.start}</b><span>${o.duration} min · ${o.need==='family'?'familjekort':'dra '+cardsFor(o.duration)+' kort'}</span><em>${esc(o.why)}</em></div><div class="btns"><button class="tlink" data-opt="${k}">${IC.plus} Lägg till</button></div><div class="ok"><img src="${LOGO}" alt="">Inlagt. ${o.start} – ${toHM(toMin(o.start)+o.duration)}</div></div>`).join('')}</div>`;
+  if(a.type==='add'&&!a.startNow) return `<div class="act" data-a="${idx}"><div class="row-d">${relDay(a.date)}</div><div class="row-m"><b>${a.start} – ${toHM(toMin(a.start)+a.duration)}</b><span>${a.duration} min · ${a.need==='family'?'familjekort':'dra '+cardsFor(a.duration)+' kort'} · ingen utrustning</span>${a.why?`<em>${esc(a.why)}</em>`:''}</div><div class="btns"><button class="tlink" data-do="ok">${IC.plus} Lägg till</button><button class="tlink muted" data-do="no">Inte nu</button></div><div class="ok"><img src="${LOGO}" alt="">Inlagt. ${relDay(a.date)} ${a.start} – ${toHM(toMin(a.start)+a.duration)}</div></div>`;
   if(a.type==='add') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">${a.startNow?'Nytt pass':'Föreslaget pass'}</div><div class="main">${a.duration} min ${lbl(a.need).toLowerCase()} · ${a.start}</div><div class="sub">${relDay(a.date)} · ${cardsFor(a.duration)} kort</div><div class="btns">${a.startNow?`<button class="btn btn-primary btn-sm" data-do="startnow">Skapa ${a.duration} min-pass</button>`:`<button class="btn btn-primary btn-sm" data-do="ok">Lägg till i planeraren</button>`}<button class="btn btn-ghost btn-sm" data-do="no">Inte nu</button></div><div class="ok">Tillagt.</div></div>`;
   if(a.type==='move') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Flytta pass</div><div class="sub">${relDay(a.date)}</div><div class="mv">${a.from}<span>→</span>${a.start}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Bekräfta ändringen</button><button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok"><img src="${LOGO}" alt="">Klart. ${relDay(a.date)} ${a.start}.</div></div>`;
   if(a.type==='resize') return `<div class="act" data-a="${idx}"><div class="eyebrow gold">Ändra längd</div><div class="main">${a.duration} min · ${a.start}</div><div class="btns"><button class="btn btn-primary btn-sm" data-do="ok">Bekräfta</button><button class="btn btn-ghost btn-sm" data-do="no">Avbryt</button></div><div class="ok">Ändrat.</div></div>`;
@@ -1951,14 +2155,15 @@ function vAI(el){
 function drawThread(){
   const th=$('#thread'); if(!th) return;
   if(!chat.length){
-    th.innerHTML=`<div class="hello"><img src="${LOGO}" alt="" class="wmk" aria-hidden="true"><img src="${LOGO}" alt="" class="hs"><span class="eyebrow gold">Motion AI</span><h2>Din vecka.<br>Lite smartare.</h2><p>Jag hjälper dig hitta realistiska tillfällen att röra dig, utan att bygga om hela livet.</p>
-      <div class="hello-q">Hur ser dagen ut?</div>
-      <div class="sugg">${['Jag har 15 minuter','Jag är helt slut','Planera min vecka','Ge mig något snabbt','Hitta nästa träningslucka'].map(s=>`<button class="chip" data-chip="${s}">${s}</button>`).join('')}</div>
-      <div class="sugg minor"><button class="chip ghosty" data-chip="Tips om stretch, hälsa och kost">Tips om stretch, hälsa och kost</button><button class="chip ghosty" data-upload>Ladda upp mitt schema</button></div></div>`;
+    th.innerHTML=`<div class="hello"><img src="${LOGO}" alt="" class="hs"><span class="eyebrow">Motion</span><h2>Vad behöver du få in<br>den här veckan?</h2>
+      <form class="hero-in" id="hf"><label class="sr" for="hi">Skriv till Motion</label><input id="hi" autocomplete="off" placeholder="Jag vill träna två gånger…"><button type="submit" aria-label="Skicka">${IC.send}</button></form>
+      <div class="hints">${['Planera min vecka','Jag har 15 minuter','Hitta nästa träningslucka','Jag är trött idag'].map(s=>`<button data-chip="${s}">${s==='Hitta nästa träningslucka'?'Hitta nästa lucka':s}</button>`).join('')}</div>
+      <div class="hints minor"><button data-chip="Tips om stretch, hälsa och kost">Stretch, hälsa och kost</button><button data-upload>Ladda upp schema</button></div></div>`;
+    const hf=$('#hf',th); hf.onsubmit=e=>{e.preventDefault();const v=$('#hi',th).value.trim();if(v)sendAI(v)}; setTimeout(()=>$('#hi',th)&&$('#hi',th).focus({preventScroll:true}),60);
     return;
   }
   th.innerHTML=chat.map((m,mi)=>m.role==='user'?`<div class="msg me">${esc(m.text)}</div>`:
-    `<div class="msg bot"><img src="${LOGO}" alt="" class="${m.typing?'think-sym':''}"><div class="body">${m.typing?`<div class="thinking"><span>${m.think||'Ser över din vecka…'}</span></div>`:m.text.split('\n').filter(Boolean).map(p=>`<p>${esc(p)}</p>`).join('')}
+    `<div class="msg bot"><img src="${LOGO}" alt="" class="${m.typing?'think-sym':''}"><div class="body">${m.typing?`<div class="thinking"><span>${m.think||'Ser över veckan…'}</span></div>`:m.text.split('\n').filter(Boolean).map(p=>`<p>${esc(p)}</p>`).join('')}
       ${(m.actions||[]).map((a,ai)=>a.state==='no'?'':a.state==='done'?actionHTML(a,mi+'.'+ai).replace('class="act"','class="act done"'):actionHTML(a,mi+'.'+ai)).join('')}
       ${m.chips?`<div class="sugg" style="justify-content:flex-start;margin-top:12px">${m.chips.map(c=>`<button class="chip" data-chip="${c}">${c}</button>`).join('')}</div>`:''}</div></div>`).join('');
   const last=th.lastElementChild; last&&last.scrollIntoView({block:'end',behavior:'smooth'});
@@ -1966,7 +2171,7 @@ function drawThread(){
 async function sendAI(text){
   if(aiBusy) return; aiBusy=true;
   chat.push({role:'user',text}); const lq=text.toLowerCase();
-  const think=/vecka/.test(lq)?'Ser över din vecka…':/lucka|när|imorgon/.test(lq)?'Hittar en lucka…':/min|snabbt|slut|orkar/.test(lq)?'Bygger ett pass…':/tips|stretch|kost|hälsa/.test(lq)?'Tänker…':'Ser över din vecka…';
+  const think=/vecka/.test(lq)?'Ser över veckan…':/lucka|när|imorgon/.test(lq)?'Hittar en lucka…':/min|snabbt|slut|orkar/.test(lq)?'Planerar…':/tips|stretch|kost|hälsa/.test(lq)?'Tänker…':'Ser över veckan…';
   const bot={role:'bot',text:'',typing:true,think}; chat.push(bot); $('.ai')?.classList.add('has'); drawThread();
   let out=null;
   if(apiOK&&location.protocol.startsWith('http')){
