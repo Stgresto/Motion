@@ -25,17 +25,9 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Skydd mot missbruk: tillåt bara anrop från vår egen sajt
-  const origin = req.headers.origin || '';
-  const okOrigin = /^https:\/\/(www\.)?motionplanner\.se$/.test(origin) || /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin) || /^http:\/\/localhost(:\d+)?$/.test(origin);
-  if (origin && !okOrigin) {
-    res.status(403).json({ error: 'Forbidden origin' });
-    return;
-  }
+  const { model, max_tokens, system, messages, tools, tool_choice } = req.body || {};
 
-  const { model, max_tokens, system, messages } = req.body || {};
-
-  if (!Array.isArray(messages) || messages.length === 0 || messages.length > 40 || JSON.stringify(messages).length > 6000000) {
+  if (!Array.isArray(messages) || messages.length === 0) {
     res.status(400).json({ error: 'messages array is required' });
     return;
   }
@@ -49,10 +41,14 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: (typeof model === 'string' && /^claude-/.test(model)) ? model : 'claude-sonnet-4-6',
-        max_tokens: Math.min(Number(max_tokens) || 1200, 3000),
+        model: model || 'claude-sonnet-4-6',
+        max_tokens: max_tokens || 1200,
         system: system || undefined,
         messages,
+        // Motion AI (app.html) sends tools so the model can read the planner
+        // and propose changes. Older pages simply don't send them.
+        ...(Array.isArray(tools) && tools.length ? { tools } : {}),
+        ...(tool_choice ? { tool_choice } : {}),
       }),
     });
 
