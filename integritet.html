@@ -7,13 +7,13 @@
 <meta name="description" content="Så hanterar MOTION UF dina personuppgifter.">
 <meta name="robots" content="index,follow">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="legal.css">
 </head>
 <body>
 <a class="skip" href="#main">Hoppa till innehållet</a>
 <header class="lg-head"><div class="in">
-  <a class="lg-logo" href="index.html"><img src="images/logo_mark_v2.png" alt="">MOTION UF</a>
+  <a class="lg-logo" href="index.html"><img src="images/motion-symbol-dark.svg" alt="">MOTION UF</a>
   <a class="lg-back" href="index.html">← Tillbaka till startsidan</a>
 </div></header>
 <main id="main">
@@ -31,19 +31,23 @@
 <thead><tr><th>Var</th><th>Uppgifter</th><th>Ändamål</th><th>Rättslig grund</th></tr></thead>
 <tbody>
 <tr><td>Väntelistan</td><td>E-postadress</td><td>Meddela dig när kortleken går att beställa</td><td>Samtycke (art. 6.1 a GDPR)</td></tr>
-<tr><td>AI-coachen (profil)</td><td>Namn (valfritt), ålder, träningsnivå, mål, intressen, tider för sömn/träning</td><td>Anpassa träningsplan och svar</td><td>Samtycke (art. 6.1 a) som du ger när du skapar din profil</td></tr>
-<tr><td>AI-coachen (chatt och schema)</td><td>Dina meddelanden, schemahändelser och eventuella skärmdumpar du själv laddar upp</td><td>Ge dig svar och bygga ditt veckoschema</td><td>Samtycke (art. 6.1 a)</td></tr>
+<tr><td>Appen utan konto</td><td>Namn eller smeknamn, ditt schema, dina inställningar och framsteg</td><td>Planera och visa din träning</td><td>Tjänsten du själv använder (art. 6.1 b)</td></tr>
+<tr><td>Konto</td><td>E-postadress, lösenord (lagras krypterat av vår inloggningstjänst), ditt schema, dina inställningar och framsteg</td><td>Spara och synka ditt schema mellan enheter</td><td>Avtal om tjänsten (art. 6.1 b) och samtycke när du skapar kontot</td></tr>
+<tr><td>Motion AI</td><td>Dina meddelanden, dina schemahändelser som AI:n behöver för att svara, samt filer eller skärmdumpar du själv bifogar</td><td>Ge dig svar och föreslå ändringar i ditt schema</td><td>Samtycke (art. 6.1 a) som du ger genom att använda funktionen</td></tr>
 <tr><td>Webbplatsen</td><td>IP-adress och tekniska loggar hos vår webbhost</td><td>Leverera och skydda sajten</td><td>Berättigat intresse (art. 6.1 f)</td></tr>
 </tbody></table></div>
 <p>Vi ber inte om och vill inte ha känsliga uppgifter (t.ex. sjukdomar eller diagnoser). Skriv inte in sådant i chatten och ladda inte upp skärmdumpar som innehåller andras uppgifter.</p>
 
 <h2>3. Var sparas uppgifterna?</h2>
 <ul>
-<li><strong>Profil, plan, schema och chatthistorik</strong> sparas bara i din egen webbläsare (lokal lagring) på din enhet. Vi har ingen användardatabas och kan inte läsa dem. Rensar du webbläsarens data försvinner de.</li>
+<li><strong>Utan konto:</strong> ditt schema, dina inställningar och framsteg sparas bara i din egen webbläsare (lokal lagring) på din enhet. Vi kan inte läsa dem. Rensar du webbläsarens data försvinner de.</li>
+<li><strong>Med konto:</strong> dina uppgifter sparas i en databas hos Supabase (Supabase Inc.) på servrar i Stockholm (EU). Åtkomstreglerna i databasen gör att varje konto bara kan läsa och ändra sina egna rader. Vi sparar uppgifterna så länge du har kontot.</li>
 <li><strong>Väntelistan:</strong> din e-postadress skickas till formulärtjänsten Formspree (Formspree, Inc., USA) som skickar den vidare till oss. Vi sparar den tills kortleken har lanserats, högst 12 månader, eller tills du ber oss ta bort den.</li>
-<li><strong>AI-svar:</strong> när du chattar skickas dina meddelanden (och ev. uppladdad bild) via vår serverfunktion hos Vercel till AI-leverantören Anthropic (USA) för att ta fram ett svar. Vi lagrar inte meddelandena på vår server. Anthropic behandlar uppgifterna enligt sin integritetspolicy (<a href="https://www.anthropic.com/legal/privacy" rel="noopener">anthropic.com/legal/privacy</a>).</li>
-<li><strong>Hosting:</strong> sajten ligger hos Vercel Inc. (USA), som kan logga IP-adress och tekniska uppgifter.</li>
+<li><strong>Motion AI:</strong> när du chattar, bifogar ett schema eller importerar tider skickas dina meddelanden, relevanta schemauppgifter och eventuell fil via vår serverfunktion hos Vercel till AI-leverantören Anthropic (USA) för att ta fram ett svar. Vi lagrar inte själva meddelandena på vår server. Anthropic behandlar uppgifterna enligt sin integritetspolicy (<a href="https://www.anthropic.com/legal/privacy" rel="noopener">anthropic.com/legal/privacy</a>). Du bestämmer själv vad du skickar. Du ser alltid förslag innan något läggs in i ditt schema.</li>
+<li><strong>Kameran:</strong> när du skannar ett kort läses QR-koden direkt i din webbläsare. Bilder sparas eller skickas inte.</li>
+<li><strong>Hosting och skript:</strong> sajten ligger hos Vercel Inc. (USA), som kan logga IP-adress och tekniska uppgifter. Vissa skript (inloggningsbiblioteket och QR-läsaren) hämtas från jsDelivr.</li>
 <li><strong>Typsnitt:</strong> sidorna hämtar typsnitt från Google Fonts, vilket innebär att din IP-adress skickas till Google när sidan laddas.</li>
+<li><strong>E-post:</strong> bekräftelsemejl när du skapar konto skickas via vår inloggningstjänst.</li>
 </ul>
 <p>Vissa av dessa leverantörer finns i USA. Överföring sker med stöd av de skyddsmekanismer som GDPR kräver (t.ex. EU–US Data Privacy Framework eller standardavtalsklausuler) hos respektive leverantör.</p>
 
@@ -51,15 +55,15 @@
 <p>Vi säljer aldrig personuppgifter och använder ingen annonsering, spårning eller analys. Uppgifter lämnas bara till de leverantörer som beskrivs ovan och bara för det ändamål som anges.</p>
 
 <h2>5. Barn och unga</h2>
-<p>I Sverige måste du vara minst 13 år för att själv lämna samtycke till behandling av personuppgifter i en onlinetjänst. Är du under 13 ska en vårdnadshavare godkänna att du använder AI-coachen eller går med i väntelistan.</p>
+<p>I Sverige måste du vara minst 13 år för att själv lämna samtycke till behandling av personuppgifter i en onlinetjänst. Är du under 13 ska en vårdnadshavare godkänna att du skapar konto, använder Motion AI eller går med i väntelistan.</p>
 
 <h2>6. Dina rättigheter</h2>
 <p>Du har rätt att få tillgång till, rätta, radera och begränsa dina uppgifter, invända mot behandling, få ut dem i läsbart format (dataportabilitet) och när som helst återkalla ditt samtycke utan att det påverkar tidigare behandling. Mejla <a data-co="email" href="#"></a>. Vi svarar inom en månad.</p>
-<p>Du kan själv radera din profil, plan och chatt genom att rensa webbplatsdata för sidan i webbläsaren.</p>
+<p>Utan konto raderar du allt genom att rensa webbplatsdata för sidan i webbläsaren (eller knappen för att rensa data i appens inställningar). Vill du att vi raderar ditt konto och alla uppgifter kopplade till det, mejla oss, så gör vi det inom en månad.</p>
 <p>Är du missnöjd har du rätt att klaga hos Integritetsskyddsmyndigheten (IMY), <a href="https://www.imy.se" rel="noopener">imy.se</a>.</p>
 
-<h2>7. AI-coachen ger inte medicinska råd</h2>
-<p>AI-coachen ger allmänna råd om rörelse och vanor. Den är inte läkare eller dietist. Kontakta vården vid skador eller hälsoproblem. AI-svar kan innehålla fel.</p>
+<h2>7. Motion AI ger inte medicinska råd</h2>
+<p>Motion AI ger allmänna råd om rörelse och vanor. Den är inte läkare eller dietist. Kontakta vården vid skador eller hälsoproblem. AI-svar kan innehålla fel.</p>
 
 <h2>8. Ändringar</h2>
 <p>Ändrar vi policyn publicerar vi den nya versionen här med nytt datum.</p>

@@ -804,7 +804,7 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
    v3 — calm, editorial, human. Less interface, more intention.
    ========================================================= */
 :root{
-  --motion-bg:#F4F1EA; --motion-surface:#FAF9F6; --motion-surface-2:#EEEAE2; --motion-text:#171714; --motion-muted:#747169; --motion-border:#DDD8CE;
+  --motion-bg:#F4F1EA; --motion-surface:#FAF9F6; --motion-surface-2:#EEEAE2; --motion-text:#171714; --motion-muted:#68645C; --motion-border:#DDD8CE;
   --hair:rgba(20,20,15,.07); --motion-gold:#B68E4E; --motion-gold-ink:#7A5C25;
   --bg:var(--motion-bg); --white:var(--motion-surface); --warm:var(--motion-surface-2); --text:var(--motion-text); --muted:var(--motion-muted); --border:var(--motion-border);
   --r-sm:8px; --r-md:12px; --r-lg:16px; --shadow:none; --motion-shadow:none; --t:160ms;
@@ -1004,6 +1004,11 @@ h1.big{font-weight:500;letter-spacing:-.03em}
 .ai-nudge b{font-weight:500}
 .weeksum,.timeline,.ai-nudge{border-color:var(--border)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+.acct-consent{display:flex;gap:9px;align-items:flex-start;font-size:.78rem;line-height:1.5;margin:10px 0 4px;cursor:pointer}
+.acct-consent input{width:18px;height:18px;margin-top:2px;flex-shrink:0;accent-color:currentColor}
+.acct-consent a,.ai-legal a{text-decoration:underline;text-underline-offset:3px}
+.ai-legal{font-size:.72rem;line-height:1.5;opacity:.75;margin:8px 4px 0;text-align:center}
 </style>
 </head>
 <body>
@@ -1913,10 +1918,11 @@ function drawAccount(box){
   if(Y.user){ box.innerHTML=`<span class="eyebrow">${SYMI}Konto</span><p>Inloggad som <b>${esc(Y.user.email)}</b>. Ditt schema är privat och synkas till ditt konto.</p><button class="btn btn-line btn-sm" id="out">Logga ut</button>`; $('#out',box).onclick=async()=>{await Y.signOut();toast('Utloggad')}; return; }
   box.innerHTML=`<span class="eyebrow">${SYMI}Konto</span><p>Logga in för att spara schemat på ditt konto och nå det från flera enheter.</p>
     <form class="acct-f" id="af"><label class="sr" for="ae">Mejl</label><input id="ae" type="email" placeholder="namn@mejl.se" autocomplete="email" required><label class="sr" for="ap">Lösenord</label><input id="ap" type="password" placeholder="Lösenord (minst 8 tecken)" autocomplete="current-password" minlength="8" required>
+    <label class="acct-consent"><input type="checkbox" id="apc"><span>Jag godkänner <a href="integritet.html" target="_blank" rel="noopener">integritetspolicyn</a> och <a href="villkor.html" target="_blank" rel="noopener">villkoren</a> och är minst 13 år (eller har vårdnadshavares OK). Krävs bara när du skapar konto.</span></label>
     <div class="acct-a"><button class="btn btn-primary btn-sm" type="submit">Logga in</button><button class="btn btn-line btn-sm" type="button" id="su">Skapa konto</button></div><p class="acct-m" id="am" role="status"></p></form>`;
   const msg=t=>$('#am',box).textContent=t;
   $('#af',box).onsubmit=async e=>{e.preventDefault(); const r=await Y.signIn($('#ae',box).value,$('#ap',box).value); msg(r.error?'Fel mejl eller lösenord.':'');};
-  $('#su',box).onclick=async()=>{ const em=$('#ae',box).value, pw=$('#ap',box).value; if(!em||pw.length<8) return msg('Fyll i mejl och ett lösenord på minst 8 tecken.'); const r=await Y.signUp(em,pw); msg(r.error?r.error.message:'Kolla din mejl för att bekräfta kontot.'); };
+  $('#su',box).onclick=async()=>{ const em=$('#ae',box).value, pw=$('#ap',box).value; if(!em||pw.length<8) return msg('Fyll i mejl och ett lösenord på minst 8 tecken.'); if(!$('#apc',box).checked) return msg('Kryssa i att du godkänner integritetspolicyn och villkoren.'); const r=await Y.signUp(em,pw); msg(r.error?r.error.message:'Kolla din mejl för att bekräfta kontot.'); };
 }
 
 /* =========================================================
@@ -2127,7 +2133,7 @@ function vAI(el){
   el.innerHTML=`<div class="ai ${chat.length?'has':''}">
     <div class="ai-head"><img src="${LOGO}" alt=""><h1>MOTION AI</h1></div>
     <div class="thread" id="thread" aria-live="polite"></div>
-    <div class="composer"><form id="cf"><label class="sr" for="ci">Skriv till Motion AI</label><input id="ci" autocomplete="off" placeholder="Vad behöver du hjälp med?"><input type="file" id="cfile" accept="image/*,.pdf,.ics,text/calendar" hidden><button type="button" class="clip" id="clip" aria-label="Bifoga schema (bild, PDF eller kalenderfil)" title="Bifoga schema">${IC.clip}</button><button type="submit" aria-label="Skicka">${IC.send}</button></form></div>
+    <div class="composer"><form id="cf"><label class="sr" for="ci">Skriv till Motion AI</label><input id="ci" autocomplete="off" placeholder="Vad behöver du hjälp med?"><input type="file" id="cfile" accept="image/*,.pdf,.ics,text/calendar" hidden><button type="button" class="clip" id="clip" aria-label="Bifoga schema (bild, PDF eller kalenderfil)" title="Bifoga schema">${IC.clip}</button><button type="submit" aria-label="Skicka">${IC.send}</button></form><p class="ai-legal">Motion AI kan ha fel och ger inte medicinsk rådgivning. Dina meddelanden och bifogade scheman skickas till en AI-tjänst (Anthropic) för att ge svar. Skriv inte in känsliga uppgifter. <a href="integritet.html" target="_blank" rel="noopener">Integritet</a></p></div>
   </div>`;
   drawThread();
   if(window._pendingAI){ const q=window._pendingAI; window._pendingAI=null; setTimeout(()=>sendAI(q),150); }

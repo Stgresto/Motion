@@ -4,7 +4,7 @@ window.MOTION_CO = {
   name:    '',   // UF-företagets registrerade namn, t.ex. 'Motion UF'
   org:     '',   // Organisationsnummer, t.ex. '123456-7890' (finns hos UF Sverige)
   address: '',   // Postadress, t.ex. 'Gatan 1, 123 45 Stockholm'
-  email:   '',   // Kontakt-e-post för frågor, ånger, personuppgifter
+  email:   'hej@motionplanner.se',   // Kontakt-e-post för frågor, ånger, personuppgifter
   school:  '',   // Skola / UF-region (valfritt)
   instagram: ''  // Full URL till ert Instagram-konto (valfritt — länken döljs om tom)
 };

@@ -217,7 +217,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .pcard .back .qr{width:40%;aspect-ratio:1}
 .pcard .back .qr svg{width:100%;height:100%}
 .pcard .back .ex{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:10.5cqw;line-height:1.05;margin-top:7cqw;color:#171A18}
-.pcard .back .dose{font-size:4cqw;letter-spacing:.2em;color:#5C564D;margin-top:3cqw}
+.pcard .back .dose{font-size:4cqw;letter-spacing:.2em;color:#B7AE9C;margin-top:3cqw}
 .pcard .back .rule2{width:20%;height:1px;background:var(--gold-c);opacity:.7;margin:6cqw 0 auto}
 .pcard .back .meta{display:grid;grid-template-columns:repeat(3,1fr);width:100%;gap:2cqw;margin-top:6cqw}
 .pcard .back .meta span{display:flex;flex-direction:column;align-items:center;gap:2cqw;font-size:3.7cqw;letter-spacing:.12em;color:var(--gold-c);font-weight:600}
@@ -280,19 +280,19 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .browser{border-radius:var(--r-md);background:#FAF8F3;color:var(--ink);overflow:hidden;box-shadow:0 30px 70px -30px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.08)}
 .br-bar{display:flex;align-items:center;gap:7px;height:38px;padding:0 14px;background:#EFEAE1;border-bottom:1px solid var(--line-l)}
 .br-bar i{width:9px;height:9px;border-radius:50%;background:#D3CBBE}
-.br-bar span{margin-left:14px;font-size:12px;color:#7C766C;background:#F8F5EF;padding:4px 12px;border-radius:6px}
+.br-bar span{margin-left:14px;font-size:12px;color:#67625A;background:#F8F5EF;padding:4px 12px;border-radius:6px}
 .br-body{display:grid;grid-template-columns:150px 1fr;min-height:340px}
-.br-side{border-right:1px solid var(--line-l);padding:18px 14px;display:flex;flex-direction:column;gap:4px;font-size:12px;color:#7C766C}
+.br-side{border-right:1px solid var(--line-l);padding:18px 14px;display:flex;flex-direction:column;gap:4px;font-size:12px;color:#67625A}
 .br-side b{font-weight:500;color:var(--ink);background:#F1ECE3;padding:7px 10px;border-left:2px solid var(--gold)}
 .br-side em{font-style:normal;padding:7px 10px}
 .br-main{padding:22px 24px;display:flex;flex-direction:column;gap:14px}
-.br-days{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;font-size:11px;letter-spacing:.1em;color:#7C766C;text-align:center}
+.br-days{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;font-size:11px;letter-spacing:.1em;color:#67625A;text-align:center}
 .br-days div{padding:8px 0;border:1px solid var(--line-l)}
 .br-days .on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .br-slot{display:grid;grid-template-columns:58px 1fr auto;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--line-l);background:#fff}
 .br-slot .t{font-variant-numeric:tabular-nums;font-weight:600;font-size:14px}
 .br-slot .w{font-size:13px}
-.br-slot .w small{display:block;color:#7C766C;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.br-slot .w small{display:block;color:#67625A;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
 .br-slot .st{font-size:11px;letter-spacing:.08em;padding:5px 10px;border:1px solid #1D3A2E;color:#1D3A2E;border-radius:6px}
 .br-slot.mute{opacity:.55}
 .br-ai{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:13px;line-height:1.5;color:#3C3832;margin-top:4px;padding-top:14px;border-top:1px solid var(--line-l)}
@@ -394,6 +394,10 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
   .js .media img,.js .hero img{transform:none!important}
   *{scroll-behavior:auto!important}
 }
+
+.wl-consent{display:flex;gap:10px;align-items:flex-start;text-align:left;font-size:.82rem;line-height:1.5;margin:14px 0 14px;cursor:pointer;color:inherit}
+.wl-consent input{width:20px;height:20px;margin-top:2px;flex-shrink:0;accent-color:#111}
+.wl-consent a{text-decoration:underline;text-underline-offset:3px}
 </style>
 <script>document.documentElement.classList.add('js')</script>
 </head>
@@ -464,13 +468,13 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
 <section class="section how" id="how" aria-labelledby="howT">
   <div class="wrap">
     <div class="head-row">
-      <div><span class="kicker" data-reveal>Så funkar det</span><h2 id="howT" class="h2" data-reveal style="--d:1">Från notis till rörelse på under en minut.</h2></div>
+      <div><span class="kicker" data-reveal>Så funkar det</span><h2 id="howT" class="h2" data-reveal style="--d:1">Från plan till rörelse på under en minut.</h2></div>
       <p class="lede" data-reveal style="--d:2">Fem steg, och tre av dem tar mindre än tio sekunder.</p>
     </div>
     <ol class="seq" id="seq">
       <span class="seq-line" aria-hidden="true"><i></i></span>
       <li data-reveal><span class="no">01</span><span class="node"></span><h3>Planera</h3><p>Planeraren hittar en lucka i din dag som faktiskt passar.</p></li>
-      <li data-reveal style="--d:1"><span class="no">02</span><span class="node"></span><h3>Påminn</h3><p>Du får en notis när det är dags. Ingen förhandling med dig själv.</p></li>
+      <li data-reveal style="--d:1"><span class="no">02</span><span class="node"></span><h3>Påminn</h3><p>Planen visar när det är dags. Ingen förhandling med dig själv.</p></li>
       <li data-reveal style="--d:2"><span class="no">03</span><span class="node"></span><h3>Dra</h3><p>Dra så många kort som planen säger. Du vet inte i förväg vilka det blir.</p></li>
       <li data-reveal style="--d:3"><span class="no">04</span><span class="node"></span><h3>Skanna</h3><p>Rikta kameran mot QR-koden. Instruktionen öppnas direkt.</p></li>
       <li data-reveal style="--d:4"><span class="no">05</span><span class="node"></span><h3>Rör dig</h3><p>Följ instruktionen. Inget att planera, inget att tänka på.</p></li>
@@ -537,7 +541,7 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
     <div class="surprise-grid">
       <div>
         <h2 id="surT" class="h2" data-reveal>Du vet aldrig vad som väntar.</h2>
-        <p class="first" data-reveal style="--d:1">Varje pass är en överraskning. Det tar bort beslutströttheten och gör att det fortfarande känns roligt vecka åtta.</p>
+        <p class="first" data-reveal style="--d:1">Varje pass är en överraskning. Det tar bort beslutströttheten och gör det lite roligare att komma igång.</p>
         <p data-reveal style="--d:2">Du behöver bara dyka upp, dra ett kort och skanna. Resten är redan bestämt.</p>
       </div>
       <figure class="media r43" data-reveal style="--d:1"><picture><source type="image/webp" srcset="/images/m/product-800.webp 800w, /images/m/product-1365.webp 1365w" sizes="(max-width:760px) 100vw, 46vw"><img src="/images/m/product.jpg" alt="Två MOTION UF-kort på en stenyta, framsida och baksida med QR-kod" width="1365" height="1024" loading="lazy" decoding="async"></picture></figure>
@@ -565,10 +569,10 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
     <div class="ai-grid">
       <div>
         <span class="kicker" data-reveal>AI-coachen</span>
-        <h2 id="aiT" class="h2" data-reveal style="--d:1">En coach som lär sig din vecka.</h2>
+        <h2 id="aiT" class="h2" data-reveal style="--d:1">En coach som utgår från din vecka.</h2>
         <ul class="feat" data-reveal style="--d:2">
           <li><strong>Bygger din vecka</strong><span>Ett schema utifrån dina mål, din nivå och din tid.</span></li>
-          <li><strong>Anpassar sig</strong><span>Säg hur passet kändes, så justeras nästa.</span></li>
+          <li><strong>Anpassar sig efter dig</strong><span>Berätta vad som ändrats, så föreslår den en ny plan.</span></li>
           <li><strong>Svarar på frågor</strong><span>Stretch, sömn, kost och återhämtning.</span></li>
           <li><strong>Behåller överraskningen</strong><span>Dagens övningar avslöjas först när du skannar.</span></li>
         </ul>
@@ -607,9 +611,9 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
     <div class="f-row">
       <p class="f-tag">We think. You move.</p>
       <div class="f-col"><b>Utforska</b><a href="#how">Så funkar det</a><a href="#deck">Kortleken</a><a href="#science">Forskningen</a><a href="/app.html">Appen</a></div>
-      <div class="f-col"><b>Kontakt</b><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a><a href="mailto:hej@motionplanner.se">Kontakt</a><a href="#">Integritet</a></div>
+      <div class="f-col"><b>Kontakt</b><a data-co="instagram" href="#" target="_blank" rel="noopener" hidden>Instagram</a><a href="mailto:hej@motionplanner.se">Kontakt</a><a href="om-oss.html">Om oss</a><a href="integritet.html">Integritet</a><a href="villkor.html">Villkor</a><a href="retur.html">Ånger &amp; retur</a><a href="cookies.html">Cookies</a></div>
     </div>
-    <div class="f-bot"><span>MOTION UF · Ett UF-företag</span><span>© 2026</span></div>
+    <div class="f-bot"><span>MOTION UF · Ett UF-företag inom Ung Företagsamhet · <span data-co="name"></span> · org.nr <span data-co="org"></span></span><span>© 2026</span></div>
   </div>
 </footer>
 
@@ -620,8 +624,9 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
     <form id="wlForm" novalidate>
       <label for="wlEmail">Mejladress</label>
       <input type="email" id="wlEmail" name="email" placeholder="namn@mejl.se" required autocomplete="email">
+      <label class="wl-consent"><input type="checkbox" id="wlConsent" required><span>Jag samtycker till att MOTION UF sparar min mejladress för att meddela mig när kortleken släpps. Jag är minst 13 år (eller har en vårdnadshavares OK). Du kan återkalla samtycket när som helst. Läs <a href="integritet.html" target="_blank" rel="noopener">integritetspolicyn</a>.</span></label>
       <button type="submit" class="btn btn-dark">Gå med i väntelistan</button>
-      <p class="micro" id="wlMsg" role="status">Ett mejl när det är dags. Inget annat.</p>
+      <p class="micro" id="wlMsg" role="alert">Ett mejl när det är dags. Inget annat.</p>
     </form>
     <div class="wl-ok" role="status">
       <div class="chk"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
@@ -734,12 +739,14 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
     e.preventDefault();
     if(!email.value||!email.checkValidity()){ msg.textContent='Skriv en giltig mejladress.'; email.setAttribute('aria-invalid','true'); email.focus(); return; }
     email.removeAttribute('aria-invalid');
+    if(!$('#wlConsent').checked){ msg.textContent='Kryssa i samtycket för att gå med.'; $('#wlConsent').focus(); return; }
     const btn=$('button[type="submit"]',form); btn.disabled=true; btn.textContent='Skickar…';
-    fetch('https://formspree.io/f/mjykbdey',{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify({email:email.value,källa:'Motion UF väntelista'})})
+    fetch('https://formspree.io/f/mjykbdey',{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify({email:email.value,samtycke:'Ja, '+new Date().toISOString(),källa:'Motion UF väntelista'})})
       .then(r=>{ if(!r.ok) throw 0; wl.classList.add('done'); $('.wl-x',wl).focus(); })
       .catch(()=>{ btn.disabled=false; btn.textContent='Gå med i väntelistan'; msg.textContent='Det gick inte att skicka. Kontrollera uppkopplingen och försök igen.'; });
   });
 })();
 </script>
+<script src="company.js"></script>
 </body>
 </html>
