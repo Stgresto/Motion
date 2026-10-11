@@ -372,6 +372,12 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 @media(max-width:860px){.ex{grid-template-columns:1fr;gap:28px}}
 .ex-visual{position:relative;aspect-ratio:1;border-radius:0;background:radial-gradient(70% 70% at 50% 45%,#fbf8f2,#efe8db);display:grid;place-items:center;overflow:hidden;border:1px solid var(--border)}
 .ex-visual video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* 3D-figur (Blender → GLB) */
+.fig{position:absolute;inset:0;width:100%;height:100%;background:transparent;--poster-color:transparent;opacity:0;transition:opacity .5s;outline:none}
+.fig.on{opacity:1}
+.ex-visual.has-fig .pc{display:none}
+.fig-hint{position:absolute;left:0;right:0;bottom:10px;text-align:center;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#68645C;pointer-events:none;opacity:0;transition:opacity .5s}
+.ex-visual.has-fig .fig-hint{opacity:1}
 .pc{width:min(56%,280px);aspect-ratio:5/7;border-radius:0;background:linear-gradient(165deg,#FBF8F1,#F1EBDF);box-shadow:0 30px 50px -22px rgba(70,52,30,.45);position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:12% 9%;animation:floaty 6s ease-in-out infinite;container-type:inline-size}
 @keyframes floaty{50%{transform:translateY(-8px) rotate(-1deg)}}
 .pc::after{content:"";position:absolute;inset:5%;border:1px solid var(--gold);border-radius:0;pointer-events:none}
@@ -2427,13 +2433,32 @@ function found(id){
 /* =========================================================
    EXERCISE — the card, opened
    ========================================================= */
+/* ---- 3D-figur som visar övningen (motion-figure.glb, gjord i Blender) ---- */
+const FIG_SIDE=new Set(['MOT-IND-001','MOT-IND-002','MOT-IND-003','MOT-IND-004','MOT-IND-005','MOT-IND-008','MOT-IND-009','MOT-IND-011','MOT-IND-014','MOT-IND-018','MOT-FAM-004','MOT-FAM-011','MOT-FAM-019','MOT-FAM-023']);
+const FIG_IDS=new Set(['MOT-IND-001','MOT-IND-002','MOT-IND-003','MOT-IND-004','MOT-IND-005','MOT-IND-006','MOT-IND-007','MOT-IND-008','MOT-IND-009','MOT-IND-010','MOT-IND-011','MOT-IND-012','MOT-IND-013','MOT-IND-014','MOT-IND-015','MOT-IND-018','MOT-FAM-004','MOT-FAM-007','MOT-FAM-011','MOT-FAM-015','MOT-FAM-019','MOT-FAM-023']);
+let mvLoading=false;
+function ensureMV(){ if(mvLoading||window.customElements&&customElements.get('model-viewer')) return; mvLoading=true;
+  const sc=document.createElement('script'); sc.type='module'; sc.src='https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js'; sc.onerror=()=>{mvLoading=false}; document.head.appendChild(sc); }
+function figHTML(c){
+  if(c.video_url||!FIG_IDS.has(c.id)) return '';
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return '';
+  const orbit=FIG_SIDE.has(c.id)?'72deg 82deg 4.6m':'28deg 82deg 4.3m';
+  return `<model-viewer class="fig" src="/motion-figure.glb" animation-name="${c.id}" autoplay camera-controls disable-zoom disable-pan interaction-prompt="none" camera-orbit="${orbit}" camera-target="0m 0.82m 0m" field-of-view="30deg" min-field-of-view="30deg" max-field-of-view="30deg" shadow-intensity="0.9" shadow-softness="0.9" environment-image="neutral" exposure="1.05" alt="Animerad figur som visar övningen ${esc(c.name)}" loading="eager"></model-viewer><span class="fig-hint" aria-hidden="true">Dra för att vrida</span>`;
+}
+function mountFig(el){
+  const fg=$('.fig',el); if(!fg) return;
+  ensureMV();
+  const box=fg.parentElement;
+  fg.addEventListener('load',()=>{fg.classList.add('on');box.classList.add('has-fig')});
+  fg.addEventListener('error',()=>{fg.remove();box.classList.remove('has-fig')});
+}
 function vPlay(el){
   const c=cardById(routeArg||''); if(!c){ el.innerHTML=`<div class="scan"><h1>Kortet hittades inte</h1><p class="lead">Kontrollera koden och försök igen.</p><a class="btn btn-primary" style="margin-top:20px" href="#scan">Skanna igen</a></div>`; return; }
   const fam=c.deck==='family'; const s=activeSession(); const num=+c.id.slice(-3);
   const durTxt=c.mode==='longest'?'SÅ LÄNGE NI ORKAR':`${c.duration} SEK`;
   if(!S.players.length) S.players=[S.user.name];
   el.innerHTML=`<div class="ex">
-    <div class="ex-visual">${c.video_url?`<video src="${esc(c.video_url)}" autoplay muted loop playsinline></video>`:`<div class="pc"><span class="cat">${CAT_SV[c.category]}</span><span class="rule"></span><img src="${LOGO}" alt=""><div class="nm">${esc(c.name)}</div><div class="id">${c.id}</div></div>`}</div>
+    <div class="ex-visual">${figHTML(c)}${c.video_url?`<video src="${esc(c.video_url)}" autoplay muted loop playsinline></video>`:`<div class="pc"><span class="cat">${CAT_SV[c.category]}</span><span class="rule"></span><img src="${LOGO}" alt=""><div class="nm">${esc(c.name)}</div><div class="id">${c.id}</div></div>`}</div>
     <div class="ex-info">
       ${s&&!fam?`<div class="sess-banner" style="margin-bottom:22px"><div style="font-weight:600">Kort ${s.cards.filter(x=>x.completed).length+1} av ${s.count}</div>${dotsHTML(s)}</div>`:''}
       <span class="eyebrow gold">${fam?'Familjeutmaning':'Kort '+num} · ${CAT_SV[c.category]}</span>
@@ -2447,7 +2472,7 @@ function vPlay(el){
       <div style="margin-top:10px;text-align:center"><a class="btn btn-ghost btn-sm" href="#scan">Skanna ett annat kort</a></div>
     </div></div>`;
   const drawPl=()=>{const pl=$('#pl',el);if(!pl)return;pl.innerHTML=S.players.map((p,i)=>`<span class="player">${esc(p)}<button data-rp="${i}" aria-label="Ta bort ${esc(p)}">${IC.x}</button></span>`).join('')};
-  drawPl();
+  drawPl(); mountFig(el);
   if(fam){ $('#ap',el).onsubmit=e=>{e.preventDefault();const v=$('#pn').value.trim();if(v&&S.players.length<c.players_max){S.players.push(v);save();$('#pn').value='';drawPl()}};
     $('#pl',el).onclick=e=>{const b=e.target.closest('[data-rp]');if(b){S.players.splice(+b.dataset.rp,1);save();drawPl()}}; }
   $('#go',el).onclick=()=>{ if(fam&&S.players.length<c.players_min) return toast(`Lägg till minst ${c.players_min} spelare`); fam?familyMode(c):workout(c); };
