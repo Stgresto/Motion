@@ -2419,10 +2419,16 @@ async function startCamera(){
     scanTimer=setInterval(async()=>{
       if(!v.videoWidth) return; let txt2=null;
       if(detector){ try{const r=await detector.detect(v); if(r[0]) txt2=r[0].rawValue}catch(e){} }
-      else if(window.jsQR){ const w=480,h=Math.round(v.videoHeight/v.videoWidth*w); cv.width=w;cv.height=h;cx.drawImage(v,0,0,w,h); const r=jsQR(cx.getImageData(0,0,w,h).data,w,h,{inversionAttempts:'dontInvert'}); if(r) txt2=r.data; }
-      const ov=txt2&&parseOvning(txt2); if(ov){ stopCamera(); location.href=ov; return; }
-      const id=txt2&&parseCode(txt2); if(id&&cardById(id)){ stopCamera(); found(id); }
-    },260);
+      if(!txt2 && window.jsQR){
+        const w=Math.min(960,v.videoWidth), h=Math.round(v.videoHeight/v.videoWidth*w); cv.width=w;cv.height=h;cx.drawImage(v,0,0,w,h);
+        const r=jsQR(cx.getImageData(0,0,w,h).data,w,h,{inversionAttempts:'attemptBoth'}); if(r) txt2=r.data;
+      }
+      if(!txt2) return;
+      const ov=parseOvning(txt2); if(ov){ stopCamera(); location.href=ov; return; }
+      const id=parseCode(txt2); if(id&&cardById(id)){ stopCamera(); found(id); return; }
+      if(/^https?:\/\//i.test(txt2)){ stopCamera(); location.href=txt2; return; }
+      const hint=document.querySelector('#cam .hint'); if(hint) hint.textContent='Koden hittades men känns inte igen: '+String(txt2).slice(0,40);
+    },200);
   }catch(e){ txt.textContent='Ingen åtkomst till kameran. Tillåt kameran i webbläsaren eller ange koden manuellt.'; }
 }
 function found(id){
