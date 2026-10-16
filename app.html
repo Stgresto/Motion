@@ -402,6 +402,42 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 .addp{display:flex;gap:8px;margin-top:10px}
 .addp input{flex:1;min-height:48px;border:1px solid var(--border);border-radius:0;padding:0 18px;background:var(--white)}
 
+.pfig svg{width:100%;height:100%;overflow:visible}
+.pfig .gd{stroke:var(--border);stroke-width:1.5}
+.pfig .ln,.pfig .tr{stroke:var(--text);stroke-width:9;stroke-linecap:round;fill:none}
+.pfig .lf{stroke:#9A968B;stroke-width:8;stroke-linecap:round;opacity:.75}
+.pfig .tr{stroke-width:11}
+.pfig .hd{fill:var(--bg);stroke:var(--gold);stroke-width:3.2}
+.pfig .sh{fill:rgba(23,26,24,.07)}
+
+/* ---------- Flerkorts-skanning & pass ---------- */
+.cam.flash::after{content:'';position:absolute;inset:0;border:3px solid var(--gold);animation:camflash .9s var(--ease) forwards;pointer-events:none}
+@keyframes camflash{from{opacity:1}to{opacity:0}}
+#tray{text-align:left;margin-top:22px;padding:20px;background:var(--white);border:1px solid var(--border)}
+.tray-h{display:flex;justify-content:space-between;align-items:baseline}
+.tray-h b{font-size:1.5rem;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tray-bar{height:3px;background:var(--border-soft);margin:10px 0 6px}
+.tray-bar i{display:block;height:100%;background:var(--gold);transition:width .4s var(--ease)}
+.tray-l{list-style:none;display:flex;flex-direction:column}
+.tray-l li{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--border-soft);animation:fadein .4s var(--ease)}
+.tray-l .tn{flex:none;width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--gold);color:var(--gold-ink);font-weight:600;font-size:.85rem}
+.tray-l li>div{flex:1;min-width:0}
+.tray-l b{display:block;font-weight:600}
+.tray-l small{display:block;color:var(--gold-ink);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;margin:2px 0 4px}
+.tray-l p{color:var(--muted);font-size:.92rem;line-height:1.45}
+.tray-l button{flex:none;width:32px;height:32px;display:grid;place-items:center;color:var(--muted)}
+.tray-go{width:100%;min-height:60px;margin-top:18px;letter-spacing:.1em}
+.wo.pass .pass-mid{justify-content:flex-start;overflow-y:auto;padding:6px 0 10px;gap:6px}
+.pstage{position:relative;width:min(88vw,430px);height:min(34vh,300px);flex:none}
+.pfig{position:absolute;inset:0}
+.pmark{position:absolute;left:50%;top:44%;width:44%;transform:translate(-50%,-50%);opacity:.06;z-index:-1}
+.pphase{font-size:.78rem;letter-spacing:.2em;font-weight:700;color:var(--gold-ink);margin-top:4px}
+.pstage.go~.pphase{color:var(--green)}
+.ptime{font-size:clamp(3.6rem,15vw,5.6rem);font-weight:600;letter-spacing:-.04em;font-variant-numeric:tabular-nums;line-height:1;margin-top:6px}
+.pbar{width:min(80vw,380px);height:3px;background:var(--border);margin:6px 0}
+.pbar i{display:block;height:100%;width:0;background:var(--green)}
+.pquote{min-height:3em;max-width:24em;font-style:italic;color:var(--gold-ink);transition:opacity .35s;margin-top:6px}
+
 /* ---------- WORKOUT ---------- */
 .wo{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;padding:calc(20px + var(--sat)) 24px calc(24px + var(--sab));animation:fadein .4s var(--ease)}
 .wo.fam{background:#F3EEE4}
@@ -1061,7 +1097,251 @@ const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelect
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const LOGO='/images/motion-symbol-gold.svg';
 const CARDS=window.MUF_CARDS||[];
-const cardById=id=>CARDS.find(c=>c.id===String(id).toUpperCase());
+const cardById=id=>CARDS.find(c=>c.id===String(id).toUpperCase())||ovCard(id);
+/* ---------- Figur: animerad siluett som visar övningen ---------- */
+const FIG={
+  L:{u:34,f:32,t:46,c:46},
+  base(){return {h:[0,90],s:[0,148],f1:[8,0],f2:[-8,0],a1:[8,84],a2:[-8,84],hd:0}},
+  P(o){return Object.assign(FIG.base(),o)},
+  sw(p){return Object.assign({},p,{f1:p.f2,f2:p.f1,a1:p.a2,a2:p.a1})},
+  ik(p0,p1,l1,l2,sg){
+    let dx=p1[0]-p0[0],dy=p1[1]-p0[1],d=Math.hypot(dx,dy)||1e-6;
+    d=Math.min(Math.max(d,Math.abs(l1-l2)+.5),l1+l2-.01);
+    const ux=dx/Math.hypot(dx,dy||1e-6)||0,uy=dy/(Math.hypot(dx,dy)||1e-6);
+    const a=(l1*l1-l2*l2+d*d)/(2*d),h=Math.sqrt(Math.max(0,l1*l1-a*a));
+    const m=[p0[0]+ux*a+sg*h*(-uy),p0[1]+uy*a+sg*h*ux];
+    const e=[p0[0]+ux*d,p0[1]+uy*d];
+    return [m,e];
+  },
+  A:{}
+};
+(function(){
+  const P=FIG.P,sw=FIG.sw,st=P({});
+  const A=FIG.A;
+  const W1=P({h:[0,88],f1:[24,0],f2:[-22,9],a1:[-16,92],a2:[18,100]}), Wm=P({h:[0,93],f1:[2,12],f2:[-2,0],a1:[0,88],a2:[2,90]}), Wm2=sw(Wm);
+  A.walk={c:[W1,Wm,sw(W1),Wm2],T:1.3,ks:1,es:1};
+  const M1=P({f1:[34,40],f2:[-4,0],a1:[-14,100],a2:[22,112]});
+  A.march={c:[M1,sw(M1)],T:1.1,ks:1,es:1};
+  A.marchfast={c:[M1,sw(M1)],T:.7,ks:1,es:1};
+  A.squat={c:[P({a1:[26,126],a2:[24,124]}),P({h:[-28,46],s:[14,100],f1:[10,0],f2:[-6,0],a1:[34,112],a2:[32,110],hd:0})],T:3.4,ks:1,es:1};
+  A.wallsit={c:[P({h:[-24,48],s:[-22,106],f1:[22,0],f2:[16,0],a1:[24,96],a2:[22,94]}),P({h:[-24,50],s:[-22,108],f1:[22,0],f2:[16,0],a1:[24,98],a2:[22,96]})],T:2.4,ks:1,es:1};
+  A.lunge={c:[P({a1:[-4,94],a2:[-4,94]}),P({h:[4,50],s:[8,108],f1:[34,0],f2:[-38,7],a1:[-2,94],a2:[-2,94]})],T:3.2,ks:1,es:-1};
+  const PU=P({h:[-58,42],s:[2,62],f1:[-144,3],f2:[-146,3],a1:[4,0],a2:[0,0]}), PD=P({h:[-58,18],s:[2,26],f1:[-144,3],f2:[-146,3],a1:[4,0],a2:[0,0]});
+  A.pushup={c:[PU,PD],T:2.6,ks:1,es:-1};
+  A.plank={c:[P({h:[-58,32],s:[2,38],f1:[-146,3],f2:[-148,3],a1:[30,2],a2:[26,2]}),P({h:[-58,35],s:[2,40],f1:[-146,3],f2:[-148,3],a1:[30,2],a2:[26,2]})],T:3,ks:1,es:-1};
+  const CL=P({h:[-58,42],s:[2,62],f1:[-34,26],f2:[-146,3],a1:[4,0],a2:[0,0]});
+  A.climber={c:[CL,sw(CL)],T:.9,ks:1,es:-1};
+  const SU=PU, T1=P(Object.assign({},PU,{a1:[22,66]}));
+  A.tap={c:[SU,T1,SU,sw(T1)],T:3.4,ks:1,es:-1};
+  A.pike={c:[P({h:[-28,86],s:[14,40],f1:[-60,0],f2:[-62,0],a1:[34,0],a2:[30,0]}),P({h:[-28,86],s:[28,18],f1:[-60,0],f2:[-62,0],a1:[34,0],a2:[30,0]})],T:3,ks:1,es:-1};
+  const Q=P({h:[-60,64],s:[0,64],f1:[-104,4],f2:[-110,4],a1:[4,0],a2:[-2,0]});
+  const BD=P(Object.assign({},Q,{f1:[-148,66],a2:[66,66]}));
+  A.birddog={c:[Q,BD,Q,sw(BD)],T:5,ks:1,es:-1};
+  const DB0=P({h:[0,10],s:[-60,10],f1:[46,56],f2:[44,54],a1:[-60,70],a2:[-56,70]});
+  const DB1=P(Object.assign({},DB0,{f1:[90,14],a2:[-120,12]}));
+  A.deadbug={c:[DB0,DB1,DB0,sw(DB1)],T:5,ks:1,es:1};
+  const BR0=P({h:[-2,8],s:[-62,8],f1:[40,0],f2:[36,0],a1:[-20,3],a2:[-24,3]}), BR1=P({h:[-6,44],s:[-56,8],f1:[40,0],f2:[36,0],a1:[-20,3],a2:[-24,3]});
+  A.bridge={c:[BR0,BR1],T:3.4,ks:1,es:-1};
+  const BM=P(Object.assign({},BR1,{f1:[26,52]}));
+  A.bridgemarch={c:[BR1,BM,BR1,sw(BM)],T:4.2,ks:1,es:-1};
+  A.superman={c:[P({h:[-10,8],s:[50,8],f1:[-100,8],f2:[-104,8],a1:[110,8],a2:[108,8]}),P({h:[-10,12],s:[50,22],f1:[-100,30],f2:[-104,28],a1:[110,36],a2:[108,34]})],T:3.2,ks:1,es:-1};
+  A.crunch={c:[P({h:[0,8],s:[-60,8],f1:[34,0],f2:[30,0],a1:[-30,14],a2:[-34,14]}),P({h:[0,8],s:[-50,32],f1:[34,0],f2:[30,0],a1:[30,20],a2:[26,18]})],T:2.6,ks:1,es:-1};
+  A.reach={c:[P({a1:[8,84],a2:[-8,84]}),P({s:[2,148],a1:[6,214],a2:[-6,212]})],T:4,ks:1,es:-1};
+  A.reachfast={c:A.reach.c,T:2.2,ks:1,es:-1};
+  A.fold={c:[st,P({h:[-14,90],s:[40,72],f1:[8,0],f2:[-8,0],a1:[48,6],a2:[44,6]})],T:4.4,ks:1,es:-1};
+  const BA=P({f1:[2,0],f2:[16,42],a1:[14,148],a2:[-12,150]});
+  A.balance={c:[BA,P(Object.assign({},BA,{h:[2,90],s:[2,148]})),BA,P(Object.assign({},BA,{h:[-2,90],s:[-2,148]}))],T:4,ks:1,es:-1};
+  A.jump={c:[P({h:[-12,60],s:[10,112],f1:[6,0],f2:[-6,0],a1:[-30,80],a2:[-34,78]}),P({h:[0,140],s:[0,198],f1:[6,50],f2:[-6,46],a1:[6,232],a2:[-6,230]})],T:1.4,ks:1,es:-1};
+  A.calf={c:[st,P({h:[0,99],s:[0,157],f1:[8,10],f2:[-8,10],a1:[8,93],a2:[-8,93]})],T:1.8,ks:1,es:1};
+  const PG=P({h:[0,86],s:[4,142],f1:[24,0],f2:[-24,0],a1:[34,140],a2:[12,130]});
+  A.punch={c:[PG,P(Object.assign({},PG,{a1:[12,130],a2:[34,140]}))],T:.9,ks:1,es:1};
+  A.dips={c:[P({h:[-20,54],s:[0,104],f1:[44,0],f2:[40,0],a1:[-12,44],a2:[-16,44]}),P({h:[-20,32],s:[0,82],f1:[44,0],f2:[40,0],a1:[-12,44],a2:[-16,44]})],T:2.8,ks:1,es:-1};
+  const HP=(x)=>P({h:[x,90],s:[-x*.4,148],a1:[-6,92],a2:[-6,92]});
+  A.hipc={c:[HP(10),P({h:[0,95],s:[0,148],a1:[-6,92],a2:[-6,92]}),HP(-10),P({h:[0,85],s:[0,148],a1:[-6,92],a2:[-6,92]})],T:3.6,ks:1,es:-1};
+  const D1=P({h:[8,90],s:[-2,148],f1:[14,0],f2:[-10,0],a1:[22,196],a2:[-18,100]});
+  const D2=P({h:[-8,90],s:[2,148],f1:[10,0],f2:[-14,0],a1:[-18,100],a2:[22,196]});
+  A.dance={c:[D1,D2],T:1.6,ks:1,es:-1};
+})();
+FIG.mount=function(box,name,opt){
+  const NS='http://www.w3.org/2000/svg';
+  const an=FIG.A[name]||FIG.A.walk;
+  const keys=['h','s','f1','f2','a1','a2'];
+  const C=an.c.map(p=>Object.assign(FIG.base(),p));
+  box.innerHTML='<svg viewBox="-160 -26 320 250" role="img" aria-label="Animerad figur som visar övningen"><line class="gd" x1="-150" y1="210" x2="110" y2="210"/></svg>';
+  const svg=box.firstChild;
+  const mk=(c,tag='line')=>{const e=document.createElementNS(NS,tag);e.setAttribute('class',c);svg.appendChild(e);return e};
+  const far=['a2','f2'].map(()=>[mk('lf'),mk('lf')]);
+  const torso=mk('tr'), near=[mk('ln'),mk('ln'),mk('ln'),mk('ln')], head=mk('hd','circle'); head.setAttribute('r','11');
+  const sh=mk('sh','ellipse'); sh.setAttribute('ry','3');
+  const Y=y=>210-y;
+  const seg=(e,a,b)=>{e.setAttribute('x1',a[0]);e.setAttribute('y1',Y(a[1]));e.setAttribute('x2',b[0]);e.setAttribute('y2',Y(b[1]))};
+  let t0=null,raf=0,stopped=false;
+  const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+  function pose(tm){
+    const n=C.length, ph=((tm/an.T)%1)*n, i=Math.floor(ph), f=ease(ph-i), A=C[i%n], B=C[(i+1)%n], o={};
+    keys.forEach(k=>o[k]=[A[k][0]+(B[k][0]-A[k][0])*f,A[k][1]+(B[k][1]-A[k][1])*f]);
+    return o;
+  }
+  function draw(o){
+    const L=FIG.L, ks=an.ks, es=an.es;
+    const [k2,e2]=FIG.ik(o.h,o.f2,L.t,L.c,ks), [k1,e1]=FIG.ik(o.h,o.f1,L.t,L.c,ks);
+    const [el2,w2]=FIG.ik(o.s,o.a2,L.u,L.f,es), [el1,w1]=FIG.ik(o.s,o.a1,L.u,L.f,es);
+    seg(far[0][0],o.s,el2);seg(far[0][1],el2,w2);seg(far[1][0],o.h,k2);seg(far[1][1],k2,e2);
+    seg(torso,o.h,o.s);
+    seg(near[0],o.h,k1);seg(near[1],k1,e1);seg(near[2],o.s,el1);seg(near[3],el1,w1);
+    let dx=o.s[0]-o.h[0],dy=o.s[1]-o.h[1],d=Math.hypot(dx,dy)||1;
+    const hc=[o.s[0]+dx/d*20,o.s[1]+dy/d*20];
+    head.setAttribute('cx',hc[0]);head.setAttribute('cy',Y(hc[1]));
+    sh.setAttribute('cx',(o.h[0]+ (o.f1[0]+o.f2[0])/2)/2);sh.setAttribute('cy',211);sh.setAttribute('rx',70);
+  }
+  const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function loop(ts){ if(stopped||!svg.isConnected) return; if(t0==null) t0=ts; draw(pose(reduce?0:(ts-t0)/1000)); raf=requestAnimationFrame(loop); }
+  if(opt&&opt.at!=null){draw(pose(opt.at*an.T));return ()=>{}}
+  draw(pose(0)); raf=requestAnimationFrame(loop);
+  return ()=>{stopped=true;cancelAnimationFrame(raf)};
+};
+
+/* =========================================================
+   FLERKORTS-PASS — skanna alla kort → Kör → figur, citat, timer, röst
+   ========================================================= */
+const EX=[{"n":"01","t":"Rask promenad","k":"Kondition","l":"Lätt","d":"10 min i raskt tempo","m":10,"f":"Helkropp","a":"Gå med långa, aktiva steg och låt armarna pendla i takt med benen.","b":"Öka tempot tills andningen blir tydligt högre och du fortfarande kan prata.","p":"Sätt ned hälen först och rulla över hela foten.","x":"walk"},{"n":"02","t":"En låt","k":"Kondition","l":"Lätt","d":"1 låt","m":4,"f":"Helkropp","a":"Sätt på en låt du gillar och börja röra dig fritt med mjuka knän.","b":"Lyft armarna, hoppa lätt och dansa hela låten ut.","p":"Varje rörelse räknas. Välj en snabb låt för mer puls.","x":"dance"},{"n":"03","t":"Trappminuter","k":"Kondition","l":"Medium","d":"3 × 1 min","m":5,"f":"Ben","a":"Ställ dig vid nedersta trappsteget och sätt hela foten på steget.","b":"Gå uppför i jämnt tempo, vänd och gå lugnt ned. Fortsätt i en minut.","p":"Håll i ledstången vid behov och vila 30 sekunder mellan varje minut.","x":"march"},{"n":"04","t":"Tv-pausen","k":"Styrka","l":"Lätt","d":"10 reps","m":2,"f":"Ben","a":"Sitt längst fram på stolen med fötterna höftbrett i golvet.","b":"Res dig upp utan stöd av händerna och sätt dig långsamt igen.","p":"Gör en omgång mellan varje avsnitt. Luta överkroppen lätt framåt när du reser dig.","x":"squat"},{"n":"05","t":"Balanslinjen","k":"Balans","l":"Lätt","d":"2 × 10 steg","m":3,"f":"Ben & bål","a":"Sträck ut armarna åt sidorna och tänk dig en rak linje på golvet.","b":"Gå längs linjen med hälen precis framför tårna, ett steg i taget.","p":"Fäst blicken på en punkt framför dig. Lugnt tempo ger bäst kontroll.","x":"balance"},{"n":"06","t":"Morgonsträck","k":"Rörlighet","l":"Lätt","d":"5 andetag","m":2,"f":"Överkropp","a":"Stå med fötterna höftbrett och armarna längs sidorna.","b":"Andas in och sträck armarna högt över huvudet. Stanna kvar i fem lugna andetag.","p":"Gör den direkt när du stigit upp och sträck dig mot taket.","x":"reach"},{"n":"07","t":"Bänkarmhävning","k":"Styrka","l":"Lätt","d":"3 × 10 reps","m":5,"f":"Överkropp","a":"Placera händerna axelbrett på köksbänken och gå bakåt tills kroppen bildar en rak linje.","b":"Böj armbågarna och sänk bröstet mot bänkkanten. Tryck dig tillbaka.","p":"Håll magen spänd. Gå längre bak för att göra övningen tyngre.","x":"pushup"},{"n":"08","t":"Tempovågor","k":"Kondition","l":"Medium","d":"5 × (1 + 1 min)","m":10,"f":"Helkropp","a":"Gå i lugnt tempo i en minut.","b":"Öka till ditt snabbaste gångtempo i en minut. Gå sedan lugnt igen.","p":"Pumpa med armarna i de snabba vågorna.","x":"marchfast"},{"n":"09","t":"Skrivbordsreset","k":"Rörlighet","l":"Lätt","d":"5 per sida","m":2,"f":"Nacke & axlar","a":"Stå eller sitt rakt med armarna avslappnade.","b":"Vrid huvudet lugnt åt sidan och rulla axlarna bakåt. Byt sida.","p":"Passar varje timme vid skärmen. Låt rörelsen vara mjuk och långsam.","x":"reach"},{"n":"10","t":"Tåhävningar","k":"Styrka","l":"Lätt","d":"3 × 15 reps","m":3,"f":"Vader","a":"Stå bakom en stol och håll lätt i ryggstödet.","b":"Res dig upp på tårna, stanna en sekund och sänk långsamt.","p":"Den långsamma vägen ned ger mest effekt.","x":"calf"},{"n":"11","t":"Framfällning","k":"Rörlighet","l":"Lätt","d":"8 reps","m":3,"f":"Baksida","a":"Stå rakt med fötterna höftbrett och armarna längs sidorna.","b":"Fäll överkroppen framåt med mjuka knän och låt armarna hänga. Rulla långsamt upp igen.","p":"Andas ut på vägen ned och låt nacken vara avslappnad.","x":"fold"},{"n":"12","t":"Sidosteg","k":"Kondition","l":"Lätt","d":"3 × 1 min","m":4,"f":"Ben","a":"Stå med fötterna ihop och lätt böjda knän.","b":"Ta ett steg åt sidan, för ihop fötterna och växla sida i jämn rytm.","p":"Lägg till armar som följer med i rörelsen för mer puls.","x":"walk"},{"n":"13","t":"Väggänglar","k":"Rörlighet","l":"Lätt","d":"10 reps","m":3,"f":"Axlar","a":"Stå nära väggen med armarna böjda och händerna mot väggen i axelhöjd.","b":"För armarna rakt upp längs väggen och sänk dem långsamt igen.","p":"Håll axlarna låga och långt från öronen.","x":"reach"},{"n":"14","t":"Stolsknäböj","k":"Styrka","l":"Lätt","d":"3 × 10 reps","m":5,"f":"Ben","a":"Stå framför en stol med fötterna axelbrett.","b":"Sänk rumpan bakåt tills den nuddar sitsen och res dig direkt igen.","p":"Tyngden ligger på hälarna och knäna pekar åt samma håll som tårna.","x":"squat"},{"n":"15","t":"Armsving","k":"Kondition","l":"Medium","d":"3 × 12 reps","m":4,"f":"Helkropp","a":"Böj knäna, luta dig lätt framåt och svinga armarna bakåt.","b":"Sträck på benen och svinga armarna framåt och uppåt i en mjuk rörelse.","p":"Låt rörelsen komma från höften och hitta en jämn rytm.","x":"reachfast"},{"n":"16","t":"Mobilen ner","k":"Återhämtning","l":"Lätt","d":"10 min","m":10,"f":"Helkropp","a":"Lägg mobilen i fickan eller lämna den hemma.","b":"Gå en promenad med fria händer och se dig omkring.","p":"Ta en ny väg och låt tankarna vandra.","x":"reach"},{"n":"17","t":"Höftcirklar","k":"Rörlighet","l":"Lätt","d":"10 per håll","m":2,"f":"Höft","a":"Stå med händerna på höfterna och lätt böjda knän.","b":"Rita stora cirklar med höften, tio varv åt varje håll.","p":"Gör cirklarna så stora som det känns skönt.","x":"hipc"},{"n":"18","t":"Lätt marsch","k":"Kondition","l":"Lätt","d":"2 min","m":2,"f":"Ben","a":"Marschera på stället med aktiva armar.","b":"Lyft knäna högre i takt med armarna.","p":"Perfekt uppvärmning före en längre övning.","x":"march"},{"n":"19","t":"Fotledscirklar","k":"Rörlighet","l":"Lätt","d":"10 per fot","m":3,"f":"Fotleder","a":"Sitt på golvet med böjda knän och stöd med händerna bakom dig.","b":"Sträck ut ett ben och rita cirklar med foten åt båda hållen. Byt fot.","p":"Rör bara foten och låt benet vara stilla.","x":"balance"},{"n":"20","t":"Trädet","k":"Balans","l":"Medium","d":"30 sek per ben","m":3,"f":"Balans","a":"Stå stadigt med armarna ut åt sidorna.","b":"Placera ena foten mot insidan av det andra benet och samla händerna framför bröstet. Håll.","p":"Fäst blicken på en punkt. Foten kan vila mot vaden eller låret.","x":"balance"},{"n":"21","t":"Skuggboxning","k":"Kondition","l":"Lätt","d":"3 × 45 sek","m":4,"f":"Överkropp","a":"Stå i gardställning med ena foten framför den andra och händerna vid hakan.","b":"Slå raka slag i luften och växla arm i jämn takt.","p":"Vrid lätt i höften i varje slag och ta tillbaka handen till garden.","x":"punch"},{"n":"22","t":"Upp från golvet","k":"Styrka","l":"Medium","d":"6 reps","m":4,"f":"Helkropp","a":"Sitt på golvet med böjda knän.","b":"Res dig till stående med så lite stöd som möjligt och sätt dig ned igen.","p":"Testa olika vägar upp. Färre stödpunkter gör övningen tyngre.","x":"squat"},{"n":"23","t":"Fönsterandning","k":"Återhämtning","l":"Lätt","d":"6 andetag","m":2,"f":"Andning","a":"Ställ dig vid ett fönster med armarna längs sidorna och andas ut lugnt.","b":"Andas in och sträck armarna upp. Sänk dem när du andas ut.","p":"Låt utandningen vara längre än inandningen.","x":"reach"},{"n":"24","t":"Hallutfall","k":"Styrka","l":"Medium","d":"2 × 10 steg","m":4,"f":"Ben","a":"Stå i ena änden av hallen med fötterna ihop.","b":"Ta ett långt kliv framåt och sänk bakre knät. Kliv vidare med andra benet.","p":"Håll överkroppen upprätt och främre knät ovanför foten.","x":"lunge"},{"n":"25","t":"Ballongen","k":"Tillsammans","l":"Lätt","d":"Håll den i luften","m":3,"f":"Helkropp","a":"Blås upp en ballong och släpp den i luften.","b":"Håll ballongen svävande så länge ni kan med händer, huvud eller fötter.","p":"Räkna träffarna och slå ert rekord nästa gång.","x":"reachfast"},{"n":"26","t":"Upptäcktsrundan","k":"Återhämtning","l":"Lätt","d":"10 min","m":10,"f":"Helkropp","a":"Gå ut och välj en kort runda i lugnt tempo.","b":"Lägg märke till fem saker du ser, fyra du hör och tre du känner.","p":"Gå i din egen takt och låt sinnena leda.","x":"walk"},{"n":"27","t":"Knäböj","k":"Styrka","l":"Medium","d":"3 × 12 reps","m":6,"f":"Ben","a":"Stå med fötterna axelbrett och armarna sträckta framåt.","b":"Sänk dig som om du satte dig på en stol och res dig igen.","p":"Bröstet är upprätt och tyngden ligger på hälarna.","x":"squat"},{"n":"28","t":"Bakåtutfall","k":"Styrka","l":"Medium","d":"3 × 8 per ben","m":6,"f":"Ben","a":"Stå rakt med fötterna höftbrett och händerna samlade framför bröstet.","b":"Kliv bakåt och sänk bakre knät mot golvet. Tryck dig tillbaka till start.","p":"Främre knät stannar ovanför foten hela vägen.","x":"lunge"},{"n":"29","t":"Höftlyft","k":"Styrka","l":"Lätt","d":"3 × 12 reps","m":5,"f":"Säte","a":"Ligg på rygg med böjda knän, fötterna i golvet och armarna längs sidorna.","b":"Pressa höften uppåt tills kroppen bildar en rak linje. Sänk långsamt.","p":"Spänn sätet i toppen och stanna en sekund.","x":"bridge"},{"n":"30","t":"Väggsittning","k":"Styrka","l":"Medium","d":"3 × 30 sek","m":4,"f":"Ben","a":"Stå med ryggen mot väggen och fötterna en bit ut.","b":"Glid ned tills knäna är i rät vinkel och håll.","p":"Ryggen ligger platt mot väggen hela tiden.","x":"wallsit"},{"n":"31","t":"Upphopp","k":"Kondition","l":"Svår","d":"3 × 10 reps","m":5,"f":"Ben","a":"Gå ned i en knäböj med händerna framför bröstet.","b":"Explodera upp i ett hopp och landa mjukt tillbaka i knäböjen.","p":"Landa tyst på framfoten och låt knäna fjädra.","x":"jump"},{"n":"32","t":"Sumoknäböj","k":"Styrka","l":"Medium","d":"3 × 12 reps","m":5,"f":"Ben & säte","a":"Stå brett med tårna riktade snett utåt.","b":"Sänk höften rakt ned med knäna i linje med tårna och res dig igen.","p":"Pressa knäna utåt och håll ryggen rak.","x":"squat"},{"n":"33","t":"Armhävningar","k":"Styrka","l":"Medium","d":"3 × 10 reps","m":10,"f":"Helkropp","a":"Placera händerna axelbrett och håll kroppen rak från huvud till häl.","b":"Sänk bröstet mot golvet och tryck dig upp igen.","p":"Sätt knäna i golvet för en lättare variant.","x":"pushup"},{"n":"34","t":"Dips på stol","k":"Styrka","l":"Medium","d":"3 × 10 reps","m":5,"f":"Armar","a":"Sitt på stolskanten med händerna bredvid höfterna.","b":"Flytta fram rumpan, böj armbågarna och sänk dig. Pressa upp igen.","p":"Använd en stadig stol och håll armbågarna riktade bakåt.","x":"dips"},{"n":"35","t":"Superman","k":"Styrka","l":"Lätt","d":"3 × 10 reps","m":4,"f":"Rygg","a":"Ligg på mage med armarna sträckta framåt.","b":"Lyft armar och ben samtidigt, håll två sekunder och sänk.","p":"Blicken riktas mot golvet så att nacken förblir lång.","x":"superman"},{"n":"36","t":"Pikearmhävning","k":"Styrka","l":"Svår","d":"3 × 8 reps","m":5,"f":"Axlar","a":"Stå i ett omvänt V med händerna i golvet och höften högt.","b":"Böj armarna och sänk huvudet mot golvet. Tryck upp igen.","p":"Gå närmare händerna med fötterna för att göra den tyngre.","x":"pike"},{"n":"37","t":"Y-T-W-lyft","k":"Styrka","l":"Lätt","d":"3 × 6 varv","m":4,"f":"Rygg & axlar","a":"Ligg på mage med armarna sträckta framåt.","b":"Lyft bröst och armar och för armarna genom formerna Y, T och W.","p":"Dra ihop skulderbladen i varje position.","x":"reach"},{"n":"38","t":"Plankan","k":"Bål","l":"Medium","d":"3 × 30 sek","m":4,"f":"Bål","a":"Placera underarmarna i golvet med armbågarna under axlarna.","b":"Lyft kroppen till en rak linje från huvud till häl och håll.","p":"Spänn magen och sätet. Andas lugnt hela tiden.","x":"plank"},{"n":"39","t":"Döda insekten","k":"Bål","l":"Lätt","d":"3 × 10 reps","m":4,"f":"Bål","a":"Ligg på rygg med armarna mot taket och knäna i rät vinkel.","b":"Sträck ut motsatt arm och ben mot golvet. Växla sida.","p":"Ländryggen ligger kvar mot golvet genom hela rörelsen.","x":"deadbug"},{"n":"40","t":"Fågelhunden","k":"Bål","l":"Lätt","d":"3 × 8 per sida","m":4,"f":"Bål & rygg","a":"Stå på alla fyra med händerna under axlarna och knäna under höfterna.","b":"Sträck ut motsatt arm och ben, håll två sekunder och växla.","p":"Ryggen är stilla som ett bord hela tiden.","x":"birddog"},{"n":"41","t":"Sidoplanka","k":"Bål","l":"Svår","d":"2 × 30 sek per sida","m":4,"f":"Bål","a":"Ligg på sidan med armbågen under axeln och benen raka.","b":"Lyft höften och sträck den fria armen mot taket. Håll.","p":"Sätt nedre knät i golvet för en lättare variant.","x":"plank"},{"n":"42","t":"Hälnudd","k":"Bål","l":"Medium","d":"3 × 20 reps","m":4,"f":"Bål","a":"Sitt med böjda knän och luta dig bakåt med rak rygg.","b":"Håll positionen och nudda växelvis hälarna med händerna.","p":"Luta dig längre bakåt för att göra den tyngre.","x":"crunch"},{"n":"43","t":"Bergsklättraren","k":"Kondition","l":"Svår","d":"3 × 30 sek","m":4,"f":"Helkropp","a":"Stå i armhävningsposition med händerna under axlarna.","b":"Dra växelvis knäna mot bröstet i högt tempo.","p":"Höften stannar i linje med axlarna.","x":"climber"},{"n":"44","t":"Stegburpee","k":"Kondition","l":"Medium","d":"3 × 8 reps","m":5,"f":"Helkropp","a":"Stå rakt, böj dig ned och placera händerna i golvet.","b":"Kliv bakåt till planka, kliv fram igen och res dig upp.","p":"Öka tempot när du känner dig varm.","x":"jump"},{"n":"45","t":"Höga knän","k":"Kondition","l":"Medium","d":"4 × 30 sek","m":4,"f":"Ben","a":"Spring på stället med aktiva armar.","b":"Dra knäna upp till höfthöjd i högt tempo.","p":"Landa på framfoten och håll överkroppen rak.","x":"marchfast"},{"n":"46","t":"Björngång","k":"Styrka","l":"Medium","d":"3 × 20 sek","m":4,"f":"Helkropp","a":"Stå på alla fyra och lyft knäna en handbredd från golvet.","b":"Gå framåt med motsatt hand och fot i korta steg.","p":"Ryggen är platt och knäna nära golvet.","x":"birddog"},{"n":"47","t":"Skridskosteg","k":"Kondition","l":"Medium","d":"3 × 30 sek","m":4,"f":"Ben","a":"Stå med fötterna ihop och lätt böjda knän.","b":"Kliv brett åt sidan och för det andra benet snett bakom. Växla sida i rytm.","p":"Låt armarna svinga med som en skridskoåkare.","x":"lunge"},{"n":"48","t":"Enbensfällning","k":"Balans","l":"Medium","d":"2 × 8 per ben","m":4,"f":"Baksida","a":"Stå på ett ben med lätt böjt knä.","b":"Fäll fram överkroppen och sträck det fria benet bakåt till en rak linje. Res dig igen.","p":"Höften pekar rakt mot golvet hela vägen.","x":"balance"},{"n":"49","t":"Axelklapp","k":"Bål","l":"Medium","d":"3 × 16 reps","m":4,"f":"Bål & axlar","a":"Stå i armhävningsposition med fötterna en bit isär.","b":"Lyft ena handen och klappa motsatt axel. Växla.","p":"Höften är stilla. Bredare fötter ger mer stabilitet.","x":"tap"},{"n":"50","t":"Mätarlarven","k":"Rörlighet","l":"Medium","d":"6 reps","m":4,"f":"Helkropp","a":"Fäll framåt från stående och placera händerna i golvet.","b":"Gå ut med händerna till planka och gå tillbaka igen.","p":"Böj knäna så mycket du behöver för att nå golvet.","x":"fold"},{"n":"51","t":"Korsutfall","k":"Styrka","l":"Medium","d":"3 × 8 per ben","m":5,"f":"Ben & säte","a":"Stå rakt med fötterna höftbrett.","b":"Kliv snett bakåt bakom det andra benet och sänk knät. Tryck dig tillbaka.","p":"Höften pekar framåt och främre knät följer tårna.","x":"lunge"},{"n":"52","t":"Marscherande höftlyft","k":"Bål","l":"Svår","d":"3 × 10 per ben","m":5,"f":"Säte & bål","a":"Ligg på rygg med böjda knän och lyft höften till en rak linje.","b":"Håll höften uppe och lyft ett ben i taget mot taket.","p":"Höften står still och sätet är spänt hela tiden.","x":"bridgemarch"}];
+const EXN=n=>EX.find(e=>e.n===String(n).padStart(2,'0'));
+const OV_CAT={Kondition:'energy',Styrka:'strength',Rörlighet:'mobility',Bål:'strength',Balans:'mobility',Återhämtning:'reset',Tillsammans:'together'};
+function ovCard(id){
+  const m=/^OVN-(\d{2})$/i.exec(String(id)); if(!m) return undefined; const e=EXN(m[1]); if(!e) return undefined;
+  return {id:'OVN-'+e.n,deck:'individual',category:OV_CAT[e.k]||'strength',name:e.t,description:e.a,difficulty:e.l==='Lätt'?'easy':e.l==='Svår'?'hard':'medium',duration:e.m*60,instructions:[e.a,e.b,e.p],muscle_group:e.f,players_min:1,players_max:1};
+}
+let HAND=[]; try{HAND=JSON.parse(sessionStorage.getItem('muf_hand')||'[]').filter(n=>EXN(n))}catch(e){}
+const saveHand=()=>{try{sessionStorage.setItem('muf_hand',JSON.stringify(HAND))}catch(e){}};
+function handTarget(){const s=activeSession(); return s?Math.max(1,s.count-s.cards.filter(c=>c.completed).length):null}
+function passSecs(){
+  const s=activeSession();
+  if(s&&HAND.length) return Math.max(30,Math.min(300,Math.round(s.duration*60/Math.max(HAND.length,s.count-s.cards.filter(c=>c.completed).length||1)/5)*5));
+  return 60;
+}
+let lastScan={n:'',t:0};
+function scanOvning(n){
+  n=String(n).padStart(2,'0'); const e=EXN(n); if(!e) return false;
+  const now=Date.now(); if(lastScan.n===n&&now-lastScan.t<3000) return true; lastScan={n,t:now};
+  const hint=document.querySelector('#cam .hint');
+  if(HAND.includes(n)){ if(hint) hint.textContent='Kort '+n+' är redan skannat'; toast('Redan skannat','Kort '+n+' · '+e.t); return true; }
+  const T=handTarget();
+  if(T&&HAND.length>=T){ toast('Du har alla '+T+' kort','Tryck Kör för att starta passet'); return true; }
+  HAND.push(n); saveHand(); try{navigator.vibrate&&navigator.vibrate(60)}catch(_){}
+  if(hint) hint.textContent='✓ Kort '+n+' · '+e.t;
+  const cam=document.getElementById('cam'); if(cam){cam.classList.remove('flash');void cam.offsetWidth;cam.classList.add('flash')}
+  drawTray(document); return true;
+}
+function drawTray(root){
+  const tr=(root.querySelector?root:document).querySelector('#tray'); if(!tr) return;
+  const T=handTarget(), n=HAND.length;
+  if(!n){ tr.innerHTML=`<div class="tray-h"><span class="eyebrow">Dina kort</span><b>${T?`0 av ${T}`:'0'}</b></div><p class="muted" style="margin-top:8px">${T?`Skanna dina ${T} kort ett i taget. Då visas de här.`:'Skanna så många kort du vill. Då visas de här.'}</p>`; return; }
+  const full=T&&n>=T, secs=passSecs(), tot=Math.round(n*(secs+8)/60);
+  tr.innerHTML=`<div class="tray-h"><span class="eyebrow gold">Dina kort</span><b>${T?`${n} av ${T}`:n}</b></div>
+   <div class="tray-bar"><i style="width:${T?Math.min(100,n/T*100):100}%"></i></div>
+   <ul class="tray-l">${HAND.map((h,i)=>{const e=EXN(h);return `<li><span class="tn">${i+1}</span><div><b>${esc(e.t)}</b><small>${esc(e.k)} · ${esc(e.l)} · ${esc(e.d)}</small><p>${esc(e.a)}</p></div><button data-rm="${i}" aria-label="Ta bort ${esc(e.t)}">${IC.x}</button></li>`}).join('')}</ul>
+   <button class="btn btn-primary tray-go" data-run>${full?'KÖR':'KÖR ÄNDÅ'} · ca ${tot} min</button>
+   ${T&&!full?`<p class="muted" style="text-align:center;margin-top:8px;font-size:.9rem">Skanna ${T-n} kort till, eller kör med de du har.</p>`:''}`;
+  tr.onclick=ev=>{
+    const rm=ev.target.closest('[data-rm]'); if(rm){HAND.splice(+rm.dataset.rm,1);saveHand();lastScan={n:'',t:0};drawTray(root);return}
+    if(ev.target.closest('[data-run]')) runPass();
+  };
+}
+
+/* ---------- röst, ljud, citat ---------- */
+const Coach={on:true,v:null,ctx:null,
+  init(){ if(!('speechSynthesis' in window)) return; const pick=()=>{const vs=speechSynthesis.getVoices();this.v=vs.find(v=>/^sv/i.test(v.lang))||null}; pick(); speechSynthesis.onvoiceschanged=pick; try{this.ctx=this.ctx||new (window.AudioContext||window.webkitAudioContext)()}catch(e){} },
+  say(t,keep){ if(!this.on||!('speechSynthesis' in window)) return; try{ if(!keep) speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang='sv-SE'; if(this.v) u.voice=this.v; u.rate=1.03; u.pitch=1.1; speechSynthesis.speak(u);}catch(e){} },
+  stop(){ try{speechSynthesis.cancel()}catch(e){} },
+  beep(f=880,ms=120){ if(!this.on||!this.ctx) return; try{ const o=this.ctx.createOscillator(),g=this.ctx.createGain(); o.frequency.value=f; o.type='sine'; g.gain.value=.12; o.connect(g);g.connect(this.ctx.destination); o.start(); o.stop(this.ctx.currentTime+ms/1000);}catch(e){} }
+};
+const PEP=['Starkt jobbat!','Du är grym!','Fortsätt, du klarar det!','Håll tempot!','Bra form. Glöm inte att andas!','Lite till, du är nästan där!','Så ja, kom igen!','Det här är du bra på!','Snyggt! Känn hur kroppen vaknar.','Starkt. Håll i.'];
+const QUOTES=['Rörelse är medicin.','Små steg varje dag blir stora förändringar.','Du behöver inte vara bäst. Bara börja.','Det svåraste är att komma igång, och det har du redan gjort.','Varje rörelse räknas.','Stark börjar med en repetition till.','Det handlar inte om perfekt. Det handlar om att vara här.','Din framtida jag tackar dig.','Andas in lugn. Andas ut stress.','Gör det för dig själv.','Kroppen kan mer än du tror.','We think. You move.'];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+function runPass(){
+  if(!HAND.length) return;
+  stopCamera(); Coach.init();
+  const list=HAND.slice(), secs=passSecs(), PREP=7;
+  const o=overlay('pass'); let figStop=null, closed=false, raf=0;
+  const sess=()=>activeSession();
+  o.innerHTML=`<div class="wo-top"><span class="eyebrow" id="pc"></span><div style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" id="pv">Röst på</button><button class="btn btn-ghost btn-sm" id="pq">Avsluta</button></div></div>
+   <div class="wo-mid pass-mid">
+     <div class="pstage"><div class="pfig" id="pf"></div><img class="pmark" src="${LOGO}" alt=""></div>
+     <span class="pphase" id="pph"></span>
+     <h2 id="pn"></h2>
+     <p class="cue" id="pcue"></p>
+     <div class="ptime" id="pt">00:00</div>
+     <div class="pbar"><i id="pb"></i></div>
+     <p class="pquote" id="pqt"></p>
+   </div>
+   <div class="wo-bot"><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><button class="btn btn-primary" id="pp">PAUS</button><button class="btn btn-line" id="ps">HOPPA ÖVER</button></div><div class="muted" style="font-size:.9rem" id="pdots"></div></div>`;
+  const $o=s=>o.querySelector(s);
+  let idx=-1, phase='prep', left=0, total=0, paused=false, last=performance.now(), fired={}, qi=Math.floor(Math.random()*QUOTES.length), qt=0, worked=0, doneN=0;
+  const showQuote=()=>{const q=$o('#pqt'); q.style.opacity=0; setTimeout(()=>{q.textContent='“'+QUOTES[qi%QUOTES.length]+'”';q.style.opacity=1;qi++},350)};
+  const dots=()=>{$o('#pdots').innerHTML=`<span class="dots">${list.map((_,i)=>`<i class="${i<doneN?'on':''}"></i>`).join('')}</span>`};
+  function begin(i,ph){
+    idx=i; phase=ph; fired={}; worked=0;
+    const e=EXN(list[i]);
+    if(ph==='prep'){
+      left=total=(i===0?PREP:PREP); $o('#pc').textContent=`Övning ${i+1} av ${list.length}`; $o('#pn').textContent=e.t; $o('#pph').textContent=i===0?'GÖR DIG REDO':'NÄSTA';
+      $o('#pcue').textContent=e.a; $o('#pf').parentElement.classList.remove('go');
+      if(figStop) figStop(); figStop=FIG.mount($o('#pf'),e.x);
+      Coach.say((i===0?'Nu kör vi! Första övningen: ':'Nästa övning: ')+e.t+'. '+e.d+'.');
+      showQuote();
+    } else {
+      left=total=secs; $o('#pph').textContent='KÖR'; $o('#pcue').textContent=e.a; $o('#pf').parentElement.classList.add('go');
+      Coach.beep(1040,260); Coach.say(pick(['Kör!','Nu kör vi!','Och go!'])+' '+e.a);
+    }
+    dots();
+  }
+  function endScreen(){
+    cancelAnimationFrame(raf); if(figStop) figStop(); Coach.stop();
+    const s2=sess(), n=doneN;
+    Coach.say(n?'Passet är klart. Fantastiskt jobbat!':'Passet avslutades.');
+    o.innerHTML=`<div class="wo-top"><span class="eyebrow">${n} av ${list.length} klara</span><span></span></div>
+      <div class="wo-mid"><div class="done-mark"><svg viewBox="0 0 140 140"><circle cx="70" cy="70" r="66" fill="none" stroke-width="1.5"/></svg><img src="${LOGO}" alt=""></div>
+      <div class="bigword">Passet klart.</div><p class="cue">${n} övningar · ${Math.round(n*secs/60*10)/10} min i rörelse. Starkt jobbat!</p><p class="pquote" style="opacity:1">“We think. You move.”</p></div>
+      <div class="wo-bot"><button class="btn btn-primary" id="fin">AVSLUTA</button></div>`;
+    $o('#fin').onclick=()=>{ HAND=[]; saveHand(); Coach.stop(); closeOverlay(o); if(sess()) finishSession(); else {go('today');toast('Bra jobbat')} };
+  }
+  function advance(){
+    if(phase==='prep'){ begin(idx,'work'); return; }
+    // klar med övning
+    record('OVN-'+list[idx], Math.round(worked)||secs); doneN++;
+    if(idx+1>=list.length) return endScreen();
+    Coach.beep(660,200); Coach.say(pick(['Bra jobbat! Vila en stund.','Snyggt! Skaka loss.','Klart! Andas.']));
+    begin(idx+1,'prep');
+  }
+  function tick(now){
+    if(closed) return; const dt=Math.min(.25,(now-last)/1000); last=now;
+    if(!paused){
+      left-=dt; if(phase==='work') worked+=dt;
+      qt+=dt; if(qt>10){qt=0;showQuote()}
+      const e=EXN(list[idx]), el=total-left;
+      if(phase==='prep'){ for(const k of [3,2,1]) if(left<=k&&!fired['c'+k]){fired['c'+k]=1;Coach.beep(740,90)} }
+      else {
+        if(el>=total/3&&!fired.b){fired.b=1;$o('#pcue').textContent=e.b;Coach.say(e.b)}
+        if(el>=total/2&&!fired.h&&total>=40){fired.h=1;Coach.say('Halvvägs! '+pick(PEP))}
+        if(el>=total*2/3&&!fired.p){fired.p=1;$o('#pcue').textContent=e.p;if(total>=60)Coach.say(e.p,true)}
+        if(left<=10&&total>=40&&!fired.t){fired.t=1;Coach.say('Tio sekunder kvar! Ge allt!')}
+        for(const k of [3,2,1]) if(left<=k&&!fired['c'+k]){fired['c'+k]=1;Coach.beep(880,90)}
+      }
+      if(left<=0){ advance(); if(closed||!$o('#pt')) return; }
+    }
+    if($o('#pt')){ $o('#pt').textContent=mmss(left); $o('#pb').style.width=(100*(1-left/total))+'%'; }
+    raf=requestAnimationFrame(tick);
+  }
+  $o('#pp').onclick=e=>{paused=!paused;e.currentTarget.textContent=paused?'FORTSÄTT':'PAUS';last=performance.now();if(paused)Coach.stop()};
+  $o('#ps').onclick=()=>{ if(phase==='work'){ idx+1>=list.length? (record('OVN-'+list[idx],Math.round(worked)||1),doneN++,endScreen()) : (Coach.stop(),begin(idx+1,'prep')) } else { left=0 } };
+  $o('#pv').onclick=e=>{Coach.on=!Coach.on;e.currentTarget.textContent=Coach.on?'Röst på':'Röst av';if(!Coach.on)Coach.stop()};
+  $o('#pq').onclick=()=>{ closed=true; cancelAnimationFrame(raf); if(figStop) figStop(); Coach.stop(); closeOverlay(o); if(doneN){ HAND=[]; saveHand(); if(sess()) finishSession(); else go('today'); } };
+  begin(0,'prep'); raf=requestAnimationFrame(tick);
+}
+Coach.init();
+
+
+
 
 /* ---------- dates ---------- */
 const pad=n=>String(n).padStart(2,'0');
@@ -2368,6 +2648,7 @@ function startSession(id){
   o.addEventListener('click',e=>{
     if(e.target.closest('[data-x]')){ACTIVE=null;close();return}
     if(e.target.closest('[data-scan]')){close();go('scan');return}
+    if(e.target.closest('[data-dig]')&&!fam){close();const ids=EX.map(x=>x.n).sort(()=>Math.random()-.5).slice(0,s.count);HAND=ids;saveHand();go('scan');return}
     if(e.target.closest('[data-dig]')){close();const pool=CARDS.filter(c=>c.deck===(fam?'family':'individual'));found(pool[Math.floor(Math.random()*pool.length)].id)}
   });
   o.addEventListener('keydown',e=>{if(e.key==='Escape'){ACTIVE=null;close()}});
@@ -2394,18 +2675,20 @@ function vScan(el){
       <div class="hint">Placera QR-koden inuti ramen.</div>
       <div class="off" id="camoff"><img src="${LOGO}" alt=""><div id="camtxt">Kameran används bara för att läsa korten.</div><button class="btn btn-primary" id="camgo">Starta kameran</button></div>
     </div>
+    <div id="tray"></div>
     <div class="scan-alt">
-      <form class="manual" id="mf"><label class="sr" for="mc">Kortkod</label><input id="mc" placeholder="Ange kod, t.ex. MOT-IND-018" autocomplete="off"><button class="btn btn-primary" type="submit">Öppna</button></form>
+      <form class="manual" id="mf"><label class="sr" for="mc">Kortkod</label><input id="mc" placeholder="Kortnummer (1–52) eller kod" autocomplete="off"><button class="btn btn-primary" type="submit">Öppna</button></form>
       <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:6px"><button class="btn btn-ghost btn-sm" data-draw="individual">Ingen lek här? Dra ett digitalt kort</button><button class="btn btn-ghost btn-sm" data-draw="family">Familjekort</button></div>
       ${s?`<button class="btn btn-line" id="endS" style="margin-top:8px">Avsluta passet</button>`:''}
     </div>
   </div>`;
-  $('#mf',el).onsubmit=e=>{e.preventDefault();const ovm=parseOvning($('#mc').value);if(ovm){location.href=ovm;return}const id=parseCode($('#mc').value)||$('#mc').value.trim().toUpperCase();if(cardById(id))found(id);else toast('Hittar inget kort med den koden')};
+  $('#mf',el).onsubmit=e=>{e.preventDefault();const v0=$('#mc').value.trim();const ovm=parseOvning(v0)||(/^\d{1,2}$/.test(v0)&&+v0>=1&&+v0<=52?'/ovning/'+v0.padStart(2,'0')+'/':null);if(ovm){scanOvning(ovm.match(/\d\d/)[0]);$('#mc').value='';return}const id=parseCode($('#mc').value)||$('#mc').value.trim().toUpperCase();if(cardById(id))found(id);else toast('Hittar inget kort med den koden')};
   el.addEventListener('click',e=>{
     const d=e.target.closest('[data-draw]'); if(d){const pool=CARDS.filter(c=>c.deck===d.dataset.draw);found(pool[Math.floor(Math.random()*pool.length)].id)}
     if(e.target.closest('#camgo')) startCamera();
     if(e.target.closest('#endS')) finishSession();
   });
+  drawTray(el);
   if(window.matchMedia('(pointer:coarse)').matches) startCamera();
 }
 async function startCamera(){
@@ -2424,7 +2707,7 @@ async function startCamera(){
         const r=jsQR(cx.getImageData(0,0,w,h).data,w,h,{inversionAttempts:'attemptBoth'}); if(r) txt2=r.data;
       }
       if(!txt2) return;
-      const ov=parseOvning(txt2); if(ov){ stopCamera(); location.href=ov; return; }
+      const ov=parseOvning(txt2); if(ov){ scanOvning(ov.match(/\d\d/)[0]); return; }
       const id=parseCode(txt2); if(id&&cardById(id)){ stopCamera(); found(id); return; }
       if(/^https?:\/\//i.test(txt2)){ stopCamera(); location.href=txt2; return; }
       const hint=document.querySelector('#cam .hint'); if(hint) hint.textContent='Koden hittades men känns inte igen: '+String(txt2).slice(0,40);
