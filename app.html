@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="sv">
-<head>
+<head><script>(function(){try{if(/[?&]dev=motion/.test(location.search))localStorage.setItem('muf_dev','1');if(localStorage.getItem('muf_dev')!=='1')location.replace('/snart.html')}catch(e){location.replace('/snart.html')}})()</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F5F0">
@@ -1211,9 +1211,9 @@ function ovCard(id){
   const m=/^OVN-(\d{2})$/i.exec(String(id)); if(!m) return undefined; const e=EXN(m[1]); if(!e) return undefined;
   return {id:'OVN-'+e.n,deck:'individual',category:OV_CAT[e.k]||'strength',name:e.t,description:e.a,difficulty:e.l==='Lätt'?'easy':e.l==='Svår'?'hard':'medium',duration:e.m*60,instructions:[e.a,e.b,e.p],muscle_group:e.f,players_min:1,players_max:1};
 }
-let HAND=[]; try{HAND=JSON.parse(sessionStorage.getItem('muf_hand')||'[]').filter(n=>EXN(n))}catch(e){}
-const saveHand=()=>{try{sessionStorage.setItem('muf_hand',JSON.stringify(HAND))}catch(e){}};
-function handTarget(){const s=activeSession(); return s?Math.max(1,s.count-s.cards.filter(c=>c.completed).length):null}
+let HAND=[]; try{HAND=JSON.parse(localStorage.getItem('muf_hand')||'[]').filter(n=>EXN(n))}catch(e){}
+const saveHand=()=>{try{localStorage.setItem('muf_hand',JSON.stringify(HAND))}catch(e){}};
+function handTarget(){const s=activeSession(); if(s) return Math.max(1,s.count-s.cards.filter(c=>c.completed).length); let t=6; try{t=+localStorage.getItem('muf_target')||6}catch(e){} return t}
 function passSecs(){
   const s=activeSession();
   if(s&&HAND.length) return Math.max(30,Math.min(300,Math.round(s.duration*60/Math.max(HAND.length,s.count-s.cards.filter(c=>c.completed).length||1)/5)*5));
@@ -1227,7 +1227,8 @@ function scanOvning(n){
   if(HAND.includes(n)){ if(hint) hint.textContent='Kort '+n+' är redan skannat'; toast('Redan skannat','Kort '+n+' · '+e.t); return true; }
   const T=handTarget();
   if(T&&HAND.length>=T){ toast('Du har alla '+T+' kort','Tryck Kör för att starta passet'); return true; }
-  HAND.push(n); saveHand(); try{navigator.vibrate&&navigator.vibrate(60)}catch(_){}
+  HAND.push(n); saveHand(); if(HAND.length>=handTarget()) setTimeout(()=>{ if(document.getElementById('tray')&&!document.querySelector('.wo.pass')){ toast('Alla kort skannade','Passet startar'); setTimeout(()=>{ if(!document.querySelector('.wo.pass')) runPass() },1400) } },900);
+  try{navigator.vibrate&&navigator.vibrate(60)}catch(_){}
   if(hint) hint.textContent='✓ Kort '+n+' · '+e.t;
   const cam=document.getElementById('cam'); if(cam){cam.classList.remove('flash');void cam.offsetWidth;cam.classList.add('flash')}
   drawTray(document); return true;
@@ -1634,7 +1635,7 @@ function render(){
   parseRoute(); stopCamera();
   $$('[data-tab]').forEach(a=>a.classList.toggle('on',a.dataset.tab===route||(route==='play'&&a.dataset.tab==='scan')));
   $('.sn-profile')?.classList.toggle('on',route==='progress');
-  const V={today:vToday,planner:vPlanner,ai:vAI,scan:vScan,play:vPlay,progress:vProgress}[route]||vToday;
+  const V={today:vToday,planner:vPlanner,ai:vAI,scan:vScan,run:el=>{vScan(el);stopCamera();setTimeout(()=>{const t=document.getElementById('tray');t&&t.scrollIntoView({behavior:'smooth',block:'center'})},200)},play:vPlay,progress:vProgress}[route]||vToday;
   app.innerHTML=''; const w=document.createElement('div'); w.className='view'; app.appendChild(w); V(w);
   window.scrollTo({top:0});
 }
@@ -2638,7 +2639,7 @@ let ACTIVE=null; // {sessionId}
 function activeSession(){return ACTIVE&&S.sessions.find(s=>s.id===ACTIVE.sessionId)}
 function startSession(id){
   const s=S.sessions.find(x=>x.id===id); if(!s) return;
-  ACTIVE={sessionId:id};
+  ACTIVE={sessionId:id}; try{localStorage.setItem('muf_target',s.count)}catch(e){}
   const o=document.createElement('div'); o.className='focus'; o.setAttribute('role','dialog'); o.setAttribute('aria-modal','true'); o.setAttribute('aria-label','Starta pass');
   const fam=s.need==='family';
   o.innerHTML=`<button class="btn btn-ghost focus-x" data-x>Avbryt</button><div class="focus-in"><img src="${LOGO}" alt="" class="focus-sym"><span class="eyebrow">MOTION</span><div class="focus-t">${pad(s.duration)}:00</div><div class="focus-d">${fam?'DRA ETT FAMILJEKORT':'DRA '+s.count+' KORT'}</div><p class="muted">${fam?'Alla är med. Vinnaren väljer nästa kort.':'Inget att välja, ingen utrustning. Korten bestämmer.'}</p>

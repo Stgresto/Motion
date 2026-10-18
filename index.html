@@ -200,6 +200,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .cards-progress{position:absolute;left:var(--gutter);bottom:clamp(24px,5vh,48px);display:flex;gap:8px;z-index:2}
 .cards-progress i{display:block;width:40px;height:1px;background:var(--line-d);position:relative;overflow:hidden}
 .cards-progress i b{position:absolute;inset:0;background:var(--on-dark);transform-origin:left;transform:scaleX(0)}
+.stage3d>.pcard{filter:blur(9px) saturate(.9);opacity:.85}.soon{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;pointer-events:none}.soon b{font-family:var(--font-display);font-weight:300;font-size:clamp(2.4rem,6vw,4.2rem);letter-spacing:-.02em;color:#F3EFE7;text-shadow:0 2px 30px rgba(0,0,0,.5)}.soon span{letter-spacing:.3em;font-size:.75rem;font-weight:700;color:#E6D5AE;text-transform:uppercase}
 .stage3d{position:relative;height:100%;perspective:1700px;display:flex;align-items:center;justify-content:center}
 .pcard{--ink-c:#1D3A2E;--gold-c:#A88246;position:absolute;width:clamp(190px,18vw,262px);aspect-ratio:63/88;transform-style:preserve-3d;will-change:transform;container-type:inline-size;cursor:default}
 .pcard .face{position:absolute;inset:0;border-radius:4.6cqw;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;color:#171A18;
@@ -413,7 +414,7 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
       <a href="#deck">Kortleken</a>
       <a href="/ovning/">Övningar</a>
       <a href="#science">Forskningen</a>
-      <a href="/app.html">Appen</a>
+      <a href="/snart.html">Appen</a>
     </nav>
     <button class="btn btn-light btn-sm nav-cta" data-wl>Skaffa kortleken</button>
     <button class="burger" id="burger" aria-label="Öppna meny" aria-expanded="false" aria-controls="mmenu"><span></span><span></span></button>
@@ -427,7 +428,7 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
     <a href="#deck">Kortleken</a>
     <a href="/ovning/">Övningar</a>
     <a href="#science">Forskningen</a>
-    <a href="/app.html">Appen</a>
+    <a href="/snart.html">Appen</a>
   </nav>
   <button class="btn btn-light" data-wl>Skaffa kortleken</button>
 </div>
@@ -443,7 +444,7 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
         <p>Dra ett kort, skanna och rör dig. Planeraren hittar tiden i din dag.</p>
         <div class="hero-ctas on-photo">
           <button class="btn btn-light" data-wl>Skaffa kortleken</button>
-          <a href="/app.html" class="btn btn-outline">Öppna appen <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+          <a href="/snart.html" class="btn btn-outline">Öppna appen <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
         </div>
       </div>
     </div>
@@ -493,7 +494,7 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
       <div class="cc" data-k="2"><span class="step">02 · Skanna</span><h2>Skanna koden.</h2><p>QR-koden leder till en tydlig instruktion för hur övningen utförs.</p></div>
       <div class="cc" data-k="3"><span class="step">03 · Gör</span><h2>Gör.</h2><p>Svårighetsgrad, tid och typ av träning står på kortet, så du vet vad som väntar.</p></div>
     </div>
-    <div class="stage3d" aria-hidden="true">
+    <div class="stage3d"><div class="soon"><b>Coming soon</b></div>
       <div class="pcard" data-i="0">
         <div class="face front"><img src="/images/motion-symbol-gold.svg" alt="" width="256" height="256"><div class="cwm"><svg viewBox="0 0 138.1 24" aria-hidden="true"><use href="#wm"/></svg><span>UF</span></div></div>
         <div class="face back"><span class="cat">STYRKA</span><span class="rule"></span><div class="qr" data-seed="3"></div><div class="ex">Armhävningar</div><div class="dose">3 × 10 REPS</div><span class="rule2"></span><div class="meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19v-3M10 19v-6M15 19v-9M20 19V6"/></svg>MEDIUM</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M10 3h4M12 3v2.5"/></svg>10 MIN</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M5.5 8.5v7M8 7v10M16 7v10M18.5 8.5v7"/></svg>HELKROPP</span></div></div>
@@ -578,7 +579,7 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
           <li><strong>Svarar på frågor</strong><span>Stretch, sömn, kost och återhämtning.</span></li>
           <li><strong>Behåller överraskningen</strong><span>Dagens övningar avslöjas först när du skannar.</span></li>
         </ul>
-        <a href="/app.html" class="btn btn-light" data-reveal style="--d:3">Öppna appen <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+        <a href="/snart.html" class="btn btn-light" data-reveal style="--d:3">Öppna appen <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
       </div>
       <div class="browser" data-reveal style="--d:2" role="img" aria-label="Förhandsvisning av Motion-planeraren: ett pass på 15 minuter måndag 17:20, och coachen som förklarar varför.">
         <div class="br-bar"><i></i><i></i><i></i><span>motionplanner.se/app</span></div>
@@ -612,7 +613,7 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
     <svg class="f-mark" viewBox="0 0 138.1 24" role="img" aria-label="MOTION"><use href="#wm"/></svg>
     <div class="f-row">
       <p class="f-tag">We think. You move.</p>
-      <div class="f-col"><b>Utforska</b><a href="#how">Så funkar det</a><a href="#deck">Kortleken</a><a href="/ovning/">Övningar</a><a href="#science">Forskningen</a><a href="/app.html">Appen</a></div>
+      <div class="f-col"><b>Utforska</b><a href="#how">Så funkar det</a><a href="#deck">Kortleken</a><a href="/ovning/">Övningar</a><a href="#science">Forskningen</a><a href="/snart.html">Appen</a></div>
       <div class="f-col"><b>Kontakt</b><a data-co="instagram" href="#" target="_blank" rel="noopener" hidden>Instagram</a><a href="mailto:hej@motionplanner.se">Kontakt</a><a href="om-oss.html">Om oss</a><a href="integritet.html">Integritet</a><a href="villkor.html">Villkor</a><a href="retur.html">Ånger &amp; retur</a><a href="cookies.html">Cookies</a></div>
     </div>
     <div class="f-bot"><span>MOTION UF · Ett UF-företag inom Ung Företagsamhet · <span data-co="name"></span> · org.nr <span data-co="org"></span></span><span>© 2026</span></div>

@@ -19,6 +19,12 @@ export default async function handler(req, res) {
     return;
   }
 
+  // AI-coachen är låst tills lanseringen. Sätt MOTION_LAUNCHED=1 i Vercel för att öppna den.
+  if (process.env.MOTION_LAUNCHED !== '1') {
+    res.status(403).json({ error: 'Kommer snart' });
+    return;
+  }
+
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     res.status(500).json({ error: 'ANTHROPIC_API_KEY is not set on the server.' });
