@@ -200,6 +200,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .cards-progress{position:absolute;left:var(--gutter);bottom:clamp(24px,5vh,48px);display:flex;gap:8px;z-index:2}
 .cards-progress i{display:block;width:40px;height:1px;background:var(--line-d);position:relative;overflow:hidden}
 .cards-progress i b{position:absolute;inset:0;background:var(--on-dark);transform-origin:left;transform:scaleX(0)}
+.band>picture img{filter:blur(16px) saturate(.9);transform:scale(1.1)!important}
+.soonfig img{filter:blur(14px) saturate(.9);transform:scale(1.12)!important}.soonfig .soon{background:rgba(17,17,15,.18)}.soon-l b{font-size:clamp(2rem,4.5vw,3.2rem)}.soon-l span{margin-bottom:0}
 .stage3d>.pcard{filter:blur(9px) saturate(.9);opacity:.85}.soon{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;pointer-events:none}.soon b{font-family:var(--font-display);font-weight:300;font-size:clamp(2.4rem,6vw,4.2rem);letter-spacing:-.02em;color:#F3EFE7;text-shadow:0 2px 30px rgba(0,0,0,.5)}.soon span{letter-spacing:.3em;font-size:.75rem;font-weight:700;color:#E6D5AE;text-transform:uppercase}
 .stage3d{position:relative;height:100%;perspective:1700px;display:flex;align-items:center;justify-content:center}
 .pcard{--ink-c:#1D3A2E;--gold-c:#A88246;position:absolute;width:clamp(190px,18vw,262px);aspect-ratio:63/88;transform-style:preserve-3d;will-change:transform;container-type:inline-size;cursor:default}
@@ -547,7 +549,7 @@ footer{background:var(--black);color:var(--on-dark);padding:var(--space-2xl) 0 v
         <p class="first" data-reveal style="--d:1">Varje pass är en överraskning. Det tar bort beslutströttheten och gör det lite roligare att komma igång.</p>
         <p data-reveal style="--d:2">Du behöver bara dyka upp, dra ett kort och skanna. Resten är redan bestämt.</p>
       </div>
-      <figure class="media r43" data-reveal style="--d:1"><picture><source type="image/webp" srcset="/images/m/product-800.webp 800w, /images/m/product-1365.webp 1365w" sizes="(max-width:760px) 100vw, 46vw"><img src="/images/m/product.jpg" alt="Två MOTION UF-kort på en stenyta, framsida och baksida med QR-kod" width="1365" height="1024" loading="lazy" decoding="async"></picture></figure>
+      <figure class="media r43 soonfig" data-reveal style="--d:1"><picture><source type="image/webp" srcset="/images/m/product-800.webp 800w, /images/m/product-1365.webp 1365w" sizes="(max-width:760px) 100vw, 46vw"><img src="/images/m/product.jpg" alt="Två MOTION UF-kort på en stenyta, framsida och baksida med QR-kod" width="1365" height="1024" loading="lazy" decoding="async"></picture><div class="soon soon-l"><span>Kortleken</span><b>Coming soon</b></div></figure>
     </div>
   </div>
 </section>
