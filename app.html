@@ -284,6 +284,13 @@ h2.h{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
 .gm-lb .rk{width:22px;opacity:.6}.gm-lb b{flex:1;font-weight:600}
 .gm-code{display:flex;justify-content:space-between;align-items:center;margin:12px 0;font-size:.85rem}.gm-code b{letter-spacing:.2em;font-size:1.1rem}
 .gm-form{display:flex;gap:8px;margin-top:10px}.gm-form input{flex:1;min-width:0;padding:10px 12px;border-radius:10px;border:1px solid var(--hair,rgba(0,0,0,.2));background:transparent;color:inherit;font:inherit}
+.gm-ch{border-top:1px solid rgba(0,0,0,.08);padding-top:14px;margin-top:14px}
+.gm-chh{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.gm-chh small{display:block;opacity:.7}
+.gm-chc{font-weight:700;letter-spacing:.18em;font-size:.82rem;padding:4px 10px;border:1px solid var(--gold);border-radius:99px}
+.gm-tg{margin-top:8px}
+.gm-nf{display:grid;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid rgba(0,0,0,.08)}
+.gm-nf input,.gm-nf select,.gm-form select{padding:10px 12px;border-radius:10px;border:1px solid var(--hair,rgba(0,0,0,.2));background:transparent;color:inherit;font:inherit;min-width:0}
+.gm-row{display:flex;gap:8px;flex-wrap:wrap}.gm-row input{flex:1;min-width:160px}
 .gm-msg{font-size:.85rem;min-height:1.2em;margin:6px 0}
 /* ---------- AI ---------- */
 .ai{max-width:780px;margin:0 auto;display:flex;flex-direction:column;min-height:calc(100svh - 200px)}
@@ -2323,6 +2330,59 @@ async function lbLoad(){
   try{ await lbPublish(); LB.rows=await lbCall('lb_board',{p_week:gameStats().wp}); LB.state='ready'; }
   catch(e){ LB.state='error'; LB.err=String(e.message||e); }
 }
+
+/* ---- utmaningar med vänner: flest kort, längst streak, gemensamt mål ---- */
+let CH={state:'idle',list:[],boards:{},err:''};
+function chMine(c){
+  const days=new Set(S.completions.filter(x=>x.date>=c.start_date&&x.date<=c.end_date).map(x=>x.date));
+  const cards=S.completions.filter(x=>x.date>=c.start_date&&x.date<=c.end_date).length;
+  let best=0,run=0,prev=null; for(const d of [...days].sort()){ run=(prev&&ymd(addDays(parseYmd(prev),1))===d)?run+1:1; best=Math.max(best,run); prev=d; }
+  return {cards,streak:best};
+}
+async function chLoad(){
+  CH.state='loading';
+  try{
+    const list=await lbCall('ch_list'); CH.list=list;
+    await Promise.all(list.map(async c=>{ const m=chMine(c); if(c.end_date>=todayStr()||true) await lbCall('ch_publish',{p_id:c.id,p_cards:m.cards,p_streak:m.streak}); CH.boards[c.id]=await lbCall('ch_board',{p_id:c.id}); }));
+    CH.state='ready';
+  }catch(e){ CH.state='error'; CH.err=String(e.message||e); }
+}
+function chHTML(){
+  if(CH.state==='error') return `<section class="card gm"><span class="eyebrow">Utmaningar</span><p>Utmaningarna går inte att nå just nu.</p></section>`;
+  if(CH.state!=='ready') return `<section class="card gm"><span class="eyebrow">Utmaningar</span><p>Hämtar…</p></section>`;
+  const t=todayStr();
+  const cards=CH.list.map(c=>{
+    const rows=CH.boards[c.id]||[]; const kindLbl=c.kind==='cards'?'Flest kort':'Längst streak';
+    const total=rows.reduce((a,r)=>a+r.cards,0); const over=c.end_date<t;
+    const left=over?'Avslutad':`Slutar ${relDay(c.end_date)}`;
+    const val=r=>c.kind==='cards'?`${r.cards} kort`:`${r.streak} ${r.streak===1?'dag':'dagar'}`;
+    const sorted=c.kind==='streak'?[...rows].sort((a,b)=>b.streak-a.streak||b.cards-a.cards):rows;
+    return `<div class="gm-ch"><div class="gm-chh"><div><b>${esc(c.title)}</b><small>${kindLbl} · ${left} · ${c.members} ${c.members==1?'deltagare':'deltagare'}</small></div><span class="gm-chc" title="Vänkod till utmaningen">${esc(c.code)}</span></div>
+      ${c.team_goal?`<div class="gm-tg"><div class="gm-xp"><i style="width:${Math.min(100,Math.round(total/c.team_goal*100))}%"></i></div><small>Gemensamt mål: ${total} av ${c.team_goal} kort${total>=c.team_goal?' ✓ Klart!':''}</small></div>`:''}
+      <ol class="gm-lb">${sorted.map((r,i)=>`<li class="${r.is_me?'me':''}"><span class="rk">${i+1}</span><b>${esc(r.display_name)}${r.is_me?' (du)':''}</b><span>${val(r)}</span></li>`).join('')}</ol>
+      <button class="btn btn-ghost btn-sm" data-chleave="${c.id}">Lämna utmaningen</button></div>`;
+  }).join('');
+  const d0=ymd(new Date());
+  return `<section class="card gm"><span class="eyebrow">Utmaningar med vänner</span>${cards||'<p>Starta en utmaning och bjud in dina kompisar med koden.</p>'}
+    <form id="chNew" class="gm-nf"><b>Ny utmaning</b>
+      <input id="chTitle" maxlength="40" minlength="2" placeholder="Namn, t.ex. Veckans kortkamp" required>
+      <div class="gm-row"><select id="chKind" aria-label="Typ"><option value="cards">Flest kort</option><option value="streak">Längst streak</option></select>
+      <select id="chDays" aria-label="Längd"><option value="3">3 dagar</option><option value="7" selected>7 dagar</option><option value="14">14 dagar</option><option value="30">30 dagar</option></select>
+      <input id="chGoal" type="number" min="1" max="100000" placeholder="Gemensamt mål (kort), valfritt"></div>
+      <button class="btn btn-gold btn-sm" type="submit">Starta</button></form>
+    <form id="chJoin" class="gm-form"><input id="chCode" maxlength="8" placeholder="Kod till en utmaning" autocapitalize="characters"><button class="btn btn-line btn-sm" type="submit">Gå med</button></form>
+    <p class="gm-msg" id="chMsg" role="status"></p></section>`;
+}
+function bindChallenges(el,redraw){
+  const msg=t=>{ const m=$('#chMsg',el); if(m) m.textContent=t; };
+  const f=$('#chNew',el); if(f) f.onsubmit=async e=>{ e.preventDefault();
+    const days=+$('#chDays',el).value, goal=parseInt($('#chGoal',el).value,10)||null, d0=new Date();
+    try{ await lbCall('ch_create',{p_title:$('#chTitle',el).value.trim(),p_kind:$('#chKind',el).value,p_start:ymd(d0),p_end:ymd(addDays(d0,days-1)),p_goal:goal}); await chLoad(); redraw(); }
+    catch(err){ msg('Det gick inte att starta utmaningen. Kontrollera namnet och försök igen.'); } };
+  const j=$('#chJoin',el); if(j) j.onsubmit=async e=>{ e.preventDefault(); const code=$('#chCode',el).value.trim().toUpperCase(); if(!code) return;
+    try{ await lbCall('ch_join',{p_code:code}); await chLoad(); redraw(); }catch(err){ msg('Hittade ingen aktiv utmaning med den koden, eller så är den full.'); } };
+  $$('[data-chleave]',el).forEach(b=>b.onclick=async()=>{ if(!confirm('Lämna utmaningen?')) return; try{ await lbCall('ch_leave',{p_id:b.dataset.chleave}); await chLoad(); redraw(); }catch(e){ msg('Det gick inte att lämna utmaningen.'); } });
+}
 function vCompete(el){
   const g=gameStats(); const c=lbCfg(); const signed=!!(window.Sync&&Sync.user);
   const draw=()=>{
@@ -2340,8 +2400,8 @@ function vCompete(el){
       <section class="card gm"><div class="gm-top"><div><div class="gm-xp"><i style="width:${g.pct}%"></i></div><small>${g.xp} poäng · ${g.toNext} till nivå ${g.level+1}</small></div><div class="gm-streak"><b>${g.streak}</b><span>${g.streak===1?'dag':'dagar'} i rad</span></div></div><p class="gm-mot">${esc(motivation(g))}</p></section>
       <section class="card gm"><span class="eyebrow">Dagens uppdrag</span>${missionsHTML(g)}<small>Varje klart kort ger ${XP_CARD} poäng, varje pass ${XP_SESSION}.</small></section>
       <section class="card gm"><span class="eyebrow">Veckomål</span><div class="gm-goal">${ringSVG(g.wdone/g.goal*100,`${Math.min(g.wdone,g.goal)}/${g.goal}`,'pass den här veckan')}<div class="gm-act"><div class="gm-act" role="group" aria-label="Pass per vecka">${[2,3,4,5].map(n=>`<button class="btn btn-sm ${n===g.goal?'btn-primary':'btn-line'}" data-goal="${n}" aria-pressed="${n===g.goal}">${n}</button>`).join('')}</div><button class="btn btn-line btn-sm" id="planWeek">Planera veckan</button></div></div></section>
-      <section class="card gm"><span class="eyebrow">Topplista · veckans poäng</span>${lb}</section></div>`;
-    bind();
+      <section class="card gm"><span class="eyebrow">Topplista · veckans poäng</span>${lb}</section>${signed&&c&&c.on&&LB.state==='ready'?chHTML():''}</div>`;
+    bind(); if(signed&&c&&c.on&&LB.state==='ready') bindChallenges(el,draw);
   };
   const bind=()=>{
     $$('[data-goal]',el).forEach(b=>b.onclick=()=>{ S.user.prefs=S.user.prefs||{}; S.user.prefs.perWeek=+b.dataset.goal; save(); draw(); });
@@ -2353,7 +2413,7 @@ function vCompete(el){
     const lv=$('#lbLeave',el); if(lv) lv.onclick=async()=>{ if(!confirm('Lämna topplistan? Ditt namn och dina poäng tas bort och dina vänner försvinner.')) return; try{ await lbCall('lb_leave'); }catch(e){} S.user.lb={on:false,name:(lbCfg()||{}).name||''}; save(); LB={state:'idle',rows:[],code:null,err:''}; route==='compete'&&render(); };
   };
   draw();
-  if(signed&&c&&c.on&&LB.state!=='loading'){ lbLoad().then(()=>{ if(route==='compete') draw(); }); }
+  if(signed&&c&&c.on&&LB.state!=='loading'){ lbLoad().then(async()=>{ if(route==='compete') draw(); if(LB.state==='ready'){ await chLoad(); if(route==='compete') draw(); } }); }
 }
 
 
@@ -2676,7 +2736,7 @@ function finishSession(){
   const s=activeSession();
   if(s&&s.status!=='completed'){ if(s.cards.length){s.status='completed';s.count=s.cards.length} }
   ACTIVE=null; save(); go('today'); toast('Bra jobbat');
-  try{ lbPublish().catch(()=>{}); }catch(e){}
+  try{ lbPublish().then(()=>chLoad()).catch(()=>{}); }catch(e){}
 }
 
 /* ---------- Family & friends ---------- */
