@@ -33,7 +33,7 @@
 <tr><td>Väntelistan</td><td>E-postadress</td><td>Meddela dig när kortleken går att beställa</td><td>Samtycke (art. 6.1 a GDPR)</td></tr>
 <tr><td>Appen utan konto</td><td>Namn eller smeknamn, ditt schema, dina inställningar och framsteg</td><td>Planera och visa din träning</td><td>Tjänsten du själv använder (art. 6.1 b)</td></tr>
 <tr><td>Konto</td><td>E-postadress, lösenord (lagras krypterat av vår inloggningstjänst), ditt schema, dina inställningar och framsteg</td><td>Spara och synka ditt schema mellan enheter</td><td>Avtal om tjänsten (art. 6.1 b) och samtycke när du skapar kontot</td></tr>
-<tr><td>Motion AI</td><td>Dina meddelanden, dina schemahändelser som AI:n behöver för att svara, samt filer eller skärmdumpar du själv bifogar</td><td>Ge dig svar och föreslå ändringar i ditt schema</td><td>Samtycke (art. 6.1 a) som du ger genom att använda funktionen</td></tr>
+<tr><td>Topplista (frivillig)</td><td>Ett visningsnamn du själv väljer, din vänkod samt dina poäng för veckan och totalt</td><td>Visa dig på en topplista för vänner du själv lagt till</td><td>Samtycke (art. 6.1 a) som du ger när du går med, och som du kan ta tillbaka genom att lämna topplistan</td></tr>
 <tr><td>Webbplatsen</td><td>IP-adress och tekniska loggar hos vår webbhost</td><td>Leverera och skydda sajten</td><td>Berättigat intresse (art. 6.1 f)</td></tr>
 </tbody></table></div>
 <p>Vi ber inte om och vill inte ha känsliga uppgifter (t.ex. sjukdomar eller diagnoser). Skriv inte in sådant i chatten och ladda inte upp skärmdumpar som innehåller andras uppgifter.</p>
@@ -43,7 +43,7 @@
 <li><strong>Utan konto:</strong> ditt schema, dina inställningar och framsteg sparas bara i din egen webbläsare (lokal lagring) på din enhet. Vi kan inte läsa dem. Rensar du webbläsarens data försvinner de.</li>
 <li><strong>Med konto:</strong> dina uppgifter sparas i en databas hos Supabase (Supabase Inc.) på servrar i Stockholm (EU). Åtkomstreglerna i databasen gör att varje konto bara kan läsa och ändra sina egna rader. Vi sparar uppgifterna så länge du har kontot.</li>
 <li><strong>Väntelistan:</strong> din e-postadress skickas till formulärtjänsten Formspree (Formspree, Inc., USA) som skickar den vidare till oss. Vi sparar den tills kortleken har lanserats, högst 12 månader, eller tills du ber oss ta bort den.</li>
-<li><strong>Motion AI:</strong> när du chattar, bifogar ett schema eller importerar tider skickas dina meddelanden, relevanta schemauppgifter och eventuell fil via vår serverfunktion hos Vercel till AI-leverantören Anthropic (USA) för att ta fram ett svar. Vi lagrar inte själva meddelandena på vår server. Anthropic behandlar uppgifterna enligt sin integritetspolicy (<a href="https://www.anthropic.com/legal/privacy" rel="noopener">anthropic.com/legal/privacy</a>). Du bestämmer själv vad du skickar. Du ser alltid förslag innan något läggs in i ditt schema.</li>
+<li><strong>Topplistan:</strong> om du går med sparas ditt visningsnamn, din vänkod och dina poäng i vår databas hos Supabase. De visas bara för dem du lagt till som vän med vänkod. Använd inte ditt riktiga namn. Du kan när som helst lämna topplistan i appen, och då raderas dina uppgifter där och dina vänkopplingar.</li>
 <li><strong>Kameran:</strong> när du skannar ett kort läses QR-koden direkt i din webbläsare. Bilder sparas eller skickas inte.</li>
 <li><strong>Hosting och skript:</strong> sajten ligger hos Vercel Inc. (USA), som kan logga IP-adress och tekniska uppgifter. Vissa skript (inloggningsbiblioteket och QR-läsaren) hämtas från jsDelivr.</li>
 <li><strong>Typsnitt:</strong> sidorna hämtar typsnitt från Google Fonts, vilket innebär att din IP-adress skickas till Google när sidan laddas.</li>
@@ -55,15 +55,15 @@
 <p>Vi säljer aldrig personuppgifter och använder ingen annonsering, spårning eller analys. Uppgifter lämnas bara till de leverantörer som beskrivs ovan och bara för det ändamål som anges.</p>
 
 <h2>5. Barn och unga</h2>
-<p>I Sverige måste du vara minst 13 år för att själv lämna samtycke till behandling av personuppgifter i en onlinetjänst. Är du under 13 ska en vårdnadshavare godkänna att du skapar konto, använder Motion AI eller går med i väntelistan.</p>
+<p>I Sverige måste du vara minst 13 år för att själv lämna samtycke till behandling av personuppgifter i en onlinetjänst. Är du under 13 ska en vårdnadshavare godkänna att du skapar konto, går med på topplistan eller går med i väntelistan.</p>
 
 <h2>6. Dina rättigheter</h2>
 <p>Du har rätt att få tillgång till, rätta, radera och begränsa dina uppgifter, invända mot behandling, få ut dem i läsbart format (dataportabilitet) och när som helst återkalla ditt samtycke utan att det påverkar tidigare behandling. Mejla <a data-co="email" href="#"></a>. Vi svarar inom en månad.</p>
 <p>Utan konto raderar du allt genom att rensa webbplatsdata för sidan i webbläsaren (eller knappen för att rensa data i appens inställningar). Vill du att vi raderar ditt konto och alla uppgifter kopplade till det, mejla oss, så gör vi det inom en månad.</p>
 <p>Är du missnöjd har du rätt att klaga hos Integritetsskyddsmyndigheten (IMY), <a href="https://www.imy.se" rel="noopener">imy.se</a>.</p>
 
-<h2>7. Motion AI ger inte medicinska råd</h2>
-<p>Motion AI ger allmänna råd om rörelse och vanor. Den är inte läkare eller dietist. Kontakta vården vid skador eller hälsoproblem. AI-svar kan innehålla fel.</p>
+<h2>7. Appen ger inte medicinska råd</h2>
+<p>Övningar, tips och poäng är allmän information om rörelse och vanor. Appen ersätter inte läkare, fysioterapeut eller dietist. Kontakta vården vid skador eller hälsoproblem.</p>
 
 <h2>8. Ändringar</h2>
 <p>Ändrar vi policyn publicerar vi den nya versionen här med nytt datum.</p>

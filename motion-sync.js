@@ -53,6 +53,7 @@ window.Sync=(function(){
     init, push, get enabled(){return enabled}, get user(){return user}, get ready(){return ready}, get failed(){return failed},
     signIn:(email,password)=>sb.auth.signInWithPassword({email,password}),
     signUp:(email,password)=>sb.auth.signUp({email,password,options:{emailRedirectTo:location.origin+'/app.html#progress'}}),
+    rpc:(n,a)=>sb.rpc(n,a||{}),
     signOut:async()=>{ await flush().catch(()=>{}); await sb.auth.signOut(); },
   };
 })();
