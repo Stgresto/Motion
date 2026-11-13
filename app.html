@@ -1050,6 +1050,22 @@ h1.big{font-weight:500;letter-spacing:-.03em}
 .acct-consent{display:flex;gap:9px;align-items:flex-start;font-size:.78rem;line-height:1.5;margin:10px 0 4px;cursor:pointer}
 .acct-consent input{width:18px;height:18px;margin-top:2px;flex-shrink:0;accent-color:currentColor}
 .acct-consent a,.ai-legal a{text-decoration:underline;text-underline-offset:3px}
+.pm{max-width:720px;margin:0 auto}
+.pm h1{margin:6px 0 8px}
+.pm .pm-card{border:1px solid var(--line,rgba(255,255,255,.14));border-radius:var(--r-lg);padding:22px;margin-top:16px}
+.pm .pm-price{font-size:2rem;font-weight:600;margin:4px 0}
+.pm .pm-price small{font-size:.9rem;font-weight:400;opacity:.7}
+.pm ul{margin:10px 0 0;padding-left:18px;line-height:1.7}
+.pm .pm-risk{border:1px solid var(--gold);border-radius:var(--r-lg);padding:18px 20px;margin-top:16px;font-size:.88rem;line-height:1.6}
+.pm .pm-risk b{display:block;margin-bottom:6px;letter-spacing:.06em;text-transform:uppercase;font-size:.74rem}
+.pm .pm-wk{display:grid;gap:14px;margin-top:16px}
+.pm .pm-wk h3{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;opacity:.7;margin:0 0 6px}
+.pm .pm-wk b{display:block;margin-bottom:4px}
+.pm .pm-msg{font-size:.85rem;margin-top:10px;min-height:1.2em}
+.pm .btn[disabled]{opacity:.45;cursor:not-allowed}
+.pm-gate{max-width:520px;margin:6vh auto;text-align:center}
+.pm-gate img{width:40px;height:40px;margin-bottom:14px}
+.pm-gate p{opacity:.8;margin:8px 0 18px}
 .ai-legal{font-size:.72rem;line-height:1.5;opacity:.75;margin:8px 4px 0;text-align:center}
 </style>
 </head>
@@ -1064,6 +1080,7 @@ h1.big{font-weight:500;letter-spacing:-.03em}
       <a href="#today" data-tab="today" class="sn-link" title="Översikt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10.5 12 4l8 6.5V20h-5.5v-6h-5v6H4z"/></svg><span class="lbl">Översikt</span></a>
       <a href="#planner" data-tab="planner" class="sn-link" title="Planerare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span class="lbl">Planerare</span></a>
       <a href="#ai" data-tab="ai" class="sn-link" title="Motion AI"><img src="/images/motion-symbol-gold.svg" alt=""><span class="lbl">Motion AI</span></a>
+      <a href="#premium" data-tab="premium" class="sn-link" title="Premium"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9 6.8 19.7l1-5.9L3.5 9.7l5.9-.8z"/></svg><span class="lbl">Premium</span></a>
       <a href="#scan" data-tab="scan" class="sn-link" title="Kort"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6.5" y="3.5" width="12" height="17" rx="2"/><path d="M4 7v11.5a2 2 0 0 0 2 2h8"/></svg><span class="lbl">Kort</span></a>
   </nav>
   <a href="/" class="sn-link sn-home" title="Till startsidan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 6l-6 6 6 6M4 12h16"/></svg><span class="lbl">Till startsidan</span></a>
@@ -1635,7 +1652,7 @@ function render(){
   parseRoute(); stopCamera();
   $$('[data-tab]').forEach(a=>a.classList.toggle('on',a.dataset.tab===route||(route==='play'&&a.dataset.tab==='scan')));
   $('.sn-profile')?.classList.toggle('on',route==='progress');
-  const V={today:vToday,planner:vPlanner,ai:vAI,scan:vScan,run:el=>{vScan(el);stopCamera();setTimeout(()=>{const t=document.getElementById('tray');t&&t.scrollIntoView({behavior:'smooth',block:'center'})},200)},play:vPlay,progress:vProgress}[route]||vToday;
+  const V={today:vToday,planner:vPlanner,ai:vAI,scan:vScan,run:el=>{vScan(el);stopCamera();setTimeout(()=>{const t=document.getElementById('tray');t&&t.scrollIntoView({behavior:'smooth',block:'center'})},200)},play:vPlay,premium:vPremium,progress:vProgress}[route]||vToday;
   app.innerHTML=''; const w=document.createElement('div'); w.className='view'; app.appendChild(w); V(w);
   window.scrollTo({top:0});
 }
@@ -2213,6 +2230,105 @@ function drawAccount(box){
 }
 
 /* =========================================================
+   PREMIUM — 15 kr/månad: Motion AI + veckotips (stretch och kost).
+   Spärren sitter på servern (api/chat.js). Här visas bara läget och avtalet.
+   ========================================================= */
+const CONSENT_V='2026-11-13';
+let PREM={loaded:false,signedIn:false,active:false,consent:false,end:null,at:0};
+async function loadPrem(){
+  try{
+    if(!window.Sync||!Sync.user){ PREM={loaded:true,signedIn:false,active:false,consent:false,end:null,at:Date.now()}; return PREM; }
+    const r=await Sync.premiumStatus();
+    PREM={loaded:true,signedIn:true,active:!!r.active,consent:r.consentVersion===CONSENT_V,end:r.end||null,at:Date.now()};
+  }catch(e){ PREM={loaded:true,signedIn:!!(window.Sync&&Sync.user),active:false,consent:false,end:null,at:Date.now()}; }
+  return PREM;
+}
+function refreshPrem(cb){
+  if(PREM.loaded&&Date.now()-PREM.at<60000) return;
+  const before=PREM.active&&PREM.consent;
+  loadPrem().then(()=>{ if((PREM.active&&PREM.consent)!==before&&cb) cb(); });
+}
+async function authPost(url,body){
+  const t=window.Sync?await Sync.token():null;
+  return fetch(url,{method:'POST',headers:{'Content-Type':'application/json',...(t?{Authorization:'Bearer '+t}:{})},body:JSON.stringify(body||{})});
+}
+const WK_STRETCH=[
+  ['Höftböjare','Gå ner i ett lågt utfall och skjut höften långsamt framåt. 30 sekunder per sida. Bra efter mycket sittande.'],
+  ['Nacke och axlar','Luta örat mot axeln och låt tyngden göra jobbet. 20 sekunder per sida, utan ryck.'],
+  ['Baksida lår','Sätt hälen på ett lågt trappsteg, rak rygg och fäll framåt från höften. Andas lugnt i 30 sekunder.'],
+  ['Bröst','Stå i en dörröppning med armbågen i 90 grader och luta dig lätt framåt. 20 sekunder per sida.'],
+  ['Rygg, barnets pose','Sitt på hälarna och sträck armarna framåt längs golvet. Slappna av i ryggen i fem lugna andetag.'],
+  ['Vader','Placera händerna mot en vägg och ta ett steg bakåt med hälen i golvet. 30 sekunder per sida.'],
+  ['Sätesmuskler','Sitt på en stol, lägg ankeln över andra knät och luta överkroppen lätt framåt. 30 sekunder per sida.'],
+  ['Underarmar','Sträck ena armen framåt med handflatan uppåt och dra försiktigt fingrarna nedåt. 20 sekunder per hand.'],
+  ['Ländrygg','Ligg på rygg och dra båda knäna mot bröstet. Gunga lugnt i 30 sekunder.'],
+  ['Framsida lår','Stå på ett ben, ta tag i foten bakom dig och för knäna nära varandra. 20 sekunder per sida. Håll i något för balansen.'],
+  ['Sidan av kroppen','Stå med fötterna höftbrett, sträck ena armen över huvudet och luta dig lätt åt sidan. 20 sekunder per sida.'],
+  ['Kuggar i ryggen','Sitt med rak rygg och vrid överkroppen försiktigt åt ena sidan med handen på motsatta knät. 20 sekunder per sida.'],
+];
+const WK_FOOD=[
+  ['Frukost som håller','En frukost med protein och fibrer, till exempel gröt med bär eller yoghurt med nötter, brukar hålla längre än bara något sött.'],
+  ['Drick regelbundet','Ha en vattenflaska nära dig under dagen och ta en klunk då och då. Törst kan vara svår att känna igen.'],
+  ['Färg på tallriken','Försök få med två eller tre olika grönsaker eller frukter till en måltid. Variation är viktigare än perfektion.'],
+  ['Mellanmål','Ett mellanmål med lite protein, som keso, ägg eller en smörgås, kan hålla energin jämn mellan måltiderna.'],
+  ['Ät i lugn och ro','Sätt dig ner och lägg bort mobilen under måltiden. Det blir enklare att känna när du är mätt.'],
+  ['Efter träning','Efter ett pass är det bra att äta en vanlig måltid med kolhydrater och protein inom några timmar.'],
+  ['Baljväxter','Bönor, linser och kikärtor är billiga, mättande och passar i både soppa, sallad och gryta.'],
+  ['Planera en dag i taget','Tänk ut kvällens middag redan på förmiddagen. Det gör det lättare att välja något du mår bra av.'],
+  ['Fiber','Fullkornsbröd, havre och grönsaker är bra för magen. Öka långsamt och drick vatten.'],
+  ['Fett som är bra','Olivolja, nötter och fet fisk är bra inslag i vardagsmaten. Små mängder räcker.'],
+  ['Sov och mat hänger ihop','När du sovit dåligt blir det lätt att längta efter snabb energi. Ät regelbundet och var snäll mot dig själv.'],
+  ['Ät det du gillar','Mat ska vara gott och social. Välj mestadels sådant som får dig att må bra, och unna dig resten utan dåligt samvete.'],
+];
+function isoWeek(d){ const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())); const day=t.getUTCDay()||7; t.setUTCDate(t.getUTCDate()+4-day); const y0=new Date(Date.UTC(t.getUTCFullYear(),0,1)); return Math.ceil(((t-y0)/864e5+1)/7); }
+const PM_RISK=`<div class="pm-risk"><b>Viktigt, läs detta</b>Motion AI och tipsen uppmanar dig inte att göra något. De är allmän information, inte medicinsk rådgivning, och kan innehålla fel. Det är du som väljer om du vill följa ett förslag eller ett tips. <strong>Allt du gör sker på egen risk.</strong> Motion UF ansvarar inte för skada eller besvär som kan uppstå. Lyssna på kroppen, avbryt vid smärta eller yrsel, och kontakta vården vid skada, sjukdom, graviditet eller om du är osäker. Kosttips är allmänna och ersätter inte råd från dietist eller läkare. Är du under 18 ska en vårdnadshavare godkänna.</div>`;
+
+function vAIGate(el){
+  el.innerHTML=`<div class="pm-gate"><img src="${LOGO}" alt=""><span class="eyebrow">Premium</span><h1 class="big">Motion AI ingår i Premium.</h1><p>AI-coachen, ett stretchtips och ett kosttips varje vecka. 15 kr i månaden, avsluta när du vill.</p><a class="btn btn-gold" href="#premium">Se Premium</a></div>`;
+}
+function vPremium(el){
+  const ok=routeArg==='ok';
+  const wk=isoWeek(new Date()); const st=WK_STRETCH[(wk-1)%WK_STRETCH.length], fd=WK_FOOD[(wk-1)%WK_FOOD.length];
+  const draw=()=>{
+    const P=PREM;
+    let top='';
+    if(!P.signedIn){
+      top=`<div class="pm-card"><span class="eyebrow">Logga in först</span><p>Premium kopplas till ditt konto. Logga in eller skapa ett konto, så kommer du tillbaka hit.</p><a class="btn btn-gold" href="#progress">Logga in</a></div>`;
+    } else if(P.active&&P.consent){
+      const end=P.end?new Date(P.end).toLocaleDateString('sv-SE'):'';
+      top=`<div class="pm-card"><span class="eyebrow">Premium är aktivt</span><p>${end?'Aktivt till och med '+esc(end)+'. Förnyas automatiskt.':'Aktivt. Förnyas automatiskt.'}</p><div class="actions" style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-gold" href="#ai">Öppna Motion AI</a><button class="btn btn-line" id="pmPortal">Hantera eller avsluta</button></div><p class="pm-msg" id="pmMsg" role="status"></p></div>
+      <div class="pm-wk"><div class="pm-card" style="margin:0"><h3>Veckans stretch · vecka ${wk}</h3><b>${esc(st[0])}</b><p>${esc(st[1])}</p></div><div class="pm-card" style="margin:0"><h3>Veckans kosttips · vecka ${wk}</h3><b>${esc(fd[0])}</b><p>${esc(fd[1])}</p></div></div>`+PM_RISK;
+    } else {
+      const renew=P.active&&!P.consent;
+      top=`<div class="pm-card"><span class="eyebrow">Motion Premium</span><div class="pm-price">15 kr<small> / månad</small></div><ul><li>Motion AI, din coach som planerar passen åt dig</li><li>Ett stretchtips varje vecka</li><li>Ett kosttips varje vecka</li></ul><p style="font-size:.82rem;opacity:.75;margin-top:12px">Förnyas automatiskt varje månad. Du kan avsluta när som helst och har Premium månaden ut.</p></div>`+PM_RISK+`<div class="pm-card"><label class="acct-consent" style="margin-top:0"><input type="checkbox" id="pmOk"><span>Jag har läst och förstår att Motion AI och tipsen inte uppmanar mig till något och att <b>allt jag gör sker på egen risk</b>. Jag godkänner <a href="villkor.html" target="_blank" rel="noopener">villkoren</a> och att ${renew?'mitt avtal uppdateras':'15 kr dras varje månad tills jag avslutar'}.</span></label><button class="btn btn-gold" id="pmGo" disabled style="margin-top:12px">${renew?'Godkänn':'Godkänn och starta Premium'}</button><p class="pm-msg" id="pmMsg" role="status"></p></div>`;
+    }
+    const intro=ok&&!(P.active&&P.consent)?`<div class="pm-card"><b>Tack!</b> Betalningen behandlas. Det kan ta en liten stund innan Premium blir aktivt.</div>`:'';
+    el.innerHTML=`<div class="pm"><span class="eyebrow">Premium</span><h1 class="big">Motion Premium</h1>${intro}${top}</div>`;
+    const msg=t=>{ const m=$('#pmMsg',el); if(m) m.textContent=t; };
+    const ck=$('#pmOk',el), go=$('#pmGo',el);
+    if(ck&&go){
+      ck.onchange=()=>{ go.disabled=!ck.checked; };
+      go.onclick=async()=>{
+        if(!ck.checked) return; go.disabled=true; msg('Ett ögonblick…');
+        try{
+          const c=await Sync.acceptConsent(CONSENT_V); if(c&&c.error) throw new Error('consent');
+          PREM.consent=true;
+          if(PREM.active){ draw(); return; }
+          const r=await authPost('/api/checkout',{}); const d=await r.json();
+          if(!r.ok||!d.url) throw new Error(d.error||'checkout');
+          location.href=d.url;
+        }catch(e){ go.disabled=false; msg('Det gick inte att starta betalningen just nu. Försök igen om en stund.'); }
+      };
+    }
+    const pb=$('#pmPortal',el);
+    if(pb) pb.onclick=async()=>{ msg('Ett ögonblick…'); try{ const r=await authPost('/api/portal',{}); const d=await r.json(); if(!r.ok||!d.url) throw 0; location.href=d.url; }catch(e){ msg('Det gick inte att öppna prenumerationen just nu.'); } };
+  };
+  draw();
+  PREM.at=0; loadPrem().then(()=>draw());
+  if(ok){ let n=0; const t=setInterval(async()=>{ if(route!=='premium'||PREM.active||++n>8){ clearInterval(t); return; } await loadPrem(); if(route==='premium') draw(); },3000); }
+}
+
+/* =========================================================
    MOTION AI — "Help me decide."
    Tool-based: the model reads the planner through tools and can only
    PROPOSE changes. Nothing touches the calendar until the user confirms.
@@ -2277,7 +2393,7 @@ async function askAPI(text){
   apiMsgs.push({role:'user',content:text});
   const actions=[]; let finalText='';
   for(let i=0;i<5;i++){
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:700,system:SYSTEM(),messages:apiMsgs,tools:TOOLS})});
+    const r=await authPost('/api/chat',({max_tokens:700,system:SYSTEM(),messages:apiMsgs,tools:TOOLS}));
     if(!r.ok) throw new Error('api '+r.status);
     const data=await r.json(); const content=data.content||[];
     apiMsgs.push({role:'assistant',content});
@@ -2417,6 +2533,7 @@ function applyAction(a){
 }
 
 function vAI(el){
+  if(!(PREM.active&&PREM.consent&&window.Sync&&Sync.user)){ vAIGate(el); refreshPrem(()=>{ if(route==='ai') render(); }); return; }
   el.innerHTML=`<div class="ai ${chat.length?'has':''}">
     <div class="ai-head"><img src="${LOGO}" alt=""><h1>MOTION AI</h1></div>
     <div class="thread" id="thread" aria-live="polite"></div>
@@ -2558,7 +2675,7 @@ Svara ENDAST med JSON, utan annan text, i formatet:
 - category: school, work, training, meal eller personal. Lektioner och raster i ett skolschema = school, lunch = meal.
 - start/end i 24-timmarsformat HH:MM. repeat: weekly för veckoscheman, annars none.
 - Hoppa över sådant som inte har en tid. Hitta inte på något.`;
-  const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:3000,messages:[{role:'user',content:[src,{type:'text',text:prompt}]}]})});
+  const r=await authPost('/api/chat',({max_tokens:3000,messages:[{role:'user',content:[src,{type:'text',text:prompt}]}]}));
   if(!r.ok) throw new Error('api');
   const data=await r.json(); const txt=(data.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('');
   const clean=txt.replace(/```json|```/g,''); const js=JSON.parse(clean.slice(clean.indexOf('{'),clean.lastIndexOf('}')+1));
@@ -2590,7 +2707,7 @@ async function readSchedule(file){
   const pl=await fileToPayload(file);
   if(pl.kind==='ics') return parseICS(pl.text);
   try{ return await aiExtract(pl); }
-  catch(e){ throw new Error(e.message==='api'||e.message==='offline'?'Bilder och PDF:er läses av Motion AI, som inte är kopplad just nu. Lägg in ANTHROPIC_API_KEY i Vercel, eller ladda upp en .ics-fil från din kalender.':e instanceof SyntaxError?'Jag kunde inte läsa ut några tider. Prova en tydligare skärmdump.':e.message); }
+  catch(e){ throw new Error(e.message==='api'||e.message==='offline'?'Bilder och PDF:er läses av Motion AI, som ingår i Premium (eller inte är kopplad just nu). Lägg in ANTHROPIC_API_KEY i Vercel, eller ladda upp en .ics-fil från din kalender.':e instanceof SyntaxError?'Jag kunde inte läsa ut några tider. Prova en tydligare skärmdump.':e.message); }
 }
 function importFlow(){
   const drawPick=sh=>{sh.innerHTML=`<button class="x" aria-label="Stäng" data-close>${IC.x}</button><h3>Importera ditt schema</h3><p class="muted">Ladda upp en skärmdump, ett foto, en PDF eller en kalenderfil (.ics). Du får se allt innan något läggs in.</p>

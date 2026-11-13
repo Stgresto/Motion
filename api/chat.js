@@ -13,6 +13,8 @@
 // No other setup needed — this file has no dependencies beyond what Vercel
 // provides out of the box.
 
+import { getUser, getSub, isActive, hasConsent, bumpUsage, okOrigin } from './_lib.js';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
@@ -25,17 +27,28 @@ export default async function handler(req, res) {
     return;
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    res.status(500).json({ error: 'ANTHROPIC_API_KEY is not set on the server.' });
+  // Skydd mot missbruk: tillåt bara anrop från vår egen sajt
+  const origin = req.headers.origin || '';
+  if (origin && !okOrigin(origin)) {
+    res.status(403).json({ error: 'Forbidden origin' });
     return;
   }
 
-  // Skydd mot missbruk: tillåt bara anrop från vår egen sajt
-  const origin = req.headers.origin || '';
-  const okOrigin = /^https:\/\/(www\.)?motionplanner\.se$/.test(origin) || /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin) || /^http:\/\/localhost(:\d+)?$/.test(origin);
-  if (origin && !okOrigin) {
-    res.status(403).json({ error: 'Forbidden origin' });
+  // Premium-spärr: kräver inloggning, aktiv prenumeration och godkända villkor. Stänger vid fel.
+  try {
+    const user = await getUser(req);
+    if (!user) { res.status(401).json({ error: 'Logga in för att använda Motion AI.', code: 'login' }); return; }
+    if (!isActive(await getSub(user.id))) { res.status(402).json({ error: 'Motion AI ingår i Premium.', code: 'premium' }); return; }
+    if (!(await hasConsent(user.id))) { res.status(402).json({ error: 'Du behöver godkänna Premium-villkoren.', code: 'consent' }); return; }
+    if (!(await bumpUsage(user.id))) { res.status(429).json({ error: 'Du har nått dagens gräns för Motion AI. Försök igen imorgon.', code: 'limit' }); return; }
+  } catch (err) {
+    res.status(500).json({ error: 'Premium-kontrollen är inte konfigurerad.', detail: String(err) });
+    return;
+  }
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    res.status(500).json({ error: 'ANTHROPIC_API_KEY is not set on the server.' });
     return;
   }
 

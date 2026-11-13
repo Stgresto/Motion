@@ -53,6 +53,9 @@ window.Sync=(function(){
     init, push, get enabled(){return enabled}, get user(){return user}, get ready(){return ready}, get failed(){return failed},
     signIn:(email,password)=>sb.auth.signInWithPassword({email,password}),
     signUp:(email,password)=>sb.auth.signUp({email,password,options:{emailRedirectTo:location.origin+'/app.html#progress'}}),
+    token:async()=>{ if(!sb) return null; const {data}=await sb.auth.getSession(); return data.session?data.session.access_token:null; },
+    premiumStatus:async()=>{ if(!sb||!user) return {active:false,consent:false}; const a=await sb.from('subscriptions').select('status,current_period_end').maybeSingle(); const c=await sb.from('premium_consent').select('version').maybeSingle(); const sub=a.data; const active=!!sub&&['active','trialing'].includes(sub.status)&&(!sub.current_period_end||new Date(sub.current_period_end)>new Date()); return {active,status:sub?sub.status:'none',end:sub?sub.current_period_end:null,consentVersion:c.data?c.data.version:null}; },
+    acceptConsent:v=>sb.from('premium_consent').upsert({user_id:user.id,version:v,accepted_at:new Date().toISOString()}),
     signOut:async()=>{ await flush().catch(()=>{}); await sb.auth.signOut(); },
   };
 })();
